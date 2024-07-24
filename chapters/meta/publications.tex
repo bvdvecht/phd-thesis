@@ -1,0 +1,18 @@
+\chapter*{List of Publications}
+\addcontentsline{toc}{chapter}{List of Publications}
+\setheader{List of Publications}
+
+\def\aicon{\makebox[1.25em][l]{\footnotesize \faUser}}
+\def\ficon{\makebox[1.25em][l]{\footnotesize \faFileTextO}}
+\def\picon{\makebox[1.25em][l]{\footnotesize \faPencilSquareO}}
+
+\begin{enumerate}[label={\arabic*.},itemsep=0.7\baselineskip,parsep=0.3\baselineskip]
+    \item[2.] \fullcite{pompili_2022_experimental_noprint}
+    \item[1.] \fullcite{dahlberg_2022_netqasm_noprint}
+        \par\aicon A. Dahlberg and \textbf{B. van der Vecht} contributed equally to this article.
+        \\ \ficon This article is included in this thesis as \cref{chp:netqasm}.
+\end{enumerate}
+
+\begin{xstretch}
+\printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
+\end{xstretch}

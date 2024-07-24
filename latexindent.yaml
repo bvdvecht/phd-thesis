@@ -1,0 +1,14 @@
+defaultIndent: "    "
+noAdditionalIndent:
+  abstract: 1
+  blfootnote: 1
+  example: 1
+  note: 1
+  xstretch: 1
+modifyLineBreaks:
+  condenseMultipleBlankLinesInto: 1
+  textWrapOptions:
+    columns: 101
+    when: after
+    blocksBeginWith:
+      other: '\\emph|\\lettrine|\\acrshort|\\acrlong|\\cref|\\Cref'

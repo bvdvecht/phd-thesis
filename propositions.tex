@@ -1,0 +1,42 @@
+\documentclass{propositions}
+
+% Turn off page numbering for the propositions and make the margins on both sides equal.
+\geometry{twoside=false}
+\pagestyle{empty}
+
+\RequirePackage{enumitem}
+\RequirePackage{unicode-math}
+
+\setmainfont[Path = fonts/libertinus/, ItalicFont=libertinusserif-italic.otf, BoldFont=libertinusserif-bold.otf, BoldItalicFont=libertinusserif-bolditalic.otf]{libertinusserif-regular.otf}
+\setsansfont[Path = fonts/libertinus/, BoldFont=libertinussans-bold.otf, ItalicFont=libertinussans-italic.otf]{libertinussans-regular.otf}
+\setmathfont[Path = fonts/libertinus/]{libertinusmath-regular.otf}
+\setmonofont[Scale=MatchLowercase, Path=fonts/inconsolata/]{Inconsolata-Regular.ttf}
+% The default style for text is Tahoma (sans-serif).
+%\renewcommand*\familydefault{\rmfamily}
+
+% Set default style for lists. 
+\setlist[enumerate]{
+    topsep=1ex,
+    itemsep=1ex,
+    parsep=0ex,
+    partopsep=0ex,
+    leftmargin=*,
+}
+
+\begin{document}
+
+% Specify the title and author of the thesis. This information will be used on both the English and
+% Dutch side and in the metadata of the final PDF.
+\title{
+    Title TBD
+}
+\author{Bart}{van der Vecht}
+
+\include{chapters/meta/propositions-en}
+
+\clearpage
+{\selectlanguage{dutch}
+\include{chapters/meta/propositions-nl}
+}
+
+\end{document}

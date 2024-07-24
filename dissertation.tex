@@ -1,0 +1,228 @@
+% To pass options to packages loaded from class file, these commands sust be called before the
+% \documentclass command.
+
+% Capitalize references when using \cref.
+\PassOptionsToPackage{capitalise}{cleveref}
+
+% Add support for inline lists with enumitem package. 
+\PassOptionsToPackage{inline}{enumitem}
+
+% Suppress vertical gap between glossary groups (entries are grouped by their first letter).
+% \PassOptionsToPackage{nogroupskip}{glossaries}
+
+% Remove dot after entry description in glossary. 
+\PassOptionsToPackage{nopostdot}{glossaries}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[
+    % print,
+    % draft,
+    % nativefonts,
+]{dissertation}
+
+% For Japanese font.
+\usepackage{xeCJK}
+
+% Units formatted using siunitx.
+\usepackage{siunitx}
+\sisetup{
+    group-separator={\ },
+    per-mode=symbol,
+}
+
+% Braket notation.
+\usepackage{braket}
+
+% Theorems with amsthm (need to undefine \openbox to avoid re-definition error).
+\let\openbox\relax
+\usepackage{amsthm}
+
+% Index-style glossary. 
+\usepackage{glossary-mcols}
+
+% To include PDF pages directly.
+\usepackage{pdfpages}
+
+% To generate dummy (placeholder) text.
+\usepackage{lipsum}
+
+% Bibliography managed using BibLaTeX.
+\usepackage[
+    giveninits=true,     % only given name initials and not the full given name
+    maxnames=50,         % max authors in bibliography
+    maxcitenames=2,      % max authors when citing
+    sortcites=true,      % sort citations in multi-cite commands
+    urldate=long,        % explicit URL date
+    backend=biber,       % biber backend
+    refsection=chapter,  % start a reference section at every \chapter command
+]{biblatex}
+\addbibresource{references/articles.bib}
+\addbibresource{references/arxiv.bib}
+\addbibresource{references/misc.bib}
+\addbibresource{references/online.bib}
+\addbibresource{references/proceedings.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define bibliography entries that won't be included in list of references.
+\DeclareBibliographyCategory{noprint}
+\addtocategory{noprint}{dahlberg_2022_netqasm_noprint}
+\addtocategory{noprint}{delledonne_2023_qnodeos_noprint}
+\addtocategory{noprint}{pompili_2022_experimental_noprint}
+
+% Make name of author bold if bibliography entry has "makebf" annotation for that author.
+\renewcommand*{\mkbibnamegiven}[1]{\ifitemannotation{makebf}{\textbf{#1}}{#1}}
+\renewcommand*{\mkbibnamefamily}[1]{\ifitemannotation{makebf}{\textbf{#1}}{#1}}
+
+% Not sure why this is defined.
+\newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
+
+% Not sure why this is defined.
+\newcommand*{\origrightarrow}{}
+\let\oldarrow\textrightarrow
+\renewcommand*{\textrightarrow}{\fontfamily{cmr}\selectfont\origrightarrow}
+
+% Custom command: \note{description}
+\newcommand{\note}[1]{{\color{red}[\textbf{NOTE:} #1]}}
+
+% Small caps for lettrine word.
+\renewcommand*{\LettrineTextFont}{\scshape}
+
+% The default reference string "EFTZ" causes issues when one of the capitals in a chapter is "T".
+\renewcommand*{\LettrineTestString}{EFZ}
+
+% Custom hyphenation.
+\hyphenation{ADwin}    % Do not hyphenate ADwin
+\hyphenation{QNodeOS}  % Do not hyphenate QNodeOS
+\hyphenation{QDevice}  % Do not hyphenate QDevice
+
+% Define acronyms.
+% Notice the use of \makenoidxglossary instead of \makeglossary to avoid running external tools
+% (https://github.com/tectonic-typesetting/tectonic/issues/704).
+\makenoidxglossaries
+\loadglsentries[main]{glossary}
+
+% Customize style of glossary. 
+\setglossarystyle{mcolindex}
+\setlength\columnsep{1cm}
+\renewcommand*{\glstreeitem}{\par\raggedright}
+\renewcommand*{\glsgroupskip}{\medskip}
+\renewcommand*{\glsnamefont}[1]{\textbf{#1}}
+
+% Show section numbers next to PDF outline bookmarks.
+\hypersetup{bookmarksnumbered=true}
+
+% Disable hyperlinks from acronyms to glossary entries.
+\glsdisablehyper
+
+% Set default style for lists. 
+\setlist[enumerate,itemize]{
+    topsep=1ex,
+    itemsep=1ex,
+    parsep=0ex,
+    partopsep=0ex,
+    leftmargin=*,
+}
+
+% Define style of inline lists.
+\newlist{inlinelist}{enumerate*}{1}
+\setlist[inlinelist]{label=(\arabic*)}
+
+% Define new type of table column.
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+% Define custom theorem environment for examples.
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+% Redefine \paragraph command to reduce vertical and horizontal spacing and to add a period after
+% the heading. References:
+% - https://tex.stackexchange.com/questions/40943/new-line-and-no-indent-after-paragraph
+% - https://tex.stackexchange.com/questions/328355/add-a-period-after-each-paragraph-title
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+    {1ex \@plus 1ex \@minus 0.2ex}%
+    {-0.5em}%
+    {\normalfont\normalsize\bfseries\maybe@addperiod}%
+}
+\newcommand{\maybe@addperiod}[1]{%
+    #1\@addpunct{.}%
+}
+\makeatother
+
+% Increase maximum stretch for a certain paragraph (https://tex.stackexchange.com/q/84510), mostly
+% to be used to avoid overflow in list of references.
+\newenvironment{xstretch}{\par\emergencystretch=1em}{\par}
+
+% Turn off crop marks even in print builds, as the printing company does not need them.
+\renewcommand*\cropmarks{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Add front cover for non-print builds
+% \makeatletter
+% \unless\if@print
+% \includepdf[pages=-]{cover/cover-front.pdf}
+% \fi
+% \makeatother
+
+% Specify the title and author of the thesis. This information will be used on the title page (in
+% chapters/meta/title.tex) and in the metadata of the final PDF.
+\title{Title - TBD}
+\author{Bart}{van der Vecht}
+
+% Use Roman numerals for the page numbers of the title pages and table of contents.
+\frontmatter
+
+\include{chapters/meta/title}
+
+% The (optional) dedication can be used to thank someone or display a significant quotation.
+\dedication{\epigraph{
+    TBD - some inspiring text
+}{Author}}
+
+\tableofcontents
+
+\include{chapters/meta/summary}
+\include{chapters/meta/samenvatting}
+\include{chapters/meta/acks}
+\include{chapters/meta/cv}
+\include{chapters/meta/publications}
+
+% Use Arabic numerals for the page numbers of the chapters.
+\mainmatter
+
+% Turn on thumb indices.
+\thumbtrue
+
+\include{chapters/main/intro}
+\include{chapters/main/netqasm}
+\include{chapters/main/conclusion}
+
+% Use letters for the chapter numbers of the appendices.
+\appendix
+
+\include{chapters/appendix/netqasm}
+
+% Turn off thumb indices for unnumbered chapters.
+\thumbfalse
+
+% Print glossary.
+% Notice the use of \printnoidxglossary instead of \printglossary to avoid running external tools
+% (https://github.com/tectonic-typesetting/tectonic/issues/704).
+\glsaddall
+\printnoidxglossary[type=\acronymtype,title={Glossary}]
+\addcontentsline{toc}{chapter}{Glossary}
+\setheader{Glossary}
+
+% Add back cover for non-print builds
+% \makeatletter
+% \unless\if@print
+% \includepdf[pages=-]{cover/cover-back.pdf}
+% \fi
+% \makeatother
+
+\end{document}

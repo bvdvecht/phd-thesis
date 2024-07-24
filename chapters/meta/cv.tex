@@ -1,0 +1,36 @@
+\chapter*{Curriculum Vit\ae}
+\addcontentsline{toc}{chapter}{Curriculum Vit\ae}
+\setheader{Curriculum Vit\ae}
+
+\makeatletter
+% Print the full name of the author.
+\authors{\@firstname\ {\titleshape\@lastname}}
+% Get value of title to use later.
+\def\thesistitle{\@title}
+\makeatother
+
+\newlength{\tabcolsepold}
+\setlength{\tabcolsepold}{\tabcolsep}
+\setlength{\tabcolsep}{0cm}
+
+\noindent
+\begin{tabularx}{\linewidth}{p{2cm}X}
+    2020 -- 2024 & Ph.D. Quantum Computer Science \\
+                 & Delft University of Technology, The Netherlands \\
+                 & Thesis: \emph{\thesistitle} \\
+                 & Promotors: Prof.\ dr.\ S.\ D.\ C.\ Wehner, Prof.\ dr.\ A.\ van Deursen \\
+    \\
+    2016 -- 2020 & M.Sc. Computer Science and Engineering \\
+                 & Eindhoven University of Technology, The Netherlands \\
+                 & Thesis: \emph{Secure delegated storage with quantum protocols} \\
+                 & Advisor: Dr.\ B.\ Škorić \\
+    \\
+    2013 -- 2016 & B.Sc. Software Science \\
+                 & Eindhoven University of Technology, The Netherlands \\
+                 & Software End Project: \emph{Udapt} \\
+                 & Advisors: Dr.\ ir.\ T.\ Verhoeff, Dr.\ L.\ Somers \\
+    \\
+    1996/01/02   & Born in Eindhoven, The Netherlands \\
+\end{tabularx}
+
+\setlength{\tabcolsep}{\tabcolsepold}
