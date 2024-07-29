@@ -154,7 +154,7 @@ Quantum \textit{network} processors have additional challenges:
     (2) remote-entanglement operations may not have a fixed time in which they complete, which makes scheduling and optimization more difficult.
 
 Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end-nodes, as well as local computation.
-Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Compuation (BQC)~\cite{Wehner2018stages}.
+Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
 Such applications are split into distinct \textit{programs} each of which runs on a separate end-node.
 The programs consist of both local operations (classical and quantum) and network operations (classical and quantum), see \cref{fig:app_programs}.
 That is, the programs communicate either by passing classical messages, or by establishing quantum entanglement.
@@ -728,7 +728,7 @@ Based on this, the \QNPU can use the corresponding connection in the network.
 \begin{figure}
       \centering
       \includegraphics[width=0.7\textwidth]{figures/netqasm/nqasm_code_example}
-      \caption{Example of NetQASM code for generating a single entangled pair with anoter node followed by a measurement.
+      \caption{Example of NetQASM code for generating a single entangled pair with another node followed by a measurement.
             See the Appendix for more details of the instructions.}
       \label{fig:nqasm_code_example}
 \end{figure}
@@ -912,7 +912,7 @@ At some point, the sender measures both qubits, after which it sends the outcome
 We assume that the sender program is written in a higher-level language like, like in our SDK (\cref{sec:sdk}), and in such a way that it first issues a measurement operation on qubit T, and then on E. However, due to the differences in characteristics of the physical qubits, as will be explained below, it is more efficient to first do the measurement on E, and then on T. Now we consider two scenarios, namely
 \begin{itemize}
   \item \textbf{Unit-modules (UM)}.
-        We assume that the sender program is written and executed on a software stack implementating \netqasm, which means that the application's view of its quantum working memory is in the form of a unit module.
+        We assume that the sender program is written and executed on a software stack implementing \netqasm, which means that the application's view of its quantum working memory is in the form of a unit module.
         This unit module contains information about the above-mentioned hardware restrictions, and therefore a compiler can take advantage of it by re-ordering the measurement operations while generating the \netqasm subroutines to be sent to the \QNPU.
   \item \textbf{No unit-modules (NUM)}.
         In this case the software stack also implements \netqasm, but without unit modules.
