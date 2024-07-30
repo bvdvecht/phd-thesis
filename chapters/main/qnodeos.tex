@@ -1,0 +1,19 @@
+\chapter
+ [Design and demonstration of an operating system for executing applications on quantum network nodes]
+ {Design and demonstration of an operating system for executing applications on quantum network nodes}
+\label{chp:qnodeos}
+
+\newcommand{\CaPlus}{$^{40}$Ca$^+$}
+
+\begin{abstract}
+    The goal of future quantum networks is to enable new internet applications that are impossible to achieve using solely classical communication\cite{kimble_2008_quantum,wehner_2018_stages,vanMeter_book}.
+    Up to now, demonstrations of quantum network applications\cite{barz_2012_demonstration,drmota_verifiable_2024,nadlinger_device-independent_2022} and functionalities\cite{hermans2022qubit,iuliano2024qubit,matsukevich_quantum_2009,langenfeld_quantum_2021,pfaff_unconditional_2014,chou_deterministic_2018} on quantum processors have been performed in ad-hoc software that was specific to the experimental setup, programmed to perform one single task (the application experiment) directly into low-level control devices using expertise in experimental physics.
+    Here, we report on the design and implementation of the first architecture capable of executing quantum network applications on quantum processors in platform-independent high-level software.
+    We demonstrate the architecture's capability to execute applications in high-level software, by implementing it as a quantum network operating system --- QNodeOS --- and executing test programs including a delegated computation from a client to a server\cite{broadbent_2009_ubqc} on two quantum network nodes based on nitrogen-vacancy (NV) centers in diamond\cite{doherty_2013,childress2013diamond}.
+    We show how our architecture allows us to maximize the use of quantum network hardware, by multitasking different applications on a quantum network for the first time.
+    Our architecture can be used to execute programs on any quantum processor platform corresponding to our system model, which we illustrate by demonstrating an additional driver for QNodeOS for a trapped-ion quantum network node based on a single \CaPlus atom\cite{fioretto_towards_2020}.
+    Our architecture lays the groundwork for computer science research in the domain of quantum network programming, and paves the way for the development of software that can bring quantum network technology to society.
+\end{abstract}
+
+\input{chapters/main/qnodeos/main/main_text}
+\input{chapters/main/qnodeos/main/methods}
