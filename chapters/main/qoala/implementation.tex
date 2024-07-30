@@ -35,7 +35,7 @@ In our evaluation (Section~\ref{sec:evaluation}), deadlines are used as \textit{
 
 \begin{figure}% [ht]
     \centering
-    \includegraphics[width=\columnwidth]{figures/scheduler_components.png}
+    \includegraphics[width=\columnwidth]{figures/qoala/scheduler_components.png}
     \caption{Overview of our hierarchical scheduler implementation.
     The node scheduler maintains a graph of all tasks. The CPS and QPS maintain partial graphs with only tasks they can execute themselves. Partial graphs are updated by the node scheduler. 
     The CPS scheduler has access to a buffer with classical messages from other nodes, activating \texttt{HostEvent} tasks. The QPS scheduler has access to the network schedule, determining allowed start times of \texttt{Pair} tasks.}

@@ -22,7 +22,7 @@ We observe successful execution (desired deterministic outcome when setting nois
 
 \begin{figure}% [ht]
     \centering
-    \includegraphics[width=1.0\columnwidth]{figures/teleport-self-preemption.png}
+    \includegraphics[width=1.0\columnwidth]{figures/qoala/teleport-self-preemption.png}
     \caption{Self-preemption of a teleportation program.
     For certain durations of the time slot length (as fraction of node-node communication latency, x-axis), the makespan is considerably higher (spikes in the plot).
     Reason: a classical message arrives for some teleportation instance $i$,
@@ -50,7 +50,7 @@ We observe that multitasking can lead to improved (lower) makespan and that the 
 
 \begin{figure}% [ht]
     \centering
-    \includegraphics[width=1.0\columnwidth]{figures/tradeoffs_cq.png}
+    \includegraphics[width=1.0\columnwidth]{figures/qoala/tradeoffs_cq.png}
     \caption{Execution of interactive quantum program in the presence of a `busy' CPS program (tasks with duration $f \cdot CC$ for fraction $f$ of the classical node-to-node latency $CC$, x-axis).
     \textbf{Comparison of schedulers:}
     $Baseline$ (no scheduling nor interleaving),
@@ -78,9 +78,9 @@ We note that manual compilation allowed optimization that is not possible in the
 \begin{figure*}
     \newcommand{\heatmapheight}{6.6cm}
     \centering
-    \subfloat[\centering \label{fig:heatmap_teleport}]{{\includegraphics[height=\heatmapheight, keepaspectratio]{figures/heatmap_teleport.png}}}%
+    \subfloat[\centering \label{fig:heatmap_teleport}]{{\includegraphics[height=\heatmapheight, keepaspectratio]{figures/qoala/heatmap_teleport.png}}}%
     \hfill
-    \subfloat[\centering \label{fig:heatmap_local}]{{\includegraphics[height=\heatmapheight, keepaspectratio]{figures/heatmap_local.png}}}%
+    \subfloat[\centering \label{fig:heatmap_local}]{{\includegraphics[height=\heatmapheight, keepaspectratio]{figures/qoala/heatmap_local.png}}}%
     \caption{
         Concurrent execution of teleportation (A3) and a local application (only preparing and measuring qubits).
         (a) Success probability of teleportation for different numbers of teleportation and local instances.

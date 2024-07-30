@@ -1,0 +1,40 @@
+<mxfile host="65bd71144e" modified="2023-11-21T21:22:03.464Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.84.2 Chrome/114.0.5735.289 Electron/25.9.2 Safari/537.36" etag="eO1xFxYj_E1dhWin_C7D" version="22.1.3" type="embed">
+    <diagram id="p_pJn7svEYxFl72tqzCv" name="Page-1">
+        <mxGraphModel dx="953" dy="335" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Network Controller" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=bottom;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="360" width="280" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="EPR request" style="edgeStyle=none;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=16;labelBackgroundColor=none;" parent="1" target="25" edge="1">
+                    <mxGeometry x="-0.4347" y="-34" relative="1" as="geometry">
+                        <mxPoint x="340" y="290" as="sourcePoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="Processing Node 2&lt;br style=&quot;font-size: 18px;&quot;&gt;(implementing Qoala)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="510" y="160" width="210" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="SinglePair/MultiPair task handler" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="230" width="170" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Request store" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="415" y="370" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="EPR request" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;fontSize=16;labelBackgroundColor=none;" parent="1" source="24" target="25" edge="1">
+                    <mxGeometry x="-0.4198" y="39" relative="1" as="geometry">
+                        <mxPoint x="590" y="255" as="sourcePoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" value="Processing Node 2&lt;br style=&quot;font-size: 18px;&quot;&gt;(implementing Qoala)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="230" y="160" width="210" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="SinglePair/MultiPair task handler" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="230" width="170" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
