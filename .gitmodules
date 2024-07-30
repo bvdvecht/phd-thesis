@@ -1,0 +1,4 @@
+[submodule "chapters/main/qnodeos"]
+	path = chapters/main/qnodeos
+	url = git@gitlab.tudelft.nl:qinc-wehner/qnodeos/qnodeos-paper.git
+	branch = arxiv-v1
