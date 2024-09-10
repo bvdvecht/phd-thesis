@@ -1,0 +1,43 @@
+\subsection{Trapped-Ion Platform}
+\label{sec:trapped-ion-platform}
+
+\subsubsection{Setup}
+
+The trapped-ion \ac{QDevice} implementation faces different challenges than the \ac{NV} \ac{QDevice} implementation. Trapped-ion state preparation, gate operations, and readout occur on longer timescales (between microseconds and milliseconds) than the corresponding operations for \ac{NV} centers. As a result, latencies introduced by \ac{QNodeOS} are insignificant, and we do not expect the use of \ac{QNodeOS} to reduce fidelities of local gate operations or entangling operations on the trapped-ion \ac{QDevice}. On the other hand, trapped ions are typically manipulated using control sequences that are compiled for a given set of parameters and uploaded to hardware. (Here, sequences consist of pulses of \ac{TTL} signals, analog voltages, and radio frequency or microwave signals, some of which are phase-referenced to one another. These pulses typically control the laser and microwave fields with which ions are manipulated.) The challenge here is that decision making within \ac{QNodeOS} must take place further up the network stack and is not compatible with pre-compiled sequences.
+
+We address this challenge by exploiting a triggering capability within our pre-compiled sequences (which are written as Python scripts and then translated to a hardware description language for a \ac{FPGA}). A sequence can contain labels that act as memory pointers; at any point in a given sequence, a function can jump to one of these labels, at which point execution continues starting at that label. Thus, we can structure a sequence as a list of possible subsequences---each of which corresponds to a physical instruction or some part thereof. This list is preceded by a control subsequence. Input triggers from \ac{QNodeOS} cause the control subsequence to jump to a certain subsequence representing a physical instruction. After the subsequence---that is, the physical instruction---is implemented, the sequence returns to the control subsequence, where it waits for another input trigger.
+
+A second challenge is the compatibility between \ac{QNodeOS} and physical-layer hardware. The \ac{QDriver} for \ac{QNodeOS} is implemented with a development \ac{FPGA} board (Texas Instruments LAUNCHXL2-RM57L~\cite{ti_launchxl2_rm57l_2024}) that sends messages via \ac{SPI}. Our physical layer hardware, however, is not compatible with serial communication protocols. We bridge this gap with an emulator board (Cypress, CY8CKIT-14371~\cite{infineon_cy8ckit_143a_2024}). The emulator board requests and reads \ac{SPI} messages from \ac{QNodeOS} and, based on the message, generate \ac{TTL} signals that are sent as input triggers to the physical layer hardware. The emulator also receives outputs from the physical layer hardware: it monitors whether the hardware is available for new commands or busy, and it collects measurement results and passes them back to \ac{QNodeOS}.
+In this case, the measurement result consists of \ac{TTL} signals from the \ac{PMT} detecting ion fluorescence. When a counter value on the emulator board exceeds a certain preset threshold, the ion state is registered as the qubit state $\ket{0}$ and otherwise as $\ket{1}$.
+
+\subsubsection{Testing the QDriver}
+
+Tests were carried out using a trapped-ion setup designed for integration with a fiber-based cavity~\cite{teller2023integrating, teller2021heating}. The qubit states consisted of the $4^2 S_{1/2}$ and $3^2 D_{5/2}$ manifolds of $^{40}$Ca$^+$, hereafter referred to as $\ket{0}$ and $\ket{1}$. The cavity was not used in these tests, which focused on single-qubit operations. The cavity was designed to enable ion-photon entanglement, which we plan to implement in future work through physical instructions from \ac{QNodeOS}. Our primary goal in these tests was to verify that the \ac{QNodeOS} hardware, the emulator, and the physical-layer hardware could work together.
+
+Initial tests confirmed that messages were being exchanged at the programmed clock rate of 50\,kHz and that hardware pulses in the physical layer were triggered correctly via the emulator. Next, the following seven tests were implemented:
+
+\begin{enumerate}
+\item Initialization of the ion in a specific Zeeman state via Doppler cooling and optical pumping;
+\item a bit flip around the X axis via a $\pi$ pulse with phase 0 on the 729\,nm quadrupole transition of $^{40}$Ca$^+$;
+\item a bit flip around the Y axis via a $\pi$ pulse with phase $\pi/2$ on the 729 nm transition;
+\item preparation of a superposition state via a $\pi/2$ pulse with phase 0 on the 729\,nm transition;
+\item readout of a qubit eigenstate in the Y basis via a $\pi$ rotation around X followed by a $\pi/2$ pulse with phase $\pi/2$ around X on the 729\,nm transition;
+\item readout of a superposition state in the X basis via a $\pi/2$ rotation around Y followed by a $\pi/2$ pulse around X on the 729\,nm transition;
+\item measurement of the ion’s electronic state via fluorescence at 397\,nm in the presence of an 866\,nm repump, following preparation of a superposition state.
+\end{enumerate}
+
+Operations are considered to be correctly realized from the point of \ac{QNodeOS}, but do contain errors at the quantum level. Results for the tests (numbers above) were as follows:
+%
+\begin{enumerate}
+\item The ion was detected in the target initial state $\ket{0}$ in 98.4\% of trials;
+\item Following the X-axis bit flip operation, the ion was detected in $\ket{1}$ in 96\% of trials;
+\item Following the Y-axis bit flip operation, the ion was detected in $\ket{1}$ in 95\% of trials;
+\item A projective measurement determined that the $^{40}$Ca$^{+}$ ion was in $\ket{0}$ 52\% of the time and in $\ket{1}$ 48\% of the time;
+\item A projective measurement determined that the $^{40}$Ca$^{+}$ ion was in $\ket{0}$ 54\% of the time and in $\ket{1}$ 46\% of the time;
+\item The ion was detected in $\ket{0}$ 93\% of the time;
+\item The ion population was found to be in $\ket{0}$ 37\% of the time and in $\ket{1}$ 63\% of the time.
+\end{enumerate}
+
+These results were consistent with the performance of the physical-layer hardware in the absence of \ac{QNodeOS}. (Note that Doppler cooling had not been optimized and that magnetic-field drifts at the time were not properly compensated for. Gate operations with much higher fidelities are typically achieved in trapped-ion experiments, but here our focus was on verifying the electronic signaling.) No problems or inconsistencies with the electronic signaling were identified. 
+
+A next step will be to implement a more sophisticated processing of \ac{PMT} \ac{TTL} signals by the emulator board in order to identify when the ion has been delocalized due to a background-gas collision; in that case, additional laser cooling will be implemented that returns the ion to Doppler-limited temperatures. Such a step is a typical part of compiled physical-layer sequences but should now be implemented within \ac{QNodeOS} as part of the physical instruction for qubit initialization.

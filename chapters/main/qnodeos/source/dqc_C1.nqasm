@@ -1,0 +1,43 @@
+   array 10 @0
+   array 1 @1
+   store 0 @1[0]
+   array 20 @2
+   store 0 @2[0]
+   store 1 @2[1]
+   create_epr(1,0) 1 2 0    // submit request for entanglement
+   set R0 0
+LOOP2:
+   beq R0 1 LOOP_EXIT2
+   set R3 0
+   set R4 0
+   set R5 0
+   set R6 0
+LOOP:
+   beq R6 10 LOOP_EXIT
+   add R3 R3 R0
+   add R6 R6 1
+   jmp LOOP
+LOOP_EXIT:
+   add R4 R0 1
+   set R6 0
+LOOP1:
+   beq R6 10 LOOP_EXIT1
+   add R5 R5 R4
+   add R6 R6 1
+   jmp LOOP1
+LOOP_EXIT1:
+   wait_all @0[R3:R5]    // wait until entangled qubit is ready
+   add R0 R0 1
+   jmp LOOP2
+LOOP_EXIT2:              // end of entanglement creation code
+   set Q0 0
+   rot_y Q0 1 1          // local gate in C1
+   set Q0 0
+   rot_x Q0 1 0          // local gate in C1
+   set Q0 0
+   meas Q0 M0            // measurement
+   qfree Q0
+   ret_arr @0
+   ret_arr @1
+   ret_arr @2
+   ret_reg M0

@@ -1,0 +1,58 @@
+<mxfile host="65bd71144e" modified="2024-07-16T07:08:33.446Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.91.1 Chrome/122.0.6261.156 Electron/29.4.0 Safari/537.36" etag="loecYGn2tkh11c2CxN6i" version="24.6.5" type="embed">
+    <diagram id="DAG2zQPl-Mi83n5vAmiI" name="Page-1">
+        <mxGraphModel dx="775" dy="385" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="33" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;strokeWidth=3;fontSize=16;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="510" y="146" width="219" height="338" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;strokeWidth=3;fontSize=16;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="126" y="145" width="219" height="339" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Application" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b85450;strokeWidth=2;dashed=1;verticalAlign=top;fontSize=16;arcSize=4;fontColor=#AD4F4C;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="134" y="180" width="586" height="295" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Quantum hardware dependent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#964A8B;strokeColor=#9673a6;verticalAlign=top;fontColor=#63315C;fontStyle=1;opacity=40;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="514" y="330" width="210" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="Quantum hardware independent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F89C20;strokeColor=#d79b00;verticalAlign=bottom;fontColor=#8A6300;fontStyle=1;opacity=40;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="514" y="150" width="210" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Program" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;arcSize=9;fontSize=16;fillColor=none;strokeWidth=1;" parent="1" vertex="1">
+                    <mxGeometry x="524" y="190" width="190" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Quantum hardware independent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F89C20;strokeColor=#d79b00;verticalAlign=bottom;fontColor=#8A6300;fontStyle=1;opacity=40;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="130" y="150" width="210" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Program" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;arcSize=9;fontSize=16;strokeWidth=1;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="190" width="190" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Quantum hardware dependent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#964A8B;strokeColor=#9673a6;verticalAlign=top;fontColor=#63315C;fontStyle=1;opacity=40;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="130" y="330" width="210" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Network" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fontSize=16;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#527341;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="340" y="190" width="170" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Node 1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;strokeWidth=2;fontSize=18;fontColor=#6C8EBF;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="195" y="150" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Node 2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;strokeWidth=2;fontSize=18;fontColor=#6C8EBF;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="579" y="150" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="Classical&amp;nbsp;&lt;div style=&quot;font-size: 17px;&quot;&gt;message-passing&lt;/div&gt;" style="endArrow=classic;html=1;dashed=1;startArrow=classic;startFill=1;endFill=1;labelBackgroundColor=none;fontSize=17;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="330" y="258" as="sourcePoint"/>
+                        <mxPoint x="524" y="258" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="38" value="Entanglement&lt;div style=&quot;font-size: 17px;&quot;&gt;generation&lt;/div&gt;" style="endArrow=classic;html=1;dashed=1;startArrow=classic;startFill=1;endFill=1;labelBackgroundColor=none;fontSize=17;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="330" y="360" as="sourcePoint"/>
+                        <mxPoint x="524" y="360" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -1,0 +1,37 @@
+set Q0 0
+qalloc Q0
+init Q0
+rot_y Q0 3 1
+meas Q0 M0
+qfree Q0
+qalloc Q0
+init Q0
+rot_x Q0 1 1
+meas Q0 M1
+qfree Q0
+qalloc Q0
+init Q0
+meas Q0 M2
+qfree Q0
+qalloc Q0
+init Q0
+rot_y Q0 1 1
+meas Q0 M3
+qfree Q0
+qalloc Q0
+init Q0
+rot_x Q0 3 1
+meas Q0 M4
+qfree Q0
+set Q0 0
+qalloc Q0
+init Q0
+rot_x Q0 1 0
+meas Q0 M5
+qfree Q0
+ret_reg M0
+ret_reg M1
+ret_reg M2
+ret_reg M3
+ret_reg M4
+ret_reg M5

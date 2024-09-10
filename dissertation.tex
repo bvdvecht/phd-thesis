@@ -31,6 +31,9 @@
     per-mode=symbol,
 }
 
+% Math stuff
+\usepackage{amsmath}
+
 % Braket notation.
 \usepackage{braket}
 
@@ -44,8 +47,14 @@
 % To include PDF pages directly.
 \usepackage{pdfpages}
 
+% For abbreviations
+\usepackage[nolist,printonlyused]{acronym}
+
 % To generate dummy (placeholder) text.
 \usepackage{lipsum}
+
+% For code listings.
+\usepackage{listings}
 
 % Bibliography managed using BibLaTeX.
 \usepackage[
@@ -64,6 +73,7 @@
 \addbibresource{references/proceedings.bib}
 \addbibresource{references/netqasm.bib}
 \addbibresource{references/qoala.bib}
+\addbibresource{references/qnodeos.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -93,6 +103,9 @@
 
 % The default reference string "EFTZ" causes issues when one of the capitals in a chapter is "T".
 \renewcommand*{\LettrineTestString}{EFZ}
+
+% Shortcut for writing |psi><psi|
+\newcommand{\proj}[1]{\ket{#1}\bra{#1}}
 
 % Custom hyphenation.
 \hyphenation{ADwin}    % Do not hyphenate ADwin
@@ -160,6 +173,31 @@
 % Turn off crop marks even in print builds, as the printing company does not need them.
 \renewcommand*\cropmarks{}
 
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  title=\lstname,
+  keywordstyle=\color{blue},
+  commentstyle=\color{codegreen},
+  stringstyle=\color{red},
+  escapeinside={\%*}{*)},
+  morekeywords={*,...}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -203,8 +241,9 @@
 
 \include{chapters/main/intro}
 \include{chapters/main/netqasm}
-\include{chapters/main/qoala}
 \include{chapters/main/qnodeos}
+\include{chapters/main/qoala}
+\include{chapters/main/compiler}
 \include{chapters/main/conclusion}
 
 % Use letters for the chapter numbers of the appendices.

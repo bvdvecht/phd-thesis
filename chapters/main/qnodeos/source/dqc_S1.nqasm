@@ -1,0 +1,55 @@
+   array 10 @0
+   array 1 @1
+   store 0 @1[0]
+   recv_epr(2,0) 1 0   // submit request for entanglement 
+   set R0 0
+LOOP3:
+   beq R0 1 LOOP_EXIT3
+   set R3 0
+   set R4 0
+   set R5 0
+   set R6 0
+LOOP:
+   beq R6 10 LOOP_EXIT
+   add R3 R3 R0
+   add R6 R6 1
+   jmp LOOP
+LOOP_EXIT:
+   add R4 R0 1
+   set R6 0
+LOOP1:
+   beq R6 10 LOOP_EXIT1
+   add R5 R5 R4
+   add R6 R6 1
+   jmp LOOP1
+LOOP_EXIT1:
+   wait_all @0[R3:R5]  // wait until entangled qubit is ready
+   set R3 9            // check which Bell state
+   set R4 0
+LOOP2:
+   beq R4 R0 LOOP_EXIT2
+   add R3 R3 10
+   add R4 R4 1
+   jmp LOOP2
+LOOP_EXIT2:
+   load R2 @0[R3]      // load Bell state type into R2
+   set R1 0
+   bne R2 3 IF_EXIT
+   rot_z R1 16 4       // correction for Phi-
+IF_EXIT:
+   bne R2 1 IF_EXIT1
+   rot_x R1 16 4       // correction for Psi+
+IF_EXIT1:
+   bne R2 2 IF_EXIT2
+   rot_x R1 16 4
+   rot_y R1 8 4
+   rot_x R1 16 4
+   rot_y R1 24 4       // corrections for Psi-
+IF_EXIT2:
+   beq R0 0 IF_EXIT3   // no correction for Phi+
+IF_EXIT3:
+   add R0 R0 1
+   jmp LOOP3
+LOOP_EXIT3:
+   ret_arr @0
+   ret_arr @1

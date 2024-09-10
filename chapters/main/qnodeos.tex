@@ -3,6 +3,58 @@
  {Design and demonstration of an operating system for executing applications on quantum network nodes}
 \label{chp:qnodeos}
 
+
+% Custom hyphenation
+\hyphenation{QNodeOS}  % Do not hyphenate QNodeOS
+\hyphenation{QDevice}  % Do not hyphenate QDevice
+
+% List of abbreviations
+\acrodef{AE}{Atomic Ensembles}
+\acrodef{API}{Application Programming Interface}
+\acrodef{ASIC}{Application-Specific Integrated Circuit}
+\acrodef{CNPU}{Classical Network Processing Unit}
+\acrodef{CPLD}{Complex Programmable Logic Device}
+\acrodef{CPU}{Central Processing Unit}
+\acrodef{CR}{Charge-Resonance}
+\acrodef{DD}{Dynamical Decoupling}
+\acrodef{DQC}{Delegated Quantum Computation}
+\acrodef{DQP}{Distributed Queue Protocol}
+\acrodef{EGP}{Entanglement Generation Protocol}
+\acrodef{EMU}{Entanglement Management Unit}
+\acrodef{EPR}{Entanglement Pair Request}
+\acrodef{ER}{Entanglement Request}
+\acrodef{FPGA}{Field Programmable Gate Array}
+\acrodef{HAL}{Hardware Abstraction Layer}
+\acrodef{IPC}{Inter-Process Communication}
+\acrodef{IT}{Ion Traps}
+\acrodef{LGT}{Local Gate Tomography}
+\acrodef{MW}{Microwave}
+\acrodef{NetQASM}{Quantum Network Assembly Language}
+\acrodef{NV}{Nitrogen Vacancy} 
+\acrodef{OS}{Operating System}
+\acrodef{OSI}{Open Systems Interconnect}
+\acrodef{QASM}{Quantum Assembly Language}
+\acrodef{QDevice}{Quantum Device}
+\acrodef{QDriver}{QDevice Driver}
+\acrodef{QEGP}{Quantum Entanglement Generation Protocol}
+\acrodef{QMMU}{Quantum Memory Management Unit}
+\acrodef{QNetStack}{Quantum Network Stack}
+\acrodef{QNodeOS}{Quantum Network Operating System}
+\acrodef{QNP}{Quantum Network Protocol}
+\acrodef{QNPU}{Quantum Network Processing Unit}
+\acrodef{QPU}{Quantum Processing Unit}
+\acrodef{PID}{Proportional–Integral–Derivative}
+\acrodef{PSB}{Phonon-Side Band}
+\acrodef{PMT}{Photomultiplier Tube}
+\acrodef{RO}{Readout}
+\acrodef{SDK}{Software Development Kit}
+\acrodef{SoC}{System on a Chip}
+\acrodef{SP}{Spinpump}
+\acrodef{SPI}{Serial Peripheral Interface}
+\acrodef{SSRO}{Single-Shot Readout}
+\acrodef{TTL}{Transistor-Transistor Logic}
+\acrodef{ZPL}{Zero-Phonon Line}
+
 \newcommand{\CaPlus}{$^{40}$Ca$^+$}
 
 \begin{abstract}
@@ -17,3 +69,26 @@
 
 \input{chapters/main/qnodeos/main/main_text}
 \input{chapters/main/qnodeos/main/methods}
+
+\input{chapters/main/qnodeos/supplementary/design-consid.tex}
+\clearpage
+\input{chapters/main/qnodeos/supplementary/qnodeos-design}
+\clearpage
+\section{QDevice Implementations}
+\input{chapters/main/qnodeos/supplementary/NV}
+\input{chapters/main/qnodeos/supplementary/trapped_ion}
+\clearpage
+\input{chapters/main/qnodeos/supplementary/delcomp.tex}
+\clearpage
+\input{chapters/main/qnodeos/supplementary/multitasking}
+
+\clearpage
+\input{chapters/main/qnodeos/supplementary/multitasking_figs}
+\clearpage
+\input{chapters/main/qnodeos/supplementary/source_code}
+\clearpage
+\input{chapters/main/qnodeos/supplementary/traces}
+
+\begin{xstretch}
+\printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
+\end{xstretch}

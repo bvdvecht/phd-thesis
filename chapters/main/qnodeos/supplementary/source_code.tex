@@ -1,0 +1,110 @@
+\section{Application source code}
+\label{sec:app_source}
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[language=Python, caption={}]{chapters/main/qnodeos/source/delcomp_server.py}
+  \end{minipage}
+  \caption{\acf{DQC} source code for the server.}
+  \label{src:dqc_server}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[language=Python, caption={}]{chapters/main/qnodeos/source/delcomp_client.py}
+  \end{minipage}
+  \caption{\acf{DQC} source code for the client.}
+  \label{src:dqc_client}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[language=Python, caption={}]{chapters/main/qnodeos/source/tomography.py}
+  \end{minipage}
+  \caption{\acf{LGT} source code.}
+  \label{src:lgt}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[language=Python, caption={}]{chapters/main/qnodeos/source/host_runner.py}
+  \end{minipage}
+  \caption{Pseudocode illustrating the \ac{CNPU} runner. It can instantiate multiple programs, like the ones defined in~\cref{src:dqc_server,src:dqc_client,src:lgt}. Each program is submitted for concurrent execution to a thread pool executor which is managed by the host \ac{OS}. Each program independently sets up a connection with the \ac{QNPU}, and executes the program code itself.}
+  \label{src:cnpu_runner}
+\end{figure*}
+
+\lstdefinelanguage{netqasm}
+{
+    morekeywords={
+        add, add, sub, addm, subm,
+        jmp, bez, bnz, beq, bne, blt, bge,
+        set, store, load, undef, lea,
+        array, qalloc, qfree,
+        wait_all, wait_any, wait_single,
+        ret_reg, ret_arr,
+        meas,
+        create_epr, recv_epr,
+        init, x, y, z, h, s, k, t, rot_x, rot_y, rot_z, cnot, cphase, cx_dir, cy_dir,
+        APPID, NETQASM,
+    }
+    sensitive=false,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morecomment=[s][\color{blue}]{\#\ }{\ },
+    % morecomment=[s][\color{yellow}]{LOOP}{:},
+    morestring=[b]",
+}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={}]{chapters/main/qnodeos/source/dqc_S1.nqasm}
+  \end{minipage}
+  \caption{\ac{NetQASM} subroutine S1 of the \ac{DQC} application. Compiled by the \ac{DQC} server program code listed in~\cref{src:dqc_server}.}
+  \label{src:netqasm_dqc_s1}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={}]{chapters/main/qnodeos/source/dqc_S2.nqasm}
+  \end{minipage}
+  \caption{\ac{NetQASM} subroutine S2 of the \ac{DQC} application. Compiled by the \ac{DQC} server program code listed in~\cref{src:dqc_server}. The exact gates may differ depending on the iteration of the program loop and the $\delta$ value sent by the client.}
+  \label{src:netqasm_dqc_s2}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={}]{chapters/main/qnodeos/source/dqc_C1.nqasm}
+  \end{minipage}
+  \caption{\ac{NetQASM} subroutine C1 of the \ac{DQC} application. Compiled by the \ac{DQC} client program code listed in~\cref{src:dqc_client}. The exact gates may differ depending on the \ac{DQC} parameters $\alpha$ and $\theta$.}
+  \label{src:netqasm_dqc_c1}
+\end{figure*}
+
+\clearpage
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{minipage}{\textwidth}
+    \lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={}]{chapters/main/qnodeos/source/lgt.nqasm}
+  \end{minipage}
+  \caption{\ac{NetQASM} subroutine L1 of the \ac{LGT} application. Compiled by the \ac{LGT} program code listed in~\cref{src:lgt}. The exact gates may differ depending on the iteration of the program loop.}
+  \label{src:netqasm_lgt_l1}
+\end{figure*}
