@@ -1,0 +1,124 @@
+<mxfile host="65bd71144e">
+    <diagram id="uwfZWs6EYB1rmvR5Urs-" name="Page-1">
+        <mxGraphModel dx="1721" dy="787" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="52" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="110" width="580" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="320" width="580" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="530" width="580" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="QNet" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="180" y="180" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Arith" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="580" y="175" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="Tensor" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="180" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Affine" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="425" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="SCF" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="385" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Async" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="385" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Arith" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="580" y="380" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Memref" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="410" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="QMem" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="180" y="380" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Func" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="425" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="NetQASM" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="185" y="610" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="QoalaHost" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="185" y="570" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="Arith" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="580" y="590" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Memref" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="590" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="CF" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="345" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="CF" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="425" y="590" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="HIR" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="175" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" value="MIR" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="385" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="LIR" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="600" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="Affine" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="215" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="SCF" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="175" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="Async" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="175" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="Func" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="215" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="CF" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="135" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="" style="endArrow=classic;html=1;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="70" y="260" as="sourcePoint"/>
+                        <mxPoint x="70" y="340" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="65" value="Add explicit (quantum) memory allocations&lt;br&gt;&lt;ul&gt;&lt;li&gt;Lower tensor to memref for quantum ops&lt;/li&gt;&lt;li&gt;Lower qnet to qmem&lt;/li&gt;&lt;/ul&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-130" y="270" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="" style="endArrow=classic;html=1;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="80" y="470" as="sourcePoint"/>
+                        <mxPoint x="80" y="550" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="67" value="&lt;ul&gt;&lt;li&gt;Lower qmem to qoalahost/netqasm&lt;/li&gt;&lt;li&gt;Lower Affine/SCF to CF&lt;/li&gt;&lt;li&gt;Lower Async/Func to QoalaHost&lt;/li&gt;&lt;/ul&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-160" y="480" width="240" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" value="" style="endArrow=classic;html=1;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="80" y="690" as="sourcePoint"/>
+                        <mxPoint x="80" y="770" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="69" value="iQoala" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="770" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="Codegen" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-10" y="710" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="Tensor" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="290" y="370" width="70" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
