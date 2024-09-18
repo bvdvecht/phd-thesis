@@ -63,6 +63,7 @@ Runtime performance not only depends on the compilation, but also on scheduling.
   - deadlines
   - using EHI
 
+\todo{Difference with QNodeOS compiler}
 
 % A quantum internet, consisting of programmable quantum computers that can communicate with each other, enables the execution of applications that are not possible in a classical internet nor on a single quantum computer.
 % Such applications leverage the unique properties of quantum entanglement to achieve their goals.
@@ -90,6 +91,24 @@ Runtime performance not only depends on the compilation, but also on scheduling.
 % An application protocol description is needed such that programmers know in which order they have to put their operations.
 
 \subsection{Design considerations}
+Let us recap what our objectives are.
+
+\textbf{Translation from high-level to Qoala.}
+First we must decide on a high-level format.
+Questions like memory-based, value-based?
+We may also want to allow multiple (existing) high-level formats.
+
+Then, translation itself needs to be done. 
+A common strategy in compilers is to use one or more intermediate representations.
+
+\textbf{Optimization.}
+Optimization must be trackable \todo{*must* be?} by metrics.
+There are different metrics.
+In quantum computing, there is circuit depth, circuit width.
+In general there is also compilation time.
+
+For quantum network programs there is also success probability.
+
 
 \subsection{Objectives}
 - Execute quantum internet programs efficiently in terms of application success probability and success rate
