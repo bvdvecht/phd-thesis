@@ -4,33 +4,92 @@
 \label{chp:compiler}
 
 
+\begin{abstract}
 In this chapter, we deal with the question of compiling Qoala programs.
+Compilation involves two elements: translation from a higher-level program representation (like a human-friendly programming language) to 
+a lower-level representation (such as assembly instructions), and optimization of the program with respect to certain metrics.
+Optimization metrics include offline ones such as instruction count and memory usage, and online ones such as success probability.
+Many existing compilation strategies, of both classical and quantum computing, can be re-used.
+However, unique challenges are presented by the nature of quantum network programs.
+In this chapter, we outline these challenges and present an architecture of a compiler that address these challenges.
+We then report on a preliminary implementation and point to future evaluation and extension ideas.
+\end{abstract}
 
-\subsection{Rationale}
-A quantum internet, consisting of programmable quantum computers that can communicate with each other, enables the execution of applications that are not possible in a classical internet nor on a single quantum computer.
-Such applications leverage the unique properties of quantum entanglement to achieve their goals.
-Quantum internet applications consist of a set of programs, each executed by a node in the network.
-These programs interact with each other by sending classical messages and by using entangled quantum states.
-Examples of applications include Quantum Key Distribution (QKD), Blind Quantum Computation (BQC), secret sharing protocols, and agreement protocols.
+\subsection{Introduction}
+As described in the introduction and in previous chapters, quantum network applications consist of programs that are executed on the nodes of the network.
+For these programs to be executable, they must be in a specific format.
+In \cref{chp:qoala} we presented the Qoala execution environment, being an improvement over the QNodeOS (\cref{chp:qnodeos}) runtime.
+Qoala requires the programs to be in a specific format, including classical and quantum instructions, and where some parts are represented using the NetQASM assembly language (\cref{chp:netqasm}).
 
-Realizing such applications requires certain key ingredients.
-First, a description of the programs constituting the application must be given: what operations must each of the nodes do and when?
-Second, a runtime environment on each of the nodes which can handle program descriptions and can execute the operations described in them.
-Furthermore, the quality of application execution depends on the operations applied, the timing of these operations, and the hardware characteristics of the nodes.
-Since quantum states decohere (degrade in quality) over time, controlling the timing of operations is important to achieve performant execution.
+Although programmers could express their program logic directly in the Qoala format, this is not practical for several reasons.
+First, since the format is low-level, it is quite verbose.
+This is a similar issue as with classical assembly (or other lower-level languages): although possible, it is often very impracticle to write complete programs in assembly itself.
+Second, the low-level format can be quite far from the high-level program logic.
+Someone who wants to implement a certain quantum network program typically only cares about the overall (high-level) behavior of the program.
+For example, they might simply want to express that the program should create entangled states repeatedly, and then measure all created qubits.
+Having to deal with low-level details about how express looping behavior, which (quantum) memory and how much to allocate, and how to integerate the classical and quantum code
+is in most cases not something a programmer wants to deal with. 
+Third, the Qoala program format allows hardware-specific details, such as hardware-specific quantum instructions (using NetQASM flavors, see \cref{chp:netqasm}).
+Although not required to add these details by the programmer, if one wants to make use of these details to improve execution (e.g. increasing success probability), the programmer should have knowledge about the hardware.
+Ideally, the programmer should not have to write different versions of a program, one for each hardware platform that the program is intended to run upon.
 
-A runtime environment that can execute quantum internet programs exists: Qoala.
-Qoala also allows scheduling of program components, enabling optimization of execution.
-However, Qoala takes as input program descriptions that are low-level, meaning that they do not allow complex abstractions.
-This design has been made on purpose, such that the Qoala specification is relatively simple, and such that an implementation can be relatively simple.
+The Qoala program format was indeed not intended to be used by programmers directly.
+\reminder{focus on programmers: can we say something about practical feedback, i.e. actual users of our tools?}
+Instead, it was envisioned that a programmer would express program logic in a high-level language, such as Python, and that a compiler would transform this into a Qoala program.
+Allowing expression in such a higher-level language takes away the aforementioned issues.
 
-In order to make it easier for programmers to express their application logic, however, a more sophisticated program representation is needed.
-Such a representation enables programmers to focus on the logic, and not have to deal with low-level implementation and optimization details.
-If programmers represent their application logic in a high-level representation, necessarily a translation step must be performed from this representation to the lower-level Qoala representation.
+Program compilation is a well-studied topic in both classical and quantum computing and is a vital tool in everyday practical software development.
+Many existing ideas and strategies can be re-used for compiling quantum network applications.
+However, quantum network applications present unique challenges that need to be solved by a compiler.
 
-Since applications consist of multiple cooperating programs, some kind of coordination is required.
-The order of external operations in a program (message-passing and entanglement generation) must match with external operations in other programs.
-An application protocol description is needed such that programmers know in which order they have to put their operations.
+First, there is a distinction to be made between compiling applications and programs.
+Compiling the whole (multi-node) application is not something we consider here.
+Indeed we treat programs (single-node) to be independent and having an independent compiler.
+Figure \todo{Schematic of application compilation vs program compilation} illustrates this.
+Compiling a whole application would be similar to compilation for distrbuted quantum computing.
+Second, programs are inherently hybrid in nature: they contain both classical and quantum code.
+\todo{Why difficult?}
+Third, optimization is not clear.
+Runtime performance not only depends on the compilation, but also on scheduling.
+
+- general
+  - program-application distinction
+  - difference with distrbuted qc
+  - classical-quantum interactivity
+  - success metric also depends on scheduling
+
+- qoala-specifc
+  - netqasm flavors
+  - deadlines
+  - using EHI
+
+
+% A quantum internet, consisting of programmable quantum computers that can communicate with each other, enables the execution of applications that are not possible in a classical internet nor on a single quantum computer.
+% Such applications leverage the unique properties of quantum entanglement to achieve their goals.
+% Quantum internet applications consist of a set of programs, each executed by a node in the network.
+% These programs interact with each other by sending classical messages and by using entangled quantum states.
+% Examples of applications include Quantum Key Distribution (QKD), Blind Quantum Computation (BQC), secret sharing protocols, and agreement protocols.
+
+% Realizing such applications requires certain key ingredients.
+% First, a description of the programs constituting the application must be given: what operations must each of the nodes do and when?
+% Second, a runtime environment on each of the nodes which can handle program descriptions and can execute the operations described in them.
+% Furthermore, the quality of application execution depends on the operations applied, the timing of these operations, and the hardware characteristics of the nodes.
+% Since quantum states decohere (degrade in quality) over time, controlling the timing of operations is important to achieve performant execution.
+
+% A runtime environment that can execute quantum internet programs exists: Qoala.
+% Qoala also allows scheduling of program components, enabling optimization of execution.
+% However, Qoala takes as input program descriptions that are low-level, meaning that they do not allow complex abstractions.
+% This design has been made on purpose, such that the Qoala specification is relatively simple, and such that an implementation can be relatively simple.
+
+% In order to make it easier for programmers to express their application logic, however, a more sophisticated program representation is needed.
+% Such a representation enables programmers to focus on the logic, and not have to deal with low-level implementation and optimization details.
+% If programmers represent their application logic in a high-level representation, necessarily a translation step must be performed from this representation to the lower-level Qoala representation.
+
+% Since applications consist of multiple cooperating programs, some kind of coordination is required.
+% The order of external operations in a program (message-passing and entanglement generation) must match with external operations in other programs.
+% An application protocol description is needed such that programmers know in which order they have to put their operations.
+
+\subsection{Design considerations}
 
 \subsection{Objectives}
 - Execute quantum internet programs efficiently in terms of application success probability and success rate
@@ -103,6 +162,8 @@ We consider the following optimizations:
 
 
 \subsection{Architecture}
+
+
 \begin{itemize}
 \item High-level MLIR Dialect (QoalaHIR)
     \begin{itemize}

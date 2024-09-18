@@ -3,6 +3,19 @@
  {Qoala: an Application Execution Environment for Quantum Internet Nodes}
 \label{chp:qoala}
 
+\begin{abstract}
+Executing quantum internet applications presents unique challenges not encountered in quantum computing.
+These challenges include the need for a highly interactive execution of hybrid classical-quantum programs running at different network nodes, where the limited lifetime of quantum memories imposes deadlines to achieve a desired level of performance. What's more, part of the execution is subject to strict timing constraints (e.g. entanglement generation), while others allow more flexible timing precision (e.g. classical messages exchanged between the nodes). 
+Here, we present Qoala, the first execution environment for programmable nodes in a quantum internet to address these challenges including:
+(1) A unified program format for hybrid interactive classical-quantum programs, providing a well-defined target for compilers, and 
+(2) A runtime representation of a program that allows joint scheduling of the hybrid classical-quantum program, multitasking, and asynchronous program execution.
+Based on concrete design considerations, we put forward the architecture of Qoala, including the program structure and execution mechanism.
+We implement Qoala in the form of a modular and extendible simulator that is validated against real-world quantum network hardware (available online).
+However, Qoala is not meant to be purely a simulator, and implementation is planned on real hardware.
+We evaluate Qoala's effectiveness and performance sensitivity to latencies and network schedules using an extensive simulation study.
+Qoala provides a framework that opens the door for future computer science research into quantum network applications, including scheduling algorithms and compilation strategies that can now readily be explored using the framework and tools provided. 
+\end{abstract}
+
 \input{chapters/main/qoala/introduction}
 \input{chapters/main/qoala/related_work}
 \input{chapters/main/qoala/design_considerations}
