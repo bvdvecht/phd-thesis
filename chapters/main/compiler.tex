@@ -15,7 +15,7 @@ In this chapter, we outline these challenges and present an architecture of a co
 We then report on a preliminary implementation and point to future evaluation and extension ideas.
 \end{abstract}
 
-\subsection{Introduction}
+\section{Introduction}
 As described in the introduction and in previous chapters, quantum network applications consist of programs that are executed on the nodes of the network.
 For these programs to be executable, they must be in a specific format.
 In \cref{chp:qoala} we presented the Qoala execution environment, being an improvement over the QNodeOS (\cref{chp:qnodeos}) runtime.
@@ -90,7 +90,8 @@ Runtime performance not only depends on the compilation, but also on scheduling.
 % The order of external operations in a program (message-passing and entanglement generation) must match with external operations in other programs.
 % An application protocol description is needed such that programmers know in which order they have to put their operations.
 
-\subsection{Design considerations}
+
+\section{Design considerations}
 Let us recap what our objectives are.
 
 \textbf{Translation from high-level to Qoala.}
@@ -109,6 +110,18 @@ In general there is also compilation time.
 
 For quantum network programs there is also success probability.
 
+
+\section{Compilers}
+Traditionally, a compiler has three purposes:
+(1) translation of a high-level program representation to a low-level executable one,
+(2) error-detection in the program source code,
+(3) optimization of the program with respect to the runtime environment including the hardware.
+
+\textbf{Translation}. Allowing a programmer to write application logic in a high-level language improves the accessibility: it relieves the programmer of the burden of thinking about low-level details, and makes it easier to express complex logic. However, in the end, hardware must execute low-level code and a translation step is required. Such translation must maintain the intended behavior of the program (correctness).
+
+\textbf{Error detection}. A compiler checks whether the program source code is valid and throws an error if it is not.
+
+\textbf{Optimization}. A compiler tries to optimize the final executable in various way. (1) It might try to minimize the size of the final executable. (2) It might try to produce an executable such that the expected runtime performance is optimized.
 
 \subsection{Objectives}
 - Execute quantum internet programs efficiently in terms of application success probability and success rate
@@ -180,7 +193,7 @@ We consider the following optimizations:
 \end{itemize}
 
 
-\subsection{Architecture}
+\section{Compiler Architecture}
 
 
 \begin{itemize}
@@ -224,16 +237,6 @@ We consider the following optimizations:
 
 
 \subsection{Compilers}
-Traditionally, a compiler has three purposes:
-(1) translation of a high-level program representation to a low-level executable one,
-(2) error-detection in the program source code,
-(3) optimization of the program with respect to the runtime environment including the hardware.
-
-\textbf{Translation}. Allowing a programmer to write application logic in a high-level language improves the accessibility: it relieves the programmer of the burden of thinking about low-level details, and makes it easier to express complex logic. However, in the end, hardware must execute low-level code and a translation step is required. Such translation must maintain the intended behavior of the program (correctness).
-
-\textbf{Error detection}. A compiler checks whether the program source code is valid and throws an error if it is not.
-
-\textbf{Optimization}. A compiler tries to optimize the final executable in various way. (1) It might try to minimize the size of the final executable. (2) It might try to produce an executable such that the expected runtime performance is optimized.
 
 \section{Qoala}
 
