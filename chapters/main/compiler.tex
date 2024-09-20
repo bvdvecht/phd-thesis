@@ -38,9 +38,18 @@ The Qoala program format was indeed not intended to be used by programmers direc
 Instead, it was envisioned that a programmer would express program logic in a high-level language, such as Python, and that a compiler would transform this into a Qoala program.
 Allowing expression in such a higher-level language takes away the aforementioned issues.
 
+\section{Compilers}
+
 Program compilation is a well-studied topic in both classical and quantum computing and is a vital tool in everyday practical software development.
 Many existing ideas and strategies can be re-used for compiling quantum network applications.
 However, quantum network applications present unique challenges that need to be solved by a compiler.
+
+Traditionally, a compiler has three purposes:
+\textbf{Translation}. Allowing a programmer to write application logic in a high-level language improves the accessibility: it relieves the programmer of the burden of thinking about low-level details, and makes it easier to express complex logic. However, in the end, hardware must execute low-level code and a translation step is required. Such translation must maintain the intended behavior of the program (correctness).
+
+\textbf{Error detection}. A compiler checks whether the program source code is valid and throws an error if it is not.
+
+\textbf{Optimization}. A compiler tries to optimize the final executable in various way. (1) It might try to minimize the size of the final executable. (2) It might try to produce an executable such that the expected runtime performance is optimized.
 
 First, there is a distinction to be made between compiling applications and programs.
 Compiling the whole (multi-node) application is not something we consider here.
@@ -112,17 +121,14 @@ In general there is also compilation time.
 For quantum network programs there is also success probability.
 
 
-\section{Compilers}
-Traditionally, a compiler has three purposes:
-(1) translation of a high-level program representation to a low-level executable one,
-(2) error-detection in the program source code,
-(3) optimization of the program with respect to the runtime environment including the hardware.
-
-\textbf{Translation}. Allowing a programmer to write application logic in a high-level language improves the accessibility: it relieves the programmer of the burden of thinking about low-level details, and makes it easier to express complex logic. However, in the end, hardware must execute low-level code and a translation step is required. Such translation must maintain the intended behavior of the program (correctness).
-
-\textbf{Error detection}. A compiler checks whether the program source code is valid and throws an error if it is not.
-
-\textbf{Optimization}. A compiler tries to optimize the final executable in various way. (1) It might try to minimize the size of the final executable. (2) It might try to produce an executable such that the expected runtime performance is optimized.
+\section{Recommendations}
+- decouple front-end language from compilation framework
+- perform optimizations on joint classical-quantum representation
+- re-use existing (classical and quantum) compilation techniques
+  - use value-based representations
+- optimize using noise characteristics
+- give hints to scheduler (deadlines)
+- use session types for protocol adherence checking
 
 \subsection{Objectives}
 - Execute quantum internet programs efficiently in terms of application success probability and success rate
