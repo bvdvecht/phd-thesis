@@ -5,21 +5,24 @@
 
 
 \begin{abstract}
-In this chapter, we deal with the question of compiling Qoala programs.
-Compilation involves two elements: translation from a higher-level program representation (like a human-friendly programming language) to 
-a lower-level representation (such as assembly instructions), and optimization of the program with respect to certain metrics.
-Optimization metrics include offline ones such as instruction count and memory usage, and online ones such as success probability.
-Many existing compilation strategies, of both classical and quantum computing, can be re-used.
-However, unique challenges are presented by the nature of quantum network programs.
-In this chapter, we outline these challenges and present an architecture of a compiler that address these challenges.
-We then report on a preliminary implementation and point to future evaluation and extension ideas.
+In this chapter, we discuss the problem of compiling quantum network programs.
+First, we review what compilers are and what we want them to do for quantum networks.
+Then, we discuss challenges specific to compiling for quantum networks and discuss related work.
+We give recommendations on the design of such a compiler, and discuss a proof-of-concept implementation.
+We conclude with pointers for further research and evaluation.
+
+
 \end{abstract}
 
 \section{Introduction}
-As described in the introduction and in previous chapters, quantum network applications consist of programs that are executed on the nodes of the network.
-For these programs to be executable, they must be in a specific format.
-In \cref{chp:qoala} we presented the Qoala execution environment, being an improvement over the QNodeOS (\cref{chp:qnodeos}) runtime.
-Qoala requires the programs to be in a specific format, including classical and quantum instructions, and where some parts are represented using the NetQASM assembly language (\cref{chp:netqasm}).
+As described in the introduction chapter\todo{make sure this is the case}, our overarching goal for this thesis is to enable programming of quantum networks.
+The previous chapters have presented building blocks, or stepping stones towards this goal.
+In \cref{chp:netqasm} the low-level instruction set NetQASM was introduced for representing quantum operations.
+In \cref{chp:qnodeos} we introduced an operating system that executes full programs.
+In \cref{chp:qoala} we improved on the design of the operating system and presented the Qoala program format.
+This format consists of classical instructions in the HostLang language and quantum instructions in NetQASM, grouped into blocks.
+As mentioned in \cref{chp:netqasm}\todo{check this}, NetQASM code was never really meant to be written by programmers directly.
+For Qoala programs, the same holds: the classical HostLang langauge and the request routines are not human-friendly.
 
 Although programmers could express their program logic directly in the Qoala format, this is not practical for several reasons.
 First, since the format is low-level, it is quite verbose.
@@ -36,6 +39,7 @@ Ideally, the programmer should not have to write different versions of a program
 The Qoala program format was indeed not intended to be used by programmers directly.
 \reminder{focus on programmers: can we say something about practical feedback, i.e. actual users of our tools?}
 Instead, it was envisioned that a programmer would express program logic in a high-level language, such as Python, and that a compiler would transform this into a Qoala program.
+This was already handled in NetQASM and QNodeOS.\todo{elaborate}
 Allowing expression in such a higher-level language takes away the aforementioned issues.
 
 \section{Compilers}
@@ -50,6 +54,11 @@ Traditionally, a compiler has three purposes:
 \textbf{Error detection}. A compiler checks whether the program source code is valid and throws an error if it is not.
 
 \textbf{Optimization}. A compiler tries to optimize the final executable in various way. (1) It might try to minimize the size of the final executable. (2) It might try to produce an executable such that the expected runtime performance is optimized.
+
+
+Optimization metrics include offline ones such as instruction count and memory usage, and online ones such as success probability.
+Many existing compilation strategies, of both classical and quantum computing, can be re-used.
+However, unique challenges are presented by the nature of quantum network programs.
 
 First, there is a distinction to be made between compiling applications and programs.
 Compiling the whole (multi-node) application is not something we consider here.
