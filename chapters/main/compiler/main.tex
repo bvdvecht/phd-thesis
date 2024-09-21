@@ -174,9 +174,7 @@ We also don't want to tie our work to one specific high-level language.
 Talk about which metrics to optimize.
 
 
-\textbf{Objectives for our compiler}
-
-\textit{Translation from high-level to Qoala.}
+\subsection{Requirement: Translation from high-level to Qoala.}
 First we must decide on a high-level format.
 Such a format enables programmers to focus on the logic, and not have to deal with low-level implementation and optimization details.
 Needs to allow classical and quantum code, interleaved.
@@ -190,6 +188,7 @@ Needed:
 \item allow flexibility in high-level formats (don't fix it to one specific language)
 \item a protocol specification format for coordinating programs in a multi-node application (includes retries?)
 \item valid (for target) translation to Qoala machine code
+\item fidelity and timing constraints in program and protocol
 \end{itemize}
 
 A common strategy in compilers is to use one or more intermediate representations.
@@ -202,34 +201,30 @@ May allow fidelity constraints and timing constraints.
 \end{itemize}
 
 
-\textit{Optimization.}
+\subsection{Opportunities: Optimization.}
+
+\begin{itemize}
+  \item classical compilers with traditional translation and optimization strategies
+  \item quantum compilers with circuit mapping and gate optimization techniques
+  \item noise-aware optimization
+\end{itemize}
+
+Example optimizations:
+\begin{itemize}
+  \item re-order operations to minimize qubit memory time
+    AFAIK not done in any other compiler (hybrid classical-quantum reordering yes, but not specifically to reduce qubit `live' time)
+  \item cross-subroutine optimizations
+  \item add deadline to block to guide scheduling
+\end{itemize}
+
 Optimization must be trackable \todo{*must* be?} by metrics.
 There are different metrics.
 
 For quantum network programs there is also success probability.
 
-Ingredients needed:
-- fidelity and timing constraints in program and protocol
-- noise-aware optimization
 
 
-Choices and assumptions:
-- We will use Intermediate Representations (IRs) to bridge the gap between the source code and machine code.
-- The front-end language is not a primary concern; we want to leave design and implementations open.
-
-\textit{Make use of Qoala-specific features.}
-  - netqasm flavors
-  - deadlines
-  - using EHI
-
-Example optimizations:
-- re-order operations to minimize qubit memory time
-- cross-subroutine optimizations
-- add deadline to block to guide scheduling
-
-
-
-\section{Multi-node coordination}
+\subsection{Multi-node coordination}
 
 \textit{Modes of compilation}. Quantum internet programs run in the context of a multi-node application.
 This means that programs must coordinate in some fashion in order to produce meaningful behavior.
@@ -243,6 +238,10 @@ We distinguish two Modes of Compilation (MoC):
 \textit{Steps needed before execution}.
 Demand registration to network controller. To make an informed demand, a protocol description is needed such that nodes can synchronize their behavior and agree about timings, iterations, and retry mechanisms. Therefore, it makes sense to already have a protocol description at compile-time. This can also e.g. be something that is advertised as a service by some quantum server.
 
+Since applications consist of multiple cooperating programs, some kind of coordination is required.
+The order of external operations in a program (message-passing and entanglement generation) must match with external operations in other programs.
+An application protocol description is needed such that programmers know in which order they have to put their operations.
+
 \textit{Protocol description}.
 \begin{itemize}
     \item Must contain: order of interactive steps
@@ -250,9 +249,67 @@ Demand registration to network controller. To make an informed demand, a protoco
     \item May contain: fidelity of states
 \end{itemize}
 
-% Since applications consist of multiple cooperating programs, some kind of coordination is required.
-% The order of external operations in a program (message-passing and entanglement generation) must match with external operations in other programs.
-% An application protocol description is needed such that programmers know in which order they have to put their operations.
+
+
+\textit{Capability negotiation}. Needed since demand registration is needed. Must be after compilation such that same executable can be re-used in multiple contexts. Uses input from users (that are about to run the application) and uses hints from the compiler (put into the executables). Also uses input from network controller (like current estimates of rate, fidelity).
+
+
+
+\subsection{Related work}
+\begin{itemize}
+\item Catalyst
+\item QSSA compiles down to OpenQASM, which itself does not map to physical (virtual) qubits. In OpenQASM, you declare qubit registers, but the mapping to physical qubits only happens at runtime.
+\item Quantum Dialect (McCaskey/Nguyen) compiles to QIR, which also only contains the opaque `allocate`.
+\item QIRO does not explain how to lower it to native quantum instructions
+\end{itemize}
+
+\begin{itemize}
+    \item Hybrid language: does not yet exist for networking
+      \todo{There is NetQIR now}
+    \item Protocol description language: (timed) session types
+    \item compiler to Qoala does not yet exist
+    \item fidelity and timing constraints don't really exist
+    \item noise-aware optimization for circuits exists, not for interactive hybrid programs
+\end{itemize}
+
+
+\section{Recommendations}
+Based on the considerations discussed above, we propose the following ways in which to tackle the compilation design problem.
+
+
+\textbf{Decouple front-end language from compilation framework by using Intermediate Representations (IRs)}
+The front-end language is not a primary concern; we want to leave design and implementations open.
+Use the existing technique of IRs, gradually lowering code and performing optimizations at each level.
+Use MLIR since it allows defining custom dialects.
+
+\textbf{Re-use existing (classical and quantum) compilation techniques}
+
+\textbf{Perform optimizations on joint classical-quantum representation}
+Make use of the fact that classical and quantum code can be jointly analyzed and optimized.
+Use existing techniques, see \todo{refs to hybrid quantum compilers}.
+Use MLIRs existing infrastructure.
+
+\textbf{use value-based representations}
+In this way, existing optimizations acting on SSA can be directly re-used.
+
+\textbf{optimize using noise characteristics} use EHI (noise and topology)
+Use Qoala's Exposed Hardware Info (EHI) to allow specific optimizations, including
+\begin{itemize}
+  \item Compiling to specific NetQASM flavor
+  \item Mapping to specific qubits with better topology (also to make it valid in the first place \todo{add topology as part of target in translation})
+\end{itemize}
+
+\textbf{give hints to scheduler (deadlines)}
+Use EHI to compute deadlines based on fidelity restrictions in source code.
+\begin{itemize}
+  \item Given expected durations for network operations, in combination with decoherence rates, compute deadlines for the scheduler to try and adhere to
+\end{itemize}
+
+
+\textbf{use session types for protocol adherence checking}
+
+
+
 
 \textit{Protocol-uninformed compilation}.
 \begin{itemize}
@@ -274,7 +331,6 @@ Demand registration to network controller. To make an informed demand, a protoco
         \item Establish demand, number of instances, inputs, deadlines
         \item This is a "parallel" WIP by other people from the team. We need to stay aligned with them.
     \end{itemize}
-\item Inputs: program code (may contain fidelity/timing constraints), EHI
 \end{itemize}
 
 \textit{Protocol-informed compilation}.
@@ -295,42 +351,6 @@ Demand registration to network controller. To make an informed demand, a protoco
     \end{itemize}
     \item Capability negotiation: Establish demand, number of instances, inputs, deadlines
 \end{itemize}
-
-\textit{Capability negotiation}. Needed since demand registration is needed. Must be after compilation such that same executable can be re-used in multiple contexts. Uses input from users (that are about to run the application) and uses hints from the compiler (put into the executables). Also uses input from network controller (like current estimates of rate, fidelity).
-
-
-\textit{Translation to valid Qoala}. Need to adhere to EHI, which includes flavour and topology.
-
-
-\subsection{Related work}
-\begin{itemize}
-\item Catalyst
-\item QSSA compiles down to OpenQASM, which itself does not map to physical (virtual) qubits. In OpenQASM, you declare qubit registers, but the mapping to physical qubits only happens at runtime.
-\item Quantum Dialect (McCaskey/Nguyen) compiles to QIR, which also only contains the opaque `allocate`.
-\item QIRO does not explain how to lower it to native quantum instructions
-\end{itemize}
-
-\begin{itemize}
-    \item Hybrid language: does not yet exist for networking
-    \item Protocol description language: (timed) session types
-    \item compiler to Qoala does not yet exist
-    \item fidelity and timing constraints don't really exist
-    \item noise-aware optimization for circuits exists, not for interactive hybrid programs
-\end{itemize}
-
-
-\section{Recommendations}
-- decouple front-end language from compilation framework
-- perform optimizations on joint classical-quantum representation
-- re-use existing (classical and quantum) compilation techniques
-  - use value-based representations
-- optimize using noise characteristics
-- give hints to scheduler (deadlines)
-- use session types for protocol adherence checking
-
-
-
-
 
 
 
