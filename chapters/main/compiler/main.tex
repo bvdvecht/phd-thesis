@@ -1,0 +1,348 @@
+\section{Introduction}
+As described in the introduction chapter\todo{make sure this is the case}, our overarching goal for this thesis is to enable programming of quantum networks.
+The previous chapters have presented building blocks, or stepping stones towards this goal.
+In \cref{chp:netqasm} the low-level instruction set NetQASM was introduced for representing quantum operations.
+We also defined a software development kit (SDK) that allows one to write programs in Python and which compiles quantum code into NetQASM subroutines.
+In \cref{chp:qnodeos} we introduced an operating system, QNodeOS, that executes these programs.
+In \cref{chp:qoala} we improved on the design of the operating system and presented the Qoala program format.
+This format consists of classical instructions in the HostLang language and quantum instructions in NetQASM, grouped into blocks.
+As mentioned in \cref{chp:netqasm}\todo{check this}, NetQASM code was never really meant to be written by programmers directly.
+For Qoala programs, the same holds: the classical HostLang langauge and the request routines are not human-friendly.
+
+Although programmers could express their program logic directly in the Qoala format, this is not practical for several reasons.
+First, since the format is low-level, it is quite verbose.
+This is a similar issue as with classical assembly (or other lower-level languages): although possible, it is often very impractical to write complete programs in assembly itself.
+Second, the low-level format can be quite far from the high-level program logic.
+Someone who wants to implement a certain quantum network program typically only cares about the overall (high-level) behavior of the program.
+For example, they might simply want to express that the program should create entangled states repeatedly, and then measure all created qubits.
+Having to deal with low-level details about how express looping behavior, which (quantum) memory and how much to allocate, and how to integerate the classical and quantum code
+is in most cases not something a programmer wants to deal with. 
+\todo{Figure representing a human writing code and the low-level qoala format and highlighting the `distance' between them?}
+Third, the Qoala program format allows hardware-specific details, such as hardware-specific quantum instructions (using NetQASM flavors, see \cref{chp:netqasm}).
+Although not required to add these details by the programmer, if one wants to make use of these details to improve execution (e.g. increasing success probability), the programmer should have knowledge about the hardware.
+Ideally, the programmer should not have to write different versions of a program, one for each hardware platform that the program is intended to run upon.
+Classically this is also the case: programmers do not write assembly directly.
+
+The Qoala program format was indeed not intended to be used by programmers directly.
+\reminder{focus on programmers: can we say something about practical feedback, i.e. actual users of our tools?}
+Instead, it was envisioned that a programmer would express program logic in a high-level language, such as Python, and that a compiler would transform this into a Qoala program.
+Allowing expression in such a higher-level language takes away the aforementioned issues.
+
+
+In NetQASM and QNodeOS, we already provided a way for programmers to express program logic in a high-level language, Python.
+However, compilation would happen on-the-fly, akin to interpretation.
+This lead to certain problems, also discussed in the evaluation of QNodeOS and Qoala:
+\begin{itemize}
+  \item Compilation slows down execution:
+    Since compilation needs to happen at runtime, overall execution time increases.
+    This can be especially bad if quantum states must stay alive during this compilation time.
+    This can be seen clearly in \todo{ref to latency figure in qnodeos paper}
+  \item No cross-compilation possible:
+    Since code is interpreted on the fly, optimizations taking into account future code cannot be made. \todo{example figure of optimization that cannot be done in NetQASM/QNodeOS}
+\end{itemize}
+
+Qoala, with its new model of programs, enables addressing of the above problems.
+Furthermore, Qoala enables optimization specific to runtime performance, as we will discuss below (e.g. deadlines for better success probability).
+
+
+\section{Compilers}
+
+Program compilation is a well-studied topic in both classical and quantum computing and is a vital tool in everyday practical software development.
+Many existing ideas and strategies can be re-used for compiling quantum network applications.
+However, quantum network applications present unique challenges that need to be solved by a compiler.
+
+Traditionally, a compiler has three purposes:
+
+\textbf{Translation}.
+Allowing a programmer to write application logic in a high-level language improves the accessibility:
+it relieves the programmer of the burden of thinking about low-level details, and makes it easier to express complex logic.
+However, in the end, hardware must execute low-level code and a translation step is required.
+Such translation must maintain the intended behavior of the program (correctness).
+
+\textbf{Error detection}.
+A compiler checks whether the program source code is valid and throws an error if it is not.
+
+\textbf{Optimization}.
+A compiler tries to perform optimization with respect to various metrics.
+(1) It might try to minimize the size of the final executable.
+(2) It might try to produce an executable such that the expected runtime performance is optimized.
+
+
+
+Optimization metrics include offline ones such as instruction count and memory usage, and online ones such as success probability.
+Many existing compilation strategies, of both classical and quantum computing, can be re-used.
+
+
+\subsection{Existing (quantum) compilers}
+\todo{schematic figure of compiler: input -> passes -> output}
+
+\textbf{Compilers for classical computing.}
+Compilers for classical computers have existed since the beginning of modern computers, in the middle of the 20th century.
+A need for translating higher-level languages into the native language of computers - 0s and 1s - has always been needed.
+Over time, more and more sophisticated programming languages have been made and used.
+These generally became more and more abstract: they were more directly suited for expressing higher-level program logic, and further away from the 0s and 1s.
+To this day, compilers are vital in the programming ecosystem.
+Large compiler projects such as LLVM use intermediate representations.
+There is a distinction between interpreted and compiled languages.\todo{figure showing difference between interpreted and compiled}
+
+Classical compilers have a \textit{target} such as x86 or ARM.
+Code optimization techniques include
+\begin{itemize}
+  \item Target-independent optimization: constant folding, dead code elimination, loop optimizations, common subexpression elimination, inlining, peephole optimization, copy propagation, interprocedural optimization.
+  \item Target-dependent optimization: register allocation, instruction re-ordering, branch prediction and elimination, vectorization, cache optimization.
+\end{itemize}
+These optimizations typically aim to improve execution speed and memory efficiency.
+
+\textbf{Compilers for classical networking.}
+Classical applications that use networking are also compiled by classical compilers.
+Typically, compilers do apply network-specific optimizations.
+This is since network operations are often handled by system calls, which compilers do not have control over.
+Moreover, compilers also don't have control over the execution and timing of other applications in the network.
+Network-specific optimization is therefore indirect, namely by optimizing the number of network system calls, reducing memory that would need to be context-switched upon network events, and optimizing local code that affects networking code.
+
+Typically, the efficiency of network-related operations depend on the protocol itself, like TCP or HTTP. 
+\todo{elaborate (check ChatGPT)}
+
+\textbf{Compilers for quantum computing.}
+Quantum computing programs are typically expressed as quantum circuits.
+Circuits consist of qubits, which are memory locations on which operations are applied.
+\todo{Make sure circuits are introduced in the intro chapter and refer to it here}
+Limit classical control may be added.
+
+There exist many languages for quantum computing.
+Many frameworks make use of assembly-like languages like OpenQASM or cQASM.
+Also more high-level languages exist such as Q\# or others\todo{elaborate}.
+
+Optimizations try to optimize circuit depth and width.
+Until recently, not much hybrid classical-quantum optimization has been done.
+However, hybrid languages and tools are becoming more common.
+See QIR, MLIR, and others.
+
+Benchmarks exist with which to compare compilers, by looking at the output, like circuit size.
+
+\textbf{Compilers for quantum networking.}
+For quantum networking, compilation has not much been studied.
+The closest comes distributed quantum computing, for which compilers do exist.
+\todo{REFS}
+
+
+
+
+\subsection{Challenges unique to quantum network compilation}
+Unique challenges are presented by the nature of quantum network programs.
+
+\textit{Hybrid classical-quantum code.} Also seen in quantum computing, but now quantum memory also needs to stay alive much longer. More interactivity.
+
+\textit{Non-deterministic durations.} Network operations, including entanglement generation take non-deterministic time, and may fail.
+Possible optimization: re-order opreations such that quantum memory does not need to wait (as long) during a non-deterministic operation (like waiting for a message or entanglement success).
+
+\textit{Failure possibility.} Entanglement generation may be seen as a "local" operation acting on a local qubit, but may fail. Retry mechanisms may be needed.
+(Also remark on certain hardware like NV, where there is cross-qubit noise, e.g. entanglement generation affects memory qubits.)
+
+\textit{Private program in networked context.} Performance co-depends on other nodes but no control over them. Coordination is required between programs and nodes.
+In the Qoala execution framework, *capability negotiation* is required; this leads to the need of some external protocol description.
+\todo{Schematic figure of application compilation vs program compilation}
+
+\textit{Runtime performance depends on scheduling}. Compiler can only assist scheduler in making runtime decisions.
+
+
+
+
+\section{Design considerations}
+
+\textbf{Overarching objectives}
+\begin{itemize}
+\item Execute quantum internet programs efficiently in terms of application success probability and success rate
+\item Improve accessibility by enabling programming using high-level concepts and tools
+\item Provide a framework for coordinating programs in a multi-node application
+\end{itemize}
+
+Part of the above objectives are handled by the Qoala runtime: scheduling enables better application success probability, and capability negotiation coordinates with the network scheduler.
+The remaining objectives are addressed by a compiler.
+
+\textbf{General considerations}
+We want to re-use existing infrastructure and not re-invent the wheel. This means we can make use of or take inspiration from:
+\begin{itemize}
+  \item classical compilers with traditional translation and optimization strategies
+  \item quantum compilers with circuit mapping and gate optimization techniques
+  \item \todo{refer to above section explaining existing comilers}
+\end{itemize}
+
+We also don't want to tie our work to one specific high-level language.
+
+
+Talk about which metrics to optimize.
+
+
+\textbf{Objectives for our compiler}
+
+\textit{Translation from high-level to Qoala.}
+First we must decide on a high-level format.
+Such a format enables programmers to focus on the logic, and not have to deal with low-level implementation and optimization details.
+Needs to allow classical and quantum code, interleaved.
+Questions like memory-based, value-based?
+We may also want to allow multiple (existing) high-level formats.
+
+
+Needed:
+\begin{itemize}
+\item a high-level program source code language suitable for programmers.
+\item allow flexibility in high-level formats (don't fix it to one specific language)
+\item a protocol specification format for coordinating programs in a multi-node application (includes retries?)
+\item valid (for target) translation to Qoala machine code
+\end{itemize}
+
+A common strategy in compilers is to use one or more intermediate representations.
+
+May allow fidelity constraints and timing constraints.
+
+\begin{itemize}
+    \item Fidelity constraints in high-level program code. Needed to get success probability (especially since other programs may run in parallel; it's a way to define implicit priority)
+    \item Timing constraints in high-level program code. Why needed?
+\end{itemize}
+
+
+\textit{Optimization.}
+Optimization must be trackable \todo{*must* be?} by metrics.
+There are different metrics.
+
+For quantum network programs there is also success probability.
+
+Ingredients needed:
+- fidelity and timing constraints in program and protocol
+- noise-aware optimization
+
+
+Choices and assumptions:
+- We will use Intermediate Representations (IRs) to bridge the gap between the source code and machine code.
+- The front-end language is not a primary concern; we want to leave design and implementations open.
+
+\textit{Make use of Qoala-specific features.}
+  - netqasm flavors
+  - deadlines
+  - using EHI
+
+Example optimizations:
+- re-order operations to minimize qubit memory time
+- cross-subroutine optimizations
+- add deadline to block to guide scheduling
+
+
+
+\section{Multi-node coordination}
+
+\textit{Modes of compilation}. Quantum internet programs run in the context of a multi-node application.
+This means that programs must coordinate in some fashion in order to produce meaningful behavior.
+For example, they must follow a certain protocol.
+We distinguish two Modes of Compilation (MoC):
+\begin{itemize}
+    \item Protocol-informed compilation: a pre-defined protocol exists describing at least the order of interactive steps that the nodes must execute. A compiler may take advantage of such a protocol description.
+    \item Standard compilation: there is no pre-defined description of a protocol, and a compiler cannot take advantage of such knowledge.
+\end{itemize}
+
+\textit{Steps needed before execution}.
+Demand registration to network controller. To make an informed demand, a protocol description is needed such that nodes can synchronize their behavior and agree about timings, iterations, and retry mechanisms. Therefore, it makes sense to already have a protocol description at compile-time. This can also e.g. be something that is advertised as a service by some quantum server.
+
+\textit{Protocol description}.
+\begin{itemize}
+    \item Must contain: order of interactive steps
+    \item May contain: timing constraints
+    \item May contain: fidelity of states
+\end{itemize}
+
+% Since applications consist of multiple cooperating programs, some kind of coordination is required.
+% The order of external operations in a program (message-passing and entanglement generation) must match with external operations in other programs.
+% An application protocol description is needed such that programmers know in which order they have to put their operations.
+
+\textit{Protocol-uninformed compilation}.
+\begin{itemize}
+\item Inputs: program code (may contain fidelity/timing constraints), EHI
+\item Compilation:
+    \begin{itemize}
+        \item General correctness checking
+        \item Translation to valid Qoala
+        \item Optimization:
+            \begin{itemize}
+                \item General (gate optimization etc.)
+                \item Insert hints to try and meet fidelity/timing constraints from program
+                \item Cannot re-order external operations
+        \end{itemize}
+    \end{itemize}
+\item Capability negotiation:
+    \begin{itemize}
+        \item Potentially refer to protocol description and claim compatibility
+        \item Establish demand, number of instances, inputs, deadlines
+        \item This is a "parallel" WIP by other people from the team. We need to stay aligned with them.
+    \end{itemize}
+\item Inputs: program code (may contain fidelity/timing constraints), EHI
+\end{itemize}
+
+\textit{Protocol-informed compilation}.
+\begin{itemize}
+    \item Inputs: program code (may contain constraints), EHI, protocol description (may contain constraints)
+    \item Compilation:
+    \begin{itemize}
+        \item General correctness checking
+        \item Adherence to protocol checking
+        \item Translation to valid Qoala
+        \item Optimization:
+        \begin{itemize}
+            \item General (gate optimization etc.)
+            \item Insert hints to try and meet fidelity/timing constraints from program
+            \item Insert hints to try and meet fidelity/timing constraints from protocol
+            \item Cannot re-order external operations
+        \end{itemize}
+    \end{itemize}
+    \item Capability negotiation: Establish demand, number of instances, inputs, deadlines
+\end{itemize}
+
+\textit{Capability negotiation}. Needed since demand registration is needed. Must be after compilation such that same executable can be re-used in multiple contexts. Uses input from users (that are about to run the application) and uses hints from the compiler (put into the executables). Also uses input from network controller (like current estimates of rate, fidelity).
+
+
+\textit{Translation to valid Qoala}. Need to adhere to EHI, which includes flavour and topology.
+
+
+\subsection{Related work}
+\begin{itemize}
+\item Catalyst
+\item QSSA compiles down to OpenQASM, which itself does not map to physical (virtual) qubits. In OpenQASM, you declare qubit registers, but the mapping to physical qubits only happens at runtime.
+\item Quantum Dialect (McCaskey/Nguyen) compiles to QIR, which also only contains the opaque `allocate`.
+\item QIRO does not explain how to lower it to native quantum instructions
+\end{itemize}
+
+\begin{itemize}
+    \item Hybrid language: does not yet exist for networking
+    \item Protocol description language: (timed) session types
+    \item compiler to Qoala does not yet exist
+    \item fidelity and timing constraints don't really exist
+    \item noise-aware optimization for circuits exists, not for interactive hybrid programs
+\end{itemize}
+
+
+\section{Recommendations}
+- decouple front-end language from compilation framework
+- perform optimizations on joint classical-quantum representation
+- re-use existing (classical and quantum) compilation techniques
+  - use value-based representations
+- optimize using noise characteristics
+- give hints to scheduler (deadlines)
+- use session types for protocol adherence checking
+
+
+
+
+
+
+
+
+
+
+
+\subsection{A note on Qoala program scope}
+It's only **live quantum memory** that's time-sensitive.
+The Qoala runtime provides a way to schedule and prioritize program parts such that quantum decoherence can be minimized.
+To take advantage of this, quantum code, possibly interspersed with classical code, should be executed as Qoala programs.
+However, it is not needed to write a whole program, including parts with purely classical code, in Qoala.
+
+
+\section{Evaluation}
