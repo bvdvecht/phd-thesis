@@ -261,16 +261,23 @@ Many compilers and programming frameworks exist.
 
 Classical frameworks: LLVM, others (needed?).
 
-Overview: \cite{murali_full-stack_2019}.
+Overview of low-level compilers (focusing on resources constraints of NISQ, and on circuits): \cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022}.
 
-Fully quantum circuit optimizers, mostly related to qubit mapping: \cite{li_tackling_2019, bandic_mapping_2023}.
-Noise-aware optimizers: \cite{murali_noise-adaptive_2019}.
-Check papers from Frederic Chong.
-Mapping: QUBO
+Fully quantum circuit optimizers, mostly related to qubit mapping: \cite{li_tackling_2019, zhang_context, bandic_mapping_2023}.
+
+\cite{murali_noise-adaptive_2019} deals with backend compilation (LLVM IR to optimized circuit/OpenQASM).
+\cite{murali_full-stack_2019} Provides broad discussion and proposal of compilation techniques for different platforms.
+\cite{smith_error_2021} Mitigates decoherence by clever instruction ordering.
+Idea of going beyond layered model and ISA (e.g. directly pulse optimization): \cite{shi_resource-efficient_2020}.
+
+Scaffold -> LLVM IR -> OpenQASM: \cite{litteken_updated_2020}.
+
+(Check Obsidian page on Programming Frameworks)
 
 Split between
 - joint classical-quantum optimization (MLIR-based, LLVM based): \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}
 - integration of classical and quantum code but optimization is separate or limited: \cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
+
 
 (Relation to framework: XACC/qcor)
 
@@ -279,6 +286,7 @@ Qunity: formal hybrid language, but only compiles to circuit (openqasm).
 
 The idea of using IRs for quantum compilers has been used a lot: \cite{nigam_compiler_2021, nishio_inquir_2023}.
 
+First mention of QIR: \cite{haner_software_2018}.
 QIR is a upcoming standard as an IR for quantum computing. \cite{geller_introducing_2020}.
 Recently there is network-related variant: NetQIR. \cite{vazquez-perez_netqir_2024}.
 For DQC: InQuIR.
