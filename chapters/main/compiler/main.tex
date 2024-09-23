@@ -46,6 +46,8 @@ Furthermore, Qoala enables optimization specific to runtime performance, as we w
 
 
 \section{Compilers}
+Compilation is the translation from a high-level source code representation of a program into a lower-level representation of that program, typically machine code, that a computer's processor can execute.
+Compilation is itself done by a computer program, namely the compiler.
 
 Program compilation is a well-studied topic in both classical and quantum computing and is a vital tool in everyday practical software development.
 Many existing ideas and strategies can be re-used for compiling quantum network applications.
@@ -101,7 +103,6 @@ Moreover, compilers also don't have control over the execution and timing of oth
 Network-specific optimization is therefore indirect, namely by optimizing the number of network system calls, reducing memory that would need to be context-switched upon network events, and optimizing local code that affects networking code.
 
 Typically, the efficiency of network-related operations depend on the protocol itself, like TCP or HTTP. 
-\todo{elaborate (check ChatGPT)}
 
 \textbf{Compilers for quantum computing.}
 Quantum computing programs are typically expressed as quantum circuits.
@@ -122,8 +123,7 @@ Benchmarks exist with which to compare compilers, by looking at the output, like
 
 \textbf{Compilers for quantum networking.}
 For quantum networking, compilation has not much been studied.
-The closest comes distributed quantum computing, for which compilers do exist.
-\todo{REFS}
+The closest comes distributed quantum computing, for which compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
 
 
 
@@ -210,7 +210,7 @@ Other metrics we want to optimize for:
 - success probability. Note that we do not fully control this. Add hints to scheduler.
 
 Furthermore, we want to do noise-aware optimization.
-Again, we can re-use existing things. \todo{refs to noise-aware circuit optimizers}.
+Again, we can re-use existing things. See \cite{smith_error_2021, murali_noise-adaptive_2019}.
 
 We \textit{add} the following kinds of optimizations.
 \begin{itemize}
@@ -241,7 +241,7 @@ We can imagine a protocol description to at least contain the following elements
     \item May contain: timing constraints, constraints on fidelity of entanglement and of certain states
 \end{itemize}
 
-A protocol description can also help the compiler make more informed optimziations.
+A protocol description can also help the compiler make more informed optimizations.
 It could extend correctness checking (see above) by checking if the source adheres to the protocol description. 
 Furthermore, the compiler may compute deadlines based on information in the protocol.
 For example, if the protocol says that entanglement generation must happen within a certain amount of time, the compiler can insert deadlines such that the node scheduler can try to meet this protocol timing demand.
@@ -257,23 +257,37 @@ We distinguish two Modes of Compilation (MoC):
 
 
 \section{Related work}
-Many compilers and programming frameworks exist. \todo{refs}
+Many compilers and programming frameworks exist.
 
-Fully quantum circuit optmizers: \todo{refs}.
-Noise-aware optmizers: \todo{refs}.
-Hybrid classical-quantum compilers: \todo{refs}.
+Classical frameworks: LLVM, others (needed?).
 
-The idea of using IRs for quantum compilers has been used a lot: \todo{refs}.
+Overview: \cite{murali_full-stack_2019}.
 
-Using MLIR in order to leverage existing compilation strategies has been investigated: \todo{refs}.
+Fully quantum circuit optimizers, mostly related to qubit mapping: \cite{li_tackling_2019, bandic_mapping_2023}.
+Noise-aware optimizers: \cite{murali_noise-adaptive_2019}.
+Check papers from Frederic Chong.
+Mapping: QUBO
+
+Split between
+- joint classical-quantum optimization (MLIR-based, LLVM based): \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}
+- integration of classical and quantum code but optimization is separate or limited: \cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
+
+(Relation to framework: XACC/qcor)
+
+
+Qunity: formal hybrid language, but only compiles to circuit (openqasm).
+
+The idea of using IRs for quantum compilers has been used a lot: \cite{nigam_compiler_2021, nishio_inquir_2023}.
+
+QIR is a upcoming standard as an IR for quantum computing. \cite{geller_introducing_2020}.
+Recently there is network-related variant: NetQIR. \cite{vazquez-perez_netqir_2024}.
+For DQC: InQuIR.
 
 Compilers for quantum networking have not been studied much.
 For distribution quantum computing there are compilers: \todo{refs}.
 
 Session types and model checkers have been used for checking adherence to protocols: \todo{refs}.
 
-QIR is a upcoming standard as an IR for qunatum computing. \todo{refs}
-Recently there is network-related variant: NetQIR \todo{refs}.
 
 \begin{itemize}
 \item Catalyst (Xanadu Pennylane)
