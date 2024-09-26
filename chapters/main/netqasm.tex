@@ -3,18 +3,11 @@
  {NetQASM: A low-level instruction set architecture for hybrid quantum-classical programs in a quantum internet}
 \label{chp:netqasm}
 
-\newcommand{\netqasm}{\texttt{NetQASM}}
-\newcommand{\qasm}{\texttt{QASM}}
-\newcommand{\openqasm}{\texttt{OpenQASM}}
-\newcommand{\cqc}{\texttt{CQC}}
-\newcommand{\qnodeos}{\texttt{QNodeOS}}
-\newcommand{\qdevice}{\texttt{QDevice}}
-% \newcommand{\host}{\texttt{Host}}
-\newcommand{\host}{application layer}
-\newcommand{\QNPU}{\texttt{QNPU}}
-\newcommand{\netsquid}{\texttt{NetSquid}}
-\newcommand{\squidasm}{\texttt{SquidASM}}
-\newcommand{\simulaqron}{\texttt{SimulaQron}}
+\acrodef{CNPU}{Classical Network Processing Unit}
+\acrodef{QNPU}{Quantum Network Processing Unit}
+\acrodef{NetQASM}{Network Quantum Assembly Language}
+\acrodef{CQC}{Classical Quantum Combiner}
+
 \newcommand{\IMMEDIATE}{\textbf{IMMEDIATE}}
 \newcommand{\REGISTER}{\textbf{REGISTER}}
 \newcommand{\ADDRESS}{\textbf{ADDRESS}}
@@ -115,9 +108,9 @@ A client may then write the client-side of this protocol, without having control
 The aim of this work is to propose a way to program quantum network programs and execute them on the end-nodes of a quantum network.
 
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/netqasm/multi_program_app_2.png}
+    \includegraphics[width=0.6\linewidth]{figures/netqasm/multi_program_app_2.pdf}
     \caption{A quantum network application consists of a program for each of the nodes involved in the application.
         Each program is locally executed by the node.
         Program execution on each node is split into execution in an application layer, which can send and receive classical messages, and a quantum processor, which can create entanglement with another node.
@@ -127,9 +120,9 @@ The aim of this work is to propose a way to program quantum network programs and
     \label{fig:app_programs}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/netqasm/program_decomp.png}
+    \includegraphics[width=0.6\linewidth]{figures/netqasm/program_decomp.pdf}
     \caption{A program on a single node consists of different blocks of code, which can be quantum (pure quantum instructions with classical control in between), or classical (no quantum operations at all).
         These blocks may depend on each other in various ways.
         For example, the outcome of a measurement happening in one of the quantum blocks may be used in a calculation performed in one of the classical blocks.
@@ -140,50 +133,50 @@ The aim of this work is to propose a way to program quantum network programs and
 
 
 \subsection{Contribution}
-In this work we introduce an abstract model---including a quantum network processing unit (\QNPU)--- for end-nodes in a quantum network, which we define in~\cref{sec:preliminaries}.
-We then propose \netqasm, an instruction set architecture that can be used to run arbitrary programs (of the form described in \cref{fig:program_decomp}) on end-nodes, as long as the end-nodes realize the model including the QNPU.
+In this work we introduce an abstract model---including a \ac{QNPU}--- for end-nodes in a quantum network, which we define in~\cref{sec:preliminaries}.
+We then propose \ac{NetQASM}, an instruction set architecture that can be used to run arbitrary programs (of the form described in \cref{fig:program_decomp}) on end-nodes, as long as the end-nodes realize the model including the QNPU.
 
-\netqasm consists of a specification of a low-level assembly-like language to express the quantum parts of quantum network program code.
-It also specifies how the application layer should interact with the \QNPU and how the assembly language can be used to execute (network) quantum code.
-This is not possible using other \qasm languages.
+\ac{NetQASM} consists of a specification of a low-level assembly-like language to express the quantum parts of quantum network program code.
+It also specifies how the application layer should interact with the \ac{QNPU} and how the assembly language can be used to execute (network) quantum code.
+This is not possible using other QASM languages.
 
-The \netqasm language is extendible using the concept of \textit{flavors}.
+The \ac{NetQASM} language is extendible using the concept of \textit{flavors}.
 The core language definition consists of a common set of instructions that are shared by all flavors.
 This common set contains classical instructions for control-flow and classical memory operations.
 This allows the realization of low-level control logic close to the quantum hardware;
 for example, to perform branching based on a measurement outcome.
 Quantum-specific instructions are bundled in flavors.
 We introduce a \textit{vanilla} flavor containing universal platform-independent quantum gates.
-Using this flavor of the \netqasm language enables the platform-independent description of quantum network programs.
+Using this flavor of the \ac{NetQASM} language enables the platform-independent description of quantum network programs.
 Platform-\textit{specific} flavors may be created to have quantum operations that are native and optimized for a specific hardware platform.
 As an example, we show a flavor tailored to the Nitrogen-Vacancy (NV) hardware, a promising platform for quantum network end-nodes~\cite{Taminiau2014, hanson2021realization}.
 
 In our model, application-specific classical communication only happens at the application layer (\cref{fig:app_programs}).
-In particular, this means that \netqasm contains no provision for classical communication with the remote node.
-We remark that of course, classical control communication may be used by the \QNPU to realize the services of the quantum network stack accessed through \netqasm.
+In particular, this means that \ac{NetQASM} contains no provision for classical communication with the remote node.
+We remark that of course, classical control communication may be used by the \ac{QNPU} to realize the services of the quantum network stack accessed through \ac{NetQASM}.
 
-We note that \netqasm is used for representing and running code that runs on a single node in a quantum network.
-Synchronization between the (\netqasm) programs of multiple nodes is the responsibility of the programmer.
+We note that \ac{NetQASM} is used for representing and running code that runs on a single node in a quantum network.
+Synchronization between the (\ac{NetQASM}) programs of multiple nodes is the responsibility of the programmer.
 For example, in a client-server application, if the client code contains a `receive classical message' operation, it is the responsibility of the server node that its program code contains a `send classical message' operation at the right moment.
 The same holds for instructions for creating remote entanglement.
-In terms of precise timing, which is needed for entanglement generation, it is the \QNPU that is responsible to communicate and synchronize with the \QNPU of the other node to make sure entanglement attempts are synchronized.
+In terms of precise timing, which is needed for entanglement generation, it is the \ac{QNPU} that is responsible to communicate and synchronize with the \ac{QNPU} of the other node to make sure entanglement attempts are synchronized.
 
-With \netqasm\, we solve various problems that are unique to quantum internet programming:
+With \ac{NetQASM}, we solve various problems that are unique to quantum internet programming:
     (1) for remote entanglement generation, we introduce new instruction types for making use of an underlying quantum network stack~\cite{dahlberg2019linklayer, kozlowski2020networklayer},
-    (2) for the close interaction between classical and quantum operations, we use a shared-memory model for sharing classical data between the application layer and the \QNPU,
+    (2) for the close interaction between classical and quantum operations, we use a shared-memory model for sharing classical data between the application layer and the \ac{QNPU},
     (3) in order to run multiple applications on the same quantum node---which may be beneficial for overall resource usage (see~\cref{sec:design_considerations})---we make use of virtualized quantum memory, similar to virtual memory in classical computing~\cite{arpaci2018operating},
     (4) since on some platforms, not all qubits may be used to generate remote entanglement, we introduce the concept of unit-modules describing qubit topologies with additional information per (virtual) qubit about which operations are possible.
 
-Since \netqasm\ is meant to be low-level, similar in nature to classical assembly languages, we have also developed a higher-level software development kit (SDK), in Python, to make it easier to write applications.
+Since \ac{NetQASM} is meant to be low-level, similar in nature to classical assembly languages, we have also developed a higher-level software development kit (SDK), in Python, to make it easier to write applications.
 This SDK and related tools are open-source and freely available at~\cite{git_netqasm}, as part of our Quantum Network Explorer~\cite{qne_website}.
-Through the SDK we have also enabled the quantum network simulators \netsquid~\cite{coopmans2021netsquid} and \simulaqron~\cite{dahlberg2018simulaqron} to run any application programmed in \netqasm.
+Through the SDK we have also enabled the quantum network simulators NetSquid~\cite{coopmans2021netsquid} and SimulaQron~\cite{dahlberg2018simulaqron} to run any application programmed in \ac{NetQASM}.
 
-We have evaluated \netqasm\ by simulating the execution of a teleportation application and a blind quantum computation using \netqasm.
-Hereby we have shown that interesting quantum internet applications can indeed be programmed using \netqasm.
-Furthermore, the evaluations argue certain design choices of \netqasm, namely the use of so-called \textit{unit modules}, as well as platform-specific
+We have evaluated \ac{NetQASM} by simulating the execution of a teleportation application and a blind quantum computation using \ac{NetQASM}.
+Hereby we have shown that interesting quantum internet applications can indeed be programmed using \ac{NetQASM}.
+Furthermore, the evaluations argue certain design choices of \ac{NetQASM}, namely the use of so-called \textit{unit modules}, as well as platform-specific
 \textit{flavors}.
 
-We remark that \netqasm has already been used on a real hardware setup in the lab, in a highly simplified test case that only produces entanglement~\cite{pompili2021experimental}.
+We remark that \ac{NetQASM} has already been used on a real hardware setup in the lab, in a highly simplified test case that only produces entanglement~\cite{pompili2021experimental}.
 
 \subsection{Related Work}
 \label{sec:related}
@@ -191,50 +184,69 @@ In the field of quantum computing, a substantial amount of progress has been mad
 architectures (e.g.~\cite{fu2017microarchitecture,bourassa2020photonicblueprint, murali2019fullstack, wecker2014liqui, khammassi2020openql, amy2019staq, green2013quipper, Steiger2016}),
 instruction sets (e.g.~\cite{cross2017openqasm,khammassi2018cqasm,fu2019eqasm,liu2017fqasm,smith2016quil,qiskit,cirq,qsharp,jones2019quest}) and
 compilers~\cite{zulehner2019compiling, haner2018software, gokhale2020quantum, liu2020new, gokhale2020optimized, ding2020square, smith2020opensource, Sivarajah_2020, hietala2019verified, zhang2020contextmapping, niu2020hardware, dury2020qubo, pozzi2020using, Nishio_2020}.
-One example is \qasm, an instruction set framework, borrowing ideas from classical assembly languages, which has gained a lot of popularity over the years and has been successfully integrated in software stacks for quantum computers.
-There are in fact many variants of \qasm such as \openqasm~\cite{cross2017openqasm}, \texttt{cQASM}~\cite{khammassi2018cqasm}, \texttt{eQASM}~\cite{fu2019eqasm}, \texttt{f-QASM}~\cite{liu2017fqasm}.
+One example is QASM, an instruction set framework, borrowing ideas from classical assembly languages, which has gained a lot of popularity over the years and has been successfully integrated in software stacks for quantum computers.
+There are in fact many variants of QASM such as OpenQASM~\cite{cross2017openqasm}, \texttt{cQASM}~\cite{khammassi2018cqasm}, \texttt{eQASM}~\cite{fu2019eqasm}, \texttt{f-QASM}~\cite{liu2017fqasm}.
 Some of these variants are at a level closer to the physical implementation, such as \texttt{eQASM}, allowing for specifying low-level timing of quantum operations, while others, such as \texttt{f-QASM}, are at a higher level.
-Together with the definition of these \qasm-variants, progress has also been made in compilation of applications programmed in \qasm\ to hardware implementations.
+Together with the definition of these QASM-variants, progress has also been made in compilation of applications programmed in QASM to hardware implementations.
 More abstract languages and programming frameworks for quantum programs include \texttt{Quil}~\cite{smith2016quil}, \texttt{Qiskit}~\cite{qiskit}, \texttt{Cirq}~\cite{cirq}, \texttt{Q\#}~\cite{qsharp}, \texttt{QuEST}~\cite{jones2019quest}.
 
-None of these instruction sets or languages contain elements for remote entanglement generation (i.e. between different nodes), which \netqasm does provide.
-A \netqasm program that uses the vanilla flavor and only contains local operations would look similar to an \openqasm program.
-However, the instruction set is not quite the same, since \netqasm uses a different memory model than \openqasm.
-This is due to the hybrid nature of quantum network programs, which has more interaction between classical data and quantum data than non-networking programs (for which \openqasm might be used).
-So, \netqasm is not just a superset of the \openqasm instruction set (in the sense of adding entanglement instructions).
+None of these instruction sets or languages contain elements for remote entanglement generation (i.e. between different nodes), which \ac{NetQASM} does provide.
+A \ac{NetQASM} program that uses the vanilla flavor and only contains local operations would look similar to an OpenQASM program.
+However, the instruction set is not quite the same, since \ac{NetQASM} uses a different memory model than OpenQASM.
+This is due to the hybrid nature of quantum network programs, which has more interaction between classical data and quantum data than non-networking programs (for which OpenQASM might be used).
+So, \ac{NetQASM} is not just a superset of the OpenQASM instruction set (in the sense of adding entanglement instructions).
 
-In~\cite{dahlberg2018simulaqron}, we introduced the \cqc interface, which was a first step towards a universal instruction set.
-However, \cqc had a number of drawbacks, in particular:
-    (1) \cqc does not have a notion of virtualized memory (see \cref{sec:design_considerations}), which meant that applications needed to use qubit IDs that were explicitly provided by the underlying hardware.
+In~\cite{dahlberg2018simulaqron}, we introduced the \ac{CQC} interface, which was a first step towards a universal instruction set.
+However, \ac{CQC} had a number of drawbacks, in particular:
+    (1) \ac{CQC} does not have a notion of virtualized memory (see \cref{sec:design_considerations}), which meant that applications needed to use qubit IDs that were explicitly provided by the underlying hardware.
         This introduced more communication overhead and fewer optimization opportunities for the compiler.
-    (2) \cqc does not provide as much information about hardware details.
+    (2) \ac{CQC} does not provide as much information about hardware details.
         Therefore, platform-specific compilation and optimization is not possible.
-    (3) Furthermore, \cqc does not match entirely with the later definition of our quantum network stack~\cite{dahlberg2019linklayer, kozlowski2020networklayer}.
-        For example, it was not clearly defined how \cqc relates to the definition of a network layer.
+    (3) Furthermore, \ac{CQC} does not match entirely with the later definition of our quantum network stack~\cite{dahlberg2019linklayer, kozlowski2020networklayer}.
+        For example, it was not clearly defined how \ac{CQC} relates to the definition of a network layer.
 
-Many of the ideas from e.g. \qasm\ for how to handle and compile local gates can be reused also for quantum network applications.
-For example, version 3 of \openqasm~\cite{cross2021openqasm} which is under development, proposes close integration between \emph{local} classical logic and quantum operations, which is something we also propose in this work.
+Many of the ideas from e.g. QASM for how to handle and compile local gates can be reused also for quantum network applications.
+For example, version 3 of OpenQASM~\cite{cross2021openqasm} which is under development, proposes close integration between \emph{local} classical logic and quantum operations, which is something we also propose in this work.
 However, there are two key differences that we need to address:
 \begin{enumerate}
       \item Instructions for generating entanglement between remote nodes in the network need to be handled and integrated with the rest of the application, see \cref{sec:abstract_model} below.
       \item The local operations performed by a node might depend on information communicated by another node and only known at runtime.
-            Note that this is different from the conditionals on \emph{local} classical information, proposed in for example \openqasm version 3, which does not require communication between remote nodes in a network.
+            Note that this is different from the conditionals on \emph{local} classical information, proposed in for example OpenQASM version 3, which does not require communication between remote nodes in a network.
             This brings new constraints in how to handle memory allocation, scheduling and addressing.
             We discuss this point in further detail in the coming sections.
 \end{enumerate}
-\netqasm\ solves the above two points and improves upon \cqc.
+\ac{NetQASM} solves the above two points and improves upon \ac{CQC}.
 
 
 \subsection{Outline}
-In \cref{sec:preliminaries} we define relevant concepts and introduce the model of end-nodes that we use, including the \QNPU.
-In \cref{sec:use_cases} we discuss use-cases of a quantum network which \netqasm\ should support.
-In \cref{sec:design_considerations} we consider requirements and considerations any instruction set architecture for quantum networks should fulfill which then lay the basis for the decisions that went into developing \netqasm, see \cref{sec:design_decisions}.
-In \cref{sec:implementation} and \cref{sec:python-sdk} we describe details about the \netqasm\ language and associated SDK.
-In \cref{sec:evaluation} we quantitatively evaluate some of the design decision of \netqasm\ by benchmarking quality of execution using the quantum network simulator \netsquid~\cite{netsquid,coopmans2021netsquid}.
+In \cref{sec:preliminaries} we define relevant concepts and introduce the model of end-nodes that we use, including the \ac{QNPU}.
+In \cref{sec:use_cases} we discuss use-cases of a quantum network which \ac{NetQASM} should support.
+In \cref{sec:design_considerations} we consider requirements and considerations any instruction set architecture for quantum networks should fulfill which then lay the basis for the decisions that went into developing \ac{NetQASM}, see \cref{sec:design_decisions}.
+In \cref{sec:implementation} and \cref{sec:python-sdk} we describe details about the \ac{NetQASM} language and associated SDK.
+In \cref{sec:evaluation} we quantitatively evaluate some of the design decision of \ac{NetQASM} by benchmarking quality of execution using the quantum network simulator NetSquid~\cite{netsquid,coopmans2021netsquid}.
 We conclude in \cref{sec:conclusion}.
 
 
-\section{Preliminaries and Definitions}\label{sec:preliminaries}
+\section{Preliminaries and Definitions}
+\label{sec:preliminaries}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figures/netqasm/network_model.png}
+    \caption{
+      Abstract model of a quantum network and its components.
+      Quantum network applications run on the \emph{end-nodes} (blue).
+      Their communication via classical message passing and quantum entanglement~(\cref{fig:app_programs}) is abstracted away by a network stack.
+      That is, it is not visible at the application layer how entanglement generation or classical message passing is realized.
+      This may be via direct physical connections, or intermediary repeaters and/or routers.
+      End-nodes hold two types of qubits:
+        (1) \emph{communication qubits} which can be used to generate entanglement with remote nodes and
+        (2) \emph{storage qubits} which can be used to store quantum states and apply operations.
+      A communication qubit may also be used as a storage qubit.
+      The qubits within an end-node can interact through quantum gates and their state can be measured.
+    }
+    \label{fig:network_model}
+\end{figure}
 
 \subsection{Quantum networks}
 \label{sec:quantum_networks}
@@ -266,23 +278,6 @@ Furthermore, certain hardware implementations, such as nitrogen-vacancy centers 
 This prevents dedicating some qubits for purely local operations and some for purely networking operations.
 Rather, to make maximal use of near-term quantum hardware, a multi-purpose approach needs to be supported.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/netqasm/network_model.png}
-    \caption{Abstract model of a quantum network and its components. Quantum
-        network applications run on the \emph{end-nodes} (blue). Their
-        communication via classical message passing and quantum
-        entanglement~(\cref{fig:app_programs}) is abstracted away by a network
-        stack. That is, it is not visible at the application layer how
-        entanglement generation or classical message passing is realized. This
-        may be via direct physical connections, or intermediary repeaters and/or
-        routers. End-nodes hold two types of qubits: (1) \emph{communication
-            qubits} which can be used to generate entanglement with remote nodes and
-        (2) \emph{storage qubits} which can be used to store quantum states and
-        apply operations. A communication qubit may also be used as a storage
-        qubit. The qubits within an end-node can interact through quantum gates
-        and their state can be measured.}\label{fig:network_model}
-\end{figure}
 
 
 
@@ -290,33 +285,33 @@ Rather, to make maximal use of near-term quantum hardware, a multi-purpose appro
 \label{sec:abstract_model}
 
 In this work we will assume an abstract model of the hardware and software architecture of end-nodes in a quantum network.
-Specifically, we assume each end-node to consist of an \host and a \emph{Quantum Network Processing Unit} (\QNPU).
-The \host can be also be seen as a the user space of a classical computer, and the \QNPU as a coprocessor.
+Specifically, we assume each end-node to consist of a \acf{CNPU} and a \acf{QNPU}.
+The \ac{CNPU} can be also be seen as a the user space of a classical computer, and the \ac{QNPU} as a coprocessor.
 
 This model takes into account both physical- and application-level constraints found in quantum network programming.
-The \QNPU\ can be accessed by the \host, at the same node, to execute quantum and classical instructions.
-We define the capabilities of the \QNPU, and roughly their internal components, but do not assume how exactly this is implemented.
-In the rest of this work, we simply use the \QNPU as a black box.
+The \ac{QNPU} can be accessed by the \ac{CNPU}, at the same node, to execute quantum and classical instructions.
+We define the capabilities of the \ac{QNPU}, and roughly their internal components, but do not assume how exactly this is implemented.
+In the rest of this work, we simply use the \ac{QNPU} as a black box.
 
-The \QNPU can do both classical and quantum operations, including
+The \ac{QNPU} can do both classical and quantum operations, including
     (1) local operations such as classical arithmetic and quantum gates and
     (2) networking operations, i.e. remote entanglement generation.
-The \host\ cannot do any quantum operations.
+The \ac{CNPU} cannot do any quantum operations.
 It can only do local computation and classical communication with other nodes.
-In terms of classical processing power, the difference between the \host and the \QNPU is that the \host can do heavy and elaborate computation, while we assume the \QNPU to be limited in processing power.
+In terms of classical processing power, the difference between the \ac{CNPU} and the \ac{QNPU} is that the \ac{CNPU} can do heavy and elaborate computation, while we assume the \ac{QNPU} to be limited in processing power.
 
-The \host\ can interact with the \QNPU\ by for example sending instructions to do certain operations.
-The \host\ and the \QNPU\ are logical components and may or may not be the same physical device.
+The \ac{CNPU} can interact with the \ac{QNPU} by for example sending instructions to do certain operations.
+The \ac{CNPU} and the \ac{QNPU} are logical components and may or may not be the same physical device.
 It is assumed that there is low latency in the communication between these components, and in particular that they are physically part of the same node in the network.
 
-One crucial difference between the \host and the \QNPU is that the \host can do application-level classical communication with other end-nodes, while the \QNPU cannot.
-The \QNPU can communicate classically to synchronize remote entanglement generation, but it does not allow arbitrary user-code classical communication.
-We use this restriction in order for the \QNPU to have relatively few resource requirements.
+One crucial difference between the \ac{CNPU} and the \ac{QNPU} is that the \ac{CNPU} can do application-level classical communication with other end-nodes, while the \ac{QNPU} cannot.
+The \ac{QNPU} can communicate classically to synchronize remote entanglement generation, but it does not allow arbitrary user-code classical communication.
+We use this restriction in order for the \ac{QNPU} to have relatively few resource requirements.
 
-The \QNPU\ consists of the following components, see \cref{fig:qnpu}:
+The \ac{QNPU} consists of the following components, see \cref{fig:qnpu}:
 \begin{itemize}
     \item \textbf{Processor:}
-            The processor controls the other components of the \QNPU\ and understands how to execute the operations specified by the \host.
+            The processor controls the other components of the \ac{QNPU} and understands how to execute the operations specified by the \ac{CNPU}.
             It can read and write data to the classical memory and use this data to make decisions on what operations to do next.
             It can apply quantum gates to the qubits in the quantum memory and measure them as well.
             Measurement outcomes can be stored in the classical memory.
@@ -331,19 +326,19 @@ The \QNPU\ consists of the following components, see \cref{fig:qnpu}:
             Communicates classically with other nodes and quantum repeaters in the network to synchronize the generation of remote entanglement, and issues low-level instructions to execute the entanglement generation procedures, see~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
 \end{itemize}
 
-We stress that the internals of the \QNPU are not relevant to the design of \netqasm.
-We do assume that the \QNPU only has limited classical processing power, and can therefore be implemented on for example a simple hardware board.
+We stress that the internals of the \ac{QNPU} are not relevant to the design of \ac{NetQASM}.
+We do assume that the \ac{QNPU} only has limited classical processing power, and can therefore be implemented on for example a simple hardware board.
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/netqasm/qnpu.png}
-    \caption{Overview of \QNPU\ components and interfaces. The \host\ talks to
-        the \QNPU\ using \netqasm. The processor inside the \QNPU\ can interact with
-        all other components. Channels are connecting components with corresponding
-        components in adjacent nodes in the network.}
-    \label{fig:qnpu}
-\end{figure}
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=0.6\linewidth]{figures/netqasm/qnpu.pdf}
+%     \caption{Overview of \ac{QNPU} components and interfaces. The \ac{CNPU} talks to
+%         the \ac{QNPU} using \ac{NetQASM}. The processor inside the \ac{QNPU} can interact with
+%         all other components. Channels are connecting components with corresponding
+%         components in adjacent nodes in the network.}
+%     \label{fig:qnpu}
+% \end{figure}
 
 
 
@@ -352,20 +347,20 @@ As mentioned in~\cref{sec:introduction}, quantum network \textit{applications} (
 The unit of code that is executed on each of the end-nodes that are part of the application, is called a \textit{program}.
 We will use this terminology throughout the rest of the paper.
 
-As mentioned in the previous section, the end-nodes are modeled such that there is an application layer and a \QNPU. We assume that execution of quantum network programs is handled by the application layer.
-How exactly the program is executed, and how the \QNPU is involved herein, is part of the \netqasm proposal.
+As mentioned in the previous section, the end-nodes are modeled such that there is an application layer and a \ac{QNPU}. We assume that execution of quantum network programs is handled by the application layer.
+How exactly the program is executed, and how the \ac{QNPU} is involved herein, is part of the \ac{NetQASM} proposal.
 
 
 \section{Use-cases}
 \label{sec:use_cases}
-In the next section we will discuss the design considerations taken when developing \netqasm.
-These design considerations are based on a set of use-cases listed in this section which we intend for \netqasm\ to support.
+In the next section we will discuss the design considerations taken when developing \ac{NetQASM}.
+These design considerations are based on a set of use-cases listed in this section which we intend for \ac{NetQASM} to support.
 Applications intended to run on a quantum network will often depend on a combination of these use-cases.
 
 \begin{itemize}
       \item \textbf{Local quantum operations}.
             Applications running on a network node need to perform quantum operations on local qubits, including initialization, measurement, and single- or multi-qubit gates.
-            Such local qubit manipulation is well known in the field of quantum computing. For example, \openqasm~\cite{cross2017openqasm} describes quantum operations.
+            Such local qubit manipulation is well known in the field of quantum computing. For example, OpenQASM~\cite{cross2017openqasm} describes quantum operations.
             Quantum \textit{network} applications should be able to do these local operations as well.
 
       \item \textbf{Local quantum operations depending on local events or data}.
@@ -396,15 +391,15 @@ Applications intended to run on a quantum network will often depend on a combina
       \item \textbf{Waiting time}.
             We consider the scenario where an application requires two nodes to communicate with each other, and where communication takes a long time, for example since they are physically far apart.
             It should be possible for a program to suspend doing quantum operations while waiting for communication or performing classical processing, while quantum states stay coherent.
-            Furthermore, in order to maximize the usage of the \QNPU we want to have a way to fill this waiting time in a useful way.
+            Furthermore, in order to maximize the usage of the \ac{QNPU} we want to have a way to fill this waiting time in a useful way.
 \end{itemize}
 
 
 \section{Design Considerations}
 \label{sec:design_considerations}
 In this section we review the most important design considerations and requirements that were applied when
-developing \netqasm.
-Our proposed solutions to these design considerations are presented in the next section, with more details about \netqasm\ as a language
+developing \ac{NetQASM}.
+Our proposed solutions to these design considerations are presented in the next section, with more details about \ac{NetQASM} as a language
 in the subsequent sections.
 
 \begin{itemize}
@@ -420,7 +415,7 @@ in the subsequent sections.
             We note the contrast with classical processors, where networking operations are typically intrinsically separate kinds of operations.
             For example, operations such as sending a message may simply involve moving data to a certain memory (e.g. that of a physically separate network interface), which is often abstracted as a system call.
 
-            A quantum network stack has already been proposed in~\cite{dahlberg2019linklayer,kozlowski2020networklayer}, and we expect the \QNPU of the end-node to implement such a stack, including a \textit{network layer} that exposes an interface for establishing entanglement with remote nodes.
+            A quantum network stack has already been proposed in~\cite{dahlberg2019linklayer,kozlowski2020networklayer}, and we expect the \ac{QNPU} of the end-node to implement such a stack, including a \textit{network layer} that exposes an interface for establishing entanglement with remote nodes.
             The way in which a program creates remote entanglement should therefore be compatible with this network layer.
 
       \item \label{item:design_cond} \textbf{Conditionals:}
@@ -434,114 +429,115 @@ in the subsequent sections.
 
 
       \item \label{item:design_return} \textbf{Shared memory:}
-            As described in \cref{sec:preliminaries}, we expect end-nodes to consist of an application layer and a \QNPU.
+            As described in \cref{sec:preliminaries}, we expect end-nodes to consist of an application layer and a \ac{QNPU}.
             These two components have different capabilities.
             For example, only the application layer has the ability to do arbitrary classical communication with other nodes.
-            Only the \QNPU can do quantum operations.
+            Only the \ac{QNPU} can do quantum operations.
             These restrictions lead the design in a certain way.
             The two components hence need to work together somehow.
             There needs to be model for interaction between the two, and also for shared memory.
 
-            Executing programs on an end-node is shared by the application layer and the \QNPU (see~\cref{sec:abstract_model}).
-            Indeed, only the \QNPU can do quantum-related operations, whereas the application layer needs to do classical communication.
+            Executing programs on an end-node is shared by the application layer and the \ac{QNPU} (see~\cref{sec:abstract_model}).
+            Indeed, only the \ac{QNPU} can do quantum-related operations, whereas the application layer needs to do classical communication.
             In order to make these work together, the two components have to share data somehow.
-            This includes the application layer requesting operations on the \QNPU, and sending the following from the \QNPU to the \host:
+            This includes the application layer requesting operations on the \ac{QNPU}, and sending the following from the \ac{QNPU} to the \ac{CNPU}:
                 (1) measurement outcomes of qubits,
                 (2) information about entanglement generation, in particular a way to identify entangled pairs.
-            This communication between \host and \QNPU needs to be done during runtime of the program.
-            This is in contrast to local quantum computation, where one might wait until execution on the \QNPU is finished before returning all data.
+            This communication between \ac{CNPU} and \ac{QNPU} needs to be done during runtime of the program.
+            This is in contrast to local quantum computation, where one might wait until execution on the \ac{QNPU} is finished before returning all data.
             The challenge for quantum network programs is to have a way to return data while quantum memory stays in memory.
 
-      \item \label{item:design_proc_delay}\textbf{Processing delay:}
-            Since we assume that the application layer and the \QNPU have to share execution of a single program, the interaction between the two layers should be efficient.
+      \item \textbf{Processing delay:}
+            Since we assume that the application layer and the \ac{QNPU} have to share execution of a single program, the interaction between the two layers should be efficient.
             Unnecessary delays lead to reduced quality (see~\cref{sec:introduction}).
-            The challenge is therefore to come up with an architecture for the interaction between the application layer and the \QNPU, as well as a way to let \QNPU execution not take too long.
-      \item \label{item:design_pi} \textbf{Platform-independence:}
+            The challenge is therefore to come up with an architecture for the interaction between the application layer and the \ac{QNPU}, as well as a way to let \ac{QNPU} execution not take too long.
+      \item \textbf{Platform-independence:}
             As explained in~\cref{sec:introduction}, hardware can have many different capabilities and gates that can be performed.
             However, application programmers should not need to know the details of the underlying hardware.
-            For this reason, there needs to be a framework through which a programmer can develop an application in a platform-independent way which compiles to operations the \QNPU\ can execute.
-      \item \label{item:design_opt} \textbf{Potential for optimization:}
+            For this reason, there needs to be a framework through which a programmer can develop an application in a platform-independent way which compiles to operations the \ac{QNPU} can execute.
+      \item \textbf{Potential for optimization:}
             Since near-term quantum hardware has a limited number of qubits and qubits have a relatively short lifetime, the hardware should be utilized in an effective way.
             There is therefore a need to optimize the quantum gates to be applied to the qubits.
             This includes for example choosing how to decompose a generic gate into native gates, rearranging the order of gates and measurements and choosing what gates to run in parallel.
             Since different platforms have vastly different topologies and gates that they can perform, this optimization needs to take the underlying platform into account.
             The challenge is to have a uniform way to express both platform-independent and platform-specific instructions.
-      \item \label{item:design_parallel} \textbf{Multitasking:}
-            The `Waiting time' use-case in~\cref{sec:use_cases} describes that a node's \QNPU may have to wait a long time. We consider the solution that the \QNPU may do multitasking, that is, run multiple (unrelated) programs at the same time.
+      \item \textbf{Multitasking:}
+            The `Waiting time' use-case in~\cref{sec:use_cases} describes that a node's \ac{QNPU} may have to wait a long time. We consider the solution that the \ac{QNPU} may do multitasking, that is, run multiple (unrelated) programs at the same time.
             Then, when one program is waiting, another program can execute (partly) and fill the gap.
             To make our design compatible with such multitasking, we need to provide a way such that programs can run at the same time as other programs, but without having to know about them.
-      \item \label{item:ease_programming} \textbf{Ease of programming:}
-            Even though \netqasm\ provides an abstraction over the interaction with the \QNPU, it is still low-level and hence not intended to be used directly by application developers.
-            Furthermore, applications also contain classical code that is not intended to run on the \QNPU.
-            Therefore it should be possible to write programs consisting of both classical and quantum (network) operations in a high-level language like Python, and compile them to a hybrid quantum-classical program that uses \netqasm.
+      \item \textbf{Ease of programming:}
+            Even though \ac{NetQASM} provides an abstraction over the interaction with the \ac{QNPU}, it is still low-level and hence not intended to be used directly by application developers.
+            Furthermore, applications also contain classical code that is not intended to run on the \ac{QNPU}.
+            Therefore it should be possible to write programs consisting of both classical and quantum (network) operations in a high-level language like Python, and compile them to a hybrid quantum-classical program that uses \ac{NetQASM}.
 
 \end{itemize}
 
 
 \section{Design Decisions}
 \label{sec:design_decisions}
-Based on the use-cases, design considerations and requirements, we have designed the low-level language \netqasm\ as an API to the \QNPU.
+Based on the use-cases, design considerations and requirements, we have designed the low-level language \ac{NetQASM} as an API to the \ac{QNPU}.
 In this section we present concepts and design decisions we have taken.
-Details on the mode of execution and the \netqasm-language are presented in \cref{sec:implementation}.
+Details on the mode of execution and the \ac{NetQASM}-language are presented in \cref{sec:implementation}.
 
-\subsection{Interface between \host and QNPU}
+\subsection{Interface between \ac{CNPU} and QNPU}
 \label{sec:design_decisions_interface}
 
 \subsubsection{Execution model}
-As described in \cref{sec:preliminaries}, and also in \cref{sec:design_considerations} program execution is split across the \host and the \QNPU.
-Since the \QNPU is assumed to have limited processing power (\cref{sec:preliminaries}), our design lets the \host do most of the classical processing.
-The program blocks (\cref{fig:program_decomp}) are hence spread over two separate systems: blocks of purely classical code are executed by the \host, and blocks of quantum code (containing both quantum operations and limited classical control) are executed by the \QNPU.
+As described in \cref{sec:preliminaries}, and also in \cref{sec:design_considerations} program execution is split across the \ac{CNPU} and the \ac{QNPU}.
+Since the \ac{QNPU} is assumed to have limited processing power (\cref{sec:preliminaries}), our design lets the \ac{CNPU} do most of the classical processing.
+The program blocks (\cref{fig:program_decomp}) are hence spread over two separate systems: blocks of purely classical code are executed by the \ac{CNPU}, and blocks of quantum code (containing both quantum operations and limited classical control) are executed by the \ac{QNPU}.
 
-The quantum code (including limited classical control) is expressed using the \netqasm language.
-The classical code is handled completely by the \host, and we do not impose a restriction to its format.
+The quantum code (including limited classical control) is expressed using the \ac{NetQASM} language.
+The classical code is handled completely by the \ac{CNPU}, and we do not impose a restriction to its format.
 In our implementation (\cref{sec:python-sdk}), we use Python.
-This classical code on the \host also handles all application-level classical communication between nodes, since it cannot be done on the \QNPU.
+This classical code on the \ac{CNPU} also handles all application-level classical communication between nodes, since it cannot be done on the \ac{QNPU}.
 
-We let the \host initiate a program.
-Whenever quantum code needs to be executed, the \host delegates this to the \QNPU.
-Since processing delay should be minimized (\cref{sec:design_considerations}), the communication between \host and \QNPU should be minimized.
-Therefore, \netqasm bundles the quantum operations together into blocks of instructions, called \textit{subroutines}, to be executed on the \QNPU.
+We let the \ac{CNPU} initiate a program.
+Whenever quantum code needs to be executed, the \ac{CNPU} delegates this to the \ac{QNPU}.
+Since processing delay should be minimized (\cref{sec:design_considerations}), the communication between \ac{CNPU} and \ac{QNPU} should be minimized.
+Therefore, \ac{NetQASM} bundles the quantum operations together into blocks of instructions, called \textit{subroutines}, to be executed on the \ac{QNPU}.
 A program, then, consists of both both classical code and quantum code, and the quantum code is represented as one or more subroutines.
 These subroutines can be seen as the quantum code blocks of~\cref{fig:program_decomp}.
 
 For most programs, we consider subroutines to be sent consecutively in time.
-However, if the \QNPU supports it, \netqasm also allows to send multiple subroutines to be executed on the \QNPU at the same time, although this requires some extra care when dealing with shared memory.
-From the perspective of the \QNPU, a program consists of a series of subroutines sent from the \host.
-Before receiving subroutines, the \host first \textit{registers} a program at the \QNPU.
-The \QNPU then sets up the classical and quantum memories (see below) for this program.
-Then, the \host may send subroutines to the \QNPU for execution.
+However, if the \ac{QNPU} supports it, \ac{NetQASM} also allows to send multiple subroutines to be executed on the \ac{QNPU} at the same time, although this requires some extra care when dealing with shared memory.
+From the perspective of the \ac{QNPU}, a program consists of a series of subroutines sent from the \ac{CNPU}.
+Before receiving subroutines, the \ac{CNPU} first \textit{registers} a program at the \ac{QNPU}.
+The \ac{QNPU} then sets up the classical and quantum memories (see below) for this program.
+Then, the \ac{CNPU} may send subroutines to the \ac{QNPU} for execution.
 
 
 \subsubsection{Shared classical memory}
-Since classical and quantum blocks in the code (as per \cref{fig:program_decomp}) can depend on each other, the \host and the \QNPU need to have a way to communicate information to each other.
-For example, a subroutine may include a measurement instruction; the outcome of this measurement may be used by the \host upon completion of the subroutine.
-Therefore, \netqasm uses a shared memory model such that conceptually both layers can access and manipulate the same data. This solves the need to return data, and to do conditionals (\cref{sec:design_considerations}).
+Since classical and quantum blocks in the code (as per \cref{fig:program_decomp}) can depend on each other, the \ac{CNPU} and the \ac{QNPU} need to have a way to communicate information to each other.
+For example, a subroutine may include a measurement instruction; the outcome of this measurement may be used by the \ac{CNPU} upon completion of the subroutine.
+Therefore, \ac{NetQASM} uses a shared memory model such that conceptually both layers can access and manipulate the same data. This solves the need to return data, and to do conditionals (\cref{sec:design_considerations}).
 
 Each program has a classical memory space consisting of \textit{registers} and \textit{arrays}.
 Registers are the default way of storing classical values, like a measurement outcome.
-In the example of the \host needing a measurement outcome, there would be an instruction in the subroutine saying that a measurement outcome needs to be placed in a certain register.
-The \host can then access this same register (since they share the memory space) and use it in further processing.
+In the example of the \ac{CNPU} needing a measurement outcome, there would be an instruction in the subroutine saying that a measurement outcome needs to be placed in a certain register.
+The \ac{CNPU} can then access this same register (since they share the memory space) and use it in further processing.
 The number of registers is small, and constant for each program.
 Arrays are collections of memory slots (typically the slots are contiguous), which can be allocated by the program at runtime.
 Arrays are used to store larger chunks of data, such as parameters for entanglement requests, entanglement generation results, or multiple measurement outcomes when doing multiple entangle-and-measure operations.
-The \host may only read from the shared memory; writing to it can only be done by issuing \netqasm instructions such as \texttt{set} (for registers) and \texttt{store} (for arrays).
-The \QNPU may directly write to the shared memory, for example when entanglement finished and it writes the results to the array specified by the program.
+The \ac{CNPU} may only read from the shared memory; writing to it can only be done by issuing \ac{NetQASM} instructions such as \texttt{set} (for registers) and \texttt{store} (for arrays).
+The \ac{QNPU} may directly write to the shared memory, for example when entanglement finished and it writes the results to the array specified by the program.
 
 
-\begin{figure}
+\begin{figure}[t]
       \centering
-      \caption{{\color{red} TODO: re-create image} Program interaction between the \host and a quantum device in
+      \caption{{\color{red} TODO: re-create image} Program interaction between the \ac{CNPU} and a quantum device in
             both the case of \emph{hybrid-quantum computing} (\cref{fig:hybrid:a})
             and quantum networks (\cref{fig:hybrid:b}). In the case of hybrid-quantum
-            computing, qubits are reset in between circuits (in e.g. \qasm). For
+            computing, qubits are reset in between circuits (in e.g. QASM). For
             quantum internet programs the qubits should on the other hand be
             kept in memory, since they might be entangled with another node and
-            intended to be used further.}\label{fig:hybrid}
+            intended to be used further.}
+      \label{fig:hybrid}
 \end{figure}
 
 \subsubsection{Unit modules}
-In order to support systems with multitasking (\cref{sec:design_considerations}), \netqasm provides a virtualized model of the quantum memory to the program.
-This allows the \QNPU to do mapping between the virtualized memory and the physical memory and perform scheduling between programs.
+In order to support systems with multitasking (\cref{sec:design_considerations}), \ac{NetQASM} provides a virtualized model of the quantum memory to the program.
+This allows the \ac{QNPU} to do mapping between the virtualized memory and the physical memory and perform scheduling between programs.
 
 The quantum memory for a program is represented by a \textit{unit module} (\cref{fig:topology}).
 A unit module defines the topology of the available qubits (which qubits are connected, i.e. on which qubit pairs a two-qubit gate can be executed), plus additional information on each qubit.
@@ -552,45 +548,45 @@ For example, in a single NV-centre, there is only one communication qubit and an
 Also, the communication qubit can do different local gates than the storage qubits.
 
 A single program has a single quantum memory space, which is \textit{not} reset at the end of a subroutine, which is in contrast with quantum computing.
-This allows the \host to do processing while qubits are in memory.
+This allows the \ac{CNPU} to do processing while qubits are in memory.
 The following sequence of operations provides an example.
-    (1) The \host first sends a subroutine containing instructions for entanglement generation with a remote node R.
-    (2) The \QNPU has finished executing the subroutine, and informs the \host about it.
+    (1) The \ac{CNPU} first sends a subroutine containing instructions for entanglement generation with a remote node R.
+    (2) The \ac{QNPU} has finished executing the subroutine, and informs the \ac{CNPU} about it.
         There is now a qubit in the program's memory that is entangled with some qubit in R.
-    (3) The \host does some classical processing and waits for a classical message from (the \host of) R.
-    (4) Based on the contents of the message, the \host sends a new subroutine to the \QNPU containing instructions to do certain operations on the entangled qubit.
+    (3) The \ac{CNPU} does some classical processing and waits for a classical message from (the \ac{CNPU} of) R.
+    (4) Based on the contents of the message, the \ac{CNPU} sends a new subroutine to the \ac{QNPU} containing instructions to do certain operations on the entangled qubit.
         The subroutine can indeed access this qubit by using the same identifier as the first subroutine, since the quantum memory is still the same.
         We note the contrast with (non-network) quantum computing, where quantum memory is reset at the end of each block of instructions (\cref{fig:hybrid}).
 
 
 Unit modules contain \textit{virtual qubit IDs}.
-This is because of the requirement that it should be possible to run multiple programs at the same time on a single \QNPU (Multitasking consideration in \cref{sec:design_considerations}).
+This is because of the requirement that it should be possible to run multiple programs at the same time on a single \ac{QNPU} (Multitasking consideration in \cref{sec:design_considerations}).
 We use an approach that is similar to virtual memory in classical systems~\cite{arpaci2018operating}.
 Each application has control over a set of physical qubits, but the application does not (need to) know which physical qubits these are exactly.
 The unit module provides a virtualized view of this available memory.
 This view contains virtual IDs each representing a single qubit, called a virtual qubit.
-The \QNPU maintains a mapping of virtual IDs (per application) to physical qubits.
-The \QNPU may change this mapping over time, without the applications knowing.
+The \ac{QNPU} maintains a mapping of virtual IDs (per application) to physical qubits.
+The \ac{QNPU} may change this mapping over time, without the applications knowing.
 We stress that our virtualization hence only involves a mapping from IDs to physical qubits.
 There is no copying of quantum states involved.
 
-We note that this design decision meets our Multitasking consideration(~\ref{sec:design_considerations}).
-By using virtualized unit modules, the \QNPU is free to map qubit IDs of the application to physical qubits as it sees fit.
+We note that this design decision meets our Multitasking consideration(\cref{sec:design_considerations}).
+By using virtualized unit modules, the \ac{QNPU} is free to map qubit IDs of the application to physical qubits as it sees fit.
 For example, consider a node with a physical memory consisting of one communication qubit, and multiple memory qubits.
 Application A creates entanglement with a remote node such that its half of the pair is in the communication qubit.
 Then, application A needs to wait for a long time before further processing the quantum state in this qubit, for example since it needs to wait for a classical message from a remote node.
-Meanwhile, application B is waiting to be executed on the \QNPU, and it also requires the communication qubit for entanglement generation.
-The \QNPU can now move the state from the communication qubit to one of the memory qubits, and update the mapping of application A's ID to this physical memory qubit.
-Then, the \QNPU can run application B while A is waiting for the classical message.
-When B has finished, the \QNPU can move A's state back to the communication qubit.
+Meanwhile, application B is waiting to be executed on the \ac{QNPU}, and it also requires the communication qubit for entanglement generation.
+The \ac{QNPU} can now move the state from the communication qubit to one of the memory qubits, and update the mapping of application A's ID to this physical memory qubit.
+Then, the \ac{QNPU} can run application B while A is waiting for the classical message.
+When B has finished, the \ac{QNPU} can move A's state back to the communication qubit.
 Since application A uses the unit module and does not know about the physical memory, it
     (1) does not care that its state was temporarily moved to a different physical qubit, and
     (2) can remain oblivious about any other application being run (like B) while it is waiting.
 
 
-\begin{figure}
+\begin{figure}[t]
       \centering
-      \includegraphics[width=0.7\textwidth]{figures/netqasm/unit-module.pdf}
+      \includegraphics[width=0.6\linewidth]{figures/netqasm/unit-module.pdf}
       \caption{Example of a unit-module topology on a platform using
             nitrogen-vacancy centers in diamond. A unit-module is a
             hypergraph~\cite{berge1984hypergraphs}, with associated information
@@ -601,7 +597,8 @@ Since application A uses the unit module and does not know about the physical me
             together with their duration and noise. Each edge represents the
             possibility of performing joint operations on those qubits, such as
             two-qubit gates, and also containing information about gate
-            durations and noise.}\label{fig:topology}
+            durations and noise.}
+      \label{fig:topology}
 \end{figure}
 
 
@@ -610,26 +607,26 @@ Since application A uses the unit module and does not know about the physical me
 
 \subsubsection{Instructions}
 \label{sec:design_decisions_language}
-As explained in~\cref{sec:design_decisions_interface}, the \host delegates quantum code (including limited classical control) of the program to the \QNPU by creating blocks of instructions and sending these to the \QNPU for execution.
-These blocks are called subroutines and contain \netqasm \textit{instructions}.
-Since the \QNPU is meant to be limited in processing power, the instruction set that it interprets should also be simple and low-level.
-The \netqasm instruction set contains instructions for simple arithmetic, classical data manipulation, and simple control flow in the form of (un)conditional branch instructions.
-Although conditional control-flow can be done at the \host as well, \netqasm branching instructions allow for much faster feedback since they are executed by the \QNPU, and hence cover the design consideration of real-time conditionals (\cref{sec:design_considerations}).
-We note the obvious performance gain by being able to do control logic without having to go back to the \host.
-There are no higher-level concepts such as functions or for-loops, which would require more complicated and resource-demanding parsing for the \QNPU, such as constructing an abstract syntax tree.
+As explained in~\cref{sec:design_decisions_interface}, the \ac{CNPU} delegates quantum code (including limited classical control) of the program to the \ac{QNPU} by creating blocks of instructions and sending these to the \ac{QNPU} for execution.
+These blocks are called subroutines and contain \ac{NetQASM} \textit{instructions}.
+Since the \ac{QNPU} is meant to be limited in processing power, the instruction set that it interprets should also be simple and low-level.
+The \ac{NetQASM} instruction set contains instructions for simple arithmetic, classical data manipulation, and simple control flow in the form of (un)conditional branch instructions.
+Although conditional control-flow can be done at the \ac{CNPU} as well, \ac{NetQASM} branching instructions allow for much faster feedback since they are executed by the \ac{QNPU}, and hence cover the design consideration of real-time conditionals (\cref{sec:design_considerations}).
+We note the obvious performance gain by being able to do control logic without having to go back to the \ac{CNPU}.
+There are no higher-level concepts such as functions or for-loops, which would require more complicated and resource-demanding parsing for the \ac{QNPU}, such as constructing an abstract syntax tree.
 
 A single instruction specifies an operation, possibly acting on classical or quantum data.
 For example, a single-qubit rotation gate is represented as an instruction containing the type of gate, the classical register containing the rotation angle, and the classical register containing the virtual ID of the qubit (as specified in the unit module) to act on.
-\netqasm specifies a set of \textit{core} instructions that are expected to be implemented by any \QNPU.
+\ac{NetQASM} specifies a set of \textit{core} instructions that are expected to be implemented by any \ac{QNPU}.
 These include classical instructions like storing and loading classical data, branching, and simple arithmetic.
 Different hardware platforms support different quantum operations.
-\netqasm should also support platform-specific optimization (\cref{sec:design_considerations}).
-Therefore, \netqasm uses \textit{flavors} of quantum instructions (\cref{sec:design_decisions_flavours}).
+\ac{NetQASM} should also support platform-specific optimization (\cref{sec:design_considerations}).
+Therefore, \ac{NetQASM} uses \textit{flavors} of quantum instructions (\cref{sec:design_decisions_flavours}).
 The \textit{vanilla} flavor consists universal of a set of platform-independent quantum gates.
 Particular hardware platforms, such as the NV-centre, may use a special NV flavor, containing NV-specific instructions.
-A \QNPU implementation may use a custom mapping from vanilla instructions to platform-specific ones.
+A \ac{QNPU} implementation may use a custom mapping from vanilla instructions to platform-specific ones.
 The instructions in a flavor are also called a software-visible gate set~\cite{murali2019fullstack}.
-See~\cref{app:instructions} for more details on \netqasm instructions.
+See~\cref{app:instructions} for more details on \ac{NetQASM} instructions.
 
 \subsubsection{Remote entanglement generation}
 Generating entanglement with a remote node is also specified by instructions.
@@ -643,21 +640,21 @@ Third, this information should be able to depend on runtime information.
 For example, the required fidelity may depend on an earlier measurement outcome.
 Therefore, entanglement generation parameters cannot be static data, and must be stored in arrays.
 Furthermore, the result of entanglement generation with the remote node consists of a lot of information, such as which Bell state was produced, the time it took, and the measurement results in case of measuring directly.
-This information is written by the \QNPU to an array which is specified by the entanglement instruction.
+This information is written by the \ac{QNPU} to an array which is specified by the entanglement instruction.
 Finally, since writing the information to the array indicates that entanglement generation succeeded, the wait instruction can be used to wait until a certain array is filled in, such as the one provided by the entanglement instruction.
 Since the entanglement instruction is non-blocking, it is possible to continue doing local operations while waiting for entanglement generation to complete.
 
-We assume that the \QNPU implements a network stack where connections need to be set-up between remote nodes before entanglement generation can happen~\cite{kozlowski2020networklayer, dahlberg2019linklayer}.
-\netqasm provides a way for programs to open such connections in the form of \textit{EPR sockets}.
-The \host can ask the \QNPU to open an EPR socket with a particular remote node.
-The \QNPU is expected to set up the required connections in the network stack, and associates this program socket with the connection.
+We assume that the \ac{QNPU} implements a network stack where connections need to be set-up between remote nodes before entanglement generation can happen~\cite{kozlowski2020networklayer, dahlberg2019linklayer}.
+\ac{NetQASM} provides a way for programs to open such connections in the form of \textit{EPR sockets}.
+The \ac{CNPU} can ask the \ac{QNPU} to open an EPR socket with a particular remote node.
+The \ac{QNPU} is expected to set up the required connections in the network stack, and associates this program socket with the connection.
 When the program issues an instruction for generating entanglement, it refers to the EPR socket it wants to use.
-Based on this, the \QNPU can use the corresponding connection in the network.
+Based on this, the \ac{QNPU} can use the corresponding connection in the network.
 
 
-\begin{figure}
+\begin{figure}[t]
       \centering
-      \includegraphics[width=0.7\textwidth]{figures/netqasm/nqasm_code_example}
+      \includegraphics[width=0.6\linewidth]{figures/netqasm/nqasm_code_example}
       \caption{Example of NetQASM code for generating a single entangled pair with another node followed by a measurement.
             See the Appendix for more details of the instructions.}
       \label{fig:nqasm_code_example}
@@ -665,70 +662,70 @@ Based on this, the \QNPU can use the corresponding connection in the network.
 
 \subsubsection{Flavors}
 \label{sec:design_decisions_flavours}
-We want to keep \netqasm platform-independent.
+We want to keep \ac{NetQASM} platform-independent.
 However, we also want the potential for platform-specific optimization (\cref{sec:design_considerations}).
 Therefore we introduce the concept of \textit{flavors}.
-Flavors only affect the quantum instruction set of the language, and not the memory model or the interaction with the \QNPU.
+Flavors only affect the quantum instruction set of the language, and not the memory model or the interaction with the \ac{QNPU}.
 We use the \textit{vanilla} or generic flavor for a general, universal gate set.
 Subroutines may be written or generated in this vanilla flavor.
 Platform-independent optimization may be done on this level.
-A \QNPU may directly support executing vanilla-flavored \netqasm.
-Platform-specific translations may then be done by the \QNPU itself.
-It can also be that a \QNPU only supports a specific flavor of \netqasm.
-A reason for this could be that the \QNPU does not want to spend time translating of the instructions at runtime.
-In this case, the \host should perform a translation step from the vanilla flavor to the platform-specific flavor.
+A \ac{QNPU} may directly support executing vanilla-flavored \ac{NetQASM}.
+Platform-specific translations may then be done by the \ac{QNPU} itself.
+It can also be that a \ac{QNPU} only supports a specific flavor of \ac{NetQASM}.
+A reason for this could be that the \ac{QNPU} does not want to spend time translating of the instructions at runtime.
+In this case, the \ac{CNPU} should perform a translation step from the vanilla flavor to the platform-specific flavor.
 In such a case, the vanilla flavor can be seen as an \textit{intermediate representation}, and the translation to a specific flavor as a back-end compilation step.
 
 \subsubsection{Programmability}
-Since the \netqasm instructions are relatively low-level, we like to have a higher-level programming language for writing programs, that is automatically compiled to \netqasm.
+Since the \ac{NetQASM} instructions are relatively low-level, we like to have a higher-level programming language for writing programs, that is automatically compiled to \ac{NetQASM}.
 We introduce a higher-level SDK in \cref{sec:python-sdk}.
-However, we do not see this as part of the \netqasm specification itself.
+However, we do not see this as part of the \ac{NetQASM} specification itself.
 This decoupling allows the development of SDKs to be independent such that these can be provided in various languages and frameworks.
 
-We still want \netqasm instructions to be suitable for manual writing and inspection.
-Therefore, instructions (and subroutines) have two formats: a binary one that is used when sending to the \QNPU, and a text format that is human-readable.
-The text format resembles assembly languages including \openqasm.
+We still want \ac{NetQASM} instructions to be suitable for manual writing and inspection.
+Therefore, instructions (and subroutines) have two formats: a binary one that is used when sending to the \ac{QNPU}, and a text format that is human-readable.
+The text format resembles assembly languages including OpenQASM.
 Examples are given in \cref{sec:sdk} and the Appendix.
 
 
 \section{Python SDK}
 \label{sec:python-sdk}
-We implemented \netqasm\ by developing a Software Development Kit (SDK) in Python.
+We implemented \ac{NetQASM} by developing a Software Development Kit (SDK) in Python.
 This SDK allows a programmer to write quantum network programs as Python code, including the quantum parts.
 These parts are automatically translated to NetQASM subroutines.
-The SDK contains a simulator that simulates a quantum network containing end-nodes, each with a \QNPU.
-The SDK can execute programs by executing their classical parts directly and executing the quantum parts as \netqasm subroutines on the simulated \QNPU.
+The SDK contains a simulator that simulates a quantum network containing end-nodes, each with a \ac{QNPU}.
+The SDK can execute programs by executing their classical parts directly and executing the quantum parts as \ac{NetQASM} subroutines on the simulated \ac{QNPU}.
 By executing multiple programs at the same time, on the same simulated network, a whole multi-partite application can be simulated.
-In~\cref{sec:evaluation} we use this SDK to evaluate some of the design decisions of \netqasm.
+In~\cref{sec:evaluation} we use this SDK to evaluate some of the design decisions of \ac{NetQASM}.
 
 We refer to the docs at~\cite{git_netqasm} for the latest version of the SDK.
 Below, we give an example of an application written in the SDK to give an idea of how development in the SDK looks like.
-In \cref{app:examples_sdk} we provide a few more examples of applications in the SDK and their corresponding \netqasm\ subroutines.
+In \cref{app:examples_sdk} we provide a few more examples of applications in the SDK and their corresponding \ac{NetQASM} subroutines.
 
 All code can be found at~\cite{git_netqasm} and~\cite{git_squidasm}, including:
     (1) Tools for serializing (de-serializing) to (from) both human-readable text form and binary encoding,
-        % \item A parser for the human-readable form of \netqasm.
-        % \item A parser for binary encoding of \netqasm.
+        % \item A parser for the human-readable form of \ac{NetQASM}.
+        % \item A parser for binary encoding of \ac{NetQASM}.
         % \item An assembler of human-readable form to binary.
-    (2) the \netqasm\ SDK, together with compilers (no optimization yet),
-    (3) support for running applications written in the SDK on the simulators \netsquid~\cite{netsquid,coopmans2021netsquid} and \simulaqron~\cite{dahlberg2018simulaqron}, and
-    (4) implemented applications in \netqasm, including: anonymous transmission~\cite{Christandl2005anonymous}, BB84~\cite{bb84}, blind quantum computing~\cite{broadbent2009universal,fitzsimons2017unconditionally}, CHSH game~\cite{Kaniewski2016}, performing a distributed CNOT~\cite{denchev2008distributed}, magic square game~\cite{brassard1999magicsquare}, teleportation~\cite{bennett1993teleporting}.
+    (2) the \ac{NetQASM} SDK, together with compilers (no optimization yet),
+    (3) support for running applications written in the SDK on the simulators NetSquid~\cite{netsquid,coopmans2021netsquid} and SimulaQron~\cite{dahlberg2018simulaqron}, and
+    (4) implemented applications in \ac{NetQASM}, including: anonymous transmission~\cite{Christandl2005anonymous}, BB84~\cite{bb84}, blind quantum computing~\cite{broadbent2009universal,fitzsimons2017unconditionally}, CHSH game~\cite{Kaniewski2016}, performing a distributed CNOT~\cite{denchev2008distributed}, magic square game~\cite{brassard1999magicsquare}, teleportation~\cite{bennett1993teleporting}.
 
 \subsection{SDK}
 \label{sec:sdk}
-The SDK of \netqasm\ uses a similar framework to the SDK used by the predecessor \cqc~\cite{git_cqc}.
-Any program on a node starts by setting up a \texttt{NetQASMConnection} to the \QNPU-implementation in the \emph{backend}.
-The \texttt{NetQASMConnection} encapsulates all communication that the \host\ does with the \QNPU.
+The SDK of \ac{NetQASM} uses a similar framework to the SDK used by the predecessor \ac{CQC}~\cite{git_cqc}.
+Any program on a node starts by setting up a \texttt{NetQASMConnection} to the \ac{QNPU}-implementation in the \emph{backend}.
+The \texttt{NetQASMConnection} encapsulates all communication that the \ac{CNPU} does with the \ac{QNPU}.
 More information about supported backends can be found below in \cref{sec:backends}.
 Using the \texttt{NetQASMConnection} one can for example construct a \texttt{Qubit} object.
 The \texttt{Qubit} object has methods for performing quantum gates and measurements.
-When these methods are called, corresponding \netqasm\ instructions are included in the current subroutine being constructed.
+When these methods are called, corresponding \ac{NetQASM} instructions are included in the current subroutine being constructed.
 One marks the end of a subroutine, and the start of another, either by explicitly calling \texttt{flush} on the \texttt{NetQASMConnection} or by ending the scope of the \nq{with NetQASMConnection ...} context.
 
-The following Python code shows a basic application written in the \netqasm\ SDK.
-The application will be compiled into a single subroutine executed on the \QNPU, which creates a qubit, performs a Hadamard operation, measures the qubit and returns the result to the application layer.
+The following Python code shows a basic application written in the \ac{NetQASM} SDK.
+The application will be compiled into a single subroutine executed on the \ac{QNPU}, which creates a qubit, performs a Hadamard operation, measures the qubit and returns the result to the application layer.
 % \subsubsection{Hello world/Hello Hadamard}
-% Functionally the same as the \netqasm-subroutine~\ref{sec:example_nq_hello_world}.
+% Functionally the same as the \ac{NetQASM}-subroutine~\ref{sec:example_nq_hello_world}.
 \begin{pycode}
   # Setup connection to backend
   # as the node Alice
@@ -745,7 +742,7 @@ The application will be compiled into a single subroutine executed on the \QNPU,
     # explicitly using `alice.flush()`
 \end{pycode}
 
-The following \netqasm\ subroutine is the result of translating the above Python code to \netqasm of the vanilla (platform-independent) flavor.
+The following \ac{NetQASM} subroutine is the result of translating the above Python code to \ac{NetQASM} of the vanilla (platform-independent) flavor.
 
 % \subsubsection{Hello world/Hello Hadamard}\label{sec:example_nq_hello_world}
 % A simple subroutine which creates a qubit, performs a Hadamard, measures the qubit and returns the measurement outcome to the host.
@@ -771,11 +768,11 @@ The following \netqasm\ subroutine is the result of translating the above Python
 
 \subsubsection{Backends}
 \label{sec:backends}
-As mentioned above, the \texttt{NetQASMConnection} in the SDK is responsible for communicating with the implemented \QNPU\ in the \emph{backend}.
-The \emph{backend} can either be a simulator or an actual \QNPU\ using real quantum hardware.
-Currently supported backends are the simulators \squidasm~\cite{git_squidasm} (using \netsquid~\cite{netsquid, coopmans2021netsquid}) and \simulaqron~\cite{dahlberg2018simulaqron}.
-A physical implementation of \QNPU\ running on quantum hardware is being worked on at the time of writing.
-Using the SDK provided at~\cite{git_netqasm}, one can for example simulate a set of program files for the nodes of a quantum network on \netsquid\ using a density matrix formalism with the command:
+As mentioned above, the \texttt{NetQASMConnection} in the SDK is responsible for communicating with the implemented \ac{QNPU} in the \emph{backend}.
+The \emph{backend} can either be a simulator or an actual \ac{QNPU} using real quantum hardware.
+Currently supported backends are the simulators SquidASM~\cite{git_squidasm} (using NetSquid~\cite{netsquid, coopmans2021netsquid}) and SimulaQron~\cite{dahlberg2018simulaqron}.
+A physical implementation of \ac{QNPU} running on quantum hardware is being worked on at the time of writing.
+Using the SDK provided at~\cite{git_netqasm}, one can for example simulate a set of program files for the nodes of a quantum network on NetSquid using a density matrix formalism with the command:
 \begin{nqcode}
   netqasm simulate --simulator=netsquid --formalism=dm
 \end{nqcode}
@@ -784,19 +781,19 @@ For more details see the docs at~\cite{git_netqasm}.
 
 \section{Evaluation}
 \label{sec:evaluation}
-We evaluate two of the design choices that we made for \netqasm:
-    (1) exposing unit-modules to the \host and
+We evaluate two of the design choices that we made for \ac{NetQASM}:
+    (1) exposing unit-modules to the \ac{CNPU} and
     (2) adding the possibility to use platform-specific flavors of instructions.
-For both elements we study the difference in including them in \netqasm versus not including them.
+For both elements we study the difference in including them in \ac{NetQASM} versus not including them.
 We do this by simulating a teleportation application and a blind quantum computation application.
-These examples also showcase the ability of \netqasm to express general quantum internet applications.
+These examples also showcase the ability of \ac{NetQASM} to express general quantum internet applications.
 
-We have implemented a simulator, called \squidasm~\cite{git_squidasm}, that simulates a network in which end-nodes have the internal architecture as described in~\cref{sec:preliminaries}, that is, with an \host and a \QNPU.
+We have implemented a simulator, called SquidASM~\cite{git_squidasm}, that simulates a network in which end-nodes have the internal architecture as described in~\cref{sec:preliminaries}, that is, with an \ac{CNPU} and a \ac{QNPU}.
 The simulator internally uses NetSquid~\cite{netsquid}, which was made specifically for the simulation of quantum networks.
-\squidasm executes programs written using the SDK (\cref{sec:python-sdk}), including sending \netqasm subroutines to the (simulated) \QNPU.
+SquidASM executes programs written using the SDK (\cref{sec:python-sdk}), including sending \ac{NetQASM} subroutines to the (simulated) \ac{QNPU}.
 The code and data that were used to produce the results in this section can be found at~\cite{git_netqasm_paper_data}.
 
-We evaluate the performance of \netqasm by looking at the runtime quality of two applications, both consisting of two programs (one per node).
+We evaluate the performance of \ac{NetQASM} by looking at the runtime quality of two applications, both consisting of two programs (one per node).
 The first is a teleportation of a single qubit from a sender node to a receiver node.
 We define the quality as the fidelity between the original qubit state at the sender and the final qubit state at the receiver.
 The second application is a blind computation protocol which involves a client and a server.
@@ -805,7 +802,7 @@ The protocol is a so-called \textit{verifiable blind quantum computation}~\cite{
 This means that some of the rounds of the protocols are \textit{trap rounds}.
 We define the quality that we evaluate as the error rate of these trap rounds, since this indicates the blindness of the server.
 
-We run these applications on \squidasm, where we simulate realistic quantum hardware.
+We run these applications on SquidASM, where we simulate realistic quantum hardware.
 Specifically, we simulate nodes based on nitrogen-vacancies (NV) in diamond, that can do heralded entanglement generation between each other.
 The simulated hardware uses noise models that are also used in~\cite{coopmans2021netsquid}.
 For more details, see~\cref{app:simulation}.
@@ -820,20 +817,20 @@ Therefore, we focus on the evaluation of these two design decisions.
 
 In our evaluation, we focus specifically on the Nitrogen-Vacancy hardware for our nodes.
 This has two reasons.
-First, it is a promising hardware platform for quantum network nodes~\cite{Taminiau2014} which we know quite well since it is available in the lab, and we have even used \netqasm in a simple test case running on nodes based on NV~\cite{pompili2021experimental}.
+First, it is a promising hardware platform for quantum network nodes~\cite{Taminiau2014} which we know quite well since it is available in the lab, and we have even used \ac{NetQASM} in a simple test case running on nodes based on NV~\cite{pompili2021experimental}.
 Second, the NV hardware is interesting since it has a restricted gate set and qubit topology, which is explained in more detail below.
 Therefore, we expect that the use of unit modules and an NV-specific flavor makes a difference in terms of runtime quality.
 
 \subsection{Unit modules}
 \label{sec:evaluation-unit-modules}
 We ask ourselves the question whether it pays off to expose unit modules, that is, a qubit topology with gate- and entanglement information.
-Specifically, we want to know if there are situations where knowing the unit module gives the \host an opportunity to optimize the application in a way that is not possible when not knowing the unit module.
+Specifically, we want to know if there are situations where knowing the unit module gives the \ac{CNPU} an opportunity to optimize the application in a way that is not possible when not knowing the unit module.
 If so, we are interested in how much advantage this gives (in terms of the runtime quality defined above).
 
 In the next section we show that there are indeed situations where knowledge of the unit module is advantageous.
-It can be that the order in which \netqasm instructions are issued in a subroutine is sub-optimal, since virtual qubit IDs may be mapped in such a way that the \QNPU has to move virtual qubits to different physical qubits in order to execute the instructions.
-If the \host layer does not know this mapping, it cannot know that the instructions are ordered sub-optimally.
-With knowledge of the unit module, on the other hand, the \host can optimize the order and the overall application performance is improved.
+It can be that the order in which \ac{NetQASM} instructions are issued in a subroutine is sub-optimal, since virtual qubit IDs may be mapped in such a way that the \ac{QNPU} has to move virtual qubits to different physical qubits in order to execute the instructions.
+If the \ac{CNPU} layer does not know this mapping, it cannot know that the instructions are ordered sub-optimally.
+With knowledge of the unit module, on the other hand, the \ac{CNPU} can optimize the order and the overall application performance is improved.
 
 We consider a teleportation application where a \textit{sender} program teleports a single qubit to another \textit{receiver} program.
 It is assumed that the underlying platform is based on nitrogen-vacancy centers in diamond (NV) and use well-established models for both the noise and operations supported on such platforms, see \cref{app:simulation}.
@@ -842,12 +839,12 @@ At some point, the sender measures both qubits, after which it sends the outcome
 We assume that the sender program is written in a higher-level language like, like in our SDK (\cref{sec:sdk}), and in such a way that it first issues a measurement operation on qubit T, and then on E. However, due to the differences in characteristics of the physical qubits, as will be explained below, it is more efficient to first do the measurement on E, and then on T. Now we consider two scenarios, namely
 \begin{itemize}
   \item \textbf{Unit-modules (UM)}.
-        We assume that the sender program is written and executed on a software stack implementing \netqasm, which means that the application's view of its quantum working memory is in the form of a unit module.
-        This unit module contains information about the above-mentioned hardware restrictions, and therefore a compiler can take advantage of it by re-ordering the measurement operations while generating the \netqasm subroutines to be sent to the \QNPU.
+        We assume that the sender program is written and executed on a software stack implementing \ac{NetQASM}, which means that the application's view of its quantum working memory is in the form of a unit module.
+        This unit module contains information about the above-mentioned hardware restrictions, and therefore a compiler can take advantage of it by re-ordering the measurement operations while generating the \ac{NetQASM} subroutines to be sent to the \ac{QNPU}.
   \item \textbf{No unit-modules (NUM)}.
-        In this case the software stack also implements \netqasm, but without unit modules.
+        In this case the software stack also implements \ac{NetQASM}, but without unit modules.
         Specifically, the application sees its quantum memory as just a number of uniform qubits.
-        Therefore, a compiler for this application does not know about the hardware restrictions, and will construct \netqasm-subroutines sent to the \QNPU\ without doing any optimization and leaves the order of the operations to be performed as they are specified in the high-level SDK.
+        Therefore, a compiler for this application does not know about the hardware restrictions, and will construct \ac{NetQASM}-subroutines sent to the \ac{QNPU} without doing any optimization and leaves the order of the operations to be performed as they are specified in the high-level SDK.
 \end{itemize}
 
 Let's first go through the steps of the teleportation application:\newline
@@ -893,16 +890,16 @@ Qubit $q_t$ can then be moved to the communication qubit to be measured and then
 We can now see that performing step 6 before 4 and 5 has the advantage that this qubit is already in the communication qubit and can be measured directly without moving it first.
 Afterwards, $q_t$ can be moved to the communication qubit, which is cleared after the measurement, requiring in total only 2 move operations and only two physical qubits.
 The decision of performing step 6 before 4 and 5 is highly dependent on the NV-platform and can only be made by a compiler that is aware about these restrictions.
-The inclusion of unit-modules and qubit types in the \netqasm-framework, which are exposed to the compiler at the \host, allows for these optimization decision and can therefore improve the quality of execution.
+The inclusion of unit-modules and qubit types in the \ac{NetQASM}-framework, which are exposed to the compiler at the \ac{CNPU}, allows for these optimization decision and can therefore improve the quality of execution.
 
 For the two scenarios we consider, i.e. performing step 6 before 4 and 5 (\textbf{Unit modules (UM)}) or not (\textbf{No unit-modules (NUM)}), we check the average fidelity of the teleported state as a function of the gate noise (\cref{fig:sweep_gate_noise}), as well as the average fidelity and execution time as a function of gate duration (\cref{fig:sweep_gate_noise}), of the native two-qubit gate of the NV-platform. We see that performing step 6 before 4 and 5 improves both total execution time and average fidelity.
-This can be explained by the fact that using unit modules allowed a compiler to produce \netqasm code containing fewer two-qubit gates.
+This can be explained by the fact that using unit modules allowed a compiler to produce \ac{NetQASM} code containing fewer two-qubit gates.
 Therefore, an increase in two-qubit gate noise leads to a lower fidelity.
 Also, an increase in two-qubit gate duration leads to higher execution time difference between the two scenarios.
 Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does not affect the final fidelity in this situation, but the difference between using unit modules versus not using them remains.
 
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[scale=0.8]{figures/netqasm/plots/paper_teleport_sweep_gate_noise.png}
     \caption{
@@ -917,7 +914,7 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
     \label{fig:sweep_gate_noise}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[scale=0.8]{figures/netqasm/plots/paper_teleport_sweep_gate_time.png}
     \caption{
@@ -936,8 +933,9 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
 
 
 
-\subsection{Flavors}\label{sec:evaluation-flavours}
-While aiming to let \netqasm be mostly platform-independent, we did also choose to allow platform-specific instructions, bundled in flavors.
+\subsection{Flavors}
+\label{sec:evaluation-flavours}
+While aiming to let \ac{NetQASM} be mostly platform-independent, we did also choose to allow platform-specific instructions, bundled in flavors.
 The idea is that this allows for platform-specific optimization leading to better application performance.
 Here we evaluate if flavors really impact potential performance, and if so how much.
 
@@ -948,17 +946,17 @@ We consider the blind computation application depicted in \cref{fig:bqc_app}, wh
 Again we compare two scenarios, in this case:
 \begin{itemize}
   \item \textbf{Vanilla}.
-        We compile both the client's and server's application code to \netqasm subroutines with the vanilla flavor.
-        The \QNPU, controlling NV hardware which does not implement all vanilla gates natively, needs to translate the vanilla instructions on the go.
+        We compile both the client's and server's application code to \ac{NetQASM} subroutines with the vanilla flavor.
+        The \ac{QNPU}, controlling NV hardware which does not implement all vanilla gates natively, needs to translate the vanilla instructions on the go.
         We assume this translation is ad-hoc and does not do any optimizations like removing redundant gates.
   \item \textbf{NV}.
-        The code is compiled to \netqasm subroutines containing instructions in the NV flavor, and redundant gates are optimized away.
-        The \QNPU can directly execute the instructions on the hardware.
+        The code is compiled to \ac{NetQASM} subroutines containing instructions in the NV flavor, and redundant gates are optimized away.
+        The \ac{QNPU} can directly execute the instructions on the hardware.
 \end{itemize}
 
 We implemented this by writing two separate programs in the SDK, one for the client and one for the server.
-The SDK automatically compiles the relevant parts of these programs into \netqasm subroutines.
-Classical communication (values $\delta_1$, $m_1$ and $\delta_2)$ is done purely between the two simulated application layers, so these operations are not compiled to \netqasm subroutines.
+The SDK automatically compiles the relevant parts of these programs into \ac{NetQASM} subroutines.
+Classical communication (values $\delta_1$, $m_1$ and $\delta_2)$ is done purely between the two simulated application layers, so these operations are not compiled to \ac{NetQASM} subroutines.
 More details about the simulation can be found in \cref{app:simulation}.
 
 The protocol is a verifiable blind quantum protocol~\cite{fitzsimons2017unconditionally}, which means that the circuit in~\cref{fig:bqc_app} is run multiple times, namely once per round.
@@ -967,16 +965,16 @@ Such a trap round can either succeed or fail, depending on the values returned b
 The fraction of trap rounds that fail is called the error rate.
 The error rate should stay low in order for the computation to be blind.
 
-We simulate the BQC application by running the client's and server's programs in \squidasm.
+We simulate the BQC application by running the client's and server's programs in SquidASM.
 We look at the error rate of the trap round as a function of the two-qubit gate noise.
 The result can be seen in~\cref{fig:plot_bqc}.
 It can be seen that using the NV flavor provides a better (lower) error rate than using the vanilla flavor.
-This can be explained by noting that \netqasm instructions in the vanilla flavor are mapped ad-hoc to native NV gates by the \QNPU at runtime, which leads to more two-qubit gates in total.
+This can be explained by noting that \ac{NetQASM} instructions in the vanilla flavor are mapped ad-hoc to native NV gates by the \ac{QNPU} at runtime, which leads to more two-qubit gates in total.
 
 
-\begin{figure}
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/netqasm/bqc_app.png}
+  \includegraphics[width=0.6\linewidth]{figures/netqasm/bqc_app.png}
   \caption{Circuit representation of the simulated BQC application. The client
     remotely prepares two qubits on the server, by twice creating an
     entangled pair with the server followed by a local measurement. The
@@ -993,14 +991,14 @@ This can be explained by noting that \netqasm instructions in the vanilla flavor
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[t]
   \centering
   \includegraphics[scale=0.8]{figures/netqasm/plots/bqc_sweep_gate_noise_trap.png}
   \caption{
     Average error rate of trap rounds for the circuit of~\cref{fig:bqc_app}.
     Each point is the average over four combinations of $\theta_1$ and $\theta_2$,
     each used in 500 trap rounds. It can be seen that using the vanilla (platform-independent)
-    \netqasm flavor results in a worse (higher) error rate on average.}
+    \ac{NetQASM} flavor results in a worse (higher) error rate on average.}
   \label{fig:plot_bqc}
 \end{figure}
 
@@ -1008,7 +1006,7 @@ To gain some more insight into why using the NV flavor provides a lower error ra
 As can be seen in~\cref{fig:bqc_app}, the client remotely prepares two states on the server by twice creating entanglement and measuring its own half of the EPR pair.
 In~\cref{fig:plot_bqc_fidelity} we see that already during this remote state preparation phase the NV flavor outperforms the vanilla flavor in terms of the fidelity of the prepared states.
 
-\begin{figure}
+\begin{figure}[t]
   \centering
   \includegraphics[scale=0.8]{figures/netqasm/plots/bqc_sweep_gate_noise_epr_fidelity.png}
   \caption{ Fidelity of the two remotely prepared states on the server in
@@ -1027,20 +1025,21 @@ In~\cref{fig:plot_bqc_fidelity} we see that already during this remote state pre
 \end{figure}
 
 \subsection{Relation to other results}
-We note that a similar question of how many physical details to expose from lower-level layers (in our case the \QNPU) to higher-level layers (in our case the \host) has also been evaluated in~\cite{murali2019fullstack}.
+We note that a similar question of how many physical details to expose from lower-level layers (in our case the \ac{QNPU}) to higher-level layers (in our case the \ac{CNPU}) has also been evaluated in~\cite{murali2019fullstack}.
 Their conclusion is that exposing and leveraging some of these details can indeed improve certain program success metrics.
-That result agrees with that of ours, which shows that program execution quality can improve by exposing and leveraging unit modules and platform-specific \netqasm flavors.
+That result agrees with that of ours, which shows that program execution quality can improve by exposing and leveraging unit modules and platform-specific \ac{NetQASM} flavors.
 
 \section{Conclusion}
 \label{sec:conclusion}
-\netqasm enables the development of quantum internet applications in a platform-independent manner.
-It solves the question of dealing with the complexity of having both classical and quantum operations in a single program, while at the same time providing a relatively simple format for \QNPU-like layers to handle.
+\ac{NetQASM} enables the development of quantum internet applications in a platform-independent manner.
+It solves the question of dealing with the complexity of having both classical and quantum operations in a single program, while at the same time providing a relatively simple format for \ac{QNPU}-like layers to handle.
 Multiple applications, such as remote teleportation and blind quantum computation, have already been implemented.
-A simple compiler has been implemented that can translate code written in the higher-level SDK into \netqasm.
+A simple compiler has been implemented that can translate code written in the higher-level SDK into \ac{NetQASM}.
 
-Additionally to the work in this paper, we are also developing a physical implementation of the \QNPU.
-One key component in this implementation is the \emph{Quantum Node Operating System} (\qnodeos), which acts as the bridge between the applications and the physical layer.
-\qnodeos\ will be presented in a dedicated paper including results of a first integration test between \netqasm, \qnodeos\ and underlying physical quantum hardware.
+Additionally to the work in this paper, we are also developing a physical implementation of the \ac{QNPU}.
+\todo{Rewrite this part now that QNodeOS is finished}
+One key component in this implementation is the \emph{Quantum Node Operating System} (QNodeOS), which acts as the bridge between the applications and the physical layer.
+QNodeOS will be presented in a dedicated paper including results of a first integration test between \ac{NetQASM}, QNodeOS and underlying physical quantum hardware.
 This will mark the first time a quantum network node has been programmed using platform-independent code.
 
 
@@ -1054,11 +1053,11 @@ The data that support the findings of this study are openly available at the fol
 
 \section{Flow of messages}
 \label{sec:app-messages}
-Here we define the content of each of the messages being sent between the \host and the \QNPU.
-Each message has an ID chosen by the \host\ which is used to associate replies from the \QNPU\ to the \host.
+Here we define the content of each of the messages being sent between the \ac{CNPU} and the \ac{QNPU}.
+Each message has an ID chosen by the \ac{CNPU} which is used to associate replies from the \ac{QNPU} to the \ac{CNPU}.
 \begin{itemize}
   \item \nq{RegisterApp}:
-        Sent once from the \host\ to the \QNPU\ whenever a new application starts.
+        Sent once from the \ac{CNPU} to the \ac{QNPU} whenever a new application starts.
         Contains information on what resources are required by the application, in particular:
         \begin{itemize}
             \item \nq{unit_module_spec}: Specification of unit-module needed, e.g. number of qubits.
@@ -1069,52 +1068,53 @@ Each message has an ID chosen by the \host\ which is used to associate replies f
                 (4) minimum required fidelity.
         \end{itemize}
   \item \nq{RegisterAppOK}:
-            Returned from the \QNPU\ when application is registered, containing an application ID to be used for future messages.
+            Returned from the \ac{QNPU} when application is registered, containing an application ID to be used for future messages.
             \begin{itemize}
                 \item \nq{app_id}: Application ID.
             \end{itemize}
   \item \nq{RegisterAppErr}:
-        Returned from the \QNPU\ when registration of application failed.
+        Returned from the \ac{QNPU} when registration of application failed.
         For example if required resources could not be met.
         \begin{itemize}
             \item \nq{error_code}: Error code specifying what went wrong.
         \end{itemize}
   \item \nq{Subroutine}:
-        Message from the \host\ to the \QNPU, containing a subroutine to be executed.
+        Message from the \ac{CNPU} to the \ac{QNPU}, containing a subroutine to be executed.
         Details on the content are presented in later sections.
         \begin{itemize}
             \item \nq{app_id}: Application ID.
             \item \nq{subroutine}: The subroutine to be executed.
         \end{itemize}
   \item \nq{Done}:
-        Message from the \QNPU\ to the \host, indicating that a subroutine has finished.
+        Message from the \ac{QNPU} to the \ac{CNPU}, indicating that a subroutine has finished.
         Which subroutine is indicated by the message ID.
         \begin{itemize}
             \item \nq{message_id} Message ID used for the \nq{Subroutine}-message.
         \end{itemize}
   \item \textbf{Update memory}:
-        The \host\ will have access to a copy of the memory allocated by the \QNPU\ for certain registers and arrays, see \cref{sec:language}.
-        This memory is read-only by the \host.
+        The \ac{CNPU} will have access to a copy of the memory allocated by the \ac{QNPU} for certain registers and arrays, see \cref{sec:language}.
+        This memory is read-only by the \ac{CNPU}.
         Updates to the copy of the memory are performed by the end of a subroutine or if the subroutine is waiting.
         Furthermore, updates need to be explicitly specified in the subroutine by using one of the return-commands.
         How the actual update is implemented depends on the platform and can either be done by message-passing or with an actual shared memory.
         However, the subroutine is independent from this implementation.
-        The \host\ will be notified by an explicit message whenever the memory is updated.
+        The \ac{CNPU} will be notified by an explicit message whenever the memory is updated.
   \item \nq{StopApp}:
-        Sent from the \host\ to the \QNPU\ indicating that an application is finished.
+        Sent from the \ac{CNPU} to the \ac{QNPU} indicating that an application is finished.
 \end{itemize}
 
 
-\section{Operands}\label{sec:operands}
-In this section we give the exact definition of the types of operands used in the \netqasm\ language.
-Each instruction of \netqasm\ takes one or more operands.
+\section{Operands}
+\label{sec:operands}
+In this section we give the exact definition of the types of operands used in the \ac{NetQASM} language.
+Each instruction of \ac{NetQASM} takes one or more operands.
 There are five types of operands, which are listed and described below.
 Each instruction has a fixed types of operands at each position.
 The exact operands for each instruction is listed in \cref{app:instructions}.
-We note also that in the human-readable text-form of \netqasm, there are also \textit{branch variables}.
+We note also that in the human-readable text-form of \ac{NetQASM}, there are also \textit{branch variables}.
 However, these are always replaced by \IMMEDIATE{}s (constants), corresponding to the instruction number of the subroutine, before serializing, see \cref{sec:branch_variables}.
 
-The operand types of \netqasm\ are:
+The operand types of \ac{NetQASM} are:
 \begin{itemize}
   \item \IMMEDIATE (constant): An integer seen as it's value.
         The following instruction, \nq{beq} \emph{branch-if-equal}, branches to instruction index \nq{12} since the number \nq{0} equals the number \nq{0}.
@@ -1125,7 +1125,7 @@ beq 0 0 12\end{nqcode}
         The following instruction sets index \nq{0} of the register name \nq{R} to be \nq{0}.
         \begin{nqcode}
 set R0 0\end{nqcode}
-        In the current version of \netqasm\ there are four register names and the indices are relative to the names.
+        In the current version of \ac{NetQASM} there are four register names and the indices are relative to the names.
         They are all functionally the same but are meant to be used for different purposes and increase readability:
         \begin{itemize}
           \item \nq{C}: Constants, meant to only be \nq{set} once throughout a subroutine.
@@ -1159,10 +1159,11 @@ wait_all @0[1:4]\end{nqcode}
         This is handled by the compiler by using a \nq{set}-commands before.
 \end{itemize}
 
-\section{Branch variables}\label{sec:branch_variables}
-The human-readable text-form of \netqasm\ supports the use of \emph{branch variables}.
+\section{Branch variables}
+\label{sec:branch_variables}
+The human-readable text-form of \ac{NetQASM} supports the use of \emph{branch variables}.
 Branch labels are declared as \nq{VAR}: before the instruction to branch to.
-Before serializing a \netqasm-subroutine, all branch variables are replaced with \IMMEDIATE{}s corresponding to the correct \emph{instruction index}.
+Before serializing a \ac{NetQASM}-subroutine, all branch variables are replaced with \IMMEDIATE{}s corresponding to the correct \emph{instruction index}.
 Delaying this replacement to the end is useful if the compiler wants to move around instructions.
 For example if a subroutine is as follows:
 \begin{nqcode}
@@ -1209,11 +1210,11 @@ jmp 1\end{nqcode}
 
 \section{Arrays}
 Classical data produced during the execution of a subroutine are stored in either fixed registers or allocated arrays.
-Arrays in \netqasm\ have fixed-length, which is specified when declared using the \nq{array}-instruction.
+Arrays in \ac{NetQASM} have fixed-length, which is specified when declared using the \nq{array}-instruction.
 Each entry of an array is an \emph{optional} \IMMEDIATE, meaning that the entry is an integer (e.g. \nq{int32}) or not defined (\nq{null}).
-The arrays can be used to collect measurement outcomes to be returned to the \host\ but also other data such as information about the generated remote entanglement~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
-All wait-instructions of \netqasm\ wait for one or more entries in an array to become defined (i.e. not \nq{null}).
-The main use-case is for the execution of the subroutine to wait until the quantum network stack of the \QNPU\ has finished generated an entangled pair with a remote node.
+The arrays can be used to collect measurement outcomes to be returned to the \ac{CNPU} but also other data such as information about the generated remote entanglement~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
+All wait-instructions of \ac{NetQASM} wait for one or more entries in an array to become defined (i.e. not \nq{null}).
+The main use-case is for the execution of the subroutine to wait until the quantum network stack of the \ac{QNPU} has finished generated an entangled pair with a remote node.
 The subroutine will be waiting for information about the entangled pair to be stored in a given array.
 Once this is done, the execution can proceed.
 
@@ -1248,9 +1249,10 @@ set Q0 2
 h Q0\end{nqcode}
 Note that \nq{Q0} is used twice but the value of the register is different.
 
-\section{Instructions}\label{app:instructions}
+\section{Instructions}
+\label{app:instructions}
 \setlist[itemize]{leftmargin=*}
-Here we list the current instructions part of the \textbf{vanilla flavor} of \netqasm.
+Here we list the current instructions part of the \textbf{vanilla flavor} of \ac{NetQASM}.
 For the most up to date version of the language, refer to~\cite{git_netqasm}.
 Commands are specified as follows:
 \begin{itemize}
@@ -1263,7 +1265,7 @@ Commands are specified as follows:
 \end{itemize}
 
 where \nq{name} is the name of the instruction, followed by the list of operands, specified by their type and description.
-We note that in the human-readable text-form of \netqasm, it is allowed to provide an \IMMEDIATE\ for operands that are specified as \REGISTER.
+We note that in the human-readable text-form of \ac{NetQASM}, it is allowed to provide an \IMMEDIATE\ for operands that are specified as \REGISTER.
 The compiler will then replace these, using the \nq{set}-command.
 
 \subsection{Allocation}
@@ -1507,7 +1509,7 @@ Two-qubit gates are the following.
 
 \textbf{Pre-measurement rotations}
 To measure in other bases one can perform gates/rotations before the measurement.
-If the same measurement basis is used a lot, one can also make use of pre-measurement rotations which can reduce the amount of communication needed internally in the \QNPU.
+If the same measurement basis is used a lot, one can also make use of pre-measurement rotations which can reduce the amount of communication needed internally in the \ac{QNPU}.
 A pre-measurement rotations is specified by either the \nq{pmr_xyx}, \nq{pmr_zxz} or \nq{pmr_yzy} which have the following structure.
 With any two of the bases X, Y and Z, one can do any rotation.
 \begin{itemize}
@@ -1561,7 +1563,8 @@ This command does not initiate the entanglement generation but is used to provid
         \end{enumerate}
 \end{itemize}
 
-\subsection{Waiting}\label{app:waiting}
+\subsection{Waiting}
+\label{app:waiting}
 
 There are three wait-commands that can wait for entries in arrays to become \emph{defined}, i.e. not \nq{null}.
 Entries in a new array is by default \nq{null} (\emph{undefined}).
@@ -1617,7 +1620,7 @@ A subroutine written in text form will first be preprocessed, which does the fol
         Any preprocessing command starts with \nq{#} and should be before any command in the body of the subroutine.
         Allowed preprocessing commands are:
         \begin{itemize}
-          \item \netqasm (required): Sets the \netqasm\ version in the metadata.
+          \item \ac{NetQASM} (required): Sets the \ac{NetQASM} version in the metadata.
                 % Example:
                 \begin{nqcode}
 # NETQASM 1.0\end{nqcode}
@@ -1639,12 +1642,15 @@ A subroutine written in text form will first be preprocessed, which does the fol
 
 
 \section{Examples}
-Here we list some examples of programs written in \netqasm.
-In \cref{sec:examples_netqasm}, we show some examples written directly in the \netqasm-language.
+Here we list some examples of programs written in \ac{NetQASM}.
+In \cref{sec:examples_netqasm}, we show some examples written directly in the \ac{NetQASM}-language.
 In \cref{app:examples_sdk}, we show the corresponding examples, instead written in the Python SDK.
 
-\subsection{NetQASM}\label{sec:examples_netqasm}
-\subsubsection{Classical logic (if-statement)}\label{sec:example_nq_if}
+\subsection{NetQASM}
+\label{sec:examples_netqasm}
+
+\subsubsection{Classical logic (if-statement)}
+\label{sec:example_nq_if}
 A subroutine which creates a qubit, puts in the $|+\rangle$ state, measures it and depending on the outcome performs an X-gates such that by the end of the subroutine the qubit is always in the state $|0\rangle$.
 \begin{nqcode}
 # NETQASM 1.0
@@ -1670,7 +1676,8 @@ x Q0
 
 EXIT:\end{nqcode}
 
-\subsubsection{Classical logic (for-loop)}\label{sec:example_nq_for}
+\subsubsection{Classical logic (for-loop)}
+\label{sec:example_nq_for}
 A subroutine which performs a for-loop which body creates a qubit, puts in the $|+\rangle$ state and measures it. The outcomes are stored in an array.
 In a higher-level language (using python syntax) the below subroutine might be written as follows:
 \begin{pycode}
@@ -1682,7 +1689,7 @@ for i in range(10):
   m = q.measure()
   ms[i] = m
 \end{pycode}
-The equivalent \netqasm subroutine is:
+The equivalent \ac{NetQASM} subroutine is:
 \begin{nqcode}
 # NETQASM 1.0
 # APPID 0
@@ -1718,7 +1725,8 @@ EXIT:\end{nqcode}
 
 In the above subroutine \nq{DEFINE} statements have been used to clarify what registers/arrays correspond to the variables in the higher-level language example above.
 
-\subsubsection{Create and recv EPR}\label{sec:example_nq_epr}
+\subsubsection{Create and recv EPR}
+\label{sec:example_nq_epr}
 This code is for the side initializing the entanglement request.
 \begin{nqcode}
 # NETQASM 1.0
@@ -1790,13 +1798,14 @@ meas Q0 M0
 // Return the outcome
 ret_req M0\end{nqcode}
 
-\subsection{SDK}\label{app:examples_sdk}
-Each of the examples in this section are functionally the same as the examples in section~\ref{sec:examples_netqasm}.
+\subsection{SDK}
+\label{app:examples_sdk}
+Each of the examples in this section are functionally the same as the examples in \cref{sec:examples_netqasm}.
 A compiler will produce a similar subroutine as the examples in the previous section but might vary depending on the exact implementation of the compiler.
 
 
 \subsubsection{Classical logic (if-statement)}
-Functionally the same as the \netqasm-subroutine (\cref{sec:example_nq_if}).
+Functionally the same as the \ac{NetQASM}-subroutine (\cref{sec:example_nq_if}).
 \begin{pycode}
 # Setup connection to backend
 # as the node Alice
@@ -1813,7 +1822,7 @@ with NetQASMConnection("Alice") as alice:
 \end{pycode}
 
 \subsubsection{Classical logic (for-loop)}
-Functionally the same as the \netqasm-subroutine (\cref{sec:example_nq_for}).
+Functionally the same as the \ac{NetQASM}-subroutine (\cref{sec:example_nq_for}).
 \begin{pycode}
 # Setup connection to backend
 # as the node Alice
@@ -1833,7 +1842,7 @@ with NetQASMConnection("Alice") as alice:
 \end{pycode}
 
 \subsubsection{Create and recv EPR}
-Functionally the same as the \netqasm-subroutine (\cref{sec:example_nq_epr}).
+Functionally the same as the \ac{NetQASM}-subroutine (\cref{sec:example_nq_epr}).
 
 This code is for the side initializing the entanglement request.
 \begin{pycode}
@@ -1867,12 +1876,13 @@ epr_sockets=[epr_socket]
   m = epr.measure()
 \end{pycode}
 
-\section{Simulation details}\label{app:simulation}
+\section{Simulation details}
+\label{app:simulation}
 
 In this section we detail how simulations in \cref{sec:evaluation} were
 performed and what models and parameters were used. All simulations used the
-\netqasm\ SDK~\cite{git_netqasm}, using
-\netsquid~\cite{netsquid,coopmans2021netsquid} as the underlying simulator. All
+\ac{NetQASM} SDK~\cite{git_netqasm}, using
+NetSquid~\cite{netsquid,coopmans2021netsquid} as the underlying simulator. All
 code used in these simulations can also be found at~\cite{git_squidasm}.
 
 
@@ -1924,7 +1934,8 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
   \caption{
     Gate durations for scenario \textbf{B} of \cref{sec:evaluation}.
     $t$ is the value being swept in \cref{fig:sweep_gate_time}.
-    All values are from~\cite{dahlberg2019linklayer}.}\label{tab:gates}
+    All values are from~\cite{dahlberg2019linklayer}.}
+  \label{tab:gates}
 \end{table}
 
 \begin{table}
@@ -1953,7 +1964,8 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
     $f$ is the value being swept in \cref{fig:sweep_gate_noise} and \cref{fig:plot_bqc}.
     All fidelities are realized by a applying depolarising noise as in \cref{eq:depolarising}.
     All values are from~\cite{coopmans2021netsquid}, except \nq{link_fidelity} which is set to relatively high value to avoid this being the major noise-contribution and preventing any conclusions to be made.
-  }\label{tab:noise}
+  }
+  \label{tab:noise}
 \end{table}
 
 \subsection{BQC application and flavors}
@@ -1962,7 +1974,7 @@ In \cref{sec:evaluation-flavours} we simulated the blind quantum computation
 \cite{git_squidasm}.
 
 In the scenario when the application code was compiled to subroutines with the
-vanilla lavour, the \QNPU had to map the vanilla instructions to NV-native
+vanilla lavour, the \ac{QNPU} had to map the vanilla instructions to NV-native
 operations on the fly. We used the gate mappings listed below. For
 convenience we use \nq{PI} and \nq{PI_OVER_2} for $\pi$ and $\frac{\pi}{2}$
 respectively.

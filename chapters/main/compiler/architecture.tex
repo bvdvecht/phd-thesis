@@ -68,6 +68,8 @@ with open("program.mlir", "w") as f:
     f.write(mlir.text())
 \end{pycode}
 
+\todo{Corresponding MLIR code per IR}
+
 The Python SDK acts as the "frontend" of the qoala compiler. In this sense,
 the output of the Python SDK is a `.mlir` file in the QoalaHIR dialect.
 By using Python as a the high-level language of the programs, we can take advantage
