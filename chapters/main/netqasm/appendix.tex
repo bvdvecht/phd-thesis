@@ -215,67 +215,53 @@ where \nq{name} is the name of the instruction, followed by the list of operands
 We note that in the human-readable text-form of \ac{NetQASM}, it is allowed to provide an \IMMEDIATE\ for operands that are specified as \REGISTER.
 The compiler will then replace these, using the \nq{set}-command.
 
-\subsection{Allocation}
+\paragraph{Allocation}
 
 \begin{itemize}
-  \item \nq{qalloc}: Start using a qubit in the unit module.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the qubit.
-        \end{enumerate}
-  \item \nq{array}: Creates an array of a certain length (width is fixed)
-        % Operands:
-        \begin{enumerate}
-          \item \IMMEDIATE: Number of entries in the array.
-          \item \ADDRESS: Address of array
-        \end{enumerate}
+  \item \nq{qalloc <reg>}: Start using a qubit in the unit module.
+
+        \nq{<reg>}: The virtual address of the qubit.
+  \item \nq{array <imm> <addr>}: Creates an array of a certain length (width is fixed).
+
+        \nq{<imm>}: Number of entries in the array.
+        \nq{<addr>}: Address of array.
 \end{itemize}
 
 
 \subsection{Initialization}
 
 \begin{itemize}
-  \item \nq{init}: Initializes a qubit to $|0\rangle$
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the qubit.
-        \end{enumerate}
-  \item \nq{set}: Set a register to a certain value.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The register to assign a value to.
-          \item \IMMEDIATE: The value to assign.
-        \end{enumerate}
+  \item \nq{init <reg>}: Initializes a qubit to $|0\rangle$.
+
+        \nq{<reg>}: The virtual address of the qubit.
+  \item \nq{set <reg> <imm>}: Set a register to a certain value.
+
+        \nq{<reg>}: The register to assign a value to.
+        \nq{<imm>}: The value to assign.
 \end{itemize}
 
 \subsection{Memory operations}
 \begin{itemize}
-  \item \nq{store}: Stores the value in a register to an index of an array.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The register holding the value to store.
-          \item \textbf{ARRAY\_ENTRY}: The array-entry to store the value to.
-        \end{enumerate}
-  \item \nq{load}: Loads the value from an index of an array to a register.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The register to store the value to.
-          \item \textbf{ARRAY\_ENTRY}: The array-entry holding the value.
-        \end{enumerate}
-  \item \nq{undef}: Sets an entry of an array to \nq{null}, see \cref{app:waiting}.
-        % Operands:
-        \begin{enumerate}
-          \item \textbf{ARRAY\_ENTRY} Array-entry to make \nq{null}.
-        \end{enumerate}
-  \item \nq{lea}: Loads a given address of an array to a register.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The register to store the address to.
-          \item \ADDRESS: The address to the array.
-        \end{enumerate}
+  \item \nq{store <reg> <arr-ent>}: Stores the value in a register to an index of an array.
+
+        \nq{<reg>}: The register holding the value to store.
+        \nq{<arr-ent>}: The array-entry to store the value to.
+  \item \nq{load <reg> <arr-ent>}: Loads the value from an index of an array to a register.
+
+        \nq{<reg>}: The register to store the value to.
+        \nq{<arr-ent>}: The array-entry holding the value.
+  \item \nq{undef <arr-ent>}: Sets an entry of an array to \nq{null}, see \cref{app:waiting}.
+
+        \nq{<arr-ent>}: Array-entry to make \nq{null}.
+  \item \nq{lea <reg> <addr>}: Loads a given address of an array to a register.
+  
+        \nq{<reg>}: The register to store the address to.
+        \nq{<addr>}: The address to the array.
 \end{itemize}
 
 \subsection{Classical logic}
+
+\todo{Rewrite below instructions in same format as above}
 
 There are three groups of branch instructions: nullary, unary and binary.
 
@@ -822,144 +808,3 @@ epr_sockets=[epr_socket]
   # Measure the entangled qubit
   m = epr.measure()
 \end{pycode}
-
-\section{Simulation details}
-\label{app:simulation}
-
-In this section we detail how simulations in \cref{sec:evaluation} were
-performed and what models and parameters were used. All simulations used the
-\ac{NetQASM} SDK~\cite{git_netqasm}, using
-NetSquid~\cite{netsquid,coopmans2021netsquid} as the underlying simulator. All
-code used in these simulations can also be found at~\cite{git_squidasm}.
-
-
-\subsection{Noise model}
-In both the teleportation and the blind quantum computing scenario we used the
-same model for nitrogen-vacancy centres in diamonds as was used
-in~\cite{dahlberg2019linklayer} and~\cite{coopmans2021netsquid}. All gates
-specified by the application in the SDK were translated to NV-specific gates,
-see \cref{tab:gates}, using a simple compiler without any optimization. The
-parameters used in the model from~\cite{dahlberg2019linklayer} are listed in
-\cref{tab:gates,tab:noise}, together with an explanation and a reference.
-\nq{ec_controlled_dir_xy} are the native two-qubit gates of the NV-platform,
-ideally performing one of the unitary operations
-\begin{align}
-  U_\mathrm{ec_x}(\alpha) & = \begin{pmatrix}R_x(\alpha) & 0 \\ 0 & R_x(-\alpha) \end{pmatrix} \label{eq:crot_x} \\
-  U_\mathrm{ec_y}(\alpha) & = \begin{pmatrix}R_y(\alpha) & 0 \\ 0 & R_y(-\alpha) \end{pmatrix} \label{eq:crot_y} \\
-\end{align}
-where $R_x(\alpha)$ and $R_y(\alpha)$ are the rotation matrices around $X$ and
-$Y$, respectively. When sweeping the duration and noise of this two-qubit gate
-the same value is also used for the \nq{carbon_xy_rot} ($X$- and $Y$-rotations
-on the carbon) on the storage qubits, since these are also effectively done with
-a similar operation also involving the communication qubit (electron). All noise
-indicated by a fidelity in \cref{tab:noise} are applied as depolarising noise by
-applying the perfect operation, producing the state $\rho_\mathrm{ideal}$, and
-mapping this to
-\begin{equation}\label{eq:depolarising}
-  \rho_\mathrm{noisy}=(1-p)\rho_\mathrm{ideal} + \frac{p}{3}X\rho_\mathrm{ideal}X + \frac{p}{3}Y\rho_\mathrm{ideal}Y + \frac{p}{3}Z\rho_\mathrm{ideal}Z
-\end{equation}
-where $X$, $Y$ and $Z$ are the Pauli operators in
-\cref{eq:pauli_x,eq:pauli_y,eq:pauli_z}, $p=\frac{4}{3}(1 - F)$, with $F$ being
-the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
-(energy/thermal relaxation time) and $T_2$ (dephasing time)~\cite{Nielsen2010}.
-
-\begin{table}
-  \centering
-  \begin{tabular}{|c|c|c|}
-    \hline
-    Gate                      & Durations (ns) & Explanation                                                \\
-    \hline\hline
-    \texttt{electron\_init}        & 2e3            & Initialize a communication qubit (electron) to $|0\rangle$ \\
-    \texttt{electron\_rot}         & 5              & single-qubit rotation on communication qubit (electron)    \\
-    \texttt{measure}              & 3.7e3          & Measure communication qubit (electron)                     \\
-    \texttt{carbon\_init}          & 3.1e5          & Initialize a storage qubit (carbon) to $|0\rangle$         \\
-    \texttt{carbon\_xy\_rot}        & $t$            & $X$/$Y$-rotation on storage qubit (carbon)                 \\
-    \texttt{carbon\_z\_rot}         & 5              & $Z$-rotation on storage qubit (carbon)                     \\
-    \texttt{ec\_controlled\_dir\_xy} & $t$            & Native two-qubit gates, see \cref{eq:crot_x,eq:crot_y}     \\
-    \hline
-  \end{tabular}
-  \caption{
-    Gate durations for scenario \textbf{B} of \cref{sec:evaluation}.
-    $t$ is the value being swept in \cref{fig:sweep_gate_time}.
-    All values are from~\cite{dahlberg2019linklayer}.}
-  \label{tab:gates}
-\end{table}
-
-\begin{table}
-  \centering
-  \begin{tabular}{||c|c|c|c||}
-    \hline
-    Parameter                 & Value        & Explanation                                                 \\
-    \hline\hline
-    \texttt{electron\_T1}          & 1 hour       & $T_1$ of communication qubit (electron)                     \\
-    \texttt{electron\_T2}          & 1.46 seconds & $T_2$ of communication qubit (electron)                     \\
-    \texttt{electron\_init}        & 0.99)        & Fidelity to initialize communication qubit (electron)       \\
-    \texttt{electron\_rot}         & 1.0          & Fidelity for $Z$-rotation on communication qubit (electron) \\
-    \texttt{carbon\_T1}            & 10 hours     & $T_1$ of storage qubit (carbon)                             \\
-    \texttt{carbon\_T2}            & 1 second     & $T_2$ of storage qubit (carbon)                             \\
-    \texttt{carbon\_init}          & 0.997        & Fidelity to initialize storage qubit (carbon)               \\
-    \texttt{carbon\_z\_rot}         & 0.999        & Fidelity for $Z$-rotation on storage qubit (carbon)         \\
-    \texttt{carbon\_xy\_rot}        & $f$          & Fidelity for $X$/$Y$-rotation on storage qubit (carbon)     \\
-    \texttt{ec\_controlled\_dir\_xy} & $f$          & Fidelity for native two-qubit gate                          \\
-    \texttt{prob\_error\_meas\_0}    & 0.05         & Probability of flipped measurement outcome for $|0\rangle$  \\
-    \texttt{prob\_error\_meas\_1}    & 0.005        & Probability of flipped measurement outcome for $|1\rangle$  \\
-    \texttt{link\_fidelity}        & 0.9          & Fidelity of generated entangled pair.                       \\
-    \hline
-  \end{tabular}
-  \caption{
-    Noise parameters for used in the simulations of \cref{sec:evaluation}.
-    $f$ is the value being swept in \cref{fig:sweep_gate_noise} and \cref{fig:plot_bqc}.
-    All fidelities are realized by a applying depolarising noise as in \cref{eq:depolarising}.
-    All values are from~\cite{coopmans2021netsquid}, except \nq{link_fidelity} which is set to relatively high value to avoid this being the major noise-contribution and preventing any conclusions to be made.
-  }
-  \label{tab:noise}
-\end{table}
-
-\subsection{BQC application and flavors}
-In \cref{sec:evaluation-flavours} we simulated the blind quantum computation
-(BQC) application from \cref{fig:bqc_app}. The code for this is available at
-\cite{git_squidasm}.
-
-In the scenario when the application code was compiled to subroutines with the
-vanilla lavour, the \ac{QNPU} had to map the vanilla instructions to NV-native
-operations on the fly. We used the gate mappings listed below. For
-convenience we use \nq{PI} and \nq{PI_OVER_2} for $\pi$ and $\frac{\pi}{2}$
-respectively.
-
-A \nq{h} (Hadamard) vanilla instruction was mapped to the following NV instruction sequence:
-\begin{nqcode}
-  rot_y PI_OVER_2
-  rot_x PI\end{nqcode}
-
-A \nq{cnot C S} vanilla instruction between a communication qubit (C) and a storage
-qubit (S) (as specified in the unit module) was mapped to the following NV
-instruction sequence:
-\begin{nqcode}
-  cx_dir C S PI_OVER_2
-  rot_z C -PI_OVER_2
-  rot_x S -PI_OVER_2\end{nqcode}
-
-A \nq{cnot S C} vanilla instruction between a store qubit (S) and a communication
-qubit (C) (as specified in the unit module) was mapped to the following NV
-instruction sequence:
-\begin{nqcode}
-  rot_y C PI_OVER_2
-  rot_x C PI
-  rot_y S PI_OVER_2
-  cx_dir C S PI_OVER_2
-  rot_z C -PI_OVER_2
-  rot_x S -PI_OVER_2
-  rot_y S PI_OVER_2
-  rot_y C PI_OVER_2
-  rot_x C PI\end{nqcode}
-
-A \nq{cphase C S} vanilla instruction between a communication qubit (C) and a storage
-qubit (S) (as specified in the unit module) was mapped to the following NV
-instruction sequence:
-\begin{nqcode}
-  rot_y S PI_OVER_2
-  cx_dir C S PI_OVER_2
-  rot_z C -PI_OVER_2
-  rot_x S -PI_OVER_2
-  rot_y S -PI_OVER_2\end{nqcode}
-
