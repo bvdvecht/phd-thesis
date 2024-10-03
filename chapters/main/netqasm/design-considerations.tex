@@ -1,0 +1,76 @@
+\section{Design Considerations}
+\label{sec:design_considerations}
+In this section we review the most important design considerations and requirements that were applied when
+developing \ac{NetQASM}.
+Our proposed solutions to these design considerations are presented in the next section, with more details about \ac{NetQASM} as a language
+in the subsequent sections.
+
+\begin{itemize}
+      \item \label{item:design_ent_gen} \textbf{Remote entanglement generation:}
+            One of the main differences compared to the design considerations of a quantum computing architecture is that of remote entanglement
+            generation (see the use-case in~\cref{sec:use_cases}).
+            Nodes need to be able to generate entanglement with a remote node, which requires the collaboration and synchronization of both nodes, and possibly intermediate nodes, which is handled by the network stack (\cref{sec:preliminaries}).
+
+            Further requirements arise in platforms with a limited number of communication qubits.
+            The extreme case is nitrogen-vacancy centers in diamond which have a single communication qubit that additionally is required for performing local operations.
+            For this reason it is not possible to decouple local gates on qubits from entanglement
+            generation.
+            We note the contrast with classical processors, where networking operations are typically intrinsically separate kinds of operations.
+            For example, operations such as sending a message may simply involve moving data to a certain memory (e.g. that of a physically separate network interface), which is often abstracted as a system call.
+
+            A quantum network stack has already been proposed in~\cite{dahlberg2019linklayer,kozlowski2020networklayer}, and we expect the \ac{QNPU} of the end-node to implement such a stack, including a \textit{network layer} that exposes an interface for establishing entanglement with remote nodes.
+            The way in which a program creates remote entanglement should therefore be compatible with this network layer.
+
+      \item \label{item:design_cond} \textbf{Conditionals:}
+            In~\cref{sec:use_cases} we mentioned the need to do local quantum operations conditioned on classical data that may be generated locally or by remote nodes. Such classical data include for example measurement results or information communicated to or from other nodes in the network.
+            We distinguish between real-time and near-time conditionals~\cite{cross2021openqasm}.
+            Real-time conditionals are time-sensitive, such as applying a certain quantum operation on a qubit depending on a measurement outcome.
+            For such conditionals, we would like to have fast feedback, in order for quantum memory not to wait too long (which would decrease their quality).
+            Near-time conditionals are not as sensitive to timing.
+            For example, a program may have to wait for a classical message of a remote node, while no quantum memory is currently being used.
+            Although it is preferably minimized, the actual waiting time does not affect the overall execution quality.
+
+
+      \item \label{item:design_return} \textbf{Shared memory:}
+            As described in \cref{sec:preliminaries}, we expect end-nodes to consist of an application layer and a \ac{QNPU}.
+            These two components have different capabilities.
+            For example, only the application layer has the ability to do arbitrary classical communication with other nodes.
+            Only the \ac{QNPU} can do quantum operations.
+            These restrictions lead the design in a certain way.
+            The two components hence need to work together somehow.
+            There needs to be model for interaction between the two, and also for shared memory.
+
+            Executing programs on an end-node is shared by the application layer and the \ac{QNPU} (see~\cref{sec:abstract_model}).
+            Indeed, only the \ac{QNPU} can do quantum-related operations, whereas the application layer needs to do classical communication.
+            In order to make these work together, the two components have to share data somehow.
+            This includes the application layer requesting operations on the \ac{QNPU}, and sending the following from the \ac{QNPU} to the \ac{CNPU}:
+                (1) measurement outcomes of qubits,
+                (2) information about entanglement generation, in particular a way to identify entangled pairs.
+            This communication between \ac{CNPU} and \ac{QNPU} needs to be done during runtime of the program.
+            This is in contrast to local quantum computation, where one might wait until execution on the \ac{QNPU} is finished before returning all data.
+            The challenge for quantum network programs is to have a way to return data while quantum memory stays in memory.
+
+      \item \textbf{Processing delay:}
+            Since we assume that the application layer and the \ac{QNPU} have to share execution of a single program, the interaction between the two layers should be efficient.
+            Unnecessary delays lead to reduced quality (see~\cref{sec:introduction}).
+            The challenge is therefore to come up with an architecture for the interaction between the application layer and the \ac{QNPU}, as well as a way to let \ac{QNPU} execution not take too long.
+      \item \textbf{Platform-independence:}
+            As explained in~\cref{sec:introduction}, hardware can have many different capabilities and gates that can be performed.
+            However, application programmers should not need to know the details of the underlying hardware.
+            For this reason, there needs to be a framework through which a programmer can develop an application in a platform-independent way which compiles to operations the \ac{QNPU} can execute.
+      \item \textbf{Potential for optimization:}
+            Since near-term quantum hardware has a limited number of qubits and qubits have a relatively short lifetime, the hardware should be utilized in an effective way.
+            There is therefore a need to optimize the quantum gates to be applied to the qubits.
+            This includes for example choosing how to decompose a generic gate into native gates, rearranging the order of gates and measurements and choosing what gates to run in parallel.
+            Since different platforms have vastly different topologies and gates that they can perform, this optimization needs to take the underlying platform into account.
+            The challenge is to have a uniform way to express both platform-independent and platform-specific instructions.
+      \item \textbf{Multitasking:}
+            The `Waiting time' use-case in~\cref{sec:use_cases} describes that a node's \ac{QNPU} may have to wait a long time. We consider the solution that the \ac{QNPU} may do multitasking, that is, run multiple (unrelated) programs at the same time.
+            Then, when one program is waiting, another program can execute (partly) and fill the gap.
+            To make our design compatible with such multitasking, we need to provide a way such that programs can run at the same time as other programs, but without having to know about them.
+      \item \textbf{Ease of programming:}
+            Even though \ac{NetQASM} provides an abstraction over the interaction with the \ac{QNPU}, it is still low-level and hence not intended to be used directly by application developers.
+            Furthermore, applications also contain classical code that is not intended to run on the \ac{QNPU}.
+            Therefore it should be possible to write programs consisting of both classical and quantum (network) operations in a high-level language like Python, and compile them to a hybrid quantum-classical program that uses \ac{NetQASM}.
+
+\end{itemize}

@@ -1,0 +1,89 @@
+\section{Python SDK}
+\label{sec:python-sdk}
+We implemented \ac{NetQASM} by developing a Software Development Kit (SDK) in Python.
+This SDK allows a programmer to write quantum network programs as Python code, including the quantum parts.
+These parts are automatically translated to NetQASM subroutines.
+The SDK contains a simulator that simulates a quantum network containing end-nodes, each with a \ac{QNPU}.
+The SDK can execute programs by executing their classical parts directly and executing the quantum parts as \ac{NetQASM} subroutines on the simulated \ac{QNPU}.
+By executing multiple programs at the same time, on the same simulated network, a whole multi-partite application can be simulated.
+In~\cref{sec:evaluation} we use this SDK to evaluate some of the design decisions of \ac{NetQASM}.
+
+We refer to the docs at~\cite{git_netqasm} for the latest version of the SDK.
+Below, we give an example of an application written in the SDK to give an idea of how development in the SDK looks like.
+In \cref{app:examples_sdk} we provide a few more examples of applications in the SDK and their corresponding \ac{NetQASM} subroutines.
+
+All code can be found at~\cite{git_netqasm} and~\cite{git_squidasm}, including:
+    (1) Tools for serializing (de-serializing) to (from) both human-readable text form and binary encoding,
+        % \item A parser for the human-readable form of \ac{NetQASM}.
+        % \item A parser for binary encoding of \ac{NetQASM}.
+        % \item An assembler of human-readable form to binary.
+    (2) the \ac{NetQASM} SDK, together with compilers (no optimization yet),
+    (3) support for running applications written in the SDK on the simulators NetSquid~\cite{netsquid,coopmans2021netsquid} and SimulaQron~\cite{dahlberg2018simulaqron}, and
+    (4) implemented applications in \ac{NetQASM}, including: anonymous transmission~\cite{Christandl2005anonymous}, BB84~\cite{bb84}, blind quantum computing~\cite{broadbent2009universal,fitzsimons2017unconditionally}, CHSH game~\cite{Kaniewski2016}, performing a distributed CNOT~\cite{denchev2008distributed}, magic square game~\cite{brassard1999magicsquare}, teleportation~\cite{bennett1993teleporting}.
+
+\subsection{SDK}
+\label{sec:sdk}
+The SDK of \ac{NetQASM} uses a similar framework to the SDK used by the predecessor \ac{CQC}~\cite{git_cqc}.
+Any program on a node starts by setting up a \texttt{NetQASMConnection} to the \ac{QNPU}-implementation in the \emph{backend}.
+The \texttt{NetQASMConnection} encapsulates all communication that the \ac{CNPU} does with the \ac{QNPU}.
+More information about supported backends can be found below in \cref{sec:backends}.
+Using the \texttt{NetQASMConnection} one can for example construct a \texttt{Qubit} object.
+The \texttt{Qubit} object has methods for performing quantum gates and measurements.
+When these methods are called, corresponding \ac{NetQASM} instructions are included in the current subroutine being constructed.
+One marks the end of a subroutine, and the start of another, either by explicitly calling \texttt{flush} on the \texttt{NetQASMConnection} or by ending the scope of the \nq{with NetQASMConnection ...} context.
+
+The following Python code shows a basic application written in the \ac{NetQASM} SDK.
+The application will be compiled into a single subroutine executed on the \ac{QNPU}, which creates a qubit, performs a Hadamard operation, measures the qubit and returns the result to the application layer.
+\subsubsection{Hello world/Hello Hadamard}
+Functionally the same as the \ac{NetQASM}-subroutine~\ref{sec:example_nq_hello_world}.
+\begin{pycode}
+  # Setup connection to backend
+  # as the node Alice
+  with NetQASMConnection("Alice") as alice:
+    # Create a qubit
+    q = Qubit(alice)
+    # Perform a Hadamard on the qubit
+    q.H()
+    # Measure the qubit
+    m = q.measure()
+    # The end of the context also marks
+    # the end of the subroutine
+    # automatically but can also be done
+    # explicitly using `alice.flush()`
+\end{pycode}
+
+The following \ac{NetQASM} subroutine is the result of translating the above Python code to \ac{NetQASM} of the vanilla (platform-independent) flavor.
+
+\subsubsection{Hello world/Hello Hadamard}\label{sec:example_nq_hello_world}
+A simple subroutine which creates a qubit, performs a Hadamard, measures the qubit and returns the measurement outcome to the host.
+\begin{nqcode}
+  # NETQASM 1.0
+  # APPID 0
+  // Set the virtual qubit ID to use
+  set Q0 0
+
+  // Allocate and initialize a qubit
+  qalloc Q0
+  init Q0
+
+  // Perform a Hadamard gate
+  h Q0
+
+  // Measure the qubit
+  meas Q0 M0
+
+  // Return the outcome
+  ret_reg M0
+\end{nqcode}
+
+\subsubsection{Backends}
+\label{sec:backends}
+As mentioned above, the \texttt{NetQASMConnection} in the SDK is responsible for communicating with the implemented \ac{QNPU} in the \emph{backend}.
+The \emph{backend} can either be a simulator or an actual \ac{QNPU} using real quantum hardware.
+Currently supported backends are the simulators SquidASM~\cite{git_squidasm} (using NetSquid~\cite{netsquid, coopmans2021netsquid}) and SimulaQron~\cite{dahlberg2018simulaqron}.
+A physical implementation of \ac{QNPU} running on quantum hardware is being worked on at the time of writing.
+Using the SDK provided at~\cite{git_netqasm}, one can for example simulate a set of program files for the nodes of a quantum network on NetSquid using a density matrix formalism with the command:
+\begin{nqcode}
+  netqasm simulate --simulator=netsquid --formalism=dm
+\end{nqcode}
+For more details see the docs at~\cite{git_netqasm}.

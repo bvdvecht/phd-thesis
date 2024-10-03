@@ -1,0 +1,42 @@
+\section{Use-cases}
+\label{sec:use_cases}
+In the next section we will discuss the design considerations taken when developing \ac{NetQASM}.
+These design considerations are based on a set of use-cases listed in this section which we intend for \ac{NetQASM} to support.
+Applications intended to run on a quantum network will often depend on a combination of these use-cases.
+
+\begin{itemize}
+      \item \textbf{Local quantum operations}.
+            Applications running on a network node need to perform quantum operations on local qubits, including initialization, measurement, and single- or multi-qubit gates.
+            Such local qubit manipulation is well known in the field of quantum computing. For example, OpenQASM~\cite{cross2017openqasm} describes quantum operations.
+            Quantum \textit{network} applications should be able to do these local operations as well.
+
+      \item \textbf{Local quantum operations depending on local events or data}.
+            The next use-case stems from applications consisting of programs in which limited classical computation or decision making is needed in-between performing quantum operations.
+            Here we consider only dependencies in a program between quantum operations and information that is produced locally, that is, on the node that this program is being executed.
+            For instance, a program might only apply a quantum gate on a qubit depending on the measurement outcome of another qubit, or choose between execution branches based on evaluation of a classical function of earlier measurement outcomes.
+            An example is for the server-side of \textit{blind quantum computation}, which performs a form of Measurement-Based Quantum Computation (MBQC).
+            In each step of the MBQC, the server performs certain gates on a qubit, depending on results of measuring previous qubits~\cite{fitzsimons2017private}.
+            These applications need classical operations to not take too much time, so that qubit states stay coherent during these operations.
+            This implies that switching between classical and quantum operations should have little overhead.
+
+      \item \textbf{Entanglement generation}.
+            Crucial to quantum networks is the ability to generate remote \textit{entanglement}.
+            Applications should be able to specify requests for entanglement generation between remote nodes.
+            In some cases, a Measure-Directly (MD)~\cite{dahlberg2019linklayer} type generation is required, where entangled state is measured directly, without storing in memory, to obtain correlated classical bits, such as in Quantum Key Distribution (QKD).
+            However, in many cases a Create-Keep (CK)~\cite{dahlberg2019linklayer} type is needed, where the entanglement needs to be stored in memory and further operations applied involving other qubits.
+            We want applications to be able to \textit{initiate} or \textit{receive} (await) entanglement of both forms with nodes in the network.
+
+      \item \textbf{Local quantum operations depending on remote events or data}.
+            We already mentioned the use-case of having conditionals based on \emph{local} information.
+            We also envision applications that need to store qubits and subsequently perform local quantum operations on them and other local qubits, based on classical information coming from \textit{another node}.
+            An example is \textit{teleportation} in which the receiver---after successful entanglement generation---needs to apply local quantum corrections based on the measurement outcomes of the sender.
+            Another application is blind quantum computation, where the server waits for classical instructions from the client about which quantum operations to perform.
+            Hence, there need to be integration of classical communication (sending the measurement results or further instructions) and the local quantum operations.
+            Furthermore, since classical communication has a non-zero latency (and is in general even non-deterministic), it should be possible to suspend doing quantum operations while waiting for communication or performing classical processing, while quantum states stay coherent.
+
+
+      \item \textbf{Waiting time}.
+            We consider the scenario where an application requires two nodes to communicate with each other, and where communication takes a long time, for example since they are physically far apart.
+            It should be possible for a program to suspend doing quantum operations while waiting for communication or performing classical processing, while quantum states stay coherent.
+            Furthermore, in order to maximize the usage of the \ac{QNPU} we want to have a way to fill this waiting time in a useful way.
+\end{itemize}
