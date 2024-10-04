@@ -1,27 +1,6 @@
 \chapter{Introduction}
 \label{chp:intro}
 
-% \lettrine{I}{nformation} serves as the backbone of human cognition, communication, and societal development.
-% In everyday life, it guides our choices, interactions, and learning, while historically, it has been the driver of technological, cultural, and social evolution.
-
-% Information processing can range from calculation and data storage to analysis, and may be referred to as \emph{computation}.
-% When, around the middle of the 20th century, such computation began to be automated --- \emph{computers} ---, information processing improved drastically.
-% Such digital computers represent information as 0s and 1s (bits), a remarkably effective way.
-% Digital computers have since only been more widespread and society has become more dependent on it, with computers in the form of laptops, mobile phones, and smartwatches.
-% Not only are computers able to automatically perform information processing with a speed that is humanly impossible, these computers can be \textit{programmed}: one can give it a list of instructions to do --- a recipe --- and in this way let the computer perform any computation that is desired.
-
-% Exchange of information is critical as well: \emph{communication}.
-% Computer networks, on the other hand, have improved the ability to communicate information.
-% By connecting separate computers together over a network, they could suddenly share information and distribute computations.
-% Information that is processed on a computer, such as an email typed by a user, can now be sent to another computer, and processed there, resulting in another computer user receiving a notification.
-% Over time, more and more computing devices have been connected to each other --- of various mediums including glass fibre, copper wires, wireless, and others --- resulting in a world-spanning internet.
-% This network of networks enables incredibly efficient exchange of information.
-% Nowadays, a photograph taken by a mobile device (represented by several millions of bits \todo{check this}) can be sent within microseconds to another device in the world.
-
-% These technologies have enabled a wide variety of use-cases --- \emph{applications}.
-% Applications include text processing, internet browsing, emailing, and video games.
-% On mobile devices they are often called apps for short.
-
 \lettrine{I}{nformation} forms the backbone of human cognition, communication, and societal development.
 In everyday life, it guides our decisions, interactions, and learning processes, while historically, it has driven technological, cultural, and social evolution.
 Information must be processed --- \emph{computation} and exchanged --- \emph{communication}.
@@ -42,25 +21,9 @@ Today, for instance, a photograph taken on a mobile device (comprising millions 
 
 These advancements have given rise to a wide range of applications, including text processing, internet browsing, emailing, and video games.
 On mobile devices, these are commonly referred to as apps.
-\todo{throughline: interplay of computation and communication}
-
-% Quantum mechanics may on first sight be unrelated to computers; it describes how nature behaves at a very small (sub-atomic) scale.
-% However, it turns out that using quantum features of superposition and entanglement can speed up computation considerably.
-% If information is encoded as quantum bits (qubits) instead of the bits of digital computers, certain computations can be much faster compared to the non-quantum (classical) case.
-% Qubits can be 0 and 1, but can also be in a \emph{superposition} of the two; it is like they haven't quite made up their mind about whether they want to be a 0 or 1.
-% At the quantum scale, non-deterministic behavior is fundamental.
-% Certain computations can be sped up considerably when using qubits (in such an indeterminate state) compared to using (classical) bits.
-% Applications include simulation, fast searching, and machine learning.
-% Technological developments have led to small-scale such quantum computers.
-% As with classical \todo{introduce name, maybe also use `digital'} computers, quantum computers can also be connected, enabling the exchange of quantum information.
-% A similar model as Neumann arch was developed for quantum computers. (quantum mem)
-
-% Quantum mechanics also introduces communication primitives that are not possible classically.
-% Examples of such applications include quantum key distribution (QKD)~\cite{bennett2014quantum, ekert1991quantum} and blind quantum computation (BQC) \cite{broadbent2009universal, arrighi2006blind} from a client to a quantum cloud server.
 
 
-
-Quantum mechanics, at first glance, may seem unrelated to computers and networks, as it primarily describes how nature behaves at the sub-atomic level.
+Quantum mechanics may seem, at first glance, unrelated to computers and networks, as it primarily describes how nature behaves at the sub-atomic level.
 However, it turns out that quantum phenomena like superposition and entanglement can dramatically improve computational capabilities compared to digital, non-quantum (\textit{classical}) computers.
 Qubits, unlike classical bits that can only represent either a 0 or a 1, can exist in a superposition of both states simultaneously.
 Qubits can be forced to choose between 0 or 1, according to well-defined probabilities;
@@ -70,71 +33,62 @@ Recent technological advancements have led to the development of small-scale qua
 Just as classical computers are networked to exchange digital information, quantum computers can also be interconnected, enabling the exchange of quantum information.
 The Von Neumann architecture model, which laid the foundation for classical digital computing, has inspired similar models for quantum computers, including the concept of quantum memory.
 
-Quantum mechanics also introduces new communication techniques that are impossible with classical systems.
+Quantum may also be applied to networks.
+Quantum mechanics introduces new communication techniques that are impossible with classical systems.
 These include applications such as quantum key distribution (QKD) for secure communication, and blind quantum computation (BQC), which allows a client to perform computations on a quantum cloud server without revealing the data being processed.
 These quantum communication protocols promise enhanced security and privacy, making them crucial for the future of computing.
-ENTANGLEMENT
+Quantum networks --- quantum computers connected to each other --- use remote entanglement in order to communicate or share information across nodes of the network.
+
+The success of both classical and quantum computing and communication partly stems from the use of abstractions.
+A significant gap exists between the high-level language of applications and the physical implementation of computers.
+Applications can be seen as sets of instructions, much like a recipe, with commands such as ``if the user input is X, do Y'' or ``send message M to another computer and await a response''.
+However, whether working with classical or quantum bits, the underlying representation of information is neither intuitive nor natural for humans.
+Encoding these ``recipes" directly in bits or qubits would make it practically impossible to develop complex applications.
+For instance, a mobile app may require billions of bits, while an operating system like Windows might involve trillions.
+To create any application, programmers write these instructions in code, without needing to interact with low-level hardware elements like transistors or fiber optics.
 
 
-programmable and executable, abstractions (multitasking, OS)
+Software abstractions solve these problems by providing tools:
+higher-level programming languages allow one to express application logic in a (relatively) human-friendly representation,
+lower-level languages and instruction sets allow application representations that are more tailored to the computing devices themselves,
+compilers automatically translate higher-level code into the respective lower-level machine code,'
+operating systems manage execution of applications,
+and a network stack abstracts communication operations at different levels.
+These tools simplify the process of transforming ideas into working applications by managing the complexity of underlying hardware.
 
-\todo{begin generated}
-There is a significant gap between the high-level use-cases (applications) and the physical implementation of computers.
-Applications can be thought of as a list of instructions, like a recipe, with commands such as "if the user input is X, do Y," or "send message M to another computer and wait for a response.
-To implement any application, a programmer must write this recipe in code.
+For classical computers and networks, these abstractions are widely developed and in-use \todo{cite standard works}.
+For quantum computers, similar abstractions have emerged and are spreading in the last few years.
+Lower-level instruction sets such as OpenQASM are widely used;
+higher-level programming languages like Q\# or Python-based software development kits exist, as well as compilers.
+Full-stack architectures exist that enable execution of arbitrary quantum applications.
 
-However, whether dealing with classical or quantum bits, the underlying information representation is not intuitive or native to humans.
-While it is technically possible to write programs at the level of (qu)bits, it is neither practical nor scalable.
-For example, a mobile app may consist of billions of bits, while an operating system like Windows might involve trillions.
-Moreover, programmers are not required to interact with the low-level hardware elements, such as transistors or fiber optics.
-
-To bridge this gap, several layers of abstraction have been developed, including programming languages, operating systems, and compilers.
-These tools, such as Python or Windows, simplify the process of transforming ideas into working programs by managing the complexity of underlying hardware.
-
-In the realm of quantum computing, we aim to develop similar abstractions.
-Early tools like Qiskit and Quantum Inspire are emerging to assist programmers in writing code for quantum computers at a higher level of abstraction, making the process more accessible than directly manipulating quantum bits (qubits).
-These tools include specialized programming languages, compilers (which translate code into signals that quantum computers can process), and runtimes (which manage the execution of these signals).
-As these tools advance, they will play a crucial role in making quantum applications more practical and scalable.
-\todo{end generated}
-
-% By 2020, the state of the art in quantum networks had reached significant milestones.
-% Projects like CQC (Cambridge Quantum Computing) and tools like Simulaqron provided researchers with environments to simulate and experiment with quantum networks, further advancing the practical possibilities of quantum technology.
 
 \section{Problem statement}
-For quantum networks, no such tools for high-level programming exist as of yet.
+For quantum networks, there is at present a lack of such abstractions.
 So far, the experiments that have been done on small quantum networks have been very technical, involving manual handling of microwave pulses and lasers, and require a lot of physics knowledge.
-There aren't yet any programming languages, compilers, or a runtime system for the quantum internet.
-This makes it difficult for programmers to implement new ideas for using the quantum internet.
+There aren't yet any programming languages, compilers, or a runtime system for quantum network applications.
+This makes it difficult for programmers to implement new ideas for using quantum networks.
 
-Creating tools for programming the quantum internet is a large challenge.
-First, we don't have a high-level programming language for quantum internet applications.
-Regular programming languages don't fit well with the special properties of quantum mechanics, like being in two states at once (superposition), quantum connections (entanglement), and quantum teleportation. Furthermore, although programming languages for quantum computers exist, they do not address the networking aspect of quantum internet applications.
-Hence, a new kind of language is needed.
-Second, we need a special compiler for quantum internet applications.
-This compiler has to turn high-level quantum instructions into something the quantum hardware can use and do this efficiently, especially since quantum information has to work across different quantum devices and networks.
-The compiler must make sure the instructions run well and can handle errors, considering how quantum information can easily get disrupted.
-Lastly, running quantum internet applications has its own challenges.
-A robust operating system is needed to manage how these quantum programs run.
-This system has to set up, run, and keep the quantum states in sync across different places, while dealing with the unstable nature of quantum systems.
-Our current quantum computing setups are mostly for single quantum processors and don't yet support the complex networking needed for a quantum internet.
-To make progress in quantum network technology, we need to think carefully about how to design the programming language, how to compile the code, and how to schedule and run programs.
-This is a large task that goes beyond just engineering; it's about bringing together different areas like regular computing, networking, and quantum computing.
+Problems
+- Quantum networks are not programmable using abstract concepts
+- Quantum network applications cannot be automatically optimized since none of the existing compilation tools (classical and/or quantum) address the network dimension of programs
+- Quantum network nodes do not have a hardware-agnostic way to execute applications
 
+One might think that one re-use existing abstractions from quantum computing, as well as from classical computing and networking.
+However, certain unique properties of quantum network applications make this non-trivial.
 
-
-
-\reminder{make sure all challenges of whole thesis are mentioned here: low-level representation (NetQASM), operating system (QNodeOS/Qoala), compiler}
-
-Realizing the execution of quantum internet applications presents unique challenges (see Section~\ref{sec:design_considerations}): 
-First, a program for a quantum internet application is not merely a hybrid of classical and quantum code segments; these segments are also highly \textit{interactive}: classical and quantum code may run concurrently, communicating and influencing each other.
+First, application code for a quantum internet application is not merely a hybrid of classical and quantum code segments; these segments are also highly \textit{interactive}: classical and quantum code may run concurrently, communicating and influencing each other.
 E.g., a quantum circuit may "pause" halfway, keeping quantum states in memory, and wait for a value from a classical segment (e.g. a classical message from a remote node) before continuing.
 Quantum memories have limited lifetimes, meaning qubits are subject to decoherence, degrading their quality over time. This introduces the need 
-control the joint schedule of the classical and quantum segments of the program to reach desired levels of application performance.
+control the joint schedule of the classical and quantum segments of the application to reach desired levels of application performance.
 
-Second, a compiler should be able to optimize the whole program including both classical and quantum code, as well as to provide information that can be used in our architecture to align and inform scheduling decisions. 
+Second, a compiler should be able to optimize the whole application including both classical and quantum code, as well as to provide information that can be used in our architecture to align and inform scheduling decisions. 
 
 Finally, we are faced with a mix of time scales:
 on the one hand, entanglement generation requires a very precise network schedule that is agreed ahead of time between the network nodes~\cite{dahlberg2019link}. On the other hand, classical messages are exchanged asynchronously between the nodes without guaranteed message delivery times. This motivates an architecture in which different segments of the system may operate at different levels of timing precision. 
+
+% By 2020, the state of the art in quantum networks had reached significant milestones.
+% Projects like CQC (Cambridge Quantum Computing) and tools like Simulaqron provided researchers with environments to simulate and experiment with quantum networks, further advancing the practical possibilities of quantum technology.
 
 \section{Research objective}
 In this thesis, we address the gap that exists for the quantum internet: namely that there is no programming and execution framework for quantum internet applications.
@@ -142,17 +96,11 @@ We do this by addressing the following questions:
 
 Main question: \textbf{How can one program and execute quantum network applications in a hardware-agnostic way while optimizing runtime performance?}
 
-Problems
-- Quantum networks are not programmable using abstract concepts
-- Quantum network programs cannot be automatically optimized since none of the existing compilation tools (classical and/or quantum) address the network dimension of programs
-- Quantum network nodes do not have a hardware-agnostic way to execute programs
 
 Main objective
-- A programmer should be able to write a quantum network program in an abstract representation (i.e. using high-level concepts without having to know details of physical realizations of quantum networks)
-- Programmers should be able to run these abstract program descriptions on real quantum networks of various hardware types, in an optimized* way, without having to do these optimizations them
+- A programmer should be able to write a quantum network application in an abstract representation (i.e. using high-level concepts without having to know details of physical realizations of quantum networks)
+- Programmers should be able to run these abstract application descriptions on real quantum networks of various hardware types, in an optimized* way, without having to do these optimizations them
 - Enable hardware-agnostic optimized execution
-
-\todo{check that we only use the term `application', not `program'}
 
 \begin{itemize}
   \item[Q1.] \textbf{How should quantum network applications be programmed?}
