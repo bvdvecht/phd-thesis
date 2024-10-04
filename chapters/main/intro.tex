@@ -22,17 +22,17 @@
 % Applications include text processing, internet browsing, emailing, and video games.
 % On mobile devices they are often called apps for short.
 
-\todo{begin generated}
 \lettrine{I}{nformation} forms the backbone of human cognition, communication, and societal development.
 In everyday life, it guides our decisions, interactions, and learning processes, while historically, it has driven technological, cultural, and social evolution.
+Information must be processed --- \emph{computation} and exchanged --- \emph{communication}.
 
-Information processing can take many forms, from calculations and data storage to analysis, and is often referred to as computation.
+Computation can take many forms, from calculations and data storage to analysis.
 In the mid-20th century, the automation of this process through the invention of computers revolutionized information processing.
 Digital computers represent information as binary code—0s and 1s, or bits—a highly efficient method.
 Since their introduction, computers have become increasingly widespread and integral to society, appearing in forms like laptops, mobile phones, and smartwatches.
-These machines not only perform computations at speeds far beyond human capability but are also programmable, meaning they can be instructed to execute a sequence of tasks—or a "recipe"—to perform virtually any desired computation.
+These machines not only perform computations at speeds far beyond human capability but are also programmable, meaning they can be instructed to execute a sequence of tasks --- or a ``recipe'' --- to perform virtually any desired computation.
 
-The exchange of information, or communication, is equally vital.
+Communication involves sending and receiving messages, synchronization, and more.
 Computer networks have vastly enhanced the ability to share and distribute information.
 By connecting individual computers over a network, they can exchange data and collaborate on tasks.
 For example, information processed on one computer, such as an email typed by a user, can be transmitted to another computer where it is processed, notifying a recipient.
@@ -42,8 +42,6 @@ Today, for instance, a photograph taken on a mobile device (comprising millions 
 
 These advancements have given rise to a wide range of applications, including text processing, internet browsing, emailing, and video games.
 On mobile devices, these are commonly referred to as apps.
-\todo{end generated}
-
 \todo{throughline: interplay of computation and communication}
 
 % Quantum mechanics may on first sight be unrelated to computers; it describes how nature behaves at a very small (sub-atomic) scale.
@@ -62,17 +60,12 @@ On mobile devices, these are commonly referred to as apps.
 
 
 
-
-\todo{begin generated}
-At first glance, quantum mechanics may seem unrelated to computing, as it primarily describes how nature behaves at the sub-atomic level.
-However, leveraging quantum phenomena like superposition and entanglement can dramatically enhance computational capabilities.
-When information is encoded using quantum bits (qubits) rather than the classical bits of digital computers, certain computations can be performed much faster.
-
+Quantum mechanics, at first glance, may seem unrelated to computers and networks, as it primarily describes how nature behaves at the sub-atomic level.
+However, it turns out that quantum phenomena like superposition and entanglement can dramatically improve computational capabilities compared to digital, non-quantum (\textit{classical}) computers.
 Qubits, unlike classical bits that can only represent either a 0 or a 1, can exist in a superposition of both states simultaneously.
-It's as if the qubit hasn't yet "decided" whether it wants to be a 0 or a 1.
-At the quantum scale, this kind of probabilistic behavior is fundamental, and it can be exploited to speed up specific types of computations.
-For example, algorithms that rely on qubits can significantly outperform their classical counterparts in tasks such as simulation, fast searching, and machine learning.
-
+Qubits can be forced to choose between 0 or 1, according to well-defined probabilities;
+however, certain computations can be performed much faster by deliberately delaying these `decisions'.
+Applications that can be sped up in this way include simulation, fast searching, and machine learning.\todo{citations}
 Recent technological advancements have led to the development of small-scale quantum computers.
 Just as classical computers are networked to exchange digital information, quantum computers can also be interconnected, enabling the exchange of quantum information.
 The Von Neumann architecture model, which laid the foundation for classical digital computing, has inspired similar models for quantum computers, including the concept of quantum memory.
@@ -80,10 +73,10 @@ The Von Neumann architecture model, which laid the foundation for classical digi
 Quantum mechanics also introduces new communication techniques that are impossible with classical systems.
 These include applications such as quantum key distribution (QKD) for secure communication, and blind quantum computation (BQC), which allows a client to perform computations on a quantum cloud server without revealing the data being processed.
 These quantum communication protocols promise enhanced security and privacy, making them crucial for the future of computing.
-\todo{end generated}
+ENTANGLEMENT
 
 
-Nowadays computation and communicatation applications are very much intertwined.
+programmable and executable, abstractions (multitasking, OS)
 
 \todo{begin generated}
 There is a significant gap between the high-level use-cases (applications) and the physical implementation of computers.
@@ -103,6 +96,9 @@ Early tools like Qiskit and Quantum Inspire are emerging to assist programmers i
 These tools include specialized programming languages, compilers (which translate code into signals that quantum computers can process), and runtimes (which manage the execution of these signals).
 As these tools advance, they will play a crucial role in making quantum applications more practical and scalable.
 \todo{end generated}
+
+% By 2020, the state of the art in quantum networks had reached significant milestones.
+% Projects like CQC (Cambridge Quantum Computing) and tools like Simulaqron provided researchers with environments to simulate and experiment with quantum networks, further advancing the practical possibilities of quantum technology.
 
 \section{Problem statement}
 For quantum networks, no such tools for high-level programming exist as of yet.
@@ -144,38 +140,7 @@ on the one hand, entanglement generation requires a very precise network schedul
 In this thesis, we address the gap that exists for the quantum internet: namely that there is no programming and execution framework for quantum internet applications.
 We do this by addressing the following questions:
 
-\begin{itemize}
-  \item[Q1.] \textit{How should quantum network applications be programmed?}
-    We address the above-mentioned gap in tools for programming quantum networks. \todo{make sure gap is mentioned}
-    We explore challenges and requirements of both high-level (human-friendly) representations and of low-level (hardware-specific) representations.
-    We propose both a high-level software development kit (SDK) and a low-level instruction set architecture (ISA) for quantum network applications.
-    We want to address:
-    \begin{itemize}
-      \item How to be compatible with different hardware types
-      \item Decide how to split classical and quantum execution
-    \end{itemize}
-  \item[Q2.] \textit{How can a quantum network node execute arbitrary applications?}
-    We propose an architecture for quantum network nodes that allows arbitrary applications, using our SDK and ISA, to be executed.
-    \begin{itemize}
-      \item A question is how to deal with the hybrid and interactive nature of programs.
-      \item How to deal with different timescales
-      \item Enable multitasking
-    \end{itemize}
-  \item[Q3.] \textit{How is the performance of our execution model?}
-    We investigate how our architecture works on real quantum hardware, and look at metrics including success probability and execution time.
-  \item[Q4.] \textit{How can we optimize programs for execution on arbitrary hardware?}
-    In classical and quantum computing, \emph{compilation} is used to optimize programs.
-    In the networking case, and especially when dealing with multitasking, \emph{scheduling} also affects runtime performance.
-    We investigate how we can enable such optimizations in our architecture.
-\end{itemize}
-
-Our solution hence consists of a new software architecture and new paradigms.
-We evaluate our designs in simulation as well as on real hardware.
-
-We do this by providing a software framework specifically designed for such applications.
-This framework is an important step forward in addressing the unique challenges associated with quantum internet technology.
-It comprises three key components:
-
+Main question: \textbf{How can one program and execute quantum network applications in a hardware-agnostic way while optimizing runtime performance?}
 
 Problems
 - Quantum networks are not programmable using abstract concepts
@@ -187,80 +152,95 @@ Main objective
 - Programmers should be able to run these abstract program descriptions on real quantum networks of various hardware types, in an optimized* way, without having to do these optimizations them
 - Enable hardware-agnostic optimized execution
 
+\todo{check that we only use the term `application', not `program'}
+
+\begin{itemize}
+  \item[Q1.] \textbf{How should quantum network applications be programmed?}
+    We first address the question of how one should represent quantum network applications as programming code.
+    The goal is to develop a model similar to that in classical and quantum computing, where applications have both a high-level, human-friendly representation and a lower-level, execution-oriented one.
+
+    One challenge comes from the hybrid nature of quantum network applications, which require the integration of both classical and quantum code.
+    Additionally, we aim to support a variety of hardware types.
+    For the high-level representation, programmers should be able to focus on application logic without needing to understand specific hardware constraints.
+    For the lower-level representation, we aim for flexibility, allowing the integration of emerging hardware platforms as they are developed.
+    We do this given the uncertainty around which quantum hardware platforms will ultimately prove viable.
+
+    Finally, the representation should be suitable for execution on quantum network nodes, leading to the next research question.
+
+  \item[Q2.] \textbf{How should a quantum network node execute arbitrary applications?}
+    Programming an application is one step; executing it on a real quantum network node is another.
+
+    We tackle the challenge of executing arbitrary applications --- anything a programmer might write using our representation (Q1) --- on quantum network nodes.
+    Again, managing the hybrid nature of these applications is a challenge: how can we effectively control the execution of both classical and quantum code?
+    Additionally, we must consider how application logic (classical or quantum) should interact with the networking code.
+    
+    Another difficulty is managing the range of timescales: classical communication typically operates in the millisecond range, whereas entanglement generation requires sub-nanosecond precision.
+    Integrating these different timescales presents a significant challenge.
+
+    Finally, in order to make optimal use of hardware and to increase throughput, we investigate how to enable multitasking of applications.
+
+  \item[Q3.] \textbf{How can we improve performance of application execution?}
+    A framework for programming and executing applications does not by itself guarantee optimal runtime performance.
+    Application performance may be measured using classical metrics like execution time, and quantum metrics like success probability (see \cref{chp:background}).
+    In general, the runtime performance of applications depends on ahead-of-time \emph{compilation} and runtime \emph{scheduling}.
+    We investigate how we can perform compilation and scheduling in order to increase performance of applications.
+    Especially in a multitasking scenario, scheduling has a large effect on performance.
+    However, even without multitasking, the question remains of how to schedule both application code and networking tasks.
+
+\end{itemize}
+
+
 \section{Thesis Outline}
-This work shows a history of projects that build upon each other.
-The work has been part of a larger ecosystem in which multiple projects worked towards the goal of executing quantum network applications.
-Many software packages have been written.
+In this thesis, we work towards our goal of enabling programming and execution of quantum network applications.
+We do this by presenting new architectures, tools, and paradigms.
 
-The original goal of this PhD project was to research compilation of quantum network programs.
-It turned out that first many other things needed to be fleshed out.
-This thesis can be seen as following the road towards fleshing this out, culminating in a chapter with ideas on compilation.
+In \cref{chp:background}, we first provide more background information about quantum internet applications.
+It introduces concepts and terminology that are used in the following chapters.
 
-In \cref{chp:background}, we provide more background information about quantum internet applications.
-It introduces concepts and terminology such that the next chapters, which are very technical, make more sense.
+In \cref{chp:netqasm}, we present NetQASM: a programming representation for quantum network applications, addressing Q1.
+This representation includes a new low-level instruction set architecture tailored to quantum network applications,
+but it also contains a high-level software development kit, enabling programming to express their application logic.
+We purposefully make NetQASM hardware-independent and extendible.
+We also introduce a first model for execution of applications programmed using NetQASM (Q2).
+We evaluate our design choices in simulation.
 
-In \cref{chp:netqasm} we introduce a model for quantum network nodes where classical and quantum execution is split.
-Moreover, we present a way to represent quantum instructions, including remote entanglement generation, usuing a new instruction set architecture called NetQASM.
-Furthermore, we introduce a software development kit (SDK) that allows a programmer to write quantum internet applications in a high-level human-readable language (Python).
-
-We hence address the questions of
-- representation, and a first answer to execution including multitasking
-
-In \cref{chp:qnodeos} we propose a full-stack architecture, QNodeOS, for quantum network nodes which implements our NetQASM model.
-We validate our architecture on real quantum hardware.
-
-We hence verify our answers (\cref{chp:netqasm}) about representation and execution.
-We get actual numbers on these and real experience.
-We show that Q4 (optimization) depends on both compilation and scheduling,
-and we show that QNodeOS and NetQASM do not fully enable this.
+In \cref{chp:qnodeos} we fully focus on the question of application execution (Q2).
+Building on top of our execution model from \cref{chp:netqasm}, we present a detailed full-stack software architecture --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
+We implement this architecture on a setup with two real physical quantum network nodes, and show that our architecture can successfully execute quantum network applications.
+We report on the performance of our architecture by looking at application throughput and success probability.
 
 
-Based on what we learned from our QNodeOS implementation and evaluation, we propose an improved architecture --- Qoala --- for quantum network nodes in \cref{chp:qoala}.
+Based on what we learned from our QNodeOS implementation and evaluation, we propose an improved software architecture --- Qoala --- for executing applications on quantum network nodes in \cref{chp:qoala}.
 Qoala that addresses the compilation and scheduling challenges found in QNodeOS.
 Qoala allows hybrid classical-quantum compilation and scheduling.
 % Qoala is an execution environment tailored to programmable quantum internet nodes, accommodating the hybrid, interactive, networked, and asynchronous nature of quantum internet applications.
 
 In \cref{chp:compiler} we discuss how Qoala can be used for advanced compiler design.
 
-% By 2020, the state of the art in quantum networks had reached significant milestones.
-% Projects like CQC (Cambridge Quantum Computing) and tools like Simulaqron provided researchers with environments to simulate and experiment with quantum networks, further advancing the practical possibilities of quantum technology.
 
 
 
-% Hardware by itself is insufficient to fully realize practical applications, especially in complex and scalable systems.
-% To achieve true scalability and functionality, software and higher-level abstractions are essential.
-% These abstractions create the necessary frameworks that allow hardware to be used effectively across different scenarios and at larger scales.
+% \section{Data and Software Availability}
 
-% This thesis addresses the need for such abstractions, offering structure to the challenges associated with realizing applications.
-% It introduces new concepts, paradigms, and considerations designed to guide the development of scalable solutions, providing a structured approach to solving the problems that arise in application realization.
-
-
-
-% This thesis presents a lot of design.
-% All chapters follow the order design-considerations, architecture, evaluation.
-
-
-\section{Data and Software Availability}
-
-\begin{table}[t]
-    \centering
-    \begin{tabularx}{\linewidth}{lX}
-        \toprule
-        \textbf{Object}                   & \textbf{Location}                                                                 \\
-        \midrule
-        Datasets for \cref{chp:netqasm}   & \href{https://doi.org/10.4121/21355329}{\textsc{doi}: \texttt{10.4121/21355329}}  \\
-        NetQASM SDK                       & \url{https://github.com/QuTech-Delft/netqasm}                                     \\
-        NetQASM Simulator                 & \url{https://github.com/QuTech-Delft/squidasm}                                    \\
-        Datasets for \cref{chp:qnodeos}   & \href{https://doi.org/10.4121/6aa42f05-6823-4848-b235-3ea19e39f4ae}{\textsc{doi}: \texttt{10.4121/6aa42f05-6823-4848-b235-3ea19e39f4ae}} \\
-        Datasets for \cref{chp:qoala}     & TODO                                                                              \\
-        Qoala Simulator                   & \url{https://github.com/QuTech-Delft/qoala-sim}                                   \\
-        \bottomrule
-    \end{tabularx}
-    \caption{
-        Location of experimental data and software supporting this thesis.
-    }
-    \label{tab:data-and-soft}
-\end{table}
+% \begin{table}[t]
+%     \centering
+%     \begin{tabularx}{\linewidth}{lX}
+%         \toprule
+%         \textbf{Object}                   & \textbf{Location}                                                                 \\
+%         \midrule
+%         Datasets for \cref{chp:netqasm}   & \href{https://doi.org/10.4121/21355329}{\textsc{doi}: \texttt{10.4121/21355329}}  \\
+%         NetQASM SDK                       & \url{https://github.com/QuTech-Delft/netqasm}                                     \\
+%         NetQASM Simulator                 & \url{https://github.com/QuTech-Delft/squidasm}                                    \\
+%         Datasets for \cref{chp:qnodeos}   & \href{https://doi.org/10.4121/6aa42f05-6823-4848-b235-3ea19e39f4ae}{\textsc{doi}: \texttt{10.4121/6aa42f05-6823-4848-b235-3ea19e39f4ae}} \\
+%         Datasets for \cref{chp:qoala}     & TODO                                                                              \\
+%         Qoala Simulator                   & \url{https://github.com/QuTech-Delft/qoala-sim}                                   \\
+%         \bottomrule
+%     \end{tabularx}
+%     \caption{
+%         Location of experimental data and software supporting this thesis.
+%     }
+%     \label{tab:data-and-soft}
+% \end{table}
 
 
 \begin{xstretch}
