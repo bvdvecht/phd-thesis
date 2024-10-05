@@ -1,6 +1,6 @@
 \section{Introduction}
 As described in the introduction chapter\todo{make sure this is the case}, our overarching goal for this thesis is to enable programming of quantum networks.
-The previous chapters have presented building blocks, or stepping stones towards this goal.
+In the previous chapters we presented building blocks, towards the goal of enabling programming and execution of quantum network applications.
 In \cref{chp:netqasm} the low-level instruction set NetQASM was introduced for representing quantum operations.
 We also defined a software development kit (SDK) that allows one to write programs in Python and which compiles quantum code into NetQASM subroutines.
 In \cref{chp:qnodeos} we introduced an operating system, QNodeOS, that executes these programs.
@@ -45,7 +45,7 @@ Qoala, with its new model of programs, enables addressing of the above problems.
 Furthermore, Qoala enables optimization specific to runtime performance, as we will discuss below (e.g. deadlines for better success probability).
 
 
-\section{Compilers}
+\subsection{Compilers}
 Compilation is the translation from a high-level source code representation of a program into a lower-level representation of that program, typically machine code, that a computer's processor can execute.
 Compilation is itself done by a computer program, namely the compiler.
 
@@ -75,10 +75,10 @@ Optimization metrics include offline ones such as instruction count and memory u
 Many existing compilation strategies, of both classical and quantum computing, can be re-used.
 
 
-\subsection{Existing (quantum) compilers}
+\section{Related work}
 \todo{schematic figure of compiler: input -> passes -> output}
 
-\textbf{Compilers for classical computing.}
+\paragraph{Compilers for classical computing.}
 Compilers for classical computers have existed since the beginning of modern computers, in the middle of the 20th century.
 A need for translating higher-level languages into the native language of computers - 0s and 1s - has always been needed.
 Over time, more and more sophisticated programming languages have been made and used.
@@ -95,16 +95,16 @@ Code optimization techniques include
 \end{itemize}
 These optimizations typically aim to improve execution speed and memory efficiency.
 
-\textbf{Compilers for classical networking.}
+\paragraph{Compilers for classical networking.}
 Classical applications that use networking are also compiled by classical compilers.
-Typically, compilers do apply network-specific optimizations.
+Typically, compilers do not apply network-specific optimizations.
 This is since network operations are often handled by system calls, which compilers do not have control over.
 Moreover, compilers also don't have control over the execution and timing of other applications in the network.
 Network-specific optimization is therefore indirect, namely by optimizing the number of network system calls, reducing memory that would need to be context-switched upon network events, and optimizing local code that affects networking code.
 
 Typically, the efficiency of network-related operations depend on the protocol itself, like TCP or HTTP. 
 
-\textbf{Compilers for quantum computing.}
+\paragraph{Compilers for quantum computing.}
 Quantum computing programs are typically expressed as quantum circuits.
 Circuits consist of qubits, which are memory locations on which operations are applied.
 \todo{Make sure circuits are introduced in the intro chapter and refer to it here}
@@ -121,11 +121,69 @@ See QIR, MLIR, and others.
 
 Benchmarks exist with which to compare compilers, by looking at the output, like circuit size.
 
-\textbf{Compilers for quantum networking.}
+
+Overview of low-level compilers (focusing on resources constraints of NISQ, and on circuits): \cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022}.
+
+Fully quantum circuit optimizers, mostly related to qubit mapping: \cite{li_tackling_2019, zhang_context, bandic_mapping_2023, nishio_extracting_2020}.
+Qunity: formal hybrid language, but only compiles to circuit (openqasm).
+
+\cite{murali_noise-adaptive_2019} deals with backend compilation (LLVM IR to optimized circuit/OpenQASM).
+\cite{murali_full-stack_2019} Provides broad discussion and proposal of compilation techniques for different platforms.
+\cite{smith_error_2021} Mitigates decoherence by clever instruction ordering.
+Idea of going beyond layered model and ISA (e.g. directly pulse optimization): \cite{shi_resource-efficient_2020}.
+
+Scaffold -> LLVM IR -> OpenQASM: \cite{litteken_updated_2020}.
+
+
+Split between
+\begin{itemize}
+\item joint classical-quantum optimization (MLIR-based, LLVM based): \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}
+\item integration of classical and quantum code but optimization is separate or limited: \cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
+\end{itemize}
+
+(Relation to framework: XACC/qcor)
+
+
+The idea of using IRs for quantum compilers has been used a lot: \cite{nigam_compiler_2021, nishio_inquir_2023}.
+
+First mention of QIR: \cite{haner_software_2018}.
+QIR is a upcoming standard as an IR for quantum computing. \cite{geller_introducing_2020}.
+Recently there is network-related variant: NetQIR. \cite{vazquez-perez_netqir_2024}.
+For DQC: InQuIR.
+
+Compilers for quantum networking have not been studied much.
+For distribution quantum computing there are compilers: \cite{ferrari_compiler_2021, haner_distributed_2021, cuomo_optimized_2023, ferrari_modular_2023}.
+Circuit cutting: \cite{chatterjee_qurzon_2022}
+
+
+
+\begin{itemize}
+\item Catalyst (Xanadu Pennylane)
+\item QSSA compiles down to OpenQASM, which itself does not map to physical (virtual) qubits. In OpenQASM, you declare qubit registers, but the mapping to physical qubits only happens at runtime.
+\item Quantum Dialect (McCaskey/Nguyen) compiles to QIR, which also only contains the opaque `allocate`.
+\item QIRO does not explain how to lower it to native quantum instructions
+\end{itemize}
+
+\paragraph{Compilers for quantum networking.}
 For quantum networking, compilation has not much been studied.
 The closest comes distributed quantum computing, for which compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
 
 
+\paragraph{Session types}
+Model checking for communicating quantum processes: \cite{davidson_model_nodate}.
+Follow-up with a language for describing protocols: \cite{ardeshir-larijani_automated_2018}.
+
+Session types is a formalism used for defining communication protocols between different parties \cite{honda_language_1998}.
+They can be used to for example specify the order in which messages need to be sent and received.
+By having the protocol in a well-defined format, the parties can check whether they adhere to the agreed upon protocol.
+Tools exist that can check at compile-time if a program adheres to a communication protocol.
+
+Session types may be used for two parties, but multi-party session types also exist \cite{honda_multiparty_2016}.
+
+First combination of quantum and multiparty session types: \cite{lanese_towards_2024}.
+
+Timed session types add a time element. \cite{bartoletti_timed_2017}.
+Timed session types have not yet been applied to quantum.
 
 
 \subsection{Challenges unique to quantum network compilation}
@@ -256,79 +314,8 @@ We distinguish two Modes of Compilation (MoC):
 
 
 
+\todo{noise-aware optimization for circuits exists, not for interactive hybrid programs}
 
-\section{Related work}
-Many compilers and programming frameworks exist.
-
-Classical frameworks: LLVM, others (needed?).
-
-Overview of low-level compilers (focusing on resources constraints of NISQ, and on circuits): \cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022}.
-
-Fully quantum circuit optimizers, mostly related to qubit mapping: \cite{li_tackling_2019, zhang_context, bandic_mapping_2023, nishio_extracting_2020}.
-Qunity: formal hybrid language, but only compiles to circuit (openqasm).
-
-\cite{murali_noise-adaptive_2019} deals with backend compilation (LLVM IR to optimized circuit/OpenQASM).
-\cite{murali_full-stack_2019} Provides broad discussion and proposal of compilation techniques for different platforms.
-\cite{smith_error_2021} Mitigates decoherence by clever instruction ordering.
-Idea of going beyond layered model and ISA (e.g. directly pulse optimization): \cite{shi_resource-efficient_2020}.
-
-Scaffold -> LLVM IR -> OpenQASM: \cite{litteken_updated_2020}.
-
-(Check Obsidian page on Programming Frameworks)
-
-Split between
-- joint classical-quantum optimization (MLIR-based, LLVM based): \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}
-- integration of classical and quantum code but optimization is separate or limited: \cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
-
-
-(Relation to framework: XACC/qcor)
-
-
-
-The idea of using IRs for quantum compilers has been used a lot: \cite{nigam_compiler_2021, nishio_inquir_2023}.
-
-First mention of QIR: \cite{haner_software_2018}.
-QIR is a upcoming standard as an IR for quantum computing. \cite{geller_introducing_2020}.
-Recently there is network-related variant: NetQIR. \cite{vazquez-perez_netqir_2024}.
-For DQC: InQuIR.
-
-Compilers for quantum networking have not been studied much.
-For distribution quantum computing there are compilers: \cite{ferrari_compiler_2021, haner_distributed_2021, cuomo_optimized_2023, ferrari_modular_2023}.
-Circuit cutting: \cite{chatterjee_qurzon_2022}
-
-
-
-\begin{itemize}
-\item Catalyst (Xanadu Pennylane)
-\item QSSA compiles down to OpenQASM, which itself does not map to physical (virtual) qubits. In OpenQASM, you declare qubit registers, but the mapping to physical qubits only happens at runtime.
-\item Quantum Dialect (McCaskey/Nguyen) compiles to QIR, which also only contains the opaque `allocate`.
-\item QIRO does not explain how to lower it to native quantum instructions
-\end{itemize}
-
-\begin{itemize}
-    \item Hybrid language: does not yet exist for networking
-      \todo{There is NetQIR now}
-    \item Protocol description language: (timed) session types
-    \item compiler to Qoala does not yet exist
-    \item fidelity and timing constraints don't really exist
-    \item noise-aware optimization for circuits exists, not for interactive hybrid programs
-\end{itemize}
-
-\subsection{Session types}
-Model checking for communicating quantum processes: \cite{davidson_model_nodate}.
-Follow-up with a language for describing protocols: \cite{ardeshir-larijani_automated_2018}.
-
-Session types is a formalism used for defining communication protocols between different parties \cite{honda_language_1998}.
-They can be used to for example specify the order in which messages need to be sent and received.
-By having the protocol in a well-defined format, the parties can check whether they adhere to the agreed upon protocol.
-Tools exist that can check at compile-time if a program adheres to a communication protocol.
-
-Session types may be used for two parties, but multi-party session types also exist \cite{honda_multiparty_2016}.
-
-First combination of quantum and multiparty session types: \cite{lanese_towards_2024}.
-
-Timed session types add a time element. \cite{bartoletti_timed_2017}.
-Timed session types have not yet been applied to quantum.
 
 \section{Recommendations for further research and evaluation}
 Based on the considerations discussed above, we propose the following ways in which to tackle the compilation design problem.
