@@ -1,26 +1,45 @@
 \chapter{Introduction}
 \label{chp:intro}
 
-\lettrine{I}{nformation} forms the backbone of human cognition, communication, and societal development.
-In everyday life, it guides our decisions, interactions, and learning processes, while historically, it has driven technological, cultural, and social evolution.
-Information must be processed --- \emph{computation} and exchanged --- \emph{communication}.
 
-Computation can take many forms, from calculations and data storage to analysis.
-In the mid-20th century, the automation of this process through the invention of computers revolutionized information processing.
-Digital computers represent information as binary code—0s and 1s, or bits—a highly efficient method.
-Since their introduction, computers have become increasingly widespread and integral to society, appearing in forms like laptops, mobile phones, and smartwatches.
-These machines not only perform computations at speeds far beyond human capability but are also programmable, meaning they can be instructed to execute a sequence of tasks --- or a ``recipe'' --- to perform virtually any desired computation.
+% Broader Definition of Information:
 
-Communication involves sending and receiving messages, synchronization, and more.
-Computer networks have vastly enhanced the ability to share and distribute information.
-By connecting individual computers over a network, they can exchange data and collaborate on tasks.
-For example, information processed on one computer, such as an email typed by a user, can be transmitted to another computer where it is processed, notifying a recipient.
-Over time, more computing devices have been connected through a variety of mediums—such as fiber optics, copper wires, and wireless signals—resulting in the creation of the global internet.
-This vast network enables incredibly rapid and efficient information exchange.
+%     The opening paragraph rightly highlights that information is central to cognition and communication, but it doesn't touch on the difference between raw data and information. A clearer distinction between data (unprocessed facts) and information (processed and structured data) would make the content more precise.
+%     It would also be helpful to mention that information is critical not just for human society, but also for systems in nature and machines (e.g., biological systems like DNA).
+
+% Internet and Network Development:
+
+%     When discussing computer networks, it may be beneficial to briefly mention key technological milestones like packet switching, which made modern networking, and the internet, possible. This omission could leave the reader with an incomplete understanding of how information is transmitted across global networks.
+%     The statement about a photograph being transmitted in "microseconds" is an exaggeration. While information can be transmitted rapidly, the speed depends on various factors such as the size of the data, network bandwidth, and physical distance between devices. Clarifying that data transmission is fast but not always "microsecond-level" would be more accurate.
+
+% Device and Network Diversity:
+
+%     The phrase "digital computers acting on bits" limits the scope of modern devices. While the majority of devices are indeed digital, the text omits the growing role of quantum computing, which uses qubits instead of classical bits. Although still in development, quantum computing is a significant advancement that affects information processing.
+%     Furthermore, not all networked devices are purely digital computers. Devices like analog sensors and hybrid systems are part of IoT ecosystems, and the mention of this growing diversity would complete the picture of modern networks.
+
+
+
+
+
+\lettrine{I}{nformation} forms the foundation of human cognition, communication, and society.
+From simple numbers to complex music, from raw sensory data to intricate conceptual systems, information permeates every aspect of our lives.
+We are constantly processing and exchanging it.
+
+% Computation can take many forms, from calculations and data storage to analysis.
+% Information may be processed, for example by analyzing raw sense data into meaningful organisations, or simply by performing calculations.
+Information processing was revolutionized in the mid-20th century by the introduction of machines capable of automatic information processing --- known as \emph{computers}.
+These machines are \emph{digital} since they represent information in binary code --- 0s and 1s, or bits.
+This binary encoding, combined with specific hardware design and software optimizations, make computers very efficient in information processing.
+Computers are also programmable: they can be instructed to carry out a sequence of tasks, or programs, enabling virtually any desired computation.
+Because of their efficiency and flexibility, computers have become ubiquitous, deeply integrated into everyday life, to the point where a world without them --- including mobile devices, online banking, and more --- is unimaginable.
+
+Another major development has been the creation of \emph{networks} of computing devices.
+Such networks enable the exchange of information, such as sending and receiving messages, sharing information or resources.
 Today, for instance, a photograph taken on a mobile device (comprising millions of bits) can be transmitted across the world in microseconds.
-
-These advancements have given rise to a wide range of applications, including text processing, internet browsing, emailing, and video games.
-On mobile devices, these are commonly referred to as apps.
+The most prominent of these is the internet: a global network of networks connecting devices as diverse as computers, smartphones, satellites, and even smart fridges.
+Connections between devices are realized through a variety of mediums including fiber optics and copper wires, but also wireless like 5G or sattelite communication.
+By far the most of these devices are digital computers acting on bits, and most of the communication links represent information as bits as well.
+For example, information processed on one computer, such as an email typed by a user, can be transmitted to another computer where it is processed, notifying a recipient. The advancements in computing and networking technologies have given rise to a wide range of \emph{applications}, including text processing, internet browsing, emailing, video games, and mobile phone apps, but also more modern one like artificial intelligence (AI), virtual reality, and blockchain technologies.
 
 
 Quantum mechanics may seem, at first glance, unrelated to computers and networks, as it primarily describes how nature behaves at the sub-atomic level.
@@ -62,6 +81,8 @@ Lower-level instruction sets such as OpenQASM are widely used;
 higher-level programming languages like Q\# or Python-based software development kits exist, as well as compilers.
 Full-stack architectures exist that enable execution of arbitrary quantum applications.
 
+These abstraction allow one to reason about the logic of an application, and program is using abstract concepts, and they can be automatically optimized for different hardware targets.
+
 
 \section{Problem statement}
 For quantum networks, there is at present a lack of such abstractions.
@@ -69,30 +90,29 @@ So far, the experiments that have been done on small quantum networks have been 
 There aren't yet any programming languages, compilers, or a runtime system for quantum network applications.
 This makes it difficult for programmers to implement new ideas for using quantum networks.
 
-Problems
-- Quantum networks are not programmable using abstract concepts
-- Quantum network applications cannot be automatically optimized since none of the existing compilation tools (classical and/or quantum) address the network dimension of programs
-- Quantum network nodes do not have a hardware-agnostic way to execute applications
-
-One might think that one re-use existing abstractions from quantum computing, as well as from classical computing and networking.
+One might think that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking.
 However, certain unique properties of quantum network applications make this non-trivial.
+
+First, there simply does not exist a representation for quantum network programs, high-level nor low-level (\todo{CQC?}).
+
+Also, there are different hardware platforms, which we may all want to support.
+
+We have to integrate both local and networking operations.
 
 First, application code for a quantum internet application is not merely a hybrid of classical and quantum code segments; these segments are also highly \textit{interactive}: classical and quantum code may run concurrently, communicating and influencing each other.
 E.g., a quantum circuit may "pause" halfway, keeping quantum states in memory, and wait for a value from a classical segment (e.g. a classical message from a remote node) before continuing.
 Quantum memories have limited lifetimes, meaning qubits are subject to decoherence, degrading their quality over time. This introduces the need 
 control the joint schedule of the classical and quantum segments of the application to reach desired levels of application performance.
 
-Second, a compiler should be able to optimize the whole application including both classical and quantum code, as well as to provide information that can be used in our architecture to align and inform scheduling decisions. 
-
 Finally, we are faced with a mix of time scales:
 on the one hand, entanglement generation requires a very precise network schedule that is agreed ahead of time between the network nodes~\cite{dahlberg2019link}. On the other hand, classical messages are exchanged asynchronously between the nodes without guaranteed message delivery times. This motivates an architecture in which different segments of the system may operate at different levels of timing precision. 
 
-% By 2020, the state of the art in quantum networks had reached significant milestones.
-% Projects like CQC (Cambridge Quantum Computing) and tools like Simulaqron provided researchers with environments to simulate and experiment with quantum networks, further advancing the practical possibilities of quantum technology.
+% Projects like CQC and tools like Simulaqron provided researchers with environments to simulate and experiment with quantum networks, further advancing the practical possibilities of quantum technology.
 
 \section{Research objective}
 In this thesis, we address the gap that exists for the quantum internet: namely that there is no programming and execution framework for quantum internet applications.
 The main goal is to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optmizing runtime performace}.
+We work towards this goal by addressing the following research questions:
 
 % Main objective
 % - A programmer should be able to write a quantum network application in an abstract representation (i.e. using high-level concepts without having to know details of physical realizations of quantum networks)
