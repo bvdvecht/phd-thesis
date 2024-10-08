@@ -1,31 +1,8 @@
 \chapter
- [Background and challenges]
- {Background and challenges}
+ [Preliminaries]
+ {Preliminaries}
 \label{chp:background}
 
-\todo{ensure consisency throughout whole thesis of `end node' / `end node' / `processing node'}
-
-
-\section{Quantum computing}
-Quantum computing consists of performing operations on quantum bits (qubits).
-
-\paragraph{Circuits and gates}
-A quantum program is typically represented as a \emph{quantum circuit}.
-\todo{example circuit figure?}
-A quantum circuit describes the operations that are to be performed on the quantum memory consisting of individual qubits.
-Operations include quantum gates (rotation gates or Hadamard), initialization, and measurement (readout).
-Quantum gates may be on a single qubit, or on multiple qubits.
-For example, the CNOT gate is a 2-qubit gate.
-
-The code, or the `recipe` of quantum programs is hence classical.
-The information and memory that the program manipulates is quantum.
-Besides quantum operations, there may be limited classical control, such as a gate being executed depending on a measurement outcome.
-Typically, a quantum circuit is executed in one go, on a very small timescale.
-Quantum memory used for quantum computing \todo{cite hardware platforms} often only stays coherent (alive and useful) for microseconds.
-
-\paragraph{Hybrid quantum computing}
-Hybrid classical-quantum programs are used to realize e.g. VQE and QAOA \todo{refs}.
-For such programs, a quantum circuit is executed, followed by some classical processing, and a next circuit is issued.
 
 \section{Quantum networks}
 A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
@@ -39,7 +16,8 @@ Some of these qubits may be used for establishing an entangled quantum state wit
 An end node also possesses a classical processor and a classical memory.
 Furthermore, an end node can send and receive classical messages to and from other end nodes in the network.
 Nodes can also exchange classical messages (e.g. via dedicated classical links or the internet), where no guarantees are assumed on their message delivery times. 
-A network of quantum networks may be a called a \textit{quantum internet}.
+A future \textit{quantum internet}~\cite{Wehner2018stages, kimble2008quantum} is a global network of quantum networks.
+We note that such a quantum internet will likely exist alongside the classical internet, rather than replace it.
 
 \begin{figure}[t]
     \centering
@@ -60,7 +38,8 @@ A network of quantum networks may be a called a \textit{quantum internet}.
 \end{figure}
 
 \subsection{Quantum end nodes}
-Quantum (network) processors differ from classical processors in a number of ways.
+As mentioned above, end nodes in a quantum network possess a quantum processor acting on quantum memory.
+These processors differ from classical processors in a number of ways.
 Firstly, quantum memory has limited lifetime, meaning that its quality degrades over time.
 For example, quantum memories based on nitrogen-vacancy (NV) centers in diamond have impressively been optimized to achieve lifetimes in the order of seconds~\cite{Abobeih2018};
 however, this is still very short compared to classical memories, which generally do not have a limited lifetime at all.
@@ -72,7 +51,6 @@ Quantum \textit{network} processors have additional challenges:
     (1) the processor may have to act as a local computation unit and a network interface at the same time;
     for example, in NV centers, an electron spin qubit is used for generating entanglement with a remote node but is also needed to do local two-qubit gates,
     (2) remote-entanglement operations may not have a fixed time in which they complete, which makes scheduling and optimization more difficult.
-
 
 Each quantum memory has a certain \textit{topology} that describes which operations can be applied on which (pair of) qubits.
 Some of the qubits in a quantum memory may be used to generate an entangled state with another node.
@@ -91,6 +69,27 @@ These internal nodes in the network perform elementary link generation and entan
 
 \paragraph{Hardware implementations}
 There are various quantum hardware implementations for quantum network processors, such as nitrogen-vacancy centers in diamond~\cite{Bernien2014}, ion traps~\cite{moehring2007entanglement}, and neutral atoms~\cite{hofmann2012heralded,ritter2012elementary}, which all have different capabilities and gates that can be performed.
+
+\subsection{Quantum processing}
+Quantum computing consists of performing operations on quantum bits (qubits).
+
+\paragraph{Circuits and gates}
+A quantum program is typically represented as a \emph{quantum circuit}.
+\todo{example circuit figure?}
+A quantum circuit describes the operations that are to be performed on the quantum memory consisting of individual qubits.
+Operations include quantum gates (rotation gates or Hadamard), initialization, and measurement (readout).
+Quantum gates may be on a single qubit, or on multiple qubits.
+For example, the CNOT gate is a 2-qubit gate.
+
+The code, or the `recipe` of quantum programs is hence classical.
+The information and memory that the program manipulates is quantum.
+Besides quantum operations, there may be limited classical control, such as a gate being executed depending on a measurement outcome.
+Typically, a quantum circuit is executed in one go, on a very small timescale.
+Quantum memory used for quantum computing \todo{cite hardware platforms} often only stays coherent (alive and useful) for microseconds.
+
+\paragraph{Hybrid classical-quantum processing}
+Hybrid classical-quantum programs are used to realize e.g. \textit{variational quantum eigensolvers (VQE)}~\cite{diadamo2021distributed, liu2022layer} or \textit{quantum approximate optimization algorithms (QAOA)}~\cite{farhi2014quantum}.
+For such programs, a quantum circuit is executed, followed by some classical processing, and a next circuit is issued.
 
 \subsection{Entanglement generation}
 In order for two neighboring quantum network nodes to produce heralded entanglement between them, they need to simultaneously perform an action to trigger entanglement generation (at the physical layer, \emph{synchronized to nanosecond precision}).
@@ -113,13 +112,12 @@ Nodes are not forced to attempt entanglement in corresponding time slots, and ca
 
 
 
-
-
 \section{Quantum network applications}
 Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
 Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
+In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
 
-\paragraph{Terminology}
+\subsection{Programs}
 Throughout this thesis, we will use the following terminology.
 Applications refer to multi-node protocols or use-cases of quantum networks, such as QKD, BQC, etc.
 Programs refer to the code that is run on individual quantum network nodes.
@@ -131,6 +129,40 @@ This is in sharp contrast to distributed quantum computing (see e.g.~\cite{cacci
 
 
 Such applications are split into distinct \textit{programs} each of which runs on a separate end node.
+
+
+\paragraph{Program ingredients}
+\todo{unit of information: bit vs qubit}
+\todo{unit of instruction still classical in quantum computing}
+
+The single-node programs that constitute a quantum internet application are hybrid in nature (see Fig~\ref{fig:program_illustration}):
+First, they contain quantum operations, such as local quantum gates and measurements (e.g. to perform a server computation in BQC), and entanglement generation (e.g. to produce key in QKD). Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
+All quantum operations are executed on quantum processors that can store, manipulate and measure quantum information, where small networks including such processors have been realized using different quantum hardware platforms including, for example,  Nitrogen-Vacancy (NV) centers in diamond~\cite{pompili2021realization}, and Ion Traps~\cite{krutyanskiy2023entanglement}.
+Second, programs need to perform classical operations, such as message passing (e.g., a BQC client program sending desired measurement bases to the BQC server), and local classical processing (e.g., post-processing measurement outcomes in QKD).
+
+
+A program is a series of instructions to be executed by a node.
+Instructions can be categorized into four types: local classical processing, classical message-passing, quantum local processing (quantum operations), and remote entanglement generation.
+A program can keep classical variables in a classical memory, and quantum variables (qubits) in the node's quantum memory during the execution.
+Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{fig:program_illustration}), e.g. QKD (two programs, one per node),
+or secret sharing~\cite{hillery1999quantum} (a program each on many nodes).
+Programs may involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
+
+
+Classical blocks of code consist of instructions for local classical operations and classical message passing. Quantum \emph{blocks of code} consists of
+%
+\begin{inlinelist}
+\item quantum operations (initialization, quantum gates, measurement), 
+\item low-level classical control logic (branching on classical variables and loops), as well as 
+\item instructions to make entanglement between remote nodes. 
+\end{inlinelist}
+%
+
+\paragraph{Interactivity}
+Classical blocks of code may depend on quantum ones via classical variables generated during the quantum execution (such as measurement results, notification of entanglement generation, and information on the state of the quantum system such as the availability of qubits).
+Similarly, quantum blocks may depend on variables set by the classical blocks (such as messages received from remote network nodes).
+Finally, quantum blocks may themselves depend on other quantum blocks via qubits in the quantum memory. 
+
 The programs consist of both local operations (classical and quantum) and network operations (classical and quantum), see \cref{fig:app_programs}.
 That is, the programs communicate either by passing classical messages, or by establishing quantum entanglement.
 For example, BQC involves a \textit{client} node and a \textit{server} node, both of which run their own program.
@@ -151,78 +183,39 @@ Programs with mixed classical and quantum operations have also been called \text
 Due to the nature of quantum network programs, execution may have to \textit{wait} for some time. For example, the program needs to wait until another node sends a classical message, or until remote entanglement has been established.
 Therefore, it makes sense to run multiple (independent) quantum network programs on a node at the same time (interleaved), so that processor idle times can be filled by execution of other programs. This is something that typically does not happen on local quantum computers, and therefore introduces new challenges.
 
-\paragraph{Control of programs}
+\paragraph{Independence of programs}
 Quantum network applications may be programmed by a single actor.
 For example, a developer may program a QKD application in the form of a two programs, and distribute these two programs to two end nodes in the network.
 Alternatively, a single-node quantum network program may be developed separately from other programs, possibly not knowing how these other programs are implemented.
 For example, a BQC service provider could have already implemented the server-side program of a specific BQC protocol.
 A client may then write the client-side of this protocol, without having control over the server-side implementation.
 
-\paragraph{Application types}
-
-In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
-
-\paragraph{Program ingredients}
-\todo{unit of information: bit vs qubit}
-\todo{unit of instruction still classical in quantum computing}
-
-
-
-The single-node programs that constitute a quantum internet application are hybrid in nature (see Fig~\ref{fig:program_illustration}):
-First, they contain quantum operations, such as local quantum gates and measurements (e.g. to perform a server computation in BQC), and entanglement generation (e.g. to produce key in QKD). Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
-All quantum operations are executed on quantum processors that can store, manipulate and measure quantum information, where small networks including such processors have been realized using different quantum hardware platforms including, for example,  Nitrogen-Vacancy (NV) centers in diamond~\cite{pompili2021realization}, and Ion Traps~\cite{krutyanskiy2023entanglement}.
-Second, programs need to perform classical operations, such as message passing (e.g., a BQC client program sending desired measurement bases to the BQC server), and local classical processing (e.g., post-processing measurement outcomes in QKD).
-
-
-A program is a series of instructions to be executed by a node.
-Instructions can be categorized into four types: local classical processing, classical message-passing, quantum local processing (quantum operations), and remote entanglement generation.
-A program can keep classical variables in a classical memory, and quantum variables (qubits) in the node's quantum memory during the execution.
-Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{fig:program_illustration}), e.g. QKD (two programs, one per node),
-or secret sharing~\cite{hillery1999quantum} (a program each on many nodes).
-Programs may involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
-
-
-
-
-Classical blocks of code consist of instructions for local classical operations and classical message passing. Quantum \emph{blocks of code} consists of
-%
-\begin{inlinelist}
-\item quantum operations (initialization, quantum gates, measurement), 
-\item low-level classical control logic (branching on classical variables and loops), as well as 
-\item instructions to make entanglement between remote nodes. 
-\end{inlinelist}
-%
-
-\paragraph{Interactivity}
-Classical blocks of code may depend on quantum ones via classical variables generated during the quantum execution (such as measurement results, notification of entanglement generation, and information on the state of the quantum system such as the availability of qubits).
-Similarly, quantum blocks may depend on variables set by the classical blocks (such as messages received from remote network nodes).
-Finally, quantum blocks may themselves depend on other quantum blocks via qubits in the quantum memory. 
-
 
 
 \section{Application execution}
 
-\paragraph{Performance metrics}
-
-Next to classical metrics, such as utility (see `Methods, Metrics`), throughput or latency~\cite{stankiewicz_commag}, the successful execution of quantum network applications is governed by quantum metrics, which are unique to quantum networks and not present in classical networks. Such quantum network-specific metrics include fidelity (see `Methods, Metrics`), or the probability of success in executing an application, where the latter depends directly on the fidelity of the quantum states prepared.
-
-\textit{Performance metrics and noise}. Quantum internet applications have classical outcomes that are typically probabilistic in nature:
+\paragraph{Mode of Execution}
+There exist quantum applications and functionalities, where one pair of programs is executed only once, e.g. a simple example of quantum teleportation~\cite{bennett_1993_teleportation}.
+As in quantum computing, however, some quantum network applications~\cite{wehner_2018_stages} are expected to succeed only with a specific \emph{probability of success} $p_{\rm succ}$ when executed once.
+In many quantum internet applications (e.g. BQC), a single execution of the application can result in failure or success (e.g. a BQC client receives correct measurement results from the server program~\cite{leichtle2021verifying}).
+Quantum internet applications have classical outcomes that are typically probabilistic in nature:
 (1) applications may intentionally do measurements on quantum states that have fundamentally probabilistic outcomes (e.g. quantum cryptography),
 (2) in practice, quantum hardware is imperfect (or \textit{noisy}). That is, undesired errors occur
 when performing operations (such as gates, measurements, or entanglement generation) or when keeping quantum states in memory for too long.
-
-In many quantum internet applications (e.g. BQC), a single execution of the application can result in failure or success (e.g. a BQC client receives correct measurement results from the server program~\cite{leichtle2021verifying}). Applications are often executed many times, where outcome statistics are computed in order to validate successful execution (e.g. by majority of outcomes).
-We consider two metrics:
-a \emph{quantum metric} -  the \textit{success probability} of executing a single instance of the application (on average), and a \emph{classical metric} -  the \textit{makespan}, i.e. the average execution time of an application instance.
-
-\paragraph{Mode of Execution}
-
-There exist quantum applications and functionalities, where one pair of programs is executed only once, e.g. a simple example of quantum teleportation~\cite{bennett_1993_teleportation}.
-As in quantum computing, however, some quantum network applications~\cite{wehner_2018_stages} are expected to succeed only with a specific \emph{probability of success} $p_{\rm succ}$ when executed once.
+Applications are often executed many times, where outcome statistics are computed in order to validate successful execution (e.g. by majority of outcomes).
 The application is then typically executed many times in succession in order to gather statistics (for example to amplify $p_{\rm succ}$).
-A common use case for executing the same application repeatedly also occurs when evaluating the performance of a system (as we do here), where the goal is to estimate quantum performance metrics, such as the probability of success or the fidelity (see `Methods, Metrics`).
-When executing the same application multiple times, the programmer can choose to launch many instances of the same program at once if multitasking is possible (see below), or to write one program which repeatedly executes the node's part of the program, asking for a successive execution of the application.
 
+
+\paragraph{Performance metrics}
+Performance of application execution on quantum network nodes can be measured by several metrics.
+In this thesis we consider metrics that either apply to a single application that one executes on the quantum network, or on a node in the network that executes one or more applications.
+
+For an application, we consider \textit{makespan} as a classical metric and \textit{success probability} as a quantum metric.
+Makespan is the time it takes to execute (all repetitions of) the application.
+The success probability is the one mentioned above.
+It is typically related to quantum fidelity $F \in [0, 1]$, which is a measure of closeness of a quantum state to some ideal quantum state.
+Noisy quantum systems produce non-perfect quantum states ($F < 1$) which decrease application success probability.
+For quantum network nodes, we consider common classical metrics~\cite{stankiewicz_commag}\todo{better refs}: utility (fraction of time that a node is doing useful things), throughput (amount of application executions per time unit) and latency (which may be between internal components of a node, or between nodes).
 
 
 
@@ -240,32 +233,6 @@ There are in fact many variants of QASM such as OpenQASM~\cite{cross2017openqasm
 Some of these variants are at a level closer to the physical implementation, such as \texttt{eQASM}, allowing for specifying low-level timing of quantum operations, while others, such as \texttt{f-QASM}, are at a higher level.
 Together with the definition of these QASM-variants, progress has also been made in compilation of applications programmed in QASM to hardware implementations.
 More abstract languages and programming frameworks for quantum programs include \texttt{Quil}~\cite{smith2016quil}, \texttt{Qiskit}~\cite{qiskit}, \texttt{Cirq}~\cite{cirq}, \texttt{Q\#}~\cite{qsharp}, \texttt{QuEST}~\cite{jones2019quest}.
-
-None of these instruction sets or languages contain elements for remote entanglement generation (i.e. between different nodes), which \ac{NetQASM} does provide.
-A \ac{NetQASM} program that uses the vanilla flavor and only contains local operations would look similar to an OpenQASM program.
-However, the instruction set is not quite the same, since \ac{NetQASM} uses a different memory model than OpenQASM.
-This is due to the hybrid nature of quantum network programs, which has more interaction between classical data and quantum data than non-networking programs (for which OpenQASM might be used).
-So, \ac{NetQASM} is not just a superset of the OpenQASM instruction set (in the sense of adding entanglement instructions).
-
-In~\cite{dahlberg2018simulaqron}, we introduced the \ac{CQC} interface, which was a first step towards a universal instruction set.
-However, \ac{CQC} had a number of drawbacks, in particular:
-    (1) \ac{CQC} does not have a notion of virtualized memory (see \cref{sec:design_considerations}), which meant that applications needed to use qubit IDs that were explicitly provided by the underlying hardware.
-        This introduced more communication overhead and fewer optimization opportunities for the compiler.
-    (2) \ac{CQC} does not provide as much information about hardware details.
-        Therefore, platform-specific compilation and optimization is not possible.
-    (3) Furthermore, \ac{CQC} does not match entirely with the later definition of our quantum network stack~\cite{dahlberg2019linklayer, kozlowski2020networklayer}.
-        For example, it was not clearly defined how \ac{CQC} relates to the definition of a network layer.
-
-Many of the ideas from e.g. QASM for how to handle and compile local gates can be reused also for quantum network applications.
-For example, version 3 of OpenQASM~\cite{cross2021openqasm} which is under development, proposes close integration between \emph{local} classical logic and quantum operations, which is something we also propose in this work.
-However, there are two key differences that we need to address:
-\begin{enumerate}
-      \item Instructions for generating entanglement between remote nodes in the network need to be handled and integrated with the rest of the application, see \cref{sec:abstract_model} below.
-      \item The local operations performed by a node might depend on information communicated by another node and only known at runtime.
-            Note that this is different from the conditionals on \emph{local} classical information, proposed in for example OpenQASM version 3, which does not require communication between remote nodes in a network.
-            This brings new constraints in how to handle memory allocation, scheduling and addressing.
-            We discuss this point in further detail in the coming sections.
-\end{enumerate}
 
 Compilers are discussed in more detail in \cref{chp:compiler}.
 

@@ -1,5 +1,5 @@
 \section{Evaluation}
-\label{sec:evaluation}
+\label{netqasm:sec:evaluation}
 We evaluate two of the design choices that we made for \ac{NetQASM}:
     (1) exposing unit-modules to the \ac{CNPU} and
     (2) adding the possibility to use platform-specific flavors of instructions.
@@ -41,7 +41,7 @@ Second, the NV hardware is interesting since it has a restricted gate set and qu
 Therefore, we expect that the use of unit modules and an NV-specific flavor makes a difference in terms of runtime quality.
 
 \subsection{Unit modules}
-\label{sec:evaluation-unit-modules}
+\label{netqasm:sec:evaluation-unit-modules}
 We ask ourselves the question whether it pays off to expose unit modules, that is, a qubit topology with gate- and entanglement information.
 Specifically, we want to know if there are situations where knowing the unit module gives the \ac{CNPU} an opportunity to optimize the application in a way that is not possible when not knowing the unit module.
 If so, we are interested in how much advantage this gives (in terms of the runtime quality defined above).
@@ -153,7 +153,7 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
 
 
 \subsection{Flavors}
-\label{sec:evaluation-flavours}
+\label{netqasm:sec:evaluation-flavours}
 While aiming to let \ac{NetQASM} be mostly platform-independent, we did also choose to allow platform-specific instructions, bundled in flavors.
 The idea is that this allows for platform-specific optimization leading to better application performance.
 Here we evaluate if flavors really impact potential performance, and if so how much.

@@ -31,7 +31,7 @@ The node scheduler updates its own task graph accordingly, and may then add new 
 Write conflicts on the processor task graphs are avoided since tasks can only be added by the node scheduler, and tasks can only be removed by the processor scheduler.
 
 The processor schedulers support both a first-come-first-serve (FCFS) and an earliest-deadline-first (EDF)~\cite{silberschatz2006operating} scheduling mechanism.
-In our evaluation (Section~\ref{sec:evaluation}), deadlines are used as \textit{soft deadlines}, i.e. there is no guarantee about meeting deadlines.
+In our evaluation (Section~\ref{qoala:sec:evaluation}), deadlines are used as \textit{soft deadlines}, i.e. there is no guarantee about meeting deadlines.
 
 \begin{figure}% [ht]
     \centering

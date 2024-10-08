@@ -7,7 +7,7 @@ and were run on a machine using 80 Intel Xeon Gold cores at 3.9 GHz and 192 GB o
 
 \textbf{Code availability.}
 All code used for the evaluations is available in the \texttt{evaluation/} folder~\cite{qoala2023simulator}.
-For each evaluation done (each subsection in Section~\ref{sec:evaluation}, it includes the Qoala program source code, the scripts for running the simulations, the scripts for producing the plots, and a \texttt{README} that explains how to use the code.
+For each evaluation done (each subsection in Section~\ref{qoala:sec:evaluation}, it includes the Qoala program source code, the scripts for running the simulations, the scripts for producing the plots, and a \texttt{README} that explains how to use the code.
 In the source code, the term \textit{time bin} is used for what we here call \textit{time slot}.
 
 \subsection{Hardware parameters}
@@ -123,7 +123,7 @@ The simulation duration is an average over the three simulations per application
     \vspace{1cm}
     \subfloat[\centering \label{fig:app:pingpong_circuit}]{\includegraphics[scale=0.6]{figures/qoala/pingpong_circuit.png}}
     \caption{
-    Circuit for applications A1 (QKD), A3 (Teleport) and A4 (ping-pong) from Section~\ref{sec:evaluation}.
+    Circuit for applications A1 (QKD), A3 (Teleport) and A4 (ping-pong) from Section~\ref{qoala:sec:evaluation}.
     Single lines represent qubits. Double lines represent classical values.
     (a) QKD (A1). Two nodes repeatedly generate entangled pairs which are immediately measured.
     (b) Teleport (A3). A sender node (having 2 qubits) teleport a state to a receiver node. The sender applies local quantum operations (initialization, qubit rotation gates).
@@ -143,7 +143,7 @@ The simulation duration is an average over the three simulations per application
     \vspace{1cm}
 
     \caption{
-    Circuit for applications A2 (BQC) and A5 (GHZ) from Section~\ref{sec:evaluation}.
+    Circuit for applications A2 (BQC) and A5 (GHZ) from Section~\ref{qoala:sec:evaluation}.
     Single lines represent qubits. Double lines represent classical values.
     (a) BQC (A2). A client node remotely prepares two qubits on a server node by creating an entangled pair and locally measuring its qubits, resulting in classical outcomes $p_1$ and $p_2$.
     The server applies a local two-qubit gate (CZ or cphase) on its qubits.
@@ -228,7 +228,7 @@ Interleaved: All tasks for all instances were created and added to the task grap
 
 \textbf{Teleportation multitasking scenario.}
 One sender node and one receiver node.
-The teleportation application (A3 in Section~\ref{sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) was instantiated 100 times.
+The teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) was instantiated 100 times.
 
 Classical node-node communication latency: $10^7$ ns.
 Sender node: 2 qubits.
@@ -239,7 +239,7 @@ For the self-preemption case, the teleportation application was only instantiate
 
 \textbf{BQC multitasking scenario.}
 10 client nodes and one server node.
-The BQC application (A2 in Section~\ref{sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) was instantiated 10 times for each client, for a total for 100 program instances.
+The BQC application (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) was instantiated 10 times for each client, for a total for 100 program instances.
 
 Classical node-node communication latency: $10^5$ ns.
 Client node: 2 qubits.
@@ -249,7 +249,7 @@ For each number of qubits $Q \in \{2, 5, 10\}$, we ran a simulation using both a
 
 \textbf{QKD-BQC multitasking scenario.}
 One client node and one server node.
-Client and server execute both (a) 50 instances of QKD (A1 in Section~\ref{sec:evaluation}, see also Figure~\ref{fig:app:qkd_circuit}) and (b) 50 instances of BQC (A2 in Section~\ref{sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}).
+Client and server execute both (a) 50 instances of QKD (A1 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:qkd_circuit}) and (b) 50 instances of BQC (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}).
 
 We compared two network schedules.
 Sequential network schedule with repeating pattern $P_{seq}$. $P_{seq}$ consists of time slots $QKD_1$, $QKD_2$, $\dots$, $QKD_{50}$, $BQC_1$, $BQC_2$, $\dots$, $BQC_{50}$.
@@ -364,7 +364,7 @@ A program which prepares a single qubit to the $\ket{-} = 1/\sqrt{2} (\ket{0} + 
 
 \textbf{Scenario.}
 Two nodes: Alice and Bob.
-Alice and Bob execute the teleportation application (A3 in Section~\ref{sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) $T$ times.
+Alice and Bob execute the teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) $T$ times.
 Bob concurrently executes the local program described above $L$ times.
 For each combination of $T \in [1, 15]$ and $L \in [1, 15]$, we ran a simulation $SIM$ 200 times, where in each simulation, all instances and all their tasks are created at the same time and added to the task graphs of the node.
 The success per teleportation instance is calculated as in~\ref{sec:app:details_6_1}.
@@ -381,7 +381,7 @@ Number of qubits at Alice: $20$.
 
 \subsection{Details for 6.6 (Performance sensitivity)}
 \textbf{Scenario.}
-One server node runs 10 BQC applications (A2 in Section~\ref{sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) concurrently with 10 client nodes (one BQC application per client node).
+One server node runs 10 BQC applications (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) concurrently with 10 client nodes (one BQC application per client node).
 One BQC instance is run for each client.
 This scenario was repeated 100 times for each of the three evaluations (impact of node-node-latencies, impact of internal latencies, impact of time slot length) in order to obtain statistics.
 The success per BQC instance is calculated as in~\ref{sec:app:details_6_1}.

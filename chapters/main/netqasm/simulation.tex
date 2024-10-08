@@ -1,7 +1,7 @@
 \section{Simulation details}
 \label{app:simulation}
 
-In this section we detail how simulations in \cref{sec:evaluation} were
+In this section we detail how simulations in \cref{netqasm:sec:evaluation} were
 performed and what models and parameters were used. All simulations used the
 \ac{NetQASM} SDK~\cite{git_netqasm}, using
 NetSquid~\cite{netsquid,coopmans2021netsquid} as the underlying simulator. All
@@ -54,7 +54,7 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
     \hline
   \end{tabular}
   \caption{
-    Gate durations for scenario \textbf{B} of \cref{sec:evaluation}.
+    Gate durations for scenario \textbf{B} of \cref{netqasm:sec:evaluation}.
     $t$ is the value being swept in \cref{fig:sweep_gate_time}.
     All values are from~\cite{dahlberg2019linklayer}.}
   \label{tab:gates}
@@ -82,7 +82,7 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
     \hline
   \end{tabular}
   \caption{
-    Noise parameters for used in the simulations of \cref{sec:evaluation}.
+    Noise parameters for used in the simulations of \cref{netqasm:sec:evaluation}.
     $f$ is the value being swept in \cref{fig:sweep_gate_noise} and \cref{fig:plot_bqc}.
     All fidelities are realized by a applying depolarising noise as in \cref{eq:depolarising}.
     All values are from~\cite{coopmans2021netsquid}, except \nq{link_fidelity} which is set to relatively high value to avoid this being the major noise-contribution and preventing any conclusions to be made.
@@ -91,7 +91,7 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
 \end{table}
 
 \subsection{BQC application and flavors}
-In \cref{sec:evaluation-flavours} we simulated the blind quantum computation
+In \cref{netqasm:sec:evaluation-flavours} we simulated the blind quantum computation
 (BQC) application from \cref{fig:bqc_app}. The code for this is available at
 \cite{git_squidasm}.
 

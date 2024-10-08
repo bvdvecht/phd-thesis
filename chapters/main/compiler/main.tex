@@ -5,8 +5,8 @@ We also defined a software development kit (SDK) that allows one to write progra
 In \cref{chp:qnodeos} we introduced an operating system, QNodeOS, that executes these programs.
 In \cref{chp:qoala} we improved on the design of the operating system and presented the Qoala program format.
 This format consists of classical instructions in the HostLang language and quantum instructions in NetQASM, grouped into blocks.
-Qoala programs are not meant to be written by programmers directly.
-Just as for NetQASM programs, the intention is for programmers to code in a higher-level representation; a compiler then translates this into a Qoala program.
+Qoala programs are not meant to be written by developers directly.
+Just as for NetQASM programs, the intention is for developers to code in a higher-level representation; a compiler then translates this into a Qoala program.
 
 Although programmers could express their program logic directly in the Qoala format, this is not practical for several reasons.
 First, since the format is low-level, it is quite verbose.
@@ -21,15 +21,10 @@ Although not required to add these details by the programmer, if one wants to ma
 Ideally, the programmer should not have to write different versions of a program, one for each hardware platform that the program is intended to run upon.
 Classically this is also the case: programmers do not write assembly directly.
 
-The Qoala program format was indeed not intended to be used by programmers directly.
-Instead, it was envisioned that a programmer would express program logic in a high-level language, such as Python, and that a compiler would transform this into a Qoala program.
-Allowing expression in such a higher-level language takes away the aforementioned issues.
-
-
 In \cref{chp:netqasm, chp:qnodeos} we described how NetQASM and QNodeOS already provides a way for programmers to express program logic in a high-level language, Python.
-However, in QNodeOS, compilation would happen on-the-fly:
+However, in \ac{QNodeOS}, compilation would happen on-the-fly:
 while executing a program (i.e. at \emph{runtime}), program code is evaluated and quantum instructions are translated into NetQASM subroutines.
-This lead to certain problems, also discussed in the evaluation of QNodeOS and Qoala:
+This lead to certain problems, also discussed in the evaluation of Qoala (\cref{qoala:sec:evaluation}):
 \begin{itemize}
   \item Compilation slows down execution:
     Since compilation needs to happen at runtime, overall execution time increases.
@@ -39,7 +34,7 @@ This lead to certain problems, also discussed in the evaluation of QNodeOS and Q
     Since code is interpreted on the fly, optimizations taking into account future code cannot be made. \todo{example figure of optimization that cannot be done in NetQASM/QNodeOS}
 \end{itemize}
 
-Qoala, with its new model of programs, enables addressing of the above problems.
+Qoala, with its new model of programs (\cref{qoala:sec:architecture}), enables addressing of the above problems.
 Furthermore, Qoala enables optimization specific to runtime performance, as we will discuss below (e.g. deadlines for better success probability).
 Before we discuss how a compiler for Qoala should look like, we first review what compilers are and related work.
 
@@ -157,7 +152,7 @@ The closest comes distributed quantum computing, for which compilers do exist~\c
 For distribution quantum computing there are compilers: \cite{ferrari_compiler_2021, haner_distributed_2021, cuomo_optimized_2023, ferrari_modular_2023}.
 One approach is to take the input circuit and first split it into separate circuits: circuit cutting~\cite{chatterjee_qurzon_2022}
 
-Intermediate represenations have also been proposed for network-related quantum programs:
+Intermediate representations have also been proposed for network-related quantum programs:
 an extension to QIR for network-related programs, NetQIR, has been proposed~\cite{vazquez-perez_netqir_2024}.
 For DQC, InQuIR has been used.\todo{elaborate on what these do and to what extent they are (not) suitable for us.}
 
@@ -354,7 +349,7 @@ Even without protocol description: do not re-order external operations.
 
 
 
-Recommendation for overall design:
+\subsection{Recommendation for overall design}
 
 Input:
 \begin{itemize}
