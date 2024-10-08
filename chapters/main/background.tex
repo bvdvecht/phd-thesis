@@ -8,6 +8,8 @@
 
 \section{Quantum computing}
 Quantum computing consists of performing operations on quantum bits (qubits).
+
+\paragraph{Circuits and gates}
 A quantum program is typically represented as a \emph{quantum circuit}.
 \todo{example circuit figure?}
 A quantum circuit describes the operations that are to be performed on the quantum memory consisting of individual qubits.
@@ -21,6 +23,7 @@ Besides quantum operations, there may be limited classical control, such as a ga
 Typically, a quantum circuit is executed in one go, on a very small timescale.
 Quantum memory used for quantum computing \todo{cite hardware platforms} often only stays coherent (alive and useful) for microseconds.
 
+\paragraph{Hybrid quantum computing}
 Hybrid classical-quantum programs are used to realize e.g. VQE and QAOA \todo{refs}.
 For such programs, a quantum circuit is executed, followed by some classical processing, and a next circuit is issued.
 
@@ -116,6 +119,7 @@ Nodes are not forced to attempt entanglement in corresponding time slots, and ca
 Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
 Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
 
+\paragraph{Terminology}
 Throughout this thesis, we will use the following terminology.
 Applications refer to multi-node protocols or use-cases of quantum networks, such as QKD, BQC, etc.
 Programs refer to the code that is run on individual quantum network nodes.
@@ -158,7 +162,7 @@ A client may then write the client-side of this protocol, without having control
 
 In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
 
-\subsection{Program ingredients}
+\paragraph{Program ingredients}
 \todo{unit of information: bit vs qubit}
 \todo{unit of instruction still classical in quantum computing}
 
@@ -198,7 +202,7 @@ Finally, quantum blocks may themselves depend on other quantum blocks via qubits
 
 \section{Application execution}
 
-\subsection{Performance metrics}
+\paragraph{Performance metrics}
 
 Next to classical metrics, such as utility (see `Methods, Metrics`), throughput or latency~\cite{stankiewicz_commag}, the successful execution of quantum network applications is governed by quantum metrics, which are unique to quantum networks and not present in classical networks. Such quantum network-specific metrics include fidelity (see `Methods, Metrics`), or the probability of success in executing an application, where the latter depends directly on the fidelity of the quantum states prepared.
 
@@ -285,11 +289,6 @@ Rather, to make maximal use of near-term quantum hardware, a multi-purpose appro
 
 Let us elaborate further on the relation, and differences, between the execution of quantum network applications, and the execution of quantum computing applications: One could envision building a system for executing quantum network applications on top of a simpler system for the execution of quantum computing programs, as long as the latter can be \emph{augmented with networking instructions to generate entanglement}: in essence one quantum block can be seen as one quantum computing program. Such a block may realize mid-circuit measurements by the classical control logic allowed within one quantum block, or error correction. Error correction could in this paradigm be realized both by classical control logic allowed within one quantum block, or by considering the error correction itself as part of the \ac{QDevice} (see \cref{sec:appendix-arch-node_system}) which then only exposes logical qubits and operations to \ac{QNodeOS}, instead of physical qubits and operations. In that sense, one may think of the interactivity required between classical and quantum operations as taking place not only at a higher level, but also stemming from the fact that classical messages are used to create a new interaction between \emph{separate} quantum programs, while in quantum computing we have only one single program.
 
-\subsection{Different Hardware Platforms} 
-
-It is desirable that an architecture for executing quantum network applications is as much as possible platform-independent. Hardware types include e.g. NV in diamond, or trapped ions, \todo{MORE}.
-
-Quantum processors in general offer two types of qubits (see e.g.~\cite{dahlberg_2019_egp}): \emph{communication qubits} which can be used to generate entanglement with remote nodes next to other quantum operations, as well as \emph{storage qubits} which cannot be used to generate entanglement and only for implementing local quantum operations. We remark that on near-term quantum processors, the types of operations also depends on the connectivity of the qubits. That is, not all (pairs of) qubits may allow the same set of quantum operations to be performed on them.
 
 \subsection{Difference with distributed quantum computing}
 
@@ -344,6 +343,11 @@ To allow for potentially time-consuming classical pre- and post-processing, it i
 applications are typically executed repeatedly. 
 
 
+\subsection{Different Hardware Platforms} 
+
+It is desirable that an architecture for executing quantum network applications is as much as possible platform-independent. Hardware types include e.g. NV in diamond, or trapped ions, \todo{MORE}.
+
+Quantum processors in general offer two types of qubits (see e.g.~\cite{dahlberg_2019_egp}): \emph{communication qubits} which can be used to generate entanglement with remote nodes next to other quantum operations, as well as \emph{storage qubits} which cannot be used to generate entanglement and only for implementing local quantum operations. We remark that on near-term quantum processors, the types of operations also depends on the connectivity of the qubits. That is, not all (pairs of) qubits may allow the same set of quantum operations to be performed on them.
 
 
 \begin{xstretch}

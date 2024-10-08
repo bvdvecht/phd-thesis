@@ -5,62 +5,71 @@
 From basic tasks like communication and information retrieval to more complex functions such as running businesses, managing global logistics, and advancing scientific research, we rely on these technologies to operate efficiently and stay connected.
 Computers, with their ability to be programmed, can perform a vast array of tasks by executing instructions, making them highly versatile tools in fields ranging from science to entertainment.
 When connected through networks, computers can share data, resources, and applications across the globe, amplifying their power and functionality.
-This combination of programmability and networking has given rise to technologies like the internet, cloud computing, and distributed systems, all of which form the foundation of today's digital world.
+This combination of programmability and networking has given rise to technologies like the internet, cloud computing, and distributed systems, all of which form the foundation of today's digital world and has had a transformative impact on our society~\cite{castells_impact_2013}.
 % The advancements in computing and networking technologies have given rise to a wide range of \emph{applications}, including text processing, internet browsing, emailing, video games, and mobile phone apps, but also more modern one like artificial intelligence (AI), virtual reality, and blockchain technologies.
 
 Quantum mechanics may seem, at first glance, unrelated to computers and networks, as it primarily describes how nature behaves at the sub-atomic level.
 However, quantum computers and quantum networks present opportunities for applications that are impossible on non-quantum (or \emph{classical}) computers and networks.
 While classical, digital, computers and networks represent data as 0s and 1s (bits), quantum computers use quantum bits (qubits) that can exist in multiple states simultaneously, thanks to the principles of superposition and entanglement.
-This allows quantum computers to perform certain calculations much faster than classical computers, such as simulation, fast searching, and machine learning~\cite{montanaro_quantum_2016, dalzell_quantum_2023}\todo{check this}.
+This allows quantum computers to perform certain calculations much faster than classical computers, such as simulation of molecular structures, fast searching, optimization algorithms, and machine learning~\cite{montanaro_quantum_2016, dalzell_quantum_2023}.
 Quantum networks use quantum entanglement to realize quantum connections between its \emph{nodes}, which are quantum (computing) devices.
 Using such remote entanglement connection, quantum networks enable applications~\cite{wehner_2018_stages} including data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
 
 To transform an application or use-case idea for computers and networks into a working system, a set of abstractions is essential.
 These abstractions simplify complex hardware operations and allow developers to focus on designing functionality rather than dealing with low-level details.
-These software abstractions include programming languages to write the code, compilers to translate that code into machine-readable instructions, and runtime environments (such as operating systems) to execute the application.
+These software abstractions include: programming languages to write the code, compilers to translate that code into machine-readable instructions, and runtime environments (such as operating systems) to execute the application.
 These tools, which are widespread for classical computing and networking~\cite{aho_compilers_2006, silberschatz_book_2014, james_computer_2016}, enable the efficient use of computing and networking resources, turning high-level ideas into executable software.
+
 For quantum computers, similar abstractions have been developed, especially in the last decade.
-These include QASM-like low-level instruction sets like QASM\todo{REFS} for quantum circuits, higher-level languages for representing hybrid classical-quantum code, and compilers and full-stack runtimes for hybrid classical-quantum execution.
+These include low-level instruction sets \cite{larose_overview_2019} for quantum circuits, higher-level languages for representing hybrid classical-quantum code~\cite{heim_quantum_2020}, compilers and full-stack runtimes for hybrid classical-quantum execution~\cite{bandic_full-stack_2022}.
 Without such abstractions and tools, it would be nearly impossible to realize and scale innovative applications, whether in classical or quantum computing and networking.
 
-The possibility of programming arbitrary applications in high-level software has led to a lot of impact.
-Especially the realization of classical internet applications by has had a transformative impact on our society~\cite{castells_impact_2013}. What's more, the advent of programmable hardware and new application areas sparked novel fields of computer science research and guided further hardware development.
+The possibility of programming arbitrary applications in high-level software has led to a lot of impact. What's more, the advent of programmable hardware and new application areas sparked novel fields of computer science research and guided further hardware development.
 
 
 % qubits haven't made up their mind yet
 % programs are recipes
 
-% For classical computers and networks, these abstractions are widely developed and in-use \todo{cite standard works}.
-% For quantum computers, similar abstractions have emerged and are spreading in the last few years.
-% Quantum computations are typically represented as a \emph{quantum circuit}, consisting of qubits on which gates are applied.
-% For quantum circuits, languages have been developed, such as OpenQASM, to program these.
-% Higher-level programming languages like Q\# or Python-based software development kits exist, as well as compilers.
-% Full-stack architectures exist that enable execution of arbitrary quantum applications.
-
-% These abstraction allow one to reason about the logic of an application, and program is using abstract concepts, and they can be automatically optimized for different hardware targets.
-
-
-
 \section{Problem statement}
-While many ideas for using quantum networks exist, actually realizing them is presently challenging.
-
-For quantum networks, abstractions like languages, compilers and runtimes are at present virtually non-existing.
-Although early proposals like CQC~\cite{dahlberg2018simulaqron}, there is no way to program and execute arbitrary quantum network applications.
-
+For quantum networks, however, abstractions like languages, compilers and runtimes are at present virtually non-existing.
+This makes it difficult to actually realize quantum network applications.
 The first quantum networks linking multiple quantum computing devices have recently been realized as physics experiments in laboratories~\cite{moehring_2007_ion_traps,ritter_2012_elementary,hofmann_2012_heralded,stockill_2017_phasetuned,jing2019entanglement,stephenson_2020_highrate,pompili_2021_multinode,krutyanskiy_entanglement_2023} and fiber networks~\cite{liu2024creation,stolk2024metropolitan,knaut2024entanglement}.
 However, these demonstrations so far relied either on ad-hoc software, or chose to establish that hardware parameters were in principle good enough to support a given quantum network application, although the application itself was not realized~\cite{nadlinger_device-independent_2022,liu_2022_photonic_diqkd,zhang_2022_diqkd}.
-These experiments are highly technical, requiring manual manipulation of microwave pulses, lasers, and extensive knowledge of quantum physics. \todo{REFS}
+These experiments are highly technical, requiring manual manipulation of microwave pulses, lasers, and extensive knowledge of quantum physics.
+
+In order to achieve, for quantum networks, the same level of programmability as for classical computers and networks, as well as quantum computers, a framework is needed that enables
+\begin{inlinelist}
+\item programming quantum network application logic in a high-level, hardware-agnostic way
+\item compilation of application code into low-level executable (quantum network node) machine code
+\item execution of arbitrary applications on quantum network nodes on different kinds of hardware
+\end{inlinelist}
+
+It is true that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking, in order to realize the above framework.
+However, quantum network applications present unique challenges that are not addressed by existing solutions.
+
+First, there simply does not exist a representation for quantum network applications, high-level nor low-level.
+An initial approach for programming such applications was presented with the CQC interface~\cite{dahlberg2018simulaqron}, but this is more a protocol for communication between classical and quantum devices rather than a single code representation.
+
+Existing quantum computing frameworks do not support instructions for creating entanglement with remote nodes, while these are crucial for quantum network applications.
+
+At this point we should highlight the difference between the applications we consider in this thesis and \emph{distributed quantum computing}.\todo{REFS}
+The latter is a model of computation where multiple quantum computers (nodes in a network) work together to perform a quantum computation.
+In this model, a quantum program (which may be a single quantum circuit) is distributed (e.g. by circuit splitting\todo{REF}) over separate quantum computers, which use entanglement between each other in order to jointly realize the original computation.
+Typically, there is a single entity that oversees the distribution and entanglement creation and scheduling.
+For DQC there exist frameworks \todo{REFS}
+
+This is in contrast to the quantum network applications we consider here.
+In our model each node is in principle independent: a node decides which code it runs, how it is compiled, and how it is scheduled.
+This is similar to the classical internet, in which nodes individually run applications and choose to interact with others.
+
+\todo{mention term `quantum internet', and that efforts in this thesis have large-scale quantum networks in mind?}
+
+Although early proposals like CQC~\cite{dahlberg2018simulaqron}, there is no way to program and execute arbitrary quantum network applications.
 
 It is however currently not possible to program arbitrary quantum network applications on a high-level, that is, without having to deal with low-level hardware-specific characteristics.
 Indeed, there aren't yet any programming languages, compilers, or runtime systems for quantum network applications, making it difficult for programmers to implement and execute new applications.
 
-One might think that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking.
-However, quantum network applications present unique challenges that need to be addressed.
 
-First, there simply does not exist a representation for quantum network applications, high-level nor low-level, except for the CQC interface~\cite{dahlberg2018simulaqron}.
-Existing quantum computing frameworks do not support representing remote entanglement operations, while these are crucial for quantum network applications.
-Programming and execution frameworks do exist for distributed quantum computing, where a single computation is spread over multiple quantum computers.
-However, distributed quantum computing differs from quantum network applications since in the latter we assume that each node independently chooses what application it executes.
 
 Moreover, quantum network applications consist of a hybrid of classical and quantum code segments.
 While such hybrid code is also seen in quantum computing --- such as \textit{variational quantum eigensolvers (VQE)}~\cite{diadamo2021distributed, liu2022layer} or \textit{quantum approximate optimization algorithms (QAOA)}~\cite{farhi2014quantum} ---
@@ -70,14 +79,15 @@ For instance, a quantum circuit may ``pause'' halfway, keeping quantum states in
 Given the limited lifetime of quantum memories (due to decoherence), scheduling and synchronizing these interdependent quantum and classical segments is needed in order to achieve adequate application execution.
 
 
-Another challenge is that there exist a variety of hardware technologies for quantum network nodes\todo{REFS}, with not a single of them likely to dominate.
-Just as with classical and quantum computing, an abstraction is needed to shield developers from low-level hardware details, enabling them to focus on application logic.
+Just as with classical and quantum computing, an abstraction is needed to shield developers from low-level hardware details (especially since there are multiple like NV, Tri, see above), enabling them to focus on application logic.
 
 Entanglement generation between nodes in a quantum network is particularly complex.
-Significant research is underway to develop a quantum network stack, which organizes entanglement generation, timing coordination, routing, and application support.\todo{REFS}
-A lot of research is done on how to realize a \emph{quantum network stack}, which organizes entanglement generation in networks, including timing synchronization, routing, and serving application requests.
+Significant research is underway to develop a quantum network stack, which organizes entanglement generation, timing coordination, routing, and application support.\cite{caleffi_2017_optimal}.
+A lot of research is done on how to realize a \emph{quantum network stack}~\cite{dahlberg2019linklayer,kozlowski2020networklayer}, which organizes entanglement generation in networks, including timing synchronization, routing, and serving application requests.
 However, how applications should interact with such a stack remains unclear.
 Moreover, this integration requires handling both local operations and network-wide communication.
+
+\todo{SCALING?}
 
 Finally, we are faced with a mix of time scales: on the one hand, entanglement generation requires a very precise network schedule that is agreed ahead of time between the network nodes~\cite{dahlberg2019link}.
 On the other hand, classical messages are exchanged asynchronously between the nodes without guaranteed message delivery times.
