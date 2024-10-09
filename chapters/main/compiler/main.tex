@@ -43,7 +43,7 @@ Before we discuss how a compiler for Qoala should look like, we first review wha
 Compilation is the translation from a high-level source code representation of a program into a lower-level representation of that program, typically machine code, that a computer's processor can execute.
 Compilation is itself done by a computer program, namely the compiler.
 
-Program compilation is a well-studied topic in both classical and quantum computing and is a vital tool in everyday practical software development.
+Program compilation is a well-studied topic in both classical~\cite{aho_compilers_2006} and quantum computing~\cite{chong_programming_2017} and is a vital tool in everyday practical software development.
 Many existing ideas and strategies can be re-used for compiling quantum network applications.
 However, quantum network applications present unique challenges that need to be solved by a compiler.
 
@@ -76,12 +76,12 @@ Many existing compilation strategies, of both classical and quantum computing, c
 \todo{schematic figure of compiler: input -> passes -> output}
 
 \subsection{Compilers for classical computing.}
-Compilers for classical computers have existed since the beginning of modern computers, in the middle of the 20th century. \todo{REFS}
+Compilers for classical computers have existed since the beginning of modern computers, in the middle of the 20th century~\cite{aho_compilers_2006}.
 A need for translating higher-level languages into the native language of computers - 0s and 1s - has always been needed.
 Over time, more and more sophisticated programming languages have been made and used.
 These generally became more and more abstract: they were more directly suited for expressing higher-level program logic, and further away from the 0s and 1s.
 To this day, compilers are vital in the programming ecosystem.
-Large compiler projects such as LLVM use intermediate representations.
+Large compiler projects such as LLVM~\cite{lattner_llvm_2004} use intermediate representations.
 There is a distinction between interpreted and compiled languages.\todo{figure showing difference between interpreted and compiled}
 
 Classical compilers have a \textit{target} such as x86 or ARM.
@@ -97,24 +97,33 @@ Classical applications that use networking are also compiled by classical compil
 Typically, compilers do not apply network-specific optimizations.
 This is since network operations are often handled by system calls, which compilers do not have control over.
 Moreover, compilers also don't have control over the execution and timing of other applications in the network.
-Network-specific optimization is therefore indirect, namely by optimizing the number of network system calls, reducing memory that would need to be context-switched upon network events, and optimizing local code that affects networking code.\todo{REFS}
+Network-specific optimization is therefore indirect, namely by optimizing the number of network system calls, reducing memory that would need to be context-switched upon network events, and optimizing local code that affects networking code.
+We note that there exist compilers for network programming languages~\cite{monsanto_compiler_2012, li_modular_2020}.
+However, these relate to programming the control plane of networks (a paradigm called software-defined networking (SDN)), including how data is routed through the network.
+This hence does not relate to programming applications for networks.
 
-Typically, the performance of networked applications depend on the protocol that the application implements and the network that it runs on.
-For example, for an application that exchanges information across nodes in a network, its performance depends on the protocol that is used (e.g. TCP vs UDP) and the network (including routing protocols, traffic, etc.) \todo{elaborate and refs}.
+% Typically, the performance of networked applications depend on the protocol that the application implements and the network that it runs on.
+% For example, for an application that exchanges information across nodes in a network, its performance depends on the protocol that is used (e.g. TCP vs UDP) and the network (including routing protocols, traffic, etc.) \todo{elaborate and refs}.
+
+% The performance of networked applications is heavily influenced by both the protocol the application employs and the characteristics of the underlying network.
+% For instance, in an application that exchanges data across various nodes, its efficiency and responsiveness are directly impacted by whether it uses a connection-oriented protocol like TCP, which ensures reliability through acknowledgment and retransmission mechanisms, or a connectionless protocol like UDP, which prioritizes speed but sacrifices reliability.
+% Moreover, the state of the network, including factors such as routing protocols (e.g., OSPF, BGP), network congestion, latency, and packet loss, also plays a crucial role. A congested network or suboptimal routing can lead to delays, packet drops, or throughput bottlenecks, all of which degrade application performance .
+% Thus, the interplay between the chosen protocol and network conditions must be carefully considered when designing or optimizing networked applications.
 
 \subsection{Compilers for quantum computing.}
+\label{compiler:sec:compilers-qc}
 As already described in \cref{chp:intro}, quantum computing programs are typically expressed as quantum circuits.
 Circuits consist of qubits, which are memory locations on which operations are applied.
 Limit classical control may be added.
 
-There exist many languages for quantum computing.
-Many frameworks make use of assembly-like languages like OpenQASM or cQASM.
-Also more high-level languages exist such as Q\# or others\todo{elaborate}.
+There exist many languages for quantum computing~\cite{chong_programming_2017, heim_quantum_2020}.
+Many frameworks make use of assembly-like languages like OpenQASM~\cite{cross_open_2017} or cQASM~\cite{khammassi_cqasm_2018}.
+Also more high-level languages exist such as Q\# and Scaffold~\cite{svore_q_2018, litteken_updated_2020, heim_quantum_2020}.
 
 \paragraph{Circuit optimizers}
 Compilers for quantum computing programs typically try to optimize circuit depth (number of gates) and width (number of qubits).
 
-Most compilers focus on \ac{NISQ} computers, dealing with resource constraints (like limited qubit availability, and restricted topology)\cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022} and qubit mapping\cite{li_tackling_2019, zhang_context, bandic_mapping_2023, nishio_extracting_2020}.
+Most compilers focus on \ac{NISQ} computers, dealing with resource constraints (like limited qubit availability, and restricted topology)\cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022} and qubit mapping\cite{li_tackling_2019, zhang_context-sensitive_2020, bandic_mapping_2023, nishio_extracting_2020}.
 
 Benchmarks exist with which to compare compilers, by looking at the output, like circuit size.
 
@@ -153,24 +162,18 @@ For distribution quantum computing there are compilers: \cite{ferrari_compiler_2
 One approach is to take the input circuit and first split it into separate circuits: circuit cutting~\cite{chatterjee_qurzon_2022}
 
 Intermediate representations have also been proposed for network-related quantum programs:
-an extension to QIR for network-related programs, NetQIR, has been proposed~\cite{vazquez-perez_netqir_2024}.
-For DQC, InQuIR has been used.\todo{elaborate on what these do and to what extent they are (not) suitable for us.}
+an extension to QIR for network-related programs, NetQIR, has been proposed~\cite{vazquez-perez_netqir_2024}, and InQuIR~\cite{nishio_inquir_2023} for distributed quantum computing.
 
 
 \paragraph{Session types}
-Model checking for communicating quantum processes: \cite{davidson_model_nodate}.
-Follow-up with a language for describing protocols: \cite{ardeshir-larijani_automated_2018}.
 
 Session types is a formalism used for defining communication protocols between different parties \cite{honda_language_1998}.
 They can be used to for example specify the order in which messages need to be sent and received.
 By having the protocol in a well-defined format, the parties can check whether they adhere to the agreed upon protocol.
-Tools exist that can check at compile-time if a program adheres to a communication protocol.
-
+Tools exist that can check at compile-time if a program adheres to a communication protocol~\cite{davidson_model_nodate, ardeshir-larijani_automated_2018}.
 Session types may be used for two parties, but multi-party session types also exist \cite{honda_multiparty_2016}.
-
-First combination of quantum and multiparty session types: \cite{lanese_towards_2024}.
-
-Timed session types add a time element. \cite{bartoletti_timed_2017}.
+Multiparty session types have been considered for quantum network programs: \cite{lanese_towards_2024}.
+Timed session types are an extension to session types, adding explicit time constraints to operations~\cite{bartoletti_timed_2017}.
 Timed session types have not yet been applied to quantum.
 
 
@@ -222,7 +225,7 @@ Further, we want to specifically address the unique challenges of quantum networ
 
 
 \subsection{Translation from high-level to Qoala}
-\textit{High-level format}
+\paragraph{High-level format}
 The compiler must translate a high-level format into Qoala.
 We already had a high-level format with the NetQASM SDK.
 We can re-use these ideas.
@@ -232,11 +235,18 @@ Specifically, we can add constructs to the high-level language for supplying fid
 Fidelity constraints needed to get success probability (especially since other programs may run in parallel; it's a way to define implicit priority).
 Timing constraints in high-level program code may be needed because protocol demands it
 
-\textit{Conversion to Qoala}
+\paragraph{Conversion to Qoala}
 We also want to allow multiple (existing) high-level formats.
-As explained in \todo{ref to compiler section}, classical compilers typically use a hierarchy of steps: a front-end for any high-level langauge to a intermediate representation (IR), and a back-end for IR to machine code.
+As explained in \todo{ref to compiler section}, classical compilers typically use a hierarchy of steps: a front-end for any high-level language to a intermediate representation (IR), and a back-end for IR to machine code.
 Using an IR decouples the main compiler design from specific input and output foramts, making it more flexible and scalable.
 Furthermore, if an IR would be used that is already part of existing compilation frameworks, it can re-use existing compiler techniques.
+The Quantum Intermediate Representation (QIR)~\cite{haner_software_2018, geller_introducing_2020} may be used.
+However, QIR uses opaque pointers for quantum types, which prevents certain optimizations~\cite{ittah_enabling_2022, peduri_qssa_2022}.
+Multi-Level Intermediate Representation (MLIR) avoids these issues, since it allows for creating domain-specific \emph{dialects}.
+Dialects have been created for quantum such that quantum types can be represented natively, allowing optimizations to be applied on operations including quantum ones~\cite{ittah_enabling_2022, peduri_qssa_2022}.
+\cite{mccaskey_mlir_2021, nguyen_retargetable_2022} also use MLIR before then compiling to QIR.
+
+\paragraph{Role of Exposed Hardware Info (EHI)}
 Target must be explicitly defined, using EHI \todo{elaborate}.
 
 
@@ -244,16 +254,22 @@ Target must be explicitly defined, using EHI \todo{elaborate}.
 We want to optimize programs with respect to various metrics.
 Some of these metrics are those from standard compilers: memory usage and execution time (or makespan).
 This holds for both classical and quantum code.
-For classical code, standard optimziation can be used, e.g. from LLVM.
-For quantum code, also existing techniques can be used, see e.g. \todo{REFS}.
+For classical code, standard optimization can be used, e.g. from LLVM.
+For quantum code, also existing techniques can be used, see \cref{compiler:sec:compilers-qc}.
 These include circuit mapping and gate optimization techniques.
 
-Moreover, by using the hybrid classical-quantum format we can re-use existing optimzations such as loop unrolling and other, see \todo{MLIR quantum papers}.
+Moreover, by using the hybrid classical-quantum format we can re-use existing optimizations such as loop unrolling and other, see \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
 This also enables cross-subroutine optimizations, something not possible in NetQASM.
 
-Other metrics we want to optimize for:
-- amount of CPS-QPS communication
-- success probability. Note that we do not fully control this. Add hints to scheduler.
+Other metrics we want to optimize for are
+\begin{inlinelist}
+\item amount of CPS-QPS communication
+\item success probability. Note that we do not fully control this. Add hints to scheduler.
+\end{inlinelist}
+
+As with classical network or internet applications, the performance of quantum network applications also depends on the network itself, on which the compiler does not have influence.
+A large factor in performance is the fidelity (quality) of entangled states produced by the network.
+Although the compiler does not control this fidelity directly, it can indirectly help by doing clever capability negotiation (see also below) and adding deadlines.
 
 Furthermore, we want to do noise-aware optimization.
 Again, we can re-use existing things. See \cite{smith_error_2021, murali_noise-adaptive_2019}.
@@ -262,7 +278,7 @@ We \textit{add} the following kinds of optimizations.
 \begin{itemize}
   \item re-order operations to minimize qubit memory time
     AFAIK not done in any other compiler (hybrid classical-quantum reordering yes, but not specifically to reduce qubit `live' time)
-  \item add deadline to block to guide scheduling
+  \item add deadlines to code blocks to guide scheduling
 \end{itemize}
 
 
@@ -313,6 +329,7 @@ Based on the considerations discussed above, we propose the following ways in wh
 The front-end language is not a primary concern; we want to leave design and implementations open.
 Use the existing technique of IRs, gradually lowering code and performing optimizations at each level.
 Use MLIR since it allows defining custom dialects.
+\todo{levels: hybrid value-based, hybrid memory based, split}
 
 \textbf{Re-use existing (classical and quantum) compilation techniques}
 These include classical techniques (loop unrolling etc) and quantum techniques (qubit mapping, gate optimzation etc).
