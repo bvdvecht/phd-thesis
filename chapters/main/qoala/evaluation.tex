@@ -1,24 +1,24 @@
 \section{Evaluation}
 \label{qoala:sec:evaluation}
 All simulations were run on a machine using 80 Intel Xeon Gold cores at 3.9 GHz and 192 GB of RAM.
-Each subsection describes an independent evaluation (details in Appendix \ref{sec:app:evaluation}):
+Each subsection describes an independent evaluation (details in Appendix \ref{qoala:sec:app:evaluation}):
 
 \subsection{Demonstrating the architecture's effectiveness}
-\label{sec:demonstrating_architecture_effectiveness}
+\label{qoala:sec:demonstrating_architecture_effectiveness}
 We first validate the functionality of our architecture by demonstrating that applications of different CPS-QPS interactions types can successfully be executed on two or more nodes.
-Using our implementation (Section~\ref{sec:implementation}), we report that we successfully simulated the following applications:
+Using our implementation (Section~\ref{qoala:sec:implementation}), we report that we successfully simulated the following applications:
 (A1) quantum key distribution (2 nodes, first QPS generating $10^3$ EPR pairs followed by only CPS actions (classical computation and messaging)),
 (A2) blind quantum computation (1 client and 1 server node, first QPS generating 2 EPR pairs, then CPS performing rounds of classical messaging followed by local quantum gates by QPS),
 (A3) single-qubit teleportation across two nodes (1 sender and 1 receiver node, QPS generating one EPR pair followed by QPS measurement by the sender, CPS classical messaging and QPS local quantum gates by the receiver),
 (A4) a ping-pong application which repeats the single-qubit teleportation application to transfer states back and forth,
 and (A5) a multi-node GHZ-state~\cite{greenberger1989going} creation application (3 nodes, QPS creating a tripartite entangled state using multiple EPR pairs, using CPS classical messaging and QPS local quantum gates).
 
-Each program is instantiated 1000 times and all tasks are immediately added to the task graph (since the the programs are \textit{predictable} (Section~\ref{sec:scheduling})).
+Each program is instantiated 1000 times and all tasks are immediately added to the task graph (since the the programs are \textit{predictable} (Section~\ref{qoala:sec:scheduling})).
 Precedence constraints are added such that instances are executed sequentially for simplicity.
-We use a fixed network schedule (no demand registration (Section~\ref{sec:program_instantiation}) since network schedule generation is not handled by Qoala itself and hence not part of the evaluation).
+We use a fixed network schedule (no demand registration (Section~\ref{qoala:sec:program_instantiation}) since network schedule generation is not handled by Qoala itself and hence not part of the evaluation).
 To demonstrate the hardware independent performance of Qoala, all simulations are performed on three different hardware models: a generic quantum platform (uniform qubit connectivity and \textit{vanilla} NetQASM instruction set~\cite{dahlberg2022netqasm}),
 and two models based on data validated on real hardware (NV centers~\cite{bradley2019ten, hermans2022qubit} and trapped ions~\cite{krutyanskiy2023entanglement}). 
-We observe successful execution (desired deterministic outcome when setting noise parameters (Section~\ref{sec:background_context}) to 0, and expected non-deterministic outcome distributions with realistic noise parameters) for all types of applications (details in Appendix~\ref{sec:app:evaluation}).
+We observe successful execution (desired deterministic outcome when setting noise parameters (Section~\ref{qoala:sec:background_context}) to 0, and expected non-deterministic outcome distributions with realistic noise parameters) for all types of applications (details in Appendix~\ref{qoala:sec:app:evaluation}).
 
 \begin{figure}% [ht]
     \centering
@@ -34,18 +34,18 @@ We observe successful execution (desired deterministic outcome when setting nois
 \end{figure}
 
 \subsection{Demonstrating Qoala's multitasking potential}
-Next, we demonstrate that Qoala can execute multiple instances of (different) programs concurrently by interleaving. We examine (1) makespan decrease (Section~\ref{sec:background_context}) when interleaving the instances compared to sequential execution, % (scheduling all instances in sequence).
+Next, we demonstrate that Qoala can execute multiple instances of (different) programs concurrently by interleaving. We examine (1) makespan decrease (Section~\ref{qoala:sec:background_context}) when interleaving the instances compared to sequential execution, % (scheduling all instances in sequence).
 (2) whether makespan depends on the network schedule.
 
-We first evaluate multitasking instances of the same application: teleportation (same as A3 in \ref{sec:demonstrating_architecture_effectiveness}), 100 instances, with a fixed network schedule (no time slots; entanglement generation always allowed).
+We first evaluate multitasking instances of the same application: teleportation (same as A3 in \ref{qoala:sec:demonstrating_architecture_effectiveness}), 100 instances, with a fixed network schedule (no time slots; entanglement generation always allowed).
 Sequential scheduling of instances results in makespan $N \cdot CC$
 while interleaved scheduling (tasks for all instances created at the same time; no precedence constraints between instances) results in $\left\lceil N / Q \right\rceil \cdot CC$
 (number of instances $N$, classical node-node communication latency $CC$, number of available memory qubits at receiving node $Q$).
 We also evaluate the effect of network schedules with time slots (repeating pattern of slots assigned to A3 instances), and find that the time slots length influences the makespan (Figure~\ref{fig:teleport_self_preemption}) in a non-trivial manner due to instances pre-empting each other.
-BQC (same as A2 in \ref{sec:demonstrating_architecture_effectiveness}, 100 instances) interleaved gives a makespan decrease over sequential of ($21\%, 56\%, 65\%$) for (2, 5, 10) server qubits, respectively.
+BQC (same as A2 in \ref{qoala:sec:demonstrating_architecture_effectiveness}, 100 instances) interleaved gives a makespan decrease over sequential of ($21\%, 56\%, 65\%$) for (2, 5, 10) server qubits, respectively.
 The network schedule affects the makespan decrease: doubling the time slot length results in a smaller decrease ($12\%, 48\%, 48\%$). 
 
-We then execute instances of different applications and again examine the effect of the network schedule on the makespan decrease: 50 QKD (A1 in \ref{sec:demonstrating_architecture_effectiveness}) and 50 BQC (A2) instances give a makespan decrease of $9.5\%$ (fixed schedule which first has time slots for QKD and then for BQC) and $39\%$ (schedule with time slots alternating between QKD and BQC).
+We then execute instances of different applications and again examine the effect of the network schedule on the makespan decrease: 50 QKD (A1 in \ref{qoala:sec:demonstrating_architecture_effectiveness}) and 50 BQC (A2) instances give a makespan decrease of $9.5\%$ (fixed schedule which first has time slots for QKD and then for BQC) and $39\%$ (schedule with time slots alternating between QKD and BQC).
 We observe that multitasking can lead to improved (lower) makespan and that the network schedule can have considerable impact on the makespan.
 
 \begin{figure}% [ht]
@@ -68,7 +68,7 @@ We observe that multitasking can lead to improved (lower) makespan and that the 
 \end{figure}
 
 \subsection{Improvement over NetQASM architecture}
-\label{sec:improvement_over_netqasm}
+\label{qoala:sec:improvement_over_netqasm}
 We compare the Qoala architecture with the NetQASM runtime approach for executing programs on a node from~\cite{dahlberg2022netqasm}
 and show that Qoala provides new compilation possibilities (optimizing across classical and quantum code) and can lead to a better application execution makespan.
 We consider a remote measurement-based quantum computing program written in Python (the program format of the NetQASM runtime) which has suboptimal code logic on purpose.
@@ -91,7 +91,7 @@ We note that manual compilation allowed optimization that is not possible in the
 
 
 \subsection{Tradeoffs between classical and quantum performance metrics}
-\label{sec:effectiveness_of_task_splitting}
+\label{qoala:sec:effectiveness_of_task_splitting}
 We compare different scheduling modes enabled by Qoala and evaluate tradeoffs between makespan and success probability, noting that the NetQASM runtime did not allow scheduling at all (Figure~\ref{fig:eval_tradeoffs_cq}).
 We expect that interleaving of tasks reduces the makespan, but may lead to lower success probability due qubits degrading in memory while tasks wait for each other.
 We compare 3 scheduling modes: no scheduling (baseline), FCFS scheduling, and EDF scheduling.
@@ -104,9 +104,9 @@ We find that
 Note that the baseline necessarily gives the highest success probability due to no waiting, but at the expense of maximal makespan (sequential execution).
 
 \subsection{Success probabilities with quantum multitasking}
-\label{sec:quantum_multitasking}
+\label{qoala:sec:quantum_multitasking}
 Next, we consider a quantum multitasking scenario where we investigate trends in application success probability while varying the number of concurrent applications (Figure~\ref{fig:quantum_multi_tasking}).
-In addition to a teleportation application (A3 in \ref{sec:demonstrating_architecture_effectiveness}), the receiver node also executes multiple instances of a local quantum program (only applying quantum gates).
+In addition to a teleportation application (A3 in \ref{qoala:sec:demonstrating_architecture_effectiveness}), the receiver node also executes multiple instances of a local quantum program (only applying quantum gates).
 Whenever the receiver node must wait for classical messages to come in for A3, it can work on its local quantum programs.
 We find that success probability of both types of programs decreases in the presence of another program.
 

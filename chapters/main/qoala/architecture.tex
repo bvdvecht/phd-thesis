@@ -24,19 +24,19 @@
 % Hardware agnostic         &  \begin{tabular}[c]{@{}l@{}}NetQASM flavors\\ Exposed Hardware Interface\end{tabular}                                                                         \\ \hline
 % \end{tabular}
 % \caption{
-%     Design considerations (Section~\ref{sec:design_considerations}) and how they are addressed in the Qoala architecture (Section~\ref{qoala:sec:architecture}).
+%     Design considerations (Section~\ref{qoala:sec:design_considerations}) and how they are addressed in the Qoala architecture (Section~\ref{qoala:sec:architecture}).
 % } % \label{tab:considerations_addressed}
 % \end{table}
 
 
 Based on these design considerations, we propose Qoala (see Fig.~\ref{fig:runtime_overview}), an execution environment for programmable nodes in a quantum internet. 
-Provided minimal hardware assumptions are met (Section~\ref{sec:minimal_hardware_assumptions}), 
-each node implements its own Qoala execution environment, supporting a specific \textit{program structure} (Section~\ref{sec:program_structure})
-and implementing a specific \textit{runtime environment} (Section~\ref{sec:runtime_environment}) that is able to \textit{schedule tasks} (Sections~\ref{sec:tasks}--\ref{sec:scheduling}).
-Details in Appendices~\ref{sec:app:program_structure}, \ref{sec:app:runtime_environment}, \ref{sec:app:scheduling_execution}.
+Provided minimal hardware assumptions are met (Section~\ref{qoala:sec:minimal_hardware_assumptions}), 
+each node implements its own Qoala execution environment, supporting a specific \textit{program structure} (Section~\ref{qoala:sec:program_structure})
+and implementing a specific \textit{runtime environment} (Section~\ref{qoala:sec:runtime_environment}) that is able to \textit{schedule tasks} (Sections~\ref{qoala:sec:tasks}--\ref{qoala:sec:scheduling}).
+Details in Appendices~\ref{qoala:sec:app:program_structure}, \ref{qoala:sec:app:runtime_environment}, \ref{qoala:sec:app:scheduling_execution}.
 
 \subsection{Minimal hardware assumptions}
-\label{sec:minimal_hardware_assumptions}
+\label{qoala:sec:minimal_hardware_assumptions}
 
 Qoala is based on only a few core assumptions on the processing node (Figure~\ref{fig:minimal_hardware_assumptions}):
 
@@ -60,8 +60,8 @@ The scheduler controls both CPS and QPS execution, and may physically be realize
 
 
 \subsection{Program structure}
-\label{sec:program_structure}
-Qoala defines a hybrid format for programs, addressing considerations in Section~\ref{sec:design_considerations}.
+\label{qoala:sec:program_structure}
+Qoala defines a hybrid format for programs, addressing considerations in Section~\ref{qoala:sec:design_considerations}.
 A Qoala program is a combination of quantum and classical instructions, 
 organized into three main sections: \textit{host code} (containing classical instructions), \textit{local routines} (containing local quantum instructions), 
 and \textit{request routines} (for remote entanglement generation).
@@ -73,7 +73,7 @@ The format is separate from any high-level language in which a programmer might 
 Entry and exit points of a program are in host code.
 Figure~\ref{fig:example_program} shows an example program in text format.
 We contrast Qoala's program format with that of~\cite{dahlberg2022netqasm}, in which there was no way to compile across classical and quantum code segments.
-A Qoala program has \textit{program arguments} that are filled in during program instantiation (Section~\ref{sec:program_instantiation}).
+A Qoala program has \textit{program arguments} that are filled in during program instantiation (Section~\ref{qoala:sec:program_instantiation}).
 
 
 \begin{figure}%[ht]
@@ -84,7 +84,7 @@ A Qoala program has \textit{program arguments} that are filled in during program
     To run, a program is instantiated with concrete values for program arguments.
     Tasks are created for the program instance, which are scheduled and executed by the scheduler.
     Multiple program instances may exist at the same time (both multiple instances of the same or different programs).
-    All tasks from all instances are added to a single task graph (Section~\ref{sec:tasks}) used by the scheduler.
+    All tasks from all instances are added to a single task graph (Section~\ref{qoala:sec:tasks}) used by the scheduler.
     }
     \label{fig:runtime_overview}
 \end{figure}
@@ -97,14 +97,14 @@ Host code, executed on the CPS, encompasses local computation, control-flow, int
 For example, in a program that is part of a QKD application, classical post-processing (including sending bases, local error correction, and privacy amplification \cite{vidick2023introduction}) would be represented in host code.
 Host code is structured as a sequence of \textit{blocks}, each holding a list of instructions.
 Blocks dictate control-flow by ending with a (conditional) jump instruction (default: next block in the sequence).
-This block division not only facilitates task creation and scheduling (see Section~\ref{sec:tasks}) but also streamlines compiler integration (which may use blocks in its intermediate representation).
+This block division not only facilitates task creation and scheduling (see Section~\ref{qoala:sec:tasks}) but also streamlines compiler integration (which may use blocks in its intermediate representation).
 Blocks can contain metadata about their expected \textit{duration}, (relative) deadlines, and they may be inside \textit{critical sections}, encompassing a sequence of blocks with a maximally allowed execution duration. This metadata is propagated to corresponding tasks and used by the scheduler in order to mitigate quantum decoherence due to limit qubit lifetime.
 Asynchronous execution is possible by `submitting' multiple routines for execution, and waiting for all of them to finish. At runtime, the scheduler can decide in which order to execute the routines.
 
 
 \textit{Local routine}.
 A local routine (LR) represents a series of quantum operations (like gates and measurement), to be executed by the QPS locally (no interaction with external nodes or controllers).
-An LR may also contain limited classical computation and control-flow code allowing for fast feedback, which can increase quantum performance (Section~\ref{sec:background_context}) due to less decoherence.
+An LR may also contain limited classical computation and control-flow code allowing for fast feedback, which can increase quantum performance (Section~\ref{qoala:sec:background_context}) due to less decoherence.
 An updated version of NetQASM~\cite{dahlberg2022netqasm} is used to represent the instructions, which allows both hardware-specific and hardware-agnostic instructions.
 Therefore, the program format is compatible with different quantum hardware.
 In contrast to \cite{dahlberg2022netqasm}, Qoala's version of NetQASM does not have instructions for entanglement generation (cleanly separating local and networked quantum operations)
@@ -116,7 +116,7 @@ It can have local routines as callbacks, allowing quick local (quantum) processi
 
 
 \subsection{Runtime environment}
-\label{sec:runtime_environment}
+\label{qoala:sec:runtime_environment}
 The Qoala runtime environment provides various resources that programs can leverage during execution.
 
 \textit{Exposed Hardware Interface (EHI)}.
@@ -131,10 +131,10 @@ Our conceptual model of a shared memory leaves open different implementation cho
 Calls in host code to local or request routines use the shared memory to communicate routine arguments and results.
 
 \textit{Quantum memory}.
-Quantum memory is organized into a \textit{virtual quantum memory space (VQMS)} for each program instance (see Section~\ref{sec:program_instantiation} for instantiation), represented as Unit Modules~\cite{dahlberg2022netqasm}.
+Quantum memory is organized into a \textit{virtual quantum memory space (VQMS)} for each program instance (see Section~\ref{qoala:sec:program_instantiation} for instantiation), represented as Unit Modules~\cite{dahlberg2022netqasm}.
 Qoala maps each VQMS to the physical qubits available in the QPS.
 VQMS information like qubit connectivity and noise characteristics is provided by the EHI, which a compiler can use to optimize a program.
-The VQMS enables multitasking since programs have their own runtime context, while a scheduler (Section~\ref{sec:scheduling}) sees the whole physical memory space and can schedule programs accordingly.
+The VQMS enables multitasking since programs have their own runtime context, while a scheduler (Section~\ref{qoala:sec:scheduling}) sees the whole physical memory space and can schedule programs accordingly.
 
 \textit{Remote interaction}. For interaction with programs on remote nodes,
 the runtime provides \textit{classical sockets} and \textit{EPR sockets} based on~\cite{dahlberg2022netqasm}. Host code uses classical sockets for sending and receiving messages; EPR sockets are indicated in request routines (see e.g. Figure~\ref{fig:example_program}).
@@ -167,14 +167,14 @@ the runtime provides \textit{classical sockets} and \textit{EPR sockets} based o
 \end{figure*}
 
 \subsection{Tasks}
-\label{sec:tasks}
+\label{qoala:sec:tasks}
 We introduce \textit{tasks} to enable multitasking.
 Each task represents a code segment of a running program with a context of runtime variables.
 Tasks have different types (Figure~\ref{fig:tasks}) based on the code they represent.
 By splitting a program into distinct executable tasks, 
 we can utilize the parallel execution on the CPS and QPS (by assigning tasks to the corresponding system),
 and we can interleave execution of multiple programs by filling waiting times of one program by execution of tasks of another.
-Code segments indicated to run asynchronously (Section~\ref{sec:program_structure}) can also be represented by tasks, the execution order of which can then be governed by a scheduler.
+Code segments indicated to run asynchronously (Section~\ref{qoala:sec:program_structure}) can also be represented by tasks, the execution order of which can then be governed by a scheduler.
 %, simplifying the interface between the developer's intent (`run these segments in any order') and the runtime system (choosing an efficient execution order).
 Further, tasks enable interleaving of local operations and quantum network (entanglement generation) operations.
 A scheduler can choose when to execute entanglement tasks (with strict timing requirements from the network schedule)
@@ -198,11 +198,11 @@ Request routine calls are handled similarly (with \texttt{SinglePair} or \texttt
 \texttt{MultiPair} tasks can be more time- and resource efficient since the network stack can handle multiple pair generations at once.
 Callback tasks for local routines acting as entanglement generation callbacks allow quick successive execution.
 For each task, its expected duration is calculated based on the metadata of the corresponding block or routine in the program, together with information from the EHI (see below).
-See Figure~\ref{fig:task_types} for task types and Figure~\ref{fig:task_creation_cutout} for examples of host code and corresponding tasks (details in Appendix~\ref{sec:app:scheduling_execution}).
+See Figure~\ref{fig:task_types} for task types and Figure~\ref{fig:task_creation_cutout} for examples of host code and corresponding tasks (details in Appendix~\ref{qoala:sec:app:scheduling_execution}).
 
 
 \subsection{Program instantiation}
-\label{sec:program_instantiation}
+\label{qoala:sec:program_instantiation}
 A program is part of an application that uses entanglement generation orchestrated by a network controller (Figure~\ref{fig:program_illustration}).
 Therefore, before execution, the program must align with the other programs of its application as well as with the network controller.
 (1) \textit{Capability negotiation and entanglement demand registration}.
@@ -211,11 +211,11 @@ These values are needed to do effective scheduling at runtime.
 Second, the nodes together register their entanglement demands to the network controller, which then creates a \textit{network schedule} based on these.
 This schedule consists of time slots, each of which is assigned to an individual \textit{application instance} (tuple of program instances, one per node).
 (2) \textit{Program instantiation}. Concrete values for program arguments can be filled in such as deadlines, durations and program-specific input values.
-Typically, for a given application, the involved nodes create many \textit{program instances} of the same program (to gather statistics, Section~\ref{sec:background_context}).
+Typically, for a given application, the involved nodes create many \textit{program instances} of the same program (to gather statistics, Section~\ref{qoala:sec:background_context}).
 
 
 \subsection{Scheduling and execution}
-\label{sec:scheduling}
+\label{qoala:sec:scheduling}
 Tasks produced for program instances are executed by the \textit{node scheduler}.
 This scheduler manages a global task graph containing all tasks that have been created for instantiated programs and that are awaiting execution
 Among the tasks that do not have any precedence constraints going into them (anymore), the scheduler continuously chooses the next task(s) to execute.
@@ -234,4 +234,4 @@ For instance, the arrival of a message from a remote node might activate a \text
 if the CPS was executing another lower priority task, it may be pre-empted and resumed at a later time.
 Since quantum tasks cannot in general be rolled back or resumed (e.g. measurements are destructive and cannot be undone), Qoala does not allow the pre-emption of QPS tasks.
 Although we define a scheduling problem, and a framework for designing and implementing scheduling algorithms,
-we on purpose do not prescribe an explicit implementation and leave the question of an optimal scheduling approach open for further research (Section~\ref{sec:conclusion}).
+we on purpose do not prescribe an explicit implementation and leave the question of an optimal scheduling approach open for further research (Section~\ref{qoala:sec:conclusion}).

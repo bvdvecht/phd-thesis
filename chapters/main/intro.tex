@@ -54,9 +54,9 @@ However, quantum network applications present unique challenges that are not add
 
 First, at the time of staring this work there simply did not exist a representation for quantum network applications, high-level nor low-level.
 An initial approach at addressing this was presented with the CQC interface~\cite{dahlberg2018simulaqron}, but this is more a protocol for communication between classical and quantum devices rather than a unified programming model.
-Existing quantum computing languages and compilers\todo{REFS} do not support instructions for creating entanglement with remote nodes, while these are crucial for quantum network applications.
+Existing quantum computing languages and compilers~\cite{heim_quantum_2020, larose_overview_2019} do not support instructions for creating entanglement with remote nodes, while these are crucial for quantum network applications.
 Furthermore, there is not yet a hardware-agnostic framework for quantum network programming.
-Just as with classical and quantum computing, such an abstraction is needed to shield developers from low-level hardware details (especially since there are multiple like NV, Tri, see above), enabling them to focus on application logic.
+Just as with classical and quantum computing, such an abstraction is needed to shield developers from low-level hardware details (especially since there are multiple promising technologies including color centers in diamond~\cite{ruf_quantum_2021} and trapped ions~\cite{monroe_quantum_2013, reiserer_cavity-based_2015}), enabling them to focus on application logic.
 
 We should first highlight the difference between the quantum network applications we consider in this thesis and \emph{distributed quantum computing} (DQC)~\cite{caleffi_distributed_2024}.
 The latter is a model of computation where multiple quantum computers (nodes in a network) work together to perform a quantum computation.
@@ -74,7 +74,7 @@ While such hybrid code is also seen in quantum computing --- such as \textit{var
 these typically alternate between classical code and quantum circuits.
 In contrast, quantum network applications are more \textit{interactive}: classical and quantum code segments may run concurrently, communicating and influencing each other in real-time.
 For instance, a quantum circuit may ``pause'' halfway, keeping quantum states in memory, and wait for a value from a classical segment (like a classical message from a remote node) before continuing.
-Given the limited lifetime of quantum memories (quantum states decoherence --- decrease in quality over time)\todo{REFS}, scheduling and synchronizing these interdependent quantum and classical segments is needed in order to achieve adequate application execution.
+Given the limited lifetime of quantum memories (quantum states decoherence --- decrease in quality over time)~\cite{shor_scheme_1995}, scheduling and synchronizing these interdependent quantum and classical segments is needed in order to achieve adequate application execution.
 
 Another crucial part of quantum network applications is entanglement generation between nodes.
 A lot of research is done on how to realize a \emph{quantum network stack}~\cite{dahlberg2019linklayer,kozlowski2020networklayer, caleffi_2017_optimal}, which organizes entanglement generation in networks, including timing synchronization, routing, and serving application requests.

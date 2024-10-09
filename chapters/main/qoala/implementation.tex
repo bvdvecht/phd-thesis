@@ -1,13 +1,13 @@
 \section{Implementation}
-\label{sec:implementation}
+\label{qoala:sec:implementation}
 We implement our architecture in the form of an open-source simulator~\cite{qoala2023simulator}.
 Implementation on real hardware requires developing new classical control hardware which is outside the scope of this work.
 The simulator is built on top of NetSquid~\cite{coopmans2021netsquid} which can simulate quantum behavior as well as asynchronous classical processes.
 Specifically, NetSquid provides detailed configuration allowing for simulations of hardware with parameters that are validated in real experiments, not possible using other simulators such as QuNetSim~\cite{diadamo2021qunetsim}, QNET~\cite{QNET}, and QuISP~\cite{satoh2022quisp}.
-SquidASM~\cite{squidasmrepo} simulates the software and hardware stack used in the NetQASM/QNodeOS system mentioned in Section~\ref{sec:related_work}, and hence misses the scheduling capabilities that we introduce in Qoala.
+SquidASM~\cite{squidasmrepo} simulates the software and hardware stack used in the NetQASM/QNodeOS system mentioned in Section~\ref{qoala:sec:related_work}, and hence misses the scheduling capabilities that we introduce in Qoala.
 
 The simulator has on purpose been made modular and composable:
-components of Qoala's architecture (like CPS, QPS, scheduler, shared memory) are provided by the simulator as building blocks that can be configured and put together in different ways (details Appendix~\ref{sec:app:simulator}).
+components of Qoala's architecture (like CPS, QPS, scheduler, shared memory) are provided by the simulator as building blocks that can be configured and put together in different ways (details Appendix~\ref{qoala:sec:app:simulator}).
 Both classical software parameters and quantum hardware noise models can be configured.
 In this way, the simulator allows one to investigate different architecture and parameter choices.
 % , and can therefore be used beyond just testing the Qoala architecture.
@@ -19,7 +19,7 @@ Our implementation allows researchers to not only test Qoala, but also configure
 
 \subsection{Scheduler implementation}
 In our implementation, we use a two-level hierarchical scheduler architecture,
-consisting of a node-wide \textit{node scheduler} which controls two \textit{processor schedulers}, one for the CPS and one for the QPS (Figure~\ref{fig:scheduler_impl}, details in Appendix~\ref{sec:app:scheduling_execution}).
+consisting of a node-wide \textit{node scheduler} which controls two \textit{processor schedulers}, one for the CPS and one for the QPS (Figure~\ref{fig:scheduler_impl}, details in Appendix~\ref{qoala:sec:app:scheduling_execution}).
 Such an approach has been used in other contexts not related to quantum networks~\cite{polychronopoulos1991hierarchical, girkar1994hierarchical}.
 
 Each scheduler maintains their own task graph.

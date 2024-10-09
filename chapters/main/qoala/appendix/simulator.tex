@@ -1,5 +1,5 @@
 \section{Simulator implementation}
-\label{sec:app:simulator}
+\label{qoala:sec:app:simulator}
 
 \subsection{Package overview}
 The simulator has been implemented as a Python package and is available at~\cite{qoala2023simulator}.
@@ -57,13 +57,13 @@ In Figure~\ref{fig:app:simulator} a schematic overview of the most important cla
     \includegraphics[width=\textwidth]{figures/qoala/simulator.png}
     \caption{High-level overview of the simulator architecture. Each box represents a component.
     A single network component can contain multiple nodes (two are shown, but there can be more).
-    Each node contains a node scheduler, CPS scheduler and QPS scheduler, implementing the algorithms as described in Appendix~\ref{sec:app:scheduling_execution}.
+    Each node contains a node scheduler, CPS scheduler and QPS scheduler, implementing the algorithms as described in Appendix~\ref{qoala:sec:app:scheduling_execution}.
     A single entanglement distributor object creates entangled pairs and puts the qubits directly in the quantum memory of the nodes, in the QDevice.
     }
     \label{fig:app:simulator}
 \end{figure*}
 
-In our simulator, the network controller (Appendix~\ref{sec:app:entanglement_distribution})
+In our simulator, the network controller (Appendix~\ref{qoala:sec:app:entanglement_distribution})
 is implemented as a single centralized entity called EntDist (Figure~\ref{fig:app:simulator}).
 
 \begin{figure*}[hp]

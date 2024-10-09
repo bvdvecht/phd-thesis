@@ -3,21 +3,21 @@
 The multitasking evaluation was done in two parts:
 %
 \begin{itemize}
-    \item \textbf{Quantum tomography while multitasking}: Executing a single \ac{DQC} application (on client and server) and a single \ac{LGT} application (on client only) where it was verified that the \ac{LGT} application produces expected quantum results (see~\cref{sec:multitasking-tomography}).
-    \item \textbf{Scaling the number of applications}: Executing $N$ \ac{DQC} applications and $N$ \ac{LGT} applications, where the classical device utilization metric was compared with a version of \ac{QNodeOS} without multitasking, and where we investigated the behavior of the \ac{QNPU} scheduler on the client in the context of multiple programs (see~\cref{sec:multitasking-scaling}).
+    \item \textbf{Quantum tomography while multitasking}: Executing a single \ac{DQC} application (on client and server) and a single \ac{LGT} application (on client only) where it was verified that the \ac{LGT} application produces expected quantum results (see~\cref{qnodeos:sec:multitasking-tomography}).
+    \item \textbf{Scaling the number of applications}: Executing $N$ \ac{DQC} applications and $N$ \ac{LGT} applications, where the classical device utilization metric was compared with a version of \ac{QNodeOS} without multitasking, and where we investigated the behavior of the \ac{QNPU} scheduler on the client in the context of multiple programs (see~\cref{qnodeos:sec:multitasking-scaling}).
 \end{itemize}
 %
 The network schedule was set as in the previous \ac{DQC} experiment for direct comparison.
 
 \subsection{Mocked entanglement}
-\label{sec:mocked_entanglement}
+\label{qnodeos:sec:mocked_entanglement}
 
-For the multitasking evaluation, we focused on the behavior of \ac{QNodeOS}, and opted not to use the standard entanglement generation procedure in our \ac{NV} \acp{QDevice} as done in the \ac{DQC} experiments (\cref{sec:delcomp}) to allow for a simpler experiment. Instead, we used a mocked entanglement generation process on the \acp{QDevice} (executing entanglement actions without entanglement): Weak-coherent pulses on resonance with the \ac{NV} transitions, that follow the regular optical path, are employed to trigger the \ac{CPLD} in the entanglement heralding time-window.
+For the multitasking evaluation, we focused on the behavior of \ac{QNodeOS}, and opted not to use the standard entanglement generation procedure in our \ac{NV} \acp{QDevice} as done in the \ac{DQC} experiments (\cref{qnodeos:sec:delcomp}) to allow for a simpler experiment. Instead, we used a mocked entanglement generation process on the \acp{QDevice} (executing entanglement actions without entanglement): Weak-coherent pulses on resonance with the \ac{NV} transitions, that follow the regular optical path, are employed to trigger the \ac{CPLD} in the entanglement heralding time-window.
 
 We stress that in our multitasking experiments, the exact same physical instructions are sent to the \ac{QDevice} as would be done when using real entanglement, and the exact same responses are sent back. Therefore, \ac{QNodeOS} needed to perform the same operations (including scheduling decisions) as it would have needed to do with real entanglement. Furthermore, we aimed to keep the rate of entanglement `success' in the \acp{QDevice} the same order of magnitude as that of the \ac{DQC} experiments (10.14\,\acp{EPR}/s compared to 2.37\,\acp{EPR}/s in the \ac{DQC} experiment) by keeping the mean-photon number of the weak-coherent pulse comparable to $p_C$ and $p_S$ (in the order of $\sim10^{-4}$). 
 
 \subsection{Tomography results}
-\label{sec:multitasking-tomography}
+\label{qnodeos:sec:multitasking-tomography}
 
 We perform tomography when not multi-tasking, in order to verify our expectation that multi-tasking should not affect the quantum performance of \ac{LGT}: The tomography results of the \ac{LGT} application in the multitasking scenario are given in \cref{fig:fig4}c. We also ran the same \ac{LGT} application on the client in a non-multitasking scenario. In this case, the client ran the \ac{LGT} application and there was no \ac{DQC} application run at all (the server did nothing). The tomography results of \ac{LGT} for the non-mulitasking scenario are given in \cref{fig:tomography-no-multitasking}. The results are slightly different since the multitasking experiment was done on a different day than the non-multitasking experiment. However, within error bars we verify that multitasking does not affect the quantum performance of the \ac{LGT} application.
 
@@ -29,7 +29,7 @@ We perform tomography when not multi-tasking, in order to verify our expectation
 \end{figure}
 
 \subsection{Scaling to more than two applications}
-\label{sec:multitasking-scaling}
+\label{qnodeos:sec:multitasking-scaling}
 
 \subsubsection{QNPU processes and steps}
 
@@ -81,7 +81,7 @@ We investigate the degree of interleaving the execution of \ac{DQC} and \ac{LGT}
 
 \subsubsection{Subroutine (Quantum block) execution order}
 
-We investigate whether the \ac{QNPU} schedules quantum subroutines in a different order than they arrived from the \ac{CNPU}. As expected, we find that this is the case. Although the \ac{QNPU} handles subroutines from the \ac{CNPU} first-come-first-served, some of these subroutines (in our experiments, precisely the \ac{DQC} subroutines that wait for entanglement) are put into the waiting state. This allows the \ac{QNPU} to schedule other subroutines (in our experiments, we observe \ac{LGT} subroutines being executed), even if they arrived later from the \ac{CNPU} than the waiting \ac{DQC} subroutine. Schematic overviews of such scheduling that we observed are depicted in \cref{sec:multitasking_patterns}.
+We investigate whether the \ac{QNPU} schedules quantum subroutines in a different order than they arrived from the \ac{CNPU}. As expected, we find that this is the case. Although the \ac{QNPU} handles subroutines from the \ac{CNPU} first-come-first-served, some of these subroutines (in our experiments, precisely the \ac{DQC} subroutines that wait for entanglement) are put into the waiting state. This allows the \ac{QNPU} to schedule other subroutines (in our experiments, we observe \ac{LGT} subroutines being executed), even if they arrived later from the \ac{CNPU} than the waiting \ac{DQC} subroutine. Schematic overviews of such scheduling that we observed are depicted in \cref{qnodeos:sec:multitasking_patterns}.
 
 \subsubsection{User process idle times}
 
@@ -97,9 +97,9 @@ We remark that with increasing $N$, the network process is delayed more frequent
 
 In order to better understand the concurrent execution of multiple applications (here \ac{DQC} and \ac{LGT}) and corresponding programs, we investigate scenarios and times in which the client waits for the server (or vice versa). 
 
-The client and server open an \ac{ER} socket at the beginning of each \ac{DQC} application. So, during runtime, there are $N$ \ac{ER} sockets opened on the server \ac{QNPU} (one for each \ac{DQC} process) and $N$ \ac{ER} sockets opened on the client \ac{QNPU} (one for each \ac{DQC} process). In each \ac{DQC} application, the client \ac{QNPU} user process for that \ac{DQC} application is the `initiator' (see \cref{sec:design_er_socket}). This means that as soon as the client user process submits a request for entanglement (from within C1), both server and client \ac{QNPU} start their network process to handle it (at the start of the next time bin, and provided the network process should not first handle a request from a user process from another \ac{DQC} application).
+The client and server open an \ac{ER} socket at the beginning of each \ac{DQC} application. So, during runtime, there are $N$ \ac{ER} sockets opened on the server \ac{QNPU} (one for each \ac{DQC} process) and $N$ \ac{ER} sockets opened on the client \ac{QNPU} (one for each \ac{DQC} process). In each \ac{DQC} application, the client \ac{QNPU} user process for that \ac{DQC} application is the `initiator' (see \cref{qnodeos:sec:design_er_socket}). This means that as soon as the client user process submits a request for entanglement (from within C1), both server and client \ac{QNPU} start their network process to handle it (at the start of the next time bin, and provided the network process should not first handle a request from a user process from another \ac{DQC} application).
 
-It can happen that the client \ac{QNPU} and server \ac{QNPU} do not start their network process at the same time bin. This mostly happens when one of the nodes is still busy executing a user process subroutine when a time bin starts, as explained above. If this happens, the \ac{QNPU} that did already start their network process sends entanglement instructions to their \ac{QDevice}, but this will not result in physical entanglement attempts since the other \ac{QDevice} is not available (leading to a entanglement sync failure, see \cref{sec:qdevice-sync}). \cref{tab:multitasking_numbers} lists the number of times that this happened.
+It can happen that the client \ac{QNPU} and server \ac{QNPU} do not start their network process at the same time bin. This mostly happens when one of the nodes is still busy executing a user process subroutine when a time bin starts, as explained above. If this happens, the \ac{QNPU} that did already start their network process sends entanglement instructions to their \ac{QDevice}, but this will not result in physical entanglement attempts since the other \ac{QDevice} is not available (leading to a entanglement sync failure, see \cref{qnodeos:sec:qdevice-sync}). \cref{tab:multitasking_numbers} lists the number of times that this happened.
 
 For each of the $N$ \ac{DQC} applications that are running on client and server, and for each execution of the \ac{DQC} circuit in those applications, there is a single entanglement request from the client (in C1) and a single entanglement request from the server (in S1). For each of these request pairs, the client at some point starts the network process and handles this request, and the server at some point starts the network process and handles its corresponding request. For each such pair of requests, the following scenarios can happen:
 %

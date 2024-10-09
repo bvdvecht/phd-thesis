@@ -1,5 +1,5 @@
 \section{Quantum node model}
-\label{sec:abstract_model}
+\label{netqasm:sec:abstract_model}
 
 As described in more detail in \cref{chp:background}, quantum networks consists of ...\todo{FILL IN}.
 Also, we introduce \todo{check if this is not already in background chapter?} the terminology of application and program.
@@ -39,7 +39,7 @@ The \ac{QNPU} consists of the following components, see \cref{fig:qnpu}:
     \item \textbf{Classical memory:}
             Random-access memory storing data produced during the execution of operations, such as counters, qubit measurement outcomes, information about generated entangled pairs, etc.
     \item \textbf{Quantum memory:}
-            Consists of communication and storage qubits, see \cref{sec:quantum_networks}, on which quantum gates can be applied.
+            Consists of communication and storage qubits, see \cref{netqasm:sec:quantum_networks}, on which quantum gates can be applied.
             The qubits can be measured and the resulting outcome stored in the classical memory by the processor.
             The communication qubits are connected through a quantum channel to adjacent nodes in the quantum network, through which they can be entangled.
             This quantum channel may also include classical communication needed for synchronization, phase stabilization or other mechanisms needed in the specific realization.
@@ -64,7 +64,7 @@ We do assume that the \ac{QNPU} only has limited classical processing power, and
 
 
 \subsection{Applications and programs}
-As mentioned in~\cref{sec:introduction}, quantum network \textit{applications} (or protocols) are multi-partite and distributed over multiple end-nodes.
+As mentioned in~\cref{netqasm:sec:introduction}, quantum network \textit{applications} (or protocols) are multi-partite and distributed over multiple end-nodes.
 The unit of code that is executed on each of the end-nodes that are part of the application, is called a \textit{program}.
 We will use this terminology throughout the rest of the paper.
 

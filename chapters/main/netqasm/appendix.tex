@@ -1,5 +1,5 @@
 \section{Flow of messages}
-\label{sec:app-messages}
+\label{netqasm:sec:app-messages}
 Here we define the content of each of the messages being sent between the \ac{CNPU} and the \ac{QNPU}.
 Each message has an ID chosen by the \ac{CNPU} which is used to associate replies from the \ac{QNPU} to the \ac{CNPU}.
 \begin{itemize}
@@ -39,7 +39,7 @@ Each message has an ID chosen by the \ac{CNPU} which is used to associate replie
             \item \nq{message_id} Message ID used for the \nq{Subroutine}-message.
         \end{itemize}
   \item \textbf{Update memory}:
-        The \ac{CNPU} will have access to a copy of the memory allocated by the \ac{QNPU} for certain registers and arrays, see \cref{sec:language}.
+        The \ac{CNPU} will have access to a copy of the memory allocated by the \ac{QNPU} for certain registers and arrays, see \cref{netqasm:sec:language}.
         This memory is read-only by the \ac{CNPU}.
         Updates to the copy of the memory are performed by the end of a subroutine or if the subroutine is waiting.
         Furthermore, updates need to be explicitly specified in the subroutine by using one of the return-commands.
@@ -52,14 +52,14 @@ Each message has an ID chosen by the \ac{CNPU} which is used to associate replie
 
 
 \section{Operands}
-\label{sec:operands}
+\label{netqasm:sec:operands}
 In this section we give the exact definition of the types of operands used in the \ac{NetQASM} language.
 Each instruction of \ac{NetQASM} takes one or more operands.
 There are five types of operands, which are listed and described below.
 Each instruction has a fixed types of operands at each position.
 The exact operands for each instruction is listed in \cref{app:instructions}.
 We note also that in the human-readable text-form of \ac{NetQASM}, there are also \textit{branch variables}.
-However, these are always replaced by \IMMEDIATE{}s (constants), corresponding to the instruction number of the subroutine, before serializing, see \cref{sec:branch_variables}.
+However, these are always replaced by \IMMEDIATE{}s (constants), corresponding to the instruction number of the subroutine, before serializing, see \cref{netqasm:sec:branch_variables}.
 
 The operand types of \ac{NetQASM} are:
 \begin{itemize}
@@ -107,7 +107,7 @@ wait_all @0[1:4]\end{nqcode}
 \end{itemize}
 
 \section{Branch variables}
-\label{sec:branch_variables}
+\label{netqasm:sec:branch_variables}
 The human-readable text-form of \ac{NetQASM} supports the use of \emph{branch variables}.
 Branch labels are declared as \nq{VAR}: before the instruction to branch to.
 Before serializing a \ac{NetQASM}-subroutine, all branch variables are replaced with \IMMEDIATE{}s corresponding to the correct \emph{instruction index}.
@@ -576,14 +576,14 @@ A subroutine written in text form will first be preprocessed, which does the fol
 
 \section{Examples}
 Here we list some examples of programs written in \ac{NetQASM}.
-In \cref{sec:examples_netqasm}, we show some examples written directly in the \ac{NetQASM}-language.
+In \cref{netqasm:sec:examples_netqasm}, we show some examples written directly in the \ac{NetQASM}-language.
 In \cref{app:examples_sdk}, we show the corresponding examples, instead written in the Python SDK.
 
 \subsection{NetQASM}
-\label{sec:examples_netqasm}
+\label{netqasm:sec:examples_netqasm}
 
 \subsubsection{Classical logic (if-statement)}
-\label{sec:example_nq_if}
+\label{netqasm:sec:example_nq_if}
 A subroutine which creates a qubit, puts in the $|+\rangle$ state, measures it and depending on the outcome performs an X-gates such that by the end of the subroutine the qubit is always in the state $|0\rangle$.
 \begin{nqcode}
 # NETQASM 1.0
@@ -610,7 +610,7 @@ x Q0
 EXIT:\end{nqcode}
 
 \subsubsection{Classical logic (for-loop)}
-\label{sec:example_nq_for}
+\label{netqasm:sec:example_nq_for}
 A subroutine which performs a for-loop which body creates a qubit, puts in the $|+\rangle$ state and measures it. The outcomes are stored in an array.
 In a higher-level language (using python syntax) the below subroutine might be written as follows:
 \begin{pycode}
@@ -659,7 +659,7 @@ EXIT:\end{nqcode}
 In the above subroutine \nq{DEFINE} statements have been used to clarify what registers/arrays correspond to the variables in the higher-level language example above.
 
 \subsubsection{Create and recv EPR}
-\label{sec:example_nq_epr}
+\label{netqasm:sec:example_nq_epr}
 This code is for the side initializing the entanglement request.
 \begin{nqcode}
 # NETQASM 1.0
@@ -733,12 +733,12 @@ ret_req M0\end{nqcode}
 
 \subsection{SDK}
 \label{app:examples_sdk}
-Each of the examples in this section are functionally the same as the examples in \cref{sec:examples_netqasm}.
+Each of the examples in this section are functionally the same as the examples in \cref{netqasm:sec:examples_netqasm}.
 A compiler will produce a similar subroutine as the examples in the previous section but might vary depending on the exact implementation of the compiler.
 
 
 \subsubsection{Classical logic (if-statement)}
-Functionally the same as the \ac{NetQASM}-subroutine (\cref{sec:example_nq_if}).
+Functionally the same as the \ac{NetQASM}-subroutine (\cref{netqasm:sec:example_nq_if}).
 \begin{pycode}
 # Setup connection to backend
 # as the node Alice
@@ -755,7 +755,7 @@ with NetQASMConnection("Alice") as alice:
 \end{pycode}
 
 \subsubsection{Classical logic (for-loop)}
-Functionally the same as the \ac{NetQASM}-subroutine (\cref{sec:example_nq_for}).
+Functionally the same as the \ac{NetQASM}-subroutine (\cref{netqasm:sec:example_nq_for}).
 \begin{pycode}
 # Setup connection to backend
 # as the node Alice
@@ -775,7 +775,7 @@ with NetQASMConnection("Alice") as alice:
 \end{pycode}
 
 \subsubsection{Create and recv EPR}
-Functionally the same as the \ac{NetQASM}-subroutine (\cref{sec:example_nq_epr}).
+Functionally the same as the \ac{NetQASM}-subroutine (\cref{netqasm:sec:example_nq_epr}).
 
 This code is for the side initializing the entanglement request.
 \begin{pycode}

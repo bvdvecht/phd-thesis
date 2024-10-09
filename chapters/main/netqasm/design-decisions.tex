@@ -1,28 +1,28 @@
 \section{Design Decisions}
-\label{sec:design_decisions}
+\label{netqasm:sec:design_decisions}
 
 \todo{Re-create Figure 5 from netqasm paper?}
 
 Based on the use-cases, design considerations and requirements, we have designed the low-level language \ac{NetQASM} as an API to the \ac{QNPU}.
 In this section we present concepts and design decisions we have taken.
-Details on the mode of execution and the \ac{NetQASM}-language are presented in \cref{sec:implementation}.
+Details on the mode of execution and the \ac{NetQASM}-language are presented in \cref{netqasm:sec:implementation}.
 
 \subsection{Interface between \ac{CNPU} and QNPU}
-\label{sec:design_decisions_interface}
+\label{netqasm:sec:design_decisions_interface}
 
 \subsubsection{Execution model}
-As described in \cref{sec:preliminaries}, and also in \cref{sec:design_considerations} program execution is split across the \ac{CNPU} and the \ac{QNPU}.
-Since the \ac{QNPU} is assumed to have limited processing power (\cref{sec:preliminaries}), our design lets the \ac{CNPU} do most of the classical processing.
+As described in \cref{netqasm:sec:preliminaries}, and also in \cref{netqasm:sec:design_considerations} program execution is split across the \ac{CNPU} and the \ac{QNPU}.
+Since the \ac{QNPU} is assumed to have limited processing power (\cref{netqasm:sec:preliminaries}), our design lets the \ac{CNPU} do most of the classical processing.
 The program blocks (\cref{fig:program_decomp}) are hence spread over two separate systems: blocks of purely classical code are executed by the \ac{CNPU}, and blocks of quantum code (containing both quantum operations and limited classical control) are executed by the \ac{QNPU}.
 
 The quantum code (including limited classical control) is expressed using the \ac{NetQASM} language.
 The classical code is handled completely by the \ac{CNPU}, and we do not impose a restriction to its format.
-In our implementation (\cref{sec:python-sdk}), we use Python.
+In our implementation (\cref{netqasm:sec:python-sdk}), we use Python.
 This classical code on the \ac{CNPU} also handles all application-level classical communication between nodes, since it cannot be done on the \ac{QNPU}.
 
 We let the \ac{CNPU} initiate a program.
 Whenever quantum code needs to be executed, the \ac{CNPU} delegates this to the \ac{QNPU}.
-Since processing delay should be minimized (\cref{sec:design_considerations}), the communication between \ac{CNPU} and \ac{QNPU} should be minimized.
+Since processing delay should be minimized (\cref{netqasm:sec:design_considerations}), the communication between \ac{CNPU} and \ac{QNPU} should be minimized.
 Therefore, \ac{NetQASM} bundles the quantum operations together into blocks of instructions, called \textit{subroutines}, to be executed on the \ac{QNPU}.
 A program, then, consists of both both classical code and quantum code, and the quantum code is represented as one or more subroutines.
 These subroutines can be seen as the quantum code blocks of~\cref{fig:program_decomp}.
@@ -38,7 +38,7 @@ Then, the \ac{CNPU} may send subroutines to the \ac{QNPU} for execution.
 \subsubsection{Shared classical memory}
 Since classical and quantum blocks in the code (as per \cref{fig:program_decomp}) can depend on each other, the \ac{CNPU} and the \ac{QNPU} need to have a way to communicate information to each other.
 For example, a subroutine may include a measurement instruction; the outcome of this measurement may be used by the \ac{CNPU} upon completion of the subroutine.
-Therefore, \ac{NetQASM} uses a shared memory model such that conceptually both layers can access and manipulate the same data. This solves the need to return data, and to do conditionals (\cref{sec:design_considerations}).
+Therefore, \ac{NetQASM} uses a shared memory model such that conceptually both layers can access and manipulate the same data. This solves the need to return data, and to do conditionals (\cref{netqasm:sec:design_considerations}).
 
 Each program has a classical memory space consisting of \textit{registers} and \textit{arrays}.
 Registers are the default way of storing classical values, like a measurement outcome.
@@ -64,7 +64,7 @@ The \ac{QNPU} may directly write to the shared memory, for example when entangle
 % \end{figure}
 
 \subsubsection{Unit modules}
-In order to support systems with multitasking (\cref{sec:design_considerations}), \ac{NetQASM} provides a virtualized model of the quantum memory to the program.
+In order to support systems with multitasking (\cref{netqasm:sec:design_considerations}), \ac{NetQASM} provides a virtualized model of the quantum memory to the program.
 This allows the \ac{QNPU} to do mapping between the virtualized memory and the physical memory and perform scheduling between programs.
 
 The quantum memory for a program is represented by a \textit{unit module} (\cref{fig:topology}).
@@ -88,7 +88,7 @@ The following sequence of operations provides an example.
 
 
 Unit modules contain \textit{virtual qubit IDs}.
-This is because of the requirement that it should be possible to run multiple programs at the same time on a single \ac{QNPU} (Multitasking consideration in \cref{sec:design_considerations}).
+This is because of the requirement that it should be possible to run multiple programs at the same time on a single \ac{QNPU} (Multitasking consideration in \cref{netqasm:sec:design_considerations}).
 We use an approach that is similar to virtual memory in classical systems~\cite{arpaci2018operating}.
 Each application has control over a set of physical qubits, but the application does not (need to) know which physical qubits these are exactly.
 The unit module provides a virtualized view of this available memory.
@@ -98,7 +98,7 @@ The \ac{QNPU} may change this mapping over time, without the applications knowin
 We stress that our virtualization hence only involves a mapping from IDs to physical qubits.
 There is no copying of quantum states involved.
 
-We note that this design decision meets our Multitasking consideration(\cref{sec:design_considerations}).
+We note that this design decision meets our Multitasking consideration(\cref{netqasm:sec:design_considerations}).
 By using virtualized unit modules, the \ac{QNPU} is free to map qubit IDs of the application to physical qubits as it sees fit.
 For example, consider a node with a physical memory consisting of one communication qubit, and multiple memory qubits.
 Application A creates entanglement with a remote node such that its half of the pair is in the communication qubit.
@@ -134,12 +134,12 @@ Since application A uses the unit module and does not know about the physical me
 \subsection{NetQASM language}
 
 \subsubsection{Instructions}
-\label{sec:design_decisions_language}
-As explained in~\cref{sec:design_decisions_interface}, the \ac{CNPU} delegates quantum code (including limited classical control) of the program to the \ac{QNPU} by creating blocks of instructions and sending these to the \ac{QNPU} for execution.
+\label{netqasm:sec:design_decisions_language}
+As explained in~\cref{netqasm:sec:design_decisions_interface}, the \ac{CNPU} delegates quantum code (including limited classical control) of the program to the \ac{QNPU} by creating blocks of instructions and sending these to the \ac{QNPU} for execution.
 These blocks are called subroutines and contain \ac{NetQASM} \textit{instructions}.
 Since the \ac{QNPU} is meant to be limited in processing power, the instruction set that it interprets should also be simple and low-level.
 The \ac{NetQASM} instruction set contains instructions for simple arithmetic, classical data manipulation, and simple control flow in the form of (un)conditional branch instructions.
-Although conditional control-flow can be done at the \ac{CNPU} as well, \ac{NetQASM} branching instructions allow for much faster feedback since they are executed by the \ac{QNPU}, and hence cover the design consideration of real-time conditionals (\cref{sec:design_considerations}).
+Although conditional control-flow can be done at the \ac{CNPU} as well, \ac{NetQASM} branching instructions allow for much faster feedback since they are executed by the \ac{QNPU}, and hence cover the design consideration of real-time conditionals (\cref{netqasm:sec:design_considerations}).
 We note the obvious performance gain by being able to do control logic without having to go back to the \ac{CNPU}.
 There are no higher-level concepts such as functions or for-loops, which would require more complicated and resource-demanding parsing for the \ac{QNPU}, such as constructing an abstract syntax tree.
 
@@ -148,8 +148,8 @@ For example, a single-qubit rotation gate is represented as an instruction conta
 \ac{NetQASM} specifies a set of \textit{core} instructions that are expected to be implemented by any \ac{QNPU}.
 These include classical instructions like storing and loading classical data, branching, and simple arithmetic.
 Different hardware platforms support different quantum operations.
-\ac{NetQASM} should also support platform-specific optimization (\cref{sec:design_considerations}).
-Therefore, \ac{NetQASM} uses \textit{flavors} of quantum instructions (\cref{sec:design_decisions_flavours}).
+\ac{NetQASM} should also support platform-specific optimization (\cref{netqasm:sec:design_considerations}).
+Therefore, \ac{NetQASM} uses \textit{flavors} of quantum instructions (\cref{netqasm:sec:design_decisions_flavours}).
 The \textit{vanilla} flavor consists universal of a set of platform-independent quantum gates.
 Particular hardware platforms, such as the NV-centre, may use a special NV flavor, containing NV-specific instructions.
 A \ac{QNPU} implementation may use a custom mapping from vanilla instructions to platform-specific ones.
@@ -189,9 +189,9 @@ Based on this, the \ac{QNPU} can use the corresponding connection in the network
 \end{figure}
 
 \subsubsection{Flavors}
-\label{sec:design_decisions_flavours}
+\label{netqasm:sec:design_decisions_flavours}
 We want to keep \ac{NetQASM} platform-independent.
-However, we also want the potential for platform-specific optimization (\cref{sec:design_considerations}).
+However, we also want the potential for platform-specific optimization (\cref{netqasm:sec:design_considerations}).
 Therefore we introduce the concept of \textit{flavors}.
 Flavors only affect the quantum instruction set of the language, and not the memory model or the interaction with the \ac{QNPU}.
 We use the \textit{vanilla} or generic flavor for a general, universal gate set.
@@ -206,11 +206,11 @@ In such a case, the vanilla flavor can be seen as an \textit{intermediate repres
 
 \subsubsection{Programmability}
 Since the \ac{NetQASM} instructions are relatively low-level, we like to have a higher-level programming language for writing programs, that is automatically compiled to \ac{NetQASM}.
-We introduce a higher-level SDK in \cref{sec:python-sdk}.
+We introduce a higher-level SDK in \cref{netqasm:sec:python-sdk}.
 However, we do not see this as part of the \ac{NetQASM} specification itself.
 This decoupling allows the development of SDKs to be independent such that these can be provided in various languages and frameworks.
 
 We still want \ac{NetQASM} instructions to be suitable for manual writing and inspection.
 Therefore, instructions (and subroutines) have two formats: a binary one that is used when sending to the \ac{QNPU}, and a text format that is human-readable.
 The text format resembles assembly languages including OpenQASM.
-Examples are given in \cref{sec:sdk} and the Appendix.
+Examples are given in \cref{netqasm:sec:sdk} and the Appendix.

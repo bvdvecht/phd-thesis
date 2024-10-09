@@ -1,10 +1,8 @@
 \section{Introduction}
-\label{sec:introduction}
+\label{netqasm:sec:introduction}
 
-The aim of this work is to propose a way to program quantum network programs
-and execute them on the end-nodes of a quantum network.
-
-
+In this chapter we introduce an abstract model---including a \ac{QNPU}--- for end-nodes in a quantum network, which we define in~\cref{netqasm:sec:preliminaries}.
+We then propose \ac{NetQASM}, an instruction set architecture that can be used to run arbitrary programs (of the form described in \cref{fig:program_decomp}) on end-nodes, as long as the end-nodes realize the model including the QNPU.
 
 \begin{figure}[t]
     \centering
@@ -30,8 +28,6 @@ and execute them on the end-nodes of a quantum network.
 \end{figure}
 
 
-In this work we introduce an abstract model---including a \ac{QNPU}--- for end-nodes in a quantum network, which we define in~\cref{sec:preliminaries}.
-We then propose \ac{NetQASM}, an instruction set architecture that can be used to run arbitrary programs (of the form described in \cref{fig:program_decomp}) on end-nodes, as long as the end-nodes realize the model including the QNPU.
 
 \ac{NetQASM} consists of a specification of a low-level assembly-like language to express the quantum parts of quantum network program code.
 It also specifies how the application layer should interact with the \ac{QNPU} and how the assembly language can be used to execute (network) quantum code.
@@ -61,7 +57,7 @@ In terms of precise timing, which is needed for entanglement generation, it is t
 With \ac{NetQASM}, we solve various problems that are unique to quantum internet programming:
     (1) for remote entanglement generation, we introduce new instruction types for making use of an underlying quantum network stack~\cite{dahlberg2019linklayer, kozlowski2020networklayer},
     (2) for the close interaction between classical and quantum operations, we use a shared-memory model for sharing classical data between the application layer and the \ac{QNPU},
-    (3) in order to run multiple applications on the same quantum node---which may be beneficial for overall resource usage (see~\cref{sec:design_considerations})---we make use of virtualized quantum memory, similar to virtual memory in classical computing~\cite{arpaci2018operating},
+    (3) in order to run multiple applications on the same quantum node---which may be beneficial for overall resource usage (see~\cref{netqasm:sec:design_considerations})---we make use of virtualized quantum memory, similar to virtual memory in classical computing~\cite{arpaci2018operating},
     (4) since on some platforms, not all qubits may be used to generate remote entanglement, we introduce the concept of unit-modules describing qubit topologies with additional information per (virtual) qubit about which operations are possible.
 
 Since \ac{NetQASM} is meant to be low-level, similar in nature to classical assembly languages, we have also developed a higher-level software development kit (SDK), in Python, to make it easier to write applications.
@@ -78,7 +74,7 @@ We remark that \ac{NetQASM} has already been used on a real hardware setup in th
 
 
 \subsection{Related Work}
-\label{sec:related}
+\label{netqasm:sec:related}
 
 \todo{Remove parts that are already in Background chapter and just refer to them}
 In the field of quantum computing, a substantial amount of progress has been made related to developing
@@ -99,7 +95,7 @@ So, \ac{NetQASM} is not just a superset of the OpenQASM instruction set (in the 
 
 In~\cite{dahlberg2018simulaqron}, we introduced the \ac{CQC} interface, which was a first step towards a universal instruction set.
 However, \ac{CQC} had a number of drawbacks, in particular:
-    (1) \ac{CQC} does not have a notion of virtualized memory (see \cref{sec:design_considerations}), which meant that applications needed to use qubit IDs that were explicitly provided by the underlying hardware.
+    (1) \ac{CQC} does not have a notion of virtualized memory (see \cref{netqasm:sec:design_considerations}), which meant that applications needed to use qubit IDs that were explicitly provided by the underlying hardware.
         This introduced more communication overhead and fewer optimization opportunities for the compiler.
     (2) \ac{CQC} does not provide as much information about hardware details.
         Therefore, platform-specific compilation and optimization is not possible.
@@ -110,7 +106,7 @@ Many of the ideas from e.g. QASM for how to handle and compile local gates can b
 For example, version 3 of OpenQASM~\cite{cross2021openqasm} which is under development, proposes close integration between \emph{local} classical logic and quantum operations, which is something we also propose in this work.
 However, there are two key differences that we need to address:
 \begin{enumerate}
-      \item Instructions for generating entanglement between remote nodes in the network need to be handled and integrated with the rest of the application, see \cref{sec:abstract_model} below.
+      \item Instructions for generating entanglement between remote nodes in the network need to be handled and integrated with the rest of the application, see \cref{netqasm:sec:abstract_model} below.
       \item The local operations performed by a node might depend on information communicated by another node and only known at runtime.
             Note that this is different from the conditionals on \emph{local} classical information, proposed in for example OpenQASM version 3, which does not require communication between remote nodes in a network.
             This brings new constraints in how to handle memory allocation, scheduling and addressing.
@@ -120,9 +116,9 @@ However, there are two key differences that we need to address:
 
 
 \subsection{Outline}
-In \cref{sec:preliminaries} we define relevant concepts and introduce the model of end-nodes that we use, including the \ac{QNPU}.
-In \cref{sec:use_cases} we discuss use-cases of a quantum network which \ac{NetQASM} should support.
-In \cref{sec:design_considerations} we consider requirements and considerations any instruction set architecture for quantum networks should fulfill which then lay the basis for the decisions that went into developing \ac{NetQASM}, see \cref{sec:design_decisions}.
-In \cref{sec:implementation} and \cref{sec:python-sdk} we describe details about the \ac{NetQASM} language and associated SDK.
+In \cref{netqasm:sec:abstract_model} we define relevant concepts and introduce the model of end-nodes that we use, including the \ac{QNPU}.
+In \cref{netqasm:sec:use_cases} we discuss use-cases of a quantum network which \ac{NetQASM} should support.
+In \cref{netqasm:sec:design_considerations} we consider requirements and considerations any instruction set architecture for quantum networks should fulfill which then lay the basis for the decisions that went into developing \ac{NetQASM}, see \cref{netqasm:sec:design_decisions}.
+In \cref{netqasm:sec:implementation} and \cref{netqasm:sec:python-sdk} we describe details about the \ac{NetQASM} language and associated SDK.
 In \cref{netqasm:sec:evaluation} we quantitatively evaluate some of the design decision of \ac{NetQASM} by benchmarking quality of execution using the quantum network simulator NetSquid~\cite{netsquid,coopmans2021netsquid}.
-We conclude in \cref{sec:conclusion}.
+We conclude in \cref{netqasm:sec:conclusion}.

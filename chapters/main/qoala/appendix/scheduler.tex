@@ -1,9 +1,9 @@
 \section{Scheduling and execution}
-\label{sec:app:scheduling_execution}
-This section provides more details about tasks, task creation and scheduling (Section~\ref{qoala:sec:architecture}) as well as about our scheduler implementation~\ref{sec:implementation}.
+\label{qoala:sec:app:scheduling_execution}
+This section provides more details about tasks, task creation and scheduling (Section~\ref{qoala:sec:architecture}) as well as about our scheduler implementation~\ref{qoala:sec:implementation}.
 
 \subsection{Task creation}
-\label{sec:app:scheduling_execution_task_creation}
+\label{qoala:sec:app:scheduling_execution_task_creation}
 
 Tasks are created based on the blocks in a program.
 Specifically, a block $B$ in the program is mapped to a set $T(B)$ of tasks.
@@ -70,7 +70,7 @@ Tasks are executed by the CPS or the QPS, and the specific operations involved d
 
 \textbf{\texttt{LocalRoutine} task execution.} A \texttt{LocalRoutine} task is executed by the QPS. It involves the following steps. First, based on information in the uses/keeps metadata, virtual quantum memory is allocated. Then all NetQASM instructions are executed, which may involve loading values from shared memory (reading arguments) and storing values to shared memory (populating results). Finally, quantum memory is freed.
 
-\textbf{\texttt{SinglePair} task execution.} A \texttt{SinglePair} task is executed by the QPS. First, arguments are read from shared memory. Then, an EPR request (see Appendix~\ref{sec:app:entanglement_distribution}) is sent to the network controller.
+\textbf{\texttt{SinglePair} task execution.} A \texttt{SinglePair} task is executed by the QPS. First, arguments are read from shared memory. Then, an EPR request (see Appendix~\ref{qoala:sec:app:entanglement_distribution}) is sent to the network controller.
 
 \textbf{\texttt{MultiPair} task execution.} A \texttt{MultiPair} task is executed by the QPS. First, arguments are read from shared memory. Then, multiple EPR requests are sent to the network controller. Whether these requests are all sent at once or consecutively and waiting for intermediate responses is up to the implementer; the choice may depend on efficiency and resource considerations.
 
@@ -100,7 +100,7 @@ the \textit{QPS scheduler} controls task execution on the QPS, and the \textit{n
 The CPS- and QPS schedulers are both processor schedulers.
 
 \subsection{Scheduling overview}
-In this and the following sections we describe the scheduler from our implementation (Section~\ref{sec:implementation}).
+In this and the following sections we describe the scheduler from our implementation (Section~\ref{qoala:sec:implementation}).
 
 Each scheduler maintains their own task graph,
 which is a directed acyclic graph (DAG) in which the nodes represent tasks and edges represent precedence constraints.
@@ -139,7 +139,7 @@ During runtime, the node scheduler may create new tasks based on the control-flo
 \end{figure}
 
 \subsection{Task graph splitting}
-\label{sec:app:task_graph_splitting}
+\label{qoala:sec:app:task_graph_splitting}
 The node scheduler creates a heterogenous task graph consisting of both CPS and QPS tasks.
 This graph needs to be split into a partial CPS and a partial QPS graph.
 This is done using the following algorithm.
@@ -160,7 +160,7 @@ For a heterogenous task graph $G$ containing tasks $T$ (all tasks for both CPS a
 \end{itemize}
 
 \subsection{Scheduler communication}
-Here we describe how the schedulers communicate in our implementation (Section~\ref{sec:implementation}).
+Here we describe how the schedulers communicate in our implementation (Section~\ref{qoala:sec:implementation}).
 
 The three schedulers need to exchange information in order to work together.
 All schedulers can broadcast a \textit{signal} with short information such as `task N completed' or `memory freed'. Each scheduler receives these signals.
@@ -180,14 +180,14 @@ Furthermore, the following read and write access is given:
 
 
 \subsection{Node scheduler algorithm}
-Below we describe the high-level steps involved in the node scheduler algorithm implementation of Section~\ref{sec:implementation}.
-\label{sec:app:node_scheduler_algorithm}
+Below we describe the high-level steps involved in the node scheduler algorithm implementation of Section~\ref{qoala:sec:implementation}.
+\label{qoala:sec:app:node_scheduler_algorithm}
 \begin{enumerate}
-    \item Split the current task graph into a partial CPS graph and a partial QPS graph. For the algorithm, see Appendix~\ref{sec:app:task_graph_splitting}.
+    \item Split the current task graph into a partial CPS graph and a partial QPS graph. For the algorithm, see Appendix~\ref{qoala:sec:app:task_graph_splitting}.
     \item Add the CPS (QPS) tasks to the partial graph of the CPS (QPS) scheduler
     \item Wait for a `task finished` signal from either CPS or QPS scheduler
     \item Remove the corresponding task from the task graph.
-    \item If the finished task was a \texttt{HostLocal} task for some program instance P, and if the CPS partial graph is empty, check which block the program instance should jump to. This information is given by the task itself (and stored in the completed task list of the CPS scheduler), after evaluating the last instruction (a jump or branch instruction) in the BB that the task represented. For this new BB, create corresponding tasks for both the CPS and QPS. Task creation is discussed in Appendix~\ref{sec:app:scheduling_execution_task_creation}.
+    \item If the finished task was a \texttt{HostLocal} task for some program instance P, and if the CPS partial graph is empty, check which block the program instance should jump to. This information is given by the task itself (and stored in the completed task list of the CPS scheduler), after evaluating the last instruction (a jump or branch instruction) in the BB that the task represented. For this new BB, create corresponding tasks for both the CPS and QPS. Task creation is discussed in Appendix~\ref{qoala:sec:app:scheduling_execution_task_creation}.
     \item If the task graph is empty, idle until new programs are instantiated.
     \item Go back to step 1.
 \end{enumerate}
@@ -198,7 +198,7 @@ In this scenario, after steps 1 and 2 the CPS and QPS schedulers possess a parti
 Both processor schedulers will work on their tasks until they are both empty, after which all program instances have finished. Meanwhile, the node scheduler just loops through steps 1, 2, 3 and 6, not doing anything.
 
 \subsection{CPS scheduler algorithm}
-Below we describe the high-level steps involved in the CPS scheduler algorithm implementation of Section~\ref{sec:implementation}.
+Below we describe the high-level steps involved in the CPS scheduler algorithm implementation of Section~\ref{qoala:sec:implementation}.
 \begin{enumerate}
     \item Check which new tasks were completed by the QPS by reading from the shared task memory. Remove external dependency edges that correspond to QPS tasks that have completed.
     \item Find all tasks in the partial graph that are ready to execute. These are tasks that fulfill all following requirements:
@@ -216,15 +216,15 @@ Below we describe the high-level steps involved in the CPS scheduler algorithm i
             \item One or more new messages have been put into the message buffer
         \end{itemize}
         After one of these signals is received, go back to step 1.
-    \item If there is at least one task ready to execute, choose which one to execute now. This depends on the scheduling policy that is being used. The policy may or may not use information about the deadlines of the available tasks. Scheduling policies that were implemented for our evaluation are described in Appendix~\ref{sec:app:evaluation}.
+    \item If there is at least one task ready to execute, choose which one to execute now. This depends on the scheduling policy that is being used. The policy may or may not use information about the deadlines of the available tasks. Scheduling policies that were implemented for our evaluation are described in Appendix~\ref{qoala:sec:app:evaluation}.
     \item If the task failed, go back to step 1
-    \item If the task completed, remove it from the partial graph, add its ID to the completed task ID list, and broadcast a signal that the task was finished. If the task was a \texttt{HostLocal} task, then also store (in the completed task list) an entry containing the name of the next block to execute. (In this way, the node scheduler knows which task(s) to create and add to the full task graph. See Appendix~\ref{sec:app:scheduling_execution_task_creation} for more details.)
+    \item If the task completed, remove it from the partial graph, add its ID to the completed task ID list, and broadcast a signal that the task was finished. If the task was a \texttt{HostLocal} task, then also store (in the completed task list) an entry containing the name of the next block to execute. (In this way, the node scheduler knows which task(s) to create and add to the full task graph. See Appendix~\ref{qoala:sec:app:scheduling_execution_task_creation} for more details.)
     Update the deadlines of all other tasks in the task graph.
     Then go back to step 1.
 \end{enumerate}
 
 \subsection{QPS scheduler algorithm}
-Below we describe the high-level steps involved in the QPS scheduler algorithm implementation of Section~\ref{sec:implementation}.
+Below we describe the high-level steps involved in the QPS scheduler algorithm implementation of Section~\ref{qoala:sec:implementation}.
 \begin{enumerate}
     \item Check which new tasks were completed by the CPS by reading from the shared task memory. Remove external dependency edges that correspond to CPS tasks that have completed.
     \item Find all tasks in the partial graph that are ready to execute. These are tasks that fulfill all following requirements:
@@ -316,7 +316,7 @@ Task A uses virtual qubit 0, and task B uses virtual qubit 1 and 2.
 
 
 \subsection{Entanglement Distribution}
-\label{sec:app:entanglement_distribution}
+\label{qoala:sec:app:entanglement_distribution}
 Qoala only defines how program are executed on a node in a quantum network,
 and not how and when entanglement is created between nodes.
 However, Qoala does assume certain things about how nodes can interact with the entanglement distribution system, however this is implemented.

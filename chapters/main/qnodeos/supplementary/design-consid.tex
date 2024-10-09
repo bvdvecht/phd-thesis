@@ -1,10 +1,10 @@
 \section{Design Considerations and Challenges}
-\label{sec:design-consid:challenges}
+\label{qnodeos:sec:design-consid:challenges}
 
 We start with providing additional information for some of the design considerations and challenges for an operating system for executing applications on a quantum network node.
 
 \subsection{Application Paradigm}
-\label{sec:design-consid:challenges:application}
+\label{qnodeos:sec:design-consid:challenges:application}
 
 Our architecture is primarily meant to \emph{enable the execution of quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above}. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, our system can also be used, but it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
 
@@ -35,11 +35,11 @@ When executing the same application multiple times, the programmer can choose to
 
 \subsection{Interactive Classical-Quantum Execution}
 
-Let us elaborate further on the relation, and differences, between the execution of quantum network applications, and the execution of quantum computing applications: One could envision building a system for executing quantum network applications on top of a simpler system for the execution of quantum computing programs, as long as the latter can be \emph{augmented with networking instructions to generate entanglement}: in essence one quantum block can be seen as one quantum computing program. Such a block may realize mid-circuit measurements by the classical control logic allowed within one quantum block, or error correction. Error correction could in this paradigm be realized both by classical control logic allowed within one quantum block, or by considering the error correction itself as part of the \ac{QDevice} (see \cref{sec:appendix-arch-node_system}) which then only exposes logical qubits and operations to \ac{QNodeOS}, instead of physical qubits and operations. In that sense, one may think of the interactivity required between classical and quantum operations as taking place not only at a higher level, but also stemming from the fact that classical messages are used to create a new interaction between \emph{separate} quantum programs, while in quantum computing we have only one single program.
+Let us elaborate further on the relation, and differences, between the execution of quantum network applications, and the execution of quantum computing applications: One could envision building a system for executing quantum network applications on top of a simpler system for the execution of quantum computing programs, as long as the latter can be \emph{augmented with networking instructions to generate entanglement}: in essence one quantum block can be seen as one quantum computing program. Such a block may realize mid-circuit measurements by the classical control logic allowed within one quantum block, or error correction. Error correction could in this paradigm be realized both by classical control logic allowed within one quantum block, or by considering the error correction itself as part of the \ac{QDevice} (see \cref{qnodeos:sec:appendix-arch-node_system}) which then only exposes logical qubits and operations to \ac{QNodeOS}, instead of physical qubits and operations. In that sense, one may think of the interactivity required between classical and quantum operations as taking place not only at a higher level, but also stemming from the fact that classical messages are used to create a new interaction between \emph{separate} quantum programs, while in quantum computing we have only one single program.
 
 \subsection{Different Hardware Platforms} 
 
-It is desirable that an architecture for executing quantum network applications is as much as possible platform-independent, specifying a specific \ac{HAL} that allows interfacing with different (quantum) platforms. We consider as a quantum processor system the \ac{QDevice} model (see `Methods, QDevice Model`), exposing a set of physical instructions addressing specific qubits (see~\cref{sec:sec:appendix-qdevice-instructions-operands}). These physical instructions may be dependent on the type of quantum hardware, e.g. NV in diamond, or trapped ions, and
+It is desirable that an architecture for executing quantum network applications is as much as possible platform-independent, specifying a specific \ac{HAL} that allows interfacing with different (quantum) platforms. We consider as a quantum processor system the \ac{QDevice} model (see `Methods, QDevice Model`), exposing a set of physical instructions addressing specific qubits (see~\cref{qnodeos:sec:sec:appendix-qdevice-instructions-operands}). These physical instructions may be dependent on the type of quantum hardware, e.g. NV in diamond, or trapped ions, and
 %
 \begin{inlinelist}
 \item include instructions for initializing and measuring qubits on the chip,
@@ -66,7 +66,7 @@ Quantum network programs are meant to be executed between distant nodes, meaning
 the case of distributed quantum computing also has different timescales than quantum networking. Of course, it is conceivable that in the future, one may also link distant quantum computers into more powerful quantum computing clusters via quantum internet infrastructure.
 
 %\subsection{Scheduling Local and Network Operations}
-%\label{sec:sec:design-consid-scheduling}
+%\label{qnodeos:sec:sec:design-consid-scheduling}
 
 \subsection{Scheduling Network Operations}
 

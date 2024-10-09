@@ -1,6 +1,6 @@
 \section{Program structure}
-\label{sec:app:program_structure}
-This section provides details about the structure and contents of Qoala programs as described in Section~\ref{sec:program_structure}.
+\label{qoala:sec:app:program_structure}
+This section provides details about the structure and contents of Qoala programs as described in Section~\ref{qoala:sec:program_structure}.
 
 
 \subsection{Program representation and components}
@@ -42,9 +42,9 @@ Program metadata contains:
     \texttt{b2} calls local routine \texttt{post\_epr}, resulting in a classical vector with one value (\texttt{m0}).
     \texttt{b3} returns \texttt{m0} as the result of this program.
     \textit{Local routines section.} Consists of a single local routine called \texttt{post\_epr}.
-    It requires the virtual qubit (see Section~\ref{sec:app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
+    It requires the virtual qubit (see Section~\ref{qoala:sec:app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
     Upon finishing the local routine, this qubit is not in use anymore (the \texttt{keeps} entry is empty).
-    The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see Section~\ref{sec:app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
+    The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see Section~\ref{qoala:sec:app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
     \textit{Request routines section.} Consists of a single request routine called \texttt{req}.
     It represents a request to the network stack for generating a single entangled pair (\texttt{num\_pairs} is 1), which is kept in memory (\texttt{typ: create\_keep}; not measured immediately).
     This program acts as a `receiver' for entanglement generation (\texttt{role} attribute), which breaks symmetry in the entanglement generation process (the remote Alice program will have \texttt{role: sender}). Symmetry breaking is needed for the network stack to organize the entanglement generation.
@@ -123,7 +123,7 @@ The QH Language does not allow direct access to shared memory.
 Only variables from the local memory can be used.
 When calling and getting results from Local Routines (LRs) and Request Routines (RRs), values are automatically
 moved from local memory to shared memory. 
-Shared memory is discussed in more detail in Appendix~\ref{sec:app:shared_memory}.
+Shared memory is discussed in more detail in Appendix~\ref{qoala:sec:app:shared_memory}.
 
 \subsubsection{Block format}
 
@@ -153,7 +153,7 @@ A full list of QoalaHost instructions is given in Table~\ref{fig:app:qh_table}.
 
 
 \subsection{NetQASM section}
-\label{sec:app:netqasm}
+\label{qoala:sec:app:netqasm}
 The NetQASM section consists of a list of local routines that are to be executed on the QPS.
 A local routine is only executed when it is called by host code using the \texttt{run\_routine} instruction. A local routine may be run multiple times, again depending on the host code.
 
@@ -187,7 +187,7 @@ The QPS is expected to have a local memory (only accessible by the QPS itself) c
 The four groups of registers are not inherently different. A compiler producing NetQASM code may use a certain group only for certain values, but this is not mandatory.
 
 \textbf{Shared Memory}
-See Appendix~\ref{sec:app:shared_memory} for more information about Shared Memory and arrays.
+See Appendix~\ref{qoala:sec:app:shared_memory} for more information about Shared Memory and arrays.
 The QPS is expected to have access to Shared Memory (accessible by both the CPS and QPS).
 Two shared memory Arrays are available:
 \begin{itemize}
@@ -224,7 +224,7 @@ These instructions can be classified as:
 \end{itemize}
 
 NetQASM instructions representing quantum operations are either \textit{core instructions} or \textit{flavour-specific} instructions.
-Core instructions are quantum hardware independent and are expected to be compatible with any QPS implementation. On top of the core instructions, flavour-specific instructions may be added and supported by a specific QPS implementation. For example, a QPS that controls an NV-centre may support NetQASM instructions of the NV flavour, which contain gate operations only available on this particular quantum hardware. Which NetQASM instructions are supported by the QPS is exposed to higher layers (including a compiler) as part of the EHI (see Appendix~\ref{sec:app:ehi}). Using this information, a compiler may produce optimized NetQASM code using the flavour-specific NetQASM instructions.
+Core instructions are quantum hardware independent and are expected to be compatible with any QPS implementation. On top of the core instructions, flavour-specific instructions may be added and supported by a specific QPS implementation. For example, a QPS that controls an NV-centre may support NetQASM instructions of the NV flavour, which contain gate operations only available on this particular quantum hardware. Which NetQASM instructions are supported by the QPS is exposed to higher layers (including a compiler) as part of the EHI (see Appendix~\ref{qoala:sec:app:ehi}). Using this information, a compiler may produce optimized NetQASM code using the flavour-specific NetQASM instructions.
 
 
 Note that NetQASM 2.0 \textbf{does not} contain (in contrast to NetQASM 1.0~\cite{dahlberg2022netqasm}):
@@ -266,7 +266,7 @@ A Local routine (LR) header contains the following entries:
 \end{itemize}
 
 \textbf{Quantum memory usage annotations.}
-The LR header indicates which virtual qubits are used and freed by the LR. This makes it possible for the scheduler to decide which \texttt{LocalRoutine} task it may schedule when. For more information, see section Appendix~\ref{sec:app:scheduling_execution} on scheduling.
+The LR header indicates which virtual qubits are used and freed by the LR. This makes it possible for the scheduler to decide which \texttt{LocalRoutine} task it may schedule when. For more information, see section Appendix~\ref{qoala:sec:app:scheduling_execution} on scheduling.
 The following listing provides an example:
 
 \begin{lstlisting}

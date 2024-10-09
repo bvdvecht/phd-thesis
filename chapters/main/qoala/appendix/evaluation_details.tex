@@ -1,5 +1,5 @@
 \section{Evaluation details}
-\label{sec:app:evaluation}
+\label{qoala:sec:app:evaluation}
 
 \subsection{Simulator setup}
 All simulations have been done with the simulation package found at~\cite{qoala2023simulator}
@@ -12,7 +12,7 @@ In the source code, the term \textit{time bin} is used for what we here call \te
 
 \subsection{Hardware parameters}
 In this section we describe the characteristics of the hardware types that have been used in our evaluations.
-For the evaluation in Section~\ref{sec:demonstrating_architecture_effectiveness} we simulated all three types below;
+For the evaluation in Section~\ref{qoala:sec:demonstrating_architecture_effectiveness} we simulated all three types below;
 for the other evaluations we only considered the generic hardware type.
 
 \subsubsection{Generic hardware}
@@ -105,7 +105,7 @@ A3. Teleportation    & 2   & 1      & 2     & 1000     & 24     \\ \hline
 A4. Ping-pong        & 2   & 2      & 2     & 1000     & 35     \\ \hline
 A5. GHZ              & 3   & 4      & 2     & 1000     & 41     \\ \hline
 \end{tabular}
-\caption{Overview of application used in the evaluation described in Section~\ref{sec:demonstrating_architecture_effectiveness}.
+\caption{Overview of application used in the evaluation described in Section~\ref{qoala:sec:demonstrating_architecture_effectiveness}.
 Each application was simulated three times, once for each hardware type (generic, NV, Trapped Ion).
 Each simulation was for 1000 instances of the application.
 The simulation duration is an average over the three simulations per application.
@@ -162,7 +162,7 @@ The simulation duration is an average over the three simulations per application
 
 
 \subsection{Details for 6.1 (Demonstrating the architecture's effectiveness)}
-\label{sec:app:details_6_1}
+\label{qoala:sec:app:details_6_1}
 A free network schedule was used, meaning that there were no specific time slots, and entanglement generation was allowed at any time.
 Such a free network schedule was justified since we considered only whether the application ran successfully
 
@@ -367,7 +367,7 @@ Two nodes: Alice and Bob.
 Alice and Bob execute the teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) $T$ times.
 Bob concurrently executes the local program described above $L$ times.
 For each combination of $T \in [1, 15]$ and $L \in [1, 15]$, we ran a simulation $SIM$ 200 times, where in each simulation, all instances and all their tasks are created at the same time and added to the task graphs of the node.
-The success per teleportation instance is calculated as in~\ref{sec:app:details_6_1}.
+The success per teleportation instance is calculated as in~\ref{qoala:sec:app:details_6_1}.
 Success probability is calculated as the fraction of successful instances.
 The success probability of the local program is calculated as the fraction of all local program instances (across all 200 runs) gave the expected classical result 1.
 
@@ -384,7 +384,7 @@ Number of qubits at Alice: $20$.
 One server node runs 10 BQC applications (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) concurrently with 10 client nodes (one BQC application per client node).
 One BQC instance is run for each client.
 This scenario was repeated 100 times for each of the three evaluations (impact of node-node-latencies, impact of internal latencies, impact of time slot length) in order to obtain statistics.
-The success per BQC instance is calculated as in~\ref{sec:app:details_6_1}.
+The success per BQC instance is calculated as in~\ref{qoala:sec:app:details_6_1}.
 Success probability is calculated as the fraction of successful instances.
 
 \textbf{Fixed parameters.}
