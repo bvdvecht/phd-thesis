@@ -285,7 +285,7 @@ We \textit{add} the following kinds of optimizations.
 
 
 \subsection{Multi-node coordination}
-\todo{Should this section be called `error detection' to mirror the 3 purposes mentioned in the Compilers section?}
+% \todo{Should this section be called `error detection' to mirror the 3 purposes mentioned in the Compilers section?}
 Although typically a compiler only compiles for a local program, we want to discuss the context in which quantum network programs run and what the impact is.
 
 Since applications consist of multiple cooperating programs, some kind of coordination is required.
@@ -295,7 +295,7 @@ Such a description may also include a mechanism for re-trying a certain operatio
 
 Another reason for having protocol description is demand registration to network controller (see \ref{todo ref to Qoala chapter}). To make an informed demand, a protocol description is needed such that nodes can synchronize their behavior and agree about timings, iterations, and retry mechanisms. Therefore, it makes sense to already have a protocol description at compile-time. This can also e.g. be something that is advertised as a service by some quantum server.
 
-\todo{double check role of cap negotiation wrt compilation}
+% \todo{double check role of cap negotiation wrt compilation}
 % Must be after compilation such that same executable can be re-used in multiple contexts. Uses input from users (that are about to run the application) and uses hints from the compiler (put into the executables). Also uses input from network controller (like current estimates of rate, fidelity).
 
 We can imagine a protocol description to at least contain the following elements:
@@ -366,42 +366,42 @@ Even without protocol description: do not re-order external operations.
 
 
 
-\subsection{Recommendation for overall design}
+% \subsection{Recommendation for overall design}
 
-Input:
-\begin{itemize}
-  \item Inputs: program code (may contain fidelity/timing constraints), EHI
-  \item (potentially protocol description)
-\end{itemize}
+% Input:
+% \begin{itemize}
+%   \item Inputs: program code (may contain fidelity/timing constraints), EHI
+%   \item (potentially protocol description)
+% \end{itemize}
 
-Compilation:
-\begin{itemize}
-  \item General correctness checking
-  \item (potentially: adherence to protocol checking)
-  \item Translation to valid Qoala
-  \item Optimization:
-    \begin{itemize}
-      \item General (gate optimization etc.)
-      \item Insert hints to try and meet fidelity/timing constraints from program
-      \item (potentially: insert hints to try and meet fidelity/timing constraints from protocol)
-      \item Cannot re-order external operations
-    \end{itemize}
-\end{itemize}
+% Compilation:
+% \begin{itemize}
+%   \item General correctness checking
+%   \item (potentially: adherence to protocol checking)
+%   \item Translation to valid Qoala
+%   \item Optimization:
+%     \begin{itemize}
+%       \item General (gate optimization etc.)
+%       \item Insert hints to try and meet fidelity/timing constraints from program
+%       \item (potentially: insert hints to try and meet fidelity/timing constraints from protocol)
+%       \item Cannot re-order external operations
+%     \end{itemize}
+% \end{itemize}
 
-Capability negotiation:
-\begin{itemize}
-  \item Potentially refer to protocol description and claim compatibility
-  \item Establish demand, number of instances, inputs, deadlines
-\end{itemize}
-
-
-\subsection{Recommendations for evaluation}
-
-\todo{EVALUATION}
+% Capability negotiation:
+% \begin{itemize}
+%   \item Potentially refer to protocol description and claim compatibility
+%   \item Establish demand, number of instances, inputs, deadlines
+% \end{itemize}
 
 
-\subsection{A note on Qoala program scope}
-It's only **live quantum memory** that's time-sensitive.
-The Qoala runtime provides a way to schedule and prioritize program parts such that quantum decoherence can be minimized.
-To take advantage of this, quantum code, possibly interspersed with classical code, should be executed as Qoala programs.
-However, it is not needed to write a whole program, including parts with purely classical code, in Qoala.
+% \subsection{Recommendations for evaluation}
+
+% \todo{EVALUATION}
+
+
+% \subsection{A note on Qoala program scope}
+% It's only **live quantum memory** that's time-sensitive.
+% The Qoala runtime provides a way to schedule and prioritize program parts such that quantum decoherence can be minimized.
+% To take advantage of this, quantum code, possibly interspersed with classical code, should be executed as Qoala programs.
+% However, it is not needed to write a whole program, including parts with purely classical code, in Qoala.
