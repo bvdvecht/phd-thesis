@@ -62,18 +62,16 @@ A compiler checks whether the program source code is valid and throws an error i
 
 \item \textbf{Optimization}.
 A compiler tries to perform optimization with respect to various metrics.
-(1) It might try to minimize the size of the final executable.
-(2) It might try to produce an executable such that the expected runtime performance is optimized.
-
-Optimization metrics include offline ones such as instruction count and memory usage, and online ones such as success probability.
-Many existing compilation strategies, of both classical and quantum computing, can be re-used.
+It may try to minimize the size of the final executable.
+It may also try to produce an executable such that the expected runtime performance is optimized.
+Increasing expected runtime performance can be done in many ways, which are discussed in more detail below.
 
 \end{itemize}
 
 
 
 \section{Related work}
-\todo{schematic figure of compiler: input -> passes -> output}
+
 
 \subsection{Compilers for classical computing.}
 Compilers for classical computers have existed since the beginning of modern computers, in the middle of the 20th century~\cite{aho_compilers_2006}.
@@ -83,6 +81,8 @@ These generally became more and more abstract: they were more directly suited fo
 To this day, compilers are vital in the programming ecosystem.
 Large compiler projects such as LLVM~\cite{lattner_llvm_2004} use intermediate representations.
 There is a distinction between interpreted and compiled languages.\todo{figure showing difference between interpreted and compiled}
+\todo{mention how NetQASM/QNodeOS uses an interpreter}
+\todo{schematic figure of compiler: input -> passes -> output, and of interpreter}
 
 Classical compilers have a \textit{target} such as x86 or ARM.
 Code optimization techniques include

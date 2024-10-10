@@ -63,7 +63,7 @@ Therefore, the timing and duration of operations (such as local gates or entangl
 Finally, classical links exist between nodes for sending classical messages.
 
 Since end nodes can control their memory and entanglement generation, they can run arbitrary \textit{user programs}.
-end nodes can both communicate classically and generate entanglement between each other, either directly or through repeaters and routers, (\cref{fig:network_model}). Nodes in the network other than end nodes, such as repeaters and routers, do not execute user programs; rather these run protocols that are part of some level in the
+End nodes can both communicate classically and generate entanglement between each other, either directly or through repeaters and routers, (\cref{fig:network_model}). Nodes in the network other than end nodes, such as repeaters and routers, do not execute user programs; rather these run protocols that are part of some level in the
 network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
 These internal nodes in the network perform elementary link generation and entanglement swapping in order to generate long-distance remote entanglement between end nodes~\cite{dahlberg2019linklayer}.
 
@@ -75,7 +75,18 @@ Quantum computing consists of performing operations on quantum bits (qubits).
 
 \paragraph{Circuits and gates}
 A quantum program is typically represented as a \emph{quantum circuit}.
-\todo{example circuit figure?}
+\Cref{fig:example_circuit} shows an example circuit of 2 qubits.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/background/example_circuit.pdf}
+    \caption{
+      Example circuit \todo{elaborate}
+    }
+    \label{fig:example_circuit}
+\end{figure}
+
+
 A quantum circuit describes the operations that are to be performed on the quantum memory consisting of individual qubits.
 Operations include quantum gates (rotation gates or Hadamard), initialization, and measurement (readout).
 Quantum gates may be on a single qubit, or on multiple qubits.
@@ -114,8 +125,17 @@ Nodes are not forced to attempt entanglement in corresponding time slots, and ca
 
 \section{Quantum network applications}
 Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
-Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
+Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.\todo{schematic figure of BQC (including cartoon from QNE?)}
 In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/background/bqc_circuit.pdf}
+    \caption{
+      BQC circuit \todo{elaborate}
+    }
+    \label{fig:example_circuit}
+\end{figure}
 
 \subsection{Programs}
 Throughout this thesis, we will use the following terminology.
