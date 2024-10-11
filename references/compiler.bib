@@ -1843,3 +1843,19 @@ The increasing capabilities of quantum computing hardware and the challenge of r
 	keywords = {Algorithm design and analysis, Application software, Arithmetic, High level languages, Information analysis, Performance analysis, Program processors, Runtime, Software safety, Virtual machining},
 	file = {IEEE Xplore Abstract Record:C\:\\Users\\bartv\\Zotero\\storage\\YKB5TTRV\\1281665.html:text/html},
 }
+
+@inproceedings{danalis_mpi-aware_2009,
+	location = {New York, {NY}, {USA}},
+	title = {{MPI}-aware compiler optimizations for improving communication-computation overlap},
+	isbn = {978-1-60558-498-0},
+	url = {https://doi.org/10.1145/1542275.1542321},
+	doi = {10.1145/1542275.1542321},
+	series = {{ICS} '09},
+	abstract = {Several existing compiler transformations can help improve communication-computation overlap in {MPI} applications. However, traditional compilers treat calls to the {MPI} library as a black box with unknown side effects and thus miss potential optimizations. This paper's contributions enable the development of an {MPI}-aware optimizing compiler that can perform transformations exploiting knowledge of {MPI} call effects to increase communication-computa-tion overlap. We formulate a set of data flow equations and rules to describe the side effects of key {MPI} functions so an {MPI}-aware compiler can automatically assess the safety of transformations. After categorizing existing compiler transformations based on their effect on the application code, we present an optimization algorithm that specifies when and how to apply these optimizing transformations to achieve improved communication-computation overlap. By manually applying the optimization algorithm to kernels extracted from {HYCOM} and the {NAS} benchmarks, we show that even when transforming these highly optimized codes, execution time can be decreased by an average of over 30\%.},
+	pages = {316--325},
+	booktitle = {Proceedings of the 23rd international conference on Supercomputing},
+	publisher = {Association for Computing Machinery},
+	author = {Danalis, Anthony and Pollock, Lori and Swany, Martin and Cavazos, John},
+	urldate = {2024-10-11},
+	date = {2009-06-08},
+}
