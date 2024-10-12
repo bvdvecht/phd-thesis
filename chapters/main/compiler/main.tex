@@ -4,15 +4,21 @@
 
 \todo{make sure here already relation with scheduler is introduced}
 
-In the previous chapters we presented building blocks towards the goal of enabling programming and execution of quantum network applications.
+Recall that our overarching objectives for programming and executing quantum network applications are, as also discussed in \cref{chp:intro}:
+\begin{itemize}
+\item Improve accessibility by enabling programming using high-level concepts and tools
+\item Execute quantum internet programs efficiently in terms of application success probability and success rate
+\end{itemize}
+
+In the previous chapters we presented building blocks towards these objectives.
 In \cref{chp:netqasm} the low-level instruction set NetQASM was introduced for representing quantum operations.
 We also defined a software development kit (SDK) that allows one to write programs in Python and which compiles quantum code into NetQASM subroutines.
 In \cref{chp:qnodeos} we introduced an operating system, QNodeOS, that executes these programs.
-In \cref{chp:qoala} we improved on the design of the operating system and presented the Qoala program format.
-This format consists of classical instructions in the HostLang language and quantum instructions in NetQASM, grouped into blocks.
-Qoala programs are not meant to be written by developers directly.
-Just as for NetQASM programs, the intention is for developers to code in a higher-level representation; a compiler then translates this into a Qoala program.
+In \cref{chp:qoala} we improved on the design of the operating system and presented the Qoala program format and execution model.
+We also noted that Qoala enables a compiler design that takes into account the hybrid and networked nature of programs.
+In this chapter we discuss what would be needed for such a design and provide recommendations for working out such as design.
 
+\paragraph{Why a compiler?}
 Although programmers could express their program logic directly in the Qoala format, this is not practical for several reasons.
 First, since the format is low-level, it is quite verbose.
 This is a similar issue as with classical assembly (or other lower-level languages): although possible, it is often very impractical to write complete programs in assembly itself.
@@ -43,13 +49,6 @@ Qoala, with its new model of programs (\cref{qoala:sec:architecture}), enables a
 Furthermore, Qoala enables optimization specific to runtime performance, as we will discuss below (e.g. deadlines for better success probability).
 Before we discuss how a compiler for Qoala should look like, we first review what compilers are and related work.
 
-
-We briefly recap our overarching objectives for programming and executing quantum network applications, as also discussed in \cref{chp:intro}:
-\begin{itemize}
-\item Improve accessibility by enabling programming using high-level concepts and tools
-\item Execute quantum internet programs efficiently in terms of application success probability and success rate
-\item Provide a framework for coordinating programs in a multi-node application
-\end{itemize}
 
 \section{Compilers}
 Compilation is the translation from a high-level source code representation of a program into a lower-level representation of that program, typically machine code, that a computer's processor can execute.
