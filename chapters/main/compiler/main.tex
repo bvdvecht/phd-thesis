@@ -44,6 +44,13 @@ Furthermore, Qoala enables optimization specific to runtime performance, as we w
 Before we discuss how a compiler for Qoala should look like, we first review what compilers are and related work.
 
 
+We briefly recap our overarching objectives for programming and executing quantum network applications, as also discussed in \cref{chp:intro}:
+\begin{itemize}
+\item Improve accessibility by enabling programming using high-level concepts and tools
+\item Execute quantum internet programs efficiently in terms of application success probability and success rate
+\item Provide a framework for coordinating programs in a multi-node application
+\end{itemize}
+
 \section{Compilers}
 Compilation is the translation from a high-level source code representation of a program into a lower-level representation of that program, typically machine code, that a computer's processor can execute.
 Compilation is itself done by a computer program, namely the compiler.
@@ -107,13 +114,6 @@ We note that there exist compilers for network programming languages~\cite{monsa
 However, these relate to programming the control plane of networks (a paradigm called software-defined networking (SDN)), including how data is routed through the network.
 This hence does not relate to programming applications for networks.
 
-% Typically, the performance of networked applications depend on the protocol that the application implements and the network that it runs on.
-% For example, for an application that exchanges information across nodes in a network, its performance depends on the protocol that is used (e.g. TCP vs UDP) and the network (including routing protocols, traffic, etc.) \todo{elaborate and refs}.
-
-% The performance of networked applications is heavily influenced by both the protocol the application employs and the characteristics of the underlying network.
-% For instance, in an application that exchanges data across various nodes, its efficiency and responsiveness are directly impacted by whether it uses a connection-oriented protocol like TCP, which ensures reliability through acknowledgment and retransmission mechanisms, or a connectionless protocol like UDP, which prioritizes speed but sacrifices reliability.
-% Moreover, the state of the network, including factors such as routing protocols (e.g., OSPF, BGP), network congestion, latency, and packet loss, also plays a crucial role. A congested network or suboptimal routing can lead to delays, packet drops, or throughput bottlenecks, all of which degrade application performance .
-% Thus, the interplay between the chosen protocol and network conditions must be carefully considered when designing or optimizing networked applications.
 
 \subsection{Compilers for quantum computing.}
 \label{compiler:sec:compilers-qc}
@@ -140,7 +140,7 @@ One can distinguish two approaches:
 \item joint classical-quantum optimization (MLIR-based, LLVM based): \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}
 \end{itemize}
 
-In order to deal with the hybrid code of hybrid programs, often intermediate represenations (IRs) are used \cite{nigam_compiler_2021, nishio_inquir_2023}.
+In order to deal with the hybrid code of hybrid programs, often intermediate representations (IRs) are used \cite{nigam_compiler_2021, nishio_inquir_2023}.
 The existing LLVM framework has been re-used and integrated in quantum compilers \cite{murali_noise-adaptive_2019, murali_full-stack_2019, litteken_updated_2020}.
 A quantum-specific IR has been created: QIR \cite{haner_software_2018, geller_introducing_2020}.
 
@@ -180,50 +180,77 @@ Timed session types are an extension to session types, adding explicit time cons
 Timed session types have not yet been applied to quantum.
 
 
-\subsection{Challenges unique to quantum network compilation}
-\label{compiler:sec:challenges-unique}
-Unique challenges are presented by the nature of quantum network programs.
-
-\textit{Hybrid classical-quantum code.} Also seen in quantum computing, but now quantum memory also needs to stay alive much longer. More interactivity.
-\todo{make sure is below: addressed by hybrid IR}
-
-\textit{Non-deterministic durations.} Network operations, including entanglement generation take non-deterministic time, and may fail.
-Possible optimization: re-order opreations such that quantum memory does not need to wait (as long) during a non-deterministic operation (like waiting for a message or entanglement success).
-\todo{make sure is below: addressed by re-using existing optimizations and special focus on networking (classical and quantum) operations}
-
-\textit{Failure possibility.} Entanglement generation may be seen as a "local" operation acting on a local qubit, but may fail. Retry mechanisms may be needed.
-(Also remark on certain hardware like NV, where there is cross-qubit noise, e.g. entanglement generation affects memory qubits.)
-\todo{make sure is below: addressed by session types?}
-
-\textit{Private program in networked context.} Performance co-depends on other nodes but no control over them. Coordination is required between programs and nodes.
-In the Qoala execution framework, *capability negotiation* is required; this leads to the need of some external protocol description.
-\todo{Schematic figure of application compilation vs program compilation}
-\todo{make sure is below: addressed by session types?}
-
-\textit{Runtime performance depends on scheduling}. Compiler can only assist scheduler in making runtime decisions.
-\todo{make sure is below: addressed by adding deadlines}
-
-
-
 \section{Design considerations}
+In this section we go through considerations to take into account when designing a compiler for Qoala programs.
+In general, we want to re-use existing compilation strategies, but also need to address the unique challenges for compiling quantum network programs, as well as using features from Qoala like the hybrid representation and deadlines.
 
-We briefly recap our overarching objectives for programming and executing quantum network applications, as also discussed in \cref{chp:intro}:
+\paragraph{Program elements}
+Quantum network programs consist of four types of code: classical local (CL), classical communication (CC), quantum local (QL), and quantum communication (QC).
+For purely CL and QL segments in the source code, existing compilation techniques can be used as described in \cref{compiler:sec:related-work}.
+
+\paragraph{Hybrid classical-quantum code}
+A compiler should take advantage of the fact that the Qoala executable contains both classical and quantum code.
+This enables the compiler to perform optimizations on the mixed classical-quantum segments of the source code.
+\todo{example figure, or refer to earlier fig if exists}
+
+\paragraph{Networking operations}
+Network operations (i.e. classical communication and entanglement generation) are slow compared to local operations.
+For example, waiting to receive a classical message can take in the order of milliseconds (see \cref{fig:fig2}).
+Also, entanglement generation may take milliseconds (\cref{fig:delcomp-epr-rate}).
+By contrast, individual local quantum operations like gates take only microseconds (\cref{tab:gate_durations}) and local classical operations can be as fast as nanoseconds.
+As can be seen in \cref{tab:exp_durations}, most of the time is spent on network processing.
+
+Since quantum memory decoheres over time, a general optimization for the compiler is to minimize the time that quantum memory must remain idle during some other operation.
+Because of the comparably long duration of network operations, special attention must be made by the compiler to minimize the time that there is quantum memory alive while doing a network operations.
+This may mean that the compiler should re-order operations (without changing the behavior of the program) around network operations.
+\todo{example figure}
+
+\paragraph{Non-deterministic times}
+Not only are network-related operations slow, their duration is also non-deterministic (\cref{fig:delcomp-latencies-variance} and \cref{fig:delcomp-epr-rate}).
+Even with optimizations (like re-ordering local operations) to minimize the time that quantum memory must remain alive, an network operation (such as entanglement generation) may take too long --- resulting in a too low quantum memory to produce meaningful results.
+This raises two points:
+(1) the compiler can use Qoala's feature of \emph{deadlines}: by adding (relative) deadlines to (parts of) the code, the compiler can hint to the scheduler to, at runtime, either abort the program or to retry a certain piece of code
+(2) the question is what deadline the compiler should insert. For this, it may be possible for the developer to insert fidelity constraints in the high-level language (or as a compiler flag), such that the compiler can insert the corresponding deadlines (possibly parametrized by hard characteristics from the EHI, see \cref{qoala:sec:runtime_environment}).
+
+\paragraph{Correctness guarantee of compiler}
+A compiler must at all times guarantee that the behavior of the program does not change due to optimizations or rewrites.
+For quantum network programs, an additional constraint is hence needed: any communication operations (classical communication of entanglement generation) must not be re-ordered among themselves.
+
+\paragraph{Runtime performance depends on scheduler}
+The compiler only affects the contents of the Qoala executable.
+How well the program does at runtime also depends on (as shown in \cref{qoala:sec:evaluation})
+(1) the network schedule, and (2) the node scheduler, especially in the case of multitasking (i.e. when other programs are executed concurrently with this program).
+(network schedule, and multitasking)
+
+\paragraph{Private program in networked context}
+Recall that Qoala programs are part of multi-node applications, but that the compiler individually compiles the programs for a single node.
+This means that program code must be compatible with code in the programs that are to be run on other nodes.
+These other programs may not be in control by the developer nor the compiler.
+For example, in a client-server application like BQC, a server node may already have implemented the server-side program, and advertises a service for clients to connect with, by describing a protocol that a client program should adhere to.
+On the client side, a developer may write the client-side program.
+This client program must be compatible with the server-side program, including the correct order of communication operations (both classical communication and entanglement generation operations), which may also include retries.
+We may consider two alternatives:
 \begin{itemize}
-\item Improve accessibility by enabling programming using high-level concepts and tools
-\item Execute quantum internet programs efficiently in terms of application success probability and success rate
-\item Provide a framework for coordinating programs in a multi-node application
+  \item It is the developer's responsibility to make sure the client program contains the correct order of communication operations, and hence adheres to the protocol.
+  In this case, the compiler does not specifically know about the protocol; it will just optimize the program, and makes sure it does not re-order the internal ordering of communication operations (see consideration above).
+  However, if the developer wrote the program in such a way that the program is not fully adherent to the protocol, the compiler cannot salvage this.
+  \item There is a formal specification of the protocol, for example as session types, which the compiler has access to.
+  The developer must still make sure the program code adhere to the specification, but the compiler can check for correctness (adherence) to the protocol.
+  If not, the compiler can warn the developer.
+  If the protocol specification contains requirements about fidelity or timing, the compiler can, on top of checking for correctness, also try to meet these requirements by performing appropriate optimizations and inserting deadlines to guide the scheduler.
 \end{itemize}
 
-Part of the above objectives are handled by the Qoala runtime: scheduling enables better application success probability, and capability negotiation coordinates with the network scheduler.
-The remaining objectives are addressed by a compiler.
+\paragraph{Target-specific optimization}
+The compiler may perform optimizations specific to the hardware that a program will run on.
+The Exposed Hardware Interface (EHI) (\cref{qoala:sec:runtime_environment}) can serve as the target for a compiler.
 
-\paragraph{General considerations}
-We want to re-use existing infrastructure and not re-invent the wheel. This means we can make use of or take inspiration from compilers for classical computing and quantum computing (\cref{compiler:sec:related-work}).
-However, we also want to specifically address the unique challenges of quantum network programs (see \todo{compiler:sec:challenges-unique}) and also use features from Qoala to do so.
 
+
+\section{Architecture recommendations}
 
 \subsection{Translation from high-level to Qoala}
-\paragraph{High-level format}
+
+\paragraph{Support fidelity and timing constraints in high-level language}
 The compiler must translate a high-level format into Qoala.
 We already had a high-level format with the NetQASM SDK.
 We can re-use these ideas.
@@ -233,20 +260,38 @@ Specifically, we can add constructs to the high-level language for supplying fid
 Fidelity constraints needed to get success probability (especially since other programs may run in parallel; it's a way to define implicit priority).
 Timing constraints in high-level program code may be needed because protocol demands it.
 
-\paragraph{Conversion to Qoala}
+\paragraph{Decouple front-end language from compilation framework by using Intermediate Representations (IRs)}
+
 We also want to allow multiple (existing) high-level formats.
 As explained in \todo{ref to compiler section}, classical compilers typically use a hierarchy of steps: a front-end for any high-level language to a intermediate representation (IR), and a back-end for IR to machine code.
-Using an IR decouples the main compiler design from specific input and output foramts, making it more flexible and scalable.
+Using an IR decouples the main compiler design from specific input and output formats, making it more flexible and scalable.
 Furthermore, if an IR would be used that is already part of existing compilation frameworks, it can re-use existing compiler techniques.
 The Quantum Intermediate Representation (QIR)~\cite{haner_software_2018, geller_introducing_2020} may be used.
 However, QIR uses opaque pointers for quantum types, which prevents certain optimizations~\cite{ittah_enabling_2022, peduri_qssa_2022}.
-Multi-Level Intermediate Representation (MLIR) avoids these issues, since it allows for creating domain-specific \emph{dialects}.
+\acf{MLIR} avoids these issues, since it allows for creating domain-specific \emph{dialects}.
 Dialects have been created for quantum such that quantum types can be represented natively, allowing optimizations to be applied on operations including quantum ones~\cite{ittah_enabling_2022, peduri_qssa_2022}.
-\cite{mccaskey_mlir_2021, nguyen_retargetable_2022} also use MLIR before then compiling to QIR.
+\cite{mccaskey_mlir_2021, nguyen_retargetable_2022} also use \ac{MLIR} before then compiling to QIR.
 
-\paragraph{Role of Exposed Hardware Info (EHI)}
+
+The front-end language is not a primary concern; we want to leave design and implementations open.
+Use the existing technique of IRs, gradually lowering code and performing optimizations at each level.
+Use \ac{MLIR} since it enables defining intermediate representations specifically for quantum networking, while still having access to standard (classical) LLVM optimizations.
+
+One may consider at least two \ac{IR}s:
+\begin{itemize}
+  \item A high-level \ac{IR}, consisting of a uniform hybrid classical-quantum representation of operations, where quantum values are native types.
+  This allows classical optimization techniques such as loop unrolling or dead code elimination.
+  \item A low-level \ac{IR}, where classical code is explicitly separated from quantum code.
+  The classical code segments will eventually compile down to classical Qoala blocks (classical local and classical networking blocks, \cref{qoala:sec:program_structure}), while quantum code segments will eventually compile down to quantum Qoala blocks (local routines and request routines, \cref{qoala:sec:program_structure}).
+  The explicit separation (1) makes it easier to perform the back-end compilation step (going from low-level IR to Qoala executable) since the formats are already similar and (2) forces the compiler to decide on \emph{where} to make the separations, allowing it to optimize it (see below).
+\end{itemize}
+
+
+\paragraph{Use EHI as target}
 Target must be explicitly defined, using EHI \todo{elaborate}.
 
+\paragraph{Use session types for protocol adherence checking}
+Even without protocol description: do not re-order external operations.
 
 \subsection{Optimization}
 We want to optimize programs with respect to various metrics.
@@ -280,6 +325,35 @@ We \textit{add} the following kinds of optimizations.
 \end{itemize}
 
 
+\textbf{Use value-based representations}
+In this way, existing optimizations acting on SSA can be directly re-used.
+In a later pass, map to specific qubits, such that noise-aware optimziation can be done (see next point).
+Can also be used to track fidelity estimations.
+
+\textbf{Re-use existing (classical and quantum) compilation techniques for local code}
+These include classical techniques (like loop unrolling, see \cref{compiler:sec:related-work}) and quantum techniques (qubit mapping, gate optimization etc).
+Existing quantum circuit optimizations can be applied to local quantum code in the quantum network program to compile.
+For network-related operations, see below \todo{TODO}.
+
+\textbf{Perform optimizations on joint classical-quantum representation}
+Make use of the fact that classical and quantum code can be jointly analyzed and optimized.
+Use existing techniques, see \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
+Use existing \ac{MLIR} infrastructure.
+
+\textbf{Optimize using noise characteristics} use EHI (noise and topology)
+Use Qoala's Exposed Hardware Info (EHI) to allow specific optimizations, including
+\begin{itemize}
+  \item Compiling to specific NetQASM flavor
+  \item Mapping to specific qubits with better topology (also to make it valid in the first place \todo{add topology as part of target in translation})
+  \item allow different optimization levels (aggressive, minimal, etc)
+\end{itemize}
+
+
+\textbf{Give hints to scheduler (deadlines)}
+Use EHI to compute deadlines based on fidelity restrictions in source code.
+\begin{itemize}
+  \item Given expected durations for network operations, in combination with decoherence rates, compute deadlines for the scheduler to try and adhere to
+\end{itemize}
 
 
 \subsection{Multi-node coordination}
@@ -317,99 +391,3 @@ We distinguish two Modes of Compilation (MoC):
 
 
 \todo{noise-aware optimization for circuits exists, not for interactive hybrid programs}
-
-
-\section{Recommendations for further research and evaluation}
-Based on the considerations discussed above, we propose the following ways in which to tackle the compilation design problem.
-
-
-\textbf{Decouple front-end language from compilation framework by using Intermediate Representations (IRs)}
-The front-end language is not a primary concern; we want to leave design and implementations open.
-Use the existing technique of IRs, gradually lowering code and performing optimizations at each level.
-Use \ac{MLIR} since it enables defining intermediate representations specifically for quantum networking, while still having access to standard (classical) LLVM optimizations.
-
-One may consider at least two \ac{IR}s:
-\begin{itemize}
-  \item A high-level \ac{IR}, consisting of a uniform hybrid classical-quantum representation of operations, where quantum values are native types.
-  This allows classical optimization techniques such as loop unrolling or dead code elimination.
-  \item A low-level \ac{IR}, where classical code is explicitly separated from quantum code.
-  The classical code segments will eventually compile down to classical Qoala blocks (classical local and classical networking blocks, \cref{qoala:sec:program_structure}), while quantum code segments will eventually compile down to quantum Qoala blocks (local routines and request routines, \cref{qoala:sec:program_structure}).
-  The explicit separation (1) makes it easier to perform the back-end compilation step (going from low-level IR to Qoala executable) since the formats are already similar and (2) forces the compiler to decide on \emph{where} to make the separations, allowing it to optimize it (see below).
-\end{itemize}
-
-\textbf{Use value-based representations}
-In this way, existing optimizations acting on SSA can be directly re-used.
-In a later pass, map to specific qubits, such that noise-aware optimziation can be done (see next point).
-Can also be used to track fidelity estimations.
-
-\textbf{Re-use existing (classical and quantum) compilation techniques for local code}
-These include classical techniques (like loop unrolling, see \cref{compiler:sec:related-work}) and quantum techniques (qubit mapping, gate optimization etc).
-Existing quantum circuit optimizations can be applied to local quantum code in the quantum network program to compile.
-For network-related operations, see below \todo{TODO}.
-
-\textbf{Perform optimizations on joint classical-quantum representation}
-Make use of the fact that classical and quantum code can be jointly analyzed and optimized.
-Use existing techniques, see \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
-Use MLIRs existing infrastructure.
-
-\textbf{Optimize using noise characteristics} use EHI (noise and topology)
-Use Qoala's Exposed Hardware Info (EHI) to allow specific optimizations, including
-\begin{itemize}
-  \item Compiling to specific NetQASM flavor
-  \item Mapping to specific qubits with better topology (also to make it valid in the first place \todo{add topology as part of target in translation})
-  \item allow different optimization levels (aggressive, minimal, etc)
-\end{itemize}
-
-\textbf{Allow explicit targets to be defined}. Including flavor and topo
-
-\textbf{Give hints to scheduler (deadlines)}
-Use EHI to compute deadlines based on fidelity restrictions in source code.
-\begin{itemize}
-  \item Given expected durations for network operations, in combination with decoherence rates, compute deadlines for the scheduler to try and adhere to
-\end{itemize}
-
-
-\textbf{Use session types for protocol adherence checking}
-Even without protocol description: do not re-order external operations.
-
-
-
-% \subsection{Recommendation for overall design}
-
-% Input:
-% \begin{itemize}
-%   \item Inputs: program code (may contain fidelity/timing constraints), EHI
-%   \item (potentially protocol description)
-% \end{itemize}
-
-% Compilation:
-% \begin{itemize}
-%   \item General correctness checking
-%   \item (potentially: adherence to protocol checking)
-%   \item Translation to valid Qoala
-%   \item Optimization:
-%     \begin{itemize}
-%       \item General (gate optimization etc.)
-%       \item Insert hints to try and meet fidelity/timing constraints from program
-%       \item (potentially: insert hints to try and meet fidelity/timing constraints from protocol)
-%       \item Cannot re-order external operations
-%     \end{itemize}
-% \end{itemize}
-
-% Capability negotiation:
-% \begin{itemize}
-%   \item Potentially refer to protocol description and claim compatibility
-%   \item Establish demand, number of instances, inputs, deadlines
-% \end{itemize}
-
-
-% \subsection{Recommendations for evaluation}
-
-% \todo{EVALUATION}
-
-
-% \subsection{A note on Qoala program scope}
-% It's only **live quantum memory** that's time-sensitive.
-% The Qoala runtime provides a way to schedule and prioritize program parts such that quantum decoherence can be minimized.
-% To take advantage of this, quantum code, possibly interspersed with classical code, should be executed as Qoala programs.
-% However, it is not needed to write a whole program, including parts with purely classical code, in Qoala.
