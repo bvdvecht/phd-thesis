@@ -9,7 +9,7 @@ in the subsequent sections.
       \item \label{item:design_ent_gen} \textbf{Remote entanglement generation:}
             One of the main differences compared to the design considerations of a quantum computing architecture is that of remote entanglement
             generation (see the use-case in~\cref{netqasm:sec:use_cases}).
-            Nodes need to be able to generate entanglement with a remote node, which requires the collaboration and synchronization of both nodes, and possibly intermediate nodes, which is handled by the network stack (\cref{netqasm:sec:preliminaries}).
+            Nodes need to be able to generate entanglement with a remote node, which requires the collaboration and synchronization of both nodes, and possibly intermediate nodes, which is handled by the network stack (\cref{netqasm:sec:abstract_model}).
 
             Further requirements arise in platforms with a limited number of communication qubits.
             The extreme case is nitrogen-vacancy centers in diamond which have a single communication qubit that additionally is required for performing local operations.
@@ -32,7 +32,7 @@ in the subsequent sections.
 
 
       \item \label{item:design_return} \textbf{Shared memory:}
-            As described in \cref{netqasm:sec:preliminaries}, we expect end-nodes to consist of an application layer and a \ac{QNPU}.
+            As described in \cref{netqasm:sec:abstract_model}, we expect end-nodes to consist of an application layer and a \ac{QNPU}.
             These two components have different capabilities.
             For example, only the application layer has the ability to do arbitrary classical communication with other nodes.
             Only the \ac{QNPU} can do quantum operations.

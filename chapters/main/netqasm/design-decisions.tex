@@ -11,8 +11,8 @@ Details on the mode of execution and the \ac{NetQASM}-language are presented in 
 \label{netqasm:sec:design_decisions_interface}
 
 \subsubsection{Execution model}
-As described in \cref{netqasm:sec:preliminaries}, and also in \cref{netqasm:sec:design_considerations} program execution is split across the \ac{CNPU} and the \ac{QNPU}.
-Since the \ac{QNPU} is assumed to have limited processing power (\cref{netqasm:sec:preliminaries}), our design lets the \ac{CNPU} do most of the classical processing.
+As described in \cref{netqasm:sec:abstract_model}, and also in \cref{netqasm:sec:design_considerations} program execution is split across the \ac{CNPU} and the \ac{QNPU}.
+Since the \ac{QNPU} is assumed to have limited processing power (\cref{netqasm:sec:abstract_model}), our design lets the \ac{CNPU} do most of the classical processing.
 The program blocks (\cref{fig:program_decomp}) are hence spread over two separate systems: blocks of purely classical code are executed by the \ac{CNPU}, and blocks of quantum code (containing both quantum operations and limited classical control) are executed by the \ac{QNPU}.
 
 The quantum code (including limited classical control) is expressed using the \ac{NetQASM} language.

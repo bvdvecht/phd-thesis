@@ -7,7 +7,7 @@ For both elements we study the difference in including them in \ac{NetQASM} vers
 We do this by simulating a teleportation application and a blind quantum computation application.
 These examples also showcase the ability of \ac{NetQASM} to express general quantum internet applications.
 
-We have implemented a simulator, called SquidASM~\cite{git_squidasm}, that simulates a network in which end-nodes have the internal architecture as described in~\cref{netqasm:sec:preliminaries}, that is, with an \ac{CNPU} and a \ac{QNPU}.
+We have implemented a simulator, called SquidASM~\cite{git_squidasm}, that simulates a network in which end-nodes have the internal architecture as described in~\cref{netqasm:sec:abstract_model}, that is, with an \ac{CNPU} and a \ac{QNPU}.
 The simulator internally uses NetSquid~\cite{netsquid}, which was made specifically for the simulation of quantum networks.
 SquidASM executes programs written using the SDK (\cref{netqasm:sec:python-sdk}), including sending \ac{NetQASM} subroutines to the (simulated) \ac{QNPU}.
 The code and data that were used to produce the results in this section can be found at~\cite{git_netqasm_paper_data}.

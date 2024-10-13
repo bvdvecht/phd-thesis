@@ -35,7 +35,7 @@ The \ac{QNPU} consists of the following components, see \cref{fig:qnpu}:
     \item \textbf{Classical memory:}
             Random-access memory storing data produced during the execution of operations, such as counters, qubit measurement outcomes, information about generated entangled pairs, etc.
     \item \textbf{Quantum memory:}
-            Consists of communication and storage qubits, see \cref{netqasm:sec:quantum_networks}, on which quantum gates can be applied.
+            Consists of communication and storage qubits, see \cref{chp:intro}, on which quantum gates can be applied.
             The qubits can be measured and the resulting outcome stored in the classical memory by the processor.
             The communication qubits are connected through a quantum channel to adjacent nodes in the quantum network, through which they can be entangled.
             This quantum channel may also include classical communication needed for synchronization, phase stabilization or other mechanisms needed in the specific realization.
@@ -47,15 +47,15 @@ We stress that the internals of the \ac{QNPU} are not relevant to the design of 
 We do assume that the \ac{QNPU} only has limited classical processing power, and can therefore be implemented on for example a simple hardware board.
 
 
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=0.6\linewidth]{figures/netqasm/qnpu.pdf}
-%     \caption{Overview of \ac{QNPU} components and interfaces. The \ac{CNPU} talks to
-%         the \ac{QNPU} using \ac{NetQASM}. The processor inside the \ac{QNPU} can interact with
-%         all other components. Channels are connecting components with corresponding
-%         components in adjacent nodes in the network.}
-%     \label{fig:qnpu}
-% \end{figure}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/netqasm/qnpu.pdf}
+    \caption{Overview of \ac{QNPU} components and interfaces. The \ac{CNPU} talks to
+        the \ac{QNPU} using \ac{NetQASM}. The processor inside the \ac{QNPU} can interact with
+        all other components. Channels are connecting components with corresponding
+        components in adjacent nodes in the network.}
+    \label{fig:qnpu}
+\end{figure}
 
 
 

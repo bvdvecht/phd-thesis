@@ -27,7 +27,7 @@ Third, the Qoala program format allows hardware-specific details, such as hardwa
 Although not required to add these details by the programmer, if one wants to make use of these details to improve execution (e.g. increasing success probability), the programmer should have knowledge about the hardware.
 Ideally, the programmer should not have to write different versions of a program, one for each hardware platform that the program is intended to run upon.
 
-In \cref{chp:netqasm, chp:qnodeos} we described how NetQASM and QNodeOS already provides a way for programmers to express program logic in a high-level language, Python.
+In \cref{chp:netqasm,chp:qnodeos} we described how NetQASM and QNodeOS already provides a way for programmers to express program logic in a high-level language, Python.
 However, in \ac{QNodeOS}, compilation would happen on-the-fly (also called \emph{interpretation}):
 while executing a program (i.e. at \emph{runtime}), program code is evaluated and quantum instructions are translated into NetQASM subroutines.
 This lead to certain problems, also discussed in the evaluation of Qoala (\cref{qoala:sec:evaluation}):
