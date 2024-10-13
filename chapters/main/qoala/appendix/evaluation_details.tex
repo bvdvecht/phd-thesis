@@ -98,7 +98,7 @@ Assuming 2 qubits are in use, CNOT gate between qubit 0 and qubit 1 on trapped i
 \begin{table*}[]
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
-\textbf{Application} & \textbf{Number of nodes} & \textbf{\begin{tabular}[c]{@{}l@{}}Number of EPR\\ pairs per instance\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Max number of\\ qubits per node\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Number of \\ instances\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Simulation\\ duration (s)\end{tabular}} \\ \hline
+\textbf{Application} & \textbf{\begin{tabular}[c]{@{}l@{}}Number \\ of nodes\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Number of\\ EPR pairs\\ per instance\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Max number\\ of qubits\\ per node\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Number of \\ instances\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}Simulation\\ duration (s)\end{tabular}} \\ \hline
 A1. QKD              & 2   & 1000   & 1     & 1000     & 2166   \\ \hline
 A2. BQC              & 2   & 2      & 2     & 1000     & 227    \\ \hline
 A3. Teleportation    & 2   & 1      & 2     & 1000     & 24     \\ \hline
@@ -119,9 +119,9 @@ The simulation duration is an average over the three simulations per application
 
     \subfloat[\centering \label{fig:app:qkd_circuit}]{\includegraphics[scale=0.9]{figures/qoala/qkd_circuit.png}}
     \vspace{1cm}
-    \subfloat[\centering \label{fig:app:teleport_circuit}]{\includegraphics[scale=0.8]{figures/qoala/teleport_circuit.png}}
+    \subfloat[\centering \label{fig:app:teleport_circuit}]{\includegraphics[scale=0.5]{figures/qoala/teleport_circuit.png}}
     \vspace{1cm}
-    \subfloat[\centering \label{fig:app:pingpong_circuit}]{\includegraphics[scale=0.6]{figures/qoala/pingpong_circuit.png}}
+    \subfloat[\centering \label{fig:app:pingpong_circuit}]{\includegraphics[scale=0.4]{figures/qoala/pingpong_circuit.png}}
     \caption{
     Circuit for applications A1 (QKD), A3 (Teleport) and A4 (ping-pong) from Section~\ref{qoala:sec:evaluation}.
     Single lines represent qubits. Double lines represent classical values.
@@ -137,9 +137,9 @@ The simulation duration is an average over the three simulations per application
 \begin{figure*}
     \centering
 
-    \subfloat[\centering \label{fig:app:vbqc_circuit}]{\includegraphics[scale=0.45]{figures/qoala/vbqc_circuit.png}}
+    \subfloat[\centering \label{fig:app:vbqc_circuit}]{\includegraphics[scale=0.3]{figures/qoala/vbqc_circuit.png}}
     \vspace{1cm}
-    \subfloat[\centering \label{fig:app:ghz_circuit}]{\includegraphics[scale=0.45]{figures/qoala/ghz_circuit.png}}
+    \subfloat[\centering \label{fig:app:ghz_circuit}]{\includegraphics[scale=0.3]{figures/qoala/ghz_circuit.png}}
     \vspace{1cm}
 
     \caption{
@@ -161,7 +161,7 @@ The simulation duration is an average over the three simulations per application
 
 
 
-\subsection{Details for 6.1 (Demonstrating the architecture's effectiveness)}
+\subsection{Details for: Demonstrating the architecture's effectiveness}
 \label{qoala:sec:app:details_6_1}
 A free network schedule was used, meaning that there were no specific time slots, and entanglement generation was allowed at any time.
 Such a free network schedule was justified since we considered only whether the application ran successfully
@@ -219,7 +219,7 @@ See Figure~\ref{fig:app:ghz_circuit} for the circuit.
 Success per instance is determined by checking that the all three programs got the same measurement outcome.
 For the evaluation, we ran 1000 instances.
 
-\subsection{Details for 6.2 (Demonstrating Qoala's multitasking potential and Network schedule impact)}
+\subsection{Details for: Demonstrating Qoala's multitasking potential and Network schedule impact}
 
 \subsubsection{Multitasking of teleportation and of BQC}
 \textbf{Sequential vs Interleaved execution.}
@@ -255,7 +255,7 @@ We compared two network schedules.
 Sequential network schedule with repeating pattern $P_{seq}$. $P_{seq}$ consists of time slots $QKD_1$, $QKD_2$, $\dots$, $QKD_{50}$, $BQC_1$, $BQC_2$, $\dots$, $BQC_{50}$.
 Alternating network schedule with repeating pattern $P_{alt}$. $P_{alt}$ consists of time slots $QKD_1$, $BQC_1$, $QKD_2$, $BQC_2$, $\dots$, $QKD_{50}$, $BQC_{50}$.
 
-\subsection{Details for 6.3 (Improvement over NetQASM architecture)}
+\subsection{Details for: Improvement over NetQASM architecture}
 
 \textbf{Scenario.}
 Two nodes: client and server.
@@ -331,7 +331,7 @@ We compared running (NETQASM): $Q_{client}$ on the client node and $Q_{netqasm}$
 We obtained success probabilities $66\%$ for NETQASM and $82\%$ for QOALA.
 
 
-\subsection{Details for 6.4 (Tradeoffs between classical and quantum performance metrics)}
+\subsection{Details for: Tradeoffs between classical and quantum performance metrics}
 \textbf{Scenario.}
 Two nodes: Alice and Bob.
 Bob executes an interactive quantum program where classical input is given by Alice.
@@ -358,7 +358,7 @@ Classical node-to-node communication latency: $10^7$ ns.
 Rate of arrival of busy programs instances: once every $10^6$ ns.
 
 
-\subsection{Details for 6.5 (Success probabilities with quantum multitasking)}
+\subsection{Details for: Success probabilities with quantum multitasking}
 \textbf{Local program.}
 A program which prepares a single qubit to the $\ket{-} = 1/\sqrt{2} (\ket{0} + \ket{1})$ state, then waits for duration $d$, and then measures the qubit in the $X$-basis. The expected outcome bit is hence 1.
 
@@ -379,7 +379,7 @@ Number of qubits at Bob: $10$.
 Number of qubits at Alice: $20$.
 
 
-\subsection{Details for 6.6 (Performance sensitivity)}
+\subsection{Details for: Performance sensitivity}
 \textbf{Scenario.}
 One server node runs 10 BQC applications (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) concurrently with 10 client nodes (one BQC application per client node).
 One BQC instance is run for each client.
