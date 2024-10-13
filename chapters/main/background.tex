@@ -56,9 +56,14 @@ Each quantum memory has a certain \textit{topology} that describes which operati
 Some of the qubits in a quantum memory may be used to generate an entangled state with another node.
 These qubits are called \emph{communication qubits}~\cite{dahlberg2019linklayer}, in contrast to \emph{storage qubits} which can only directly interact with other qubits part of the same local node.
 A storage qubit may however hold a state that is entangled with a qubit in another node: after remote entanglement generation using a communication qubit, the state in that local qubit could be transferred to one of the storage qubits, preserving the remote entanglement.
-
 Some platforms only have a single communication qubit and multiple storage qubits~\cite{Bernien2014}, whereas others can have multiple communication qubits~\cite{Inlek2017}.
-Qubits are sensitive to \textit{decoherence} and have limited lifetimes.
+Quantum processors in general offer two types of qubits (see e.g.~\cite{dahlberg_2019_egp}): \emph{communication qubits} which can be used to generate entanglement with remote nodes next to other quantum operations, as well as \emph{storage qubits} which cannot be used to generate entanglement and only for implementing local quantum operations.
+We remark that on near-term quantum processors, the types of operations also depends on the connectivity of the qubits.
+That is, not all (pairs of) qubits may allow the same set of quantum operations to be performed on them.
+
+\paragraph{Noise and decoherence}
+\todo{elaborate}
+Qubits are sensitive to \emph{decoherence} and have limited lifetimes.
 Therefore, the timing and duration of operations (such as local gates or entanglement generation with another node) have an impact on the quality of quantum memory. Classical processors control the quantum hardware, and also perform classical computation.
 Finally, classical links exist between nodes for sending classical messages.
 
@@ -212,7 +217,7 @@ A client may then write the client-side of this protocol, without having control
 
 
 
-\section{Application execution}
+\subsection{Application execution}
 
 \paragraph{Mode of Execution}
 There exist quantum applications and functionalities, where one pair of programs is executed only once, e.g. a simple example of quantum teleportation~\cite{bennett_1993_teleportation}.
@@ -238,108 +243,6 @@ Noisy quantum systems produce non-perfect quantum states ($F < 1$) which decreas
 For quantum network nodes, we consider common classical metrics~\cite{stankiewicz_commag}\todo{better refs}: utility (fraction of time that a node is doing useful things), throughput (amount of application executions per time unit) and latency (which may be between internal components of a node, or between nodes).
 
 
-
-\section{State of the art and related work}
-The first quantum networks linking multiple quantum processors as end nodes have recently been realized as physics experiments in laboratories~\cite{moehring_2007_ion_traps,ritter_2012_elementary,hofmann_2012_heralded,stockill_2017_phasetuned,jing2019entanglement,stephenson_2020_highrate,pompili_2021_multinode,krutyanskiy_entanglement_2023} and fiber networks~\cite{liu2024creation,stolk2024metropolitan,knaut2024entanglement}, opening the tantalizing possibility of realizing advanced quantum network applications~\cite{wehner_2018_stages} such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
-Demonstrations relied either on ad-hoc software, or chose to establish that hardware parameters were in principle good enough to support a given quantum network application, although the application itself was not realized~\cite{nadlinger_device-independent_2022,liu_2022_photonic_diqkd,zhang_2022_diqkd}.
-
-
-In the field of quantum computing, a substantial amount of progress has been made related to developing
-architectures (e.g.~\cite{fu2017microarchitecture,bourassa2020photonicblueprint, murali2019fullstack, wecker2014liqui, khammassi2020openql, amy2019staq, green2013quipper, Steiger2016}),
-instruction sets (e.g.~\cite{cross2017openqasm,khammassi2018cqasm,fu2019eqasm,liu2017fqasm,smith2016quil,qiskit,cirq,qsharp,jones2019quest}) and
-compilers~\cite{zulehner2019compiling, haner2018software, gokhale2020quantum, liu2020new, gokhale2020optimized, ding2020square, smith2020opensource, Sivarajah_2020, hietala2019verified, zhang2020contextmapping, niu2020hardware, dury2020qubo, pozzi2020using, Nishio_2020}.
-One example is QASM, an instruction set framework, borrowing ideas from classical assembly languages, which has gained a lot of popularity over the years and has been successfully integrated in software stacks for quantum computers.
-There are in fact many variants of QASM such as OpenQASM~\cite{cross2017openqasm}, \texttt{cQASM}~\cite{khammassi2018cqasm}, \texttt{eQASM}~\cite{fu2019eqasm}, \texttt{f-QASM}~\cite{liu2017fqasm}.
-Some of these variants are at a level closer to the physical implementation, such as \texttt{eQASM}, allowing for specifying low-level timing of quantum operations, while others, such as \texttt{f-QASM}, are at a higher level.
-Together with the definition of these QASM-variants, progress has also been made in compilation of applications programmed in QASM to hardware implementations.
-More abstract languages and programming frameworks for quantum programs include \texttt{Quil}~\cite{smith2016quil}, \texttt{Qiskit}~\cite{qiskit}, \texttt{Cirq}~\cite{cirq}, \texttt{Q\#}~\cite{qsharp}, \texttt{QuEST}~\cite{jones2019quest}.
-
-Compilers are discussed in more detail in \cref{chp:compiler}.
-
-
-\section{Challenges}
-It is a major challenge to design and implement an architecture that can enable the execution of arbitrary quantum network applications on quantum processors (\cref{fig:fig1}), while enabling programming in high-level software that neither depends on the underlying quantum hardware, nor requires the programmer to understand the physics of the underlying devices.
-In the domain of the conventional internet, the possibility of programming arbitrary internet applications in high-level software has led to the realization of radically new communication applications by diverse communities, which had a transformative impact on our society~\cite{castells_impact_2013}.
-What's more, the advent of programmable hardware and new application areas sparked novel fields of computer science research and guided further hardware development.
-A similar development is underway in quantum computing, where the availability of high-level programming tools allows a broad participation in developing applications~\cite{noauthor_quantum_2024}.
-
-\paragraph{Local vs network}
-\todo{move to challenges?}
-In contrast to classical networks, we consider the end nodes in a quantum network to not have a network interface component that is separated from the main processing unit.
-Having local and networking operations combined in a single interface reflects the physical constraint on current and near-term hardware.
-Current state-of-the-art hardware for quantum networking devices can make use of up to the order of 10 qubits~\cite{bradley2019solidstate}.
-Furthermore, certain hardware implementations, such as nitrogen-vacancy centers in diamond~\cite{Bernien2014}, only have a single communication qubit, which also acts as a mediator for any local gate on the storage qubits.
-This prevents dedicating some qubits for purely local operations and some for purely networking operations.
-Rather, to make maximal use of near-term quantum hardware, a multi-purpose approach needs to be supported.
-
-\subsection{Difference with quantum computing}
-
-Let us elaborate further on the relation, and differences, between the execution of quantum network applications, and the execution of quantum computing applications: One could envision building a system for executing quantum network applications on top of a simpler system for the execution of quantum computing programs, as long as the latter can be \emph{augmented with networking instructions to generate entanglement}: in essence one quantum block can be seen as one quantum computing program.
-Such a block may realize mid-circuit measurements by the classical control logic allowed within one quantum block, or error correction.
-Error correction could in this paradigm be realized both by classical control logic allowed within one quantum block, or by considering the error correction itself as part of the \ac{QDevice} (see \cref{qnodeos:sec:appendix-arch-node_system}) which then only exposes logical qubits and operations to \ac{QNodeOS}, instead of physical qubits and operations. \todo{remove internal references}
-In that sense, one may think of the interactivity required between classical and quantum operations as taking place not only at a higher level, but also stemming from the fact that classical messages are used to create a new interaction between \emph{separate} quantum programs, while in quantum computing we have only one single program.
-
-
-\subsection{Difference with distributed quantum computing}
-
-Quantum network programs are meant to be executed between distant nodes, meaning the communication times between them are in the \emph{millisecond} regime.
-We remark that the same is \emph{not true for networked or distributed quantum computing }: if the goal is to combine several less powerful quantum processors via a network into one more powerful quantum computing cluster, then it is advisable to place the individual processors as close to each other as possible, in order to minimize the time needed to (1) exchange messages, and (2) generate entanglement between processors.
-Thus, apart from the execution of applications following a different paradigm, the case of distributed quantum computing also has different timescales than quantum networking.
-Of course, it is conceivable that in the future, one may also link distant quantum computers into more powerful quantum computing clusters via quantum internet infrastructure.
-
-
-
-\paragraph{Scheduling Local Operations versus Scheduling Network Operations}
-
-For computer scientists, we provide further information on the inability to execute at the same time both local as well as networked quantum operations on present-day quantum processors. At a high-level, present-day quantum processor can be seen as both a quantum \ac{CPU}/memory, as well as network device at the same time. Physical properties of the device and its control at the level of experimental physics, prohibits the usage of the quantum processors for both network and \ac{CPU}/memory functions at the same time. A good example is given by the system of \ac{NV} centers in diamond~\cite{kalb_2017_entanglement,humphreys_2018_delivery}: the communication qubit, i.e. the network device, of the \ac{NV} quantum processor system is given by its electron spin. Further storage qubits may be available by the surrounding nuclear spins in the diamond material. However, such nuclear spins cannot easily be addressed without involving the electron spin, prohibiting their use as a separate processor that is independent from the use as a network device. 
-
-It is conceivable that in the future, two devices could be used~\cite{vardoyan_2022_netarch}: one \emph{quantum processor as a network device} (but not as a device for execution of general quantum gates and measurements), and a another \emph{quantum processor performing only local quantum operations} (but not as a device for long-distance networking). The network device could produce entanglement with distant quantum nodes (which may be taking many \emph{milliseconds} to conclude successfully), and only once such entanglement is ready inject it into the second quantum processor. The latter may still involve short-distance entanglement generation between the network device and the second quantum processor, which however is very fast at short distances. This way the time that the second quantum processor would be blocked by networking operations would diminish significantly.
-
-\subsection{Multitasking}
-
-When executing quantum network applications, multitasking is well motivated in order to increase the utility of the system. Multitasking (or time sharing) is a well-established concept in classical operating systems (see e.g.~\cite[Section 1.4]{silberschatz_book_2014}) that allows the concurrent execution of multiple programs. For the reader from physics, we summarize some of these concepts in order to give context, and then reflect on what these imply in our setting.
-
-In order to allow for multitasking, operating systems typically employ a notion of processes (or threads~\cite[Chapter 4]{silberschatz_book_2014}, or tasks~\cite[Section 3.1]{silberschatz_book_2014}), where a process is created whenever a program starts, and the process forms an instance of the program being executed on the system. Multitasking (time sharing) thus refers to the concurrent execution of multiple processes at once, where it is possible to have multiple processes for the same program, corresponding to the execution of several instances of the program in parallel. We remark that the term concurrent thereby refers to the fact that the processes are existing in the system at the same time, while---due to the fact that they need to share limited resources (e.g. a \ac{CPU} or other devices)---not all of them may be running at the same time.
-
-
-When multitasking, we need to decide which process should be executed at what time. This concept is referred to as  scheduling in classical operating systems~\cite[Section 2.4]{tanenbaum_operating_2005},~\cite[Section 3.2]{silberschatz_book_2014}. We first discuss design considerations for scheduling when executing quantum network applications, and then reflect on how scheduling may be realized at different levels of the operating system for the quantum network nodes. 
-
-\paragraph{General considerations}
-
-We first provide three general considerations for completeness, which are not specific to the execution of quantum network applications but apply to all system in which several resources (such as the \ac{QDevice} and a classical \ac{CPU}) can be used (largely) independently of each other:
-%
-\begin{enumerate}
-\item \emph{Local quantum computation}: in addition to quantum networking, a node's resources must also be reserved for local quantum gates, which are integral parts of quantum network applications.
-\item \emph{Multitasking}: for a node to be shared by multiple users, the scheduler should not allocate all the available resources to a single application indefinitely, and instead it should be aware of the presence of multiple applications.
-\item \emph{Inter-block dependencies}: quantum and classical processing blocks of an application may depend on results originating from other blocks, and thus cannot be scheduled independently.
-\end{enumerate}
-
-\paragraph{Quantum network considerations}
-
-Two specific considerations stand out in the domain of quantum networking:
-%
-\begin{enumerate}
-\item \emph{Synchronized network schedule}: due to the bilateral nature of entanglement, each node needs to have its quantum networking activity synchronized with its immediate neighbors. This means that while the scheduler at each \ac{QNodeOS} node runs independently of each other, nodes must take into account the network schedule which defines when the node needs to perform networking actions with its neighboring node. 
-\item \emph{Limited memory lifetimes}: the performance of quantum networking applications depends on both classical as well as quantum metrics. Once qubits are initialized, or entanglement has been created, the limited lifetime of present-day quantum memories implies that execution must be completed by a specific time in order to achieve a desired level of quantum performance. 
-\end{enumerate}
-
-\paragraph{Quantum/classical performance metrics trade-off}
-
-The best quantum performance is reached when the entire quantum network system (all nodes) are reserved for the execution of one single quantum network application. That is, programs are executed in a serial fashion and no multitasking is performed that could introduce delays which negatively impact the quantum performance. However, this approach does not in general achieve the best utilization of the system. 
-
-While our implementation makes use of a simple priority based scheduler, we remark that our work opens the door to apply more advanced forms of schedulers in the future. In particular, the fact that execution quality degrades over time suggests using forms of real-time schedulers for quantum network applications (taking inspiration from the extensive work on this topic in classical systems, see e.g. Ref.~\cite{liu_1973_scheduling}).  We remark that a programmer (or compiler) could provide advise on such (soft) deadlines, for example in the form of a lookup table that includes suggestions for deadlines for a desired level of quantum performance, based on the capabilities provides by the underlying hardware systems (e.g. memory lifetimes, expected execution time of quantum blocks), and the network (e.g. rate and quality (fidelity) of the entanglement that can be delivered). This advise could then be used by the scheduler to inform its scheduling decisions.
-
-We remark that determining precise deadlines (e.g. when too much time has elapsed for the qubits to yield a specific probability of success) is in general a computationally expensive procedure, sometimes estimated in practice by a repeated simulation of the execution. It is an interesting open question to find (heuristic) efficient methods to approximate a performance prediction. We remark that there is no way in quantum mechanics to measure the current quality of a qubit or operation during the ongoing execution, and such qualities are determined by performing estimates independently of the program execution itself. Of course, \ac{QNodeOS} could itself engage in such estimates when idling in order to update its knowledge of the capabilities of the quantum hardware.
-
-To allow for potentially time-consuming classical pre- and post-processing, it is natural to apply such deadlines not for the entirety of the application, but for the period between initializing the qubits and terminating the quantum part of the execution. While outside the scope of this work, we remark that this type of scheduling offers to inspire new work in a form of ``quantum soft-real time'' scheduling, where deadlines may occasionally be missed at the expense of reduced application performance (success probability), to maximize the overall (averaged) performance of the system in which
-applications are typically executed repeatedly. 
-
-
-\subsection{Different Hardware Platforms} 
-
-It is desirable that an architecture for executing quantum network applications is as much as possible platform-independent. Hardware types include e.g. NV in diamond, or trapped ions, \todo{MORE}.
-
-Quantum processors in general offer two types of qubits (see e.g.~\cite{dahlberg_2019_egp}): \emph{communication qubits} which can be used to generate entanglement with remote nodes next to other quantum operations, as well as \emph{storage qubits} which cannot be used to generate entanglement and only for implementing local quantum operations. We remark that on near-term quantum processors, the types of operations also depends on the connectivity of the qubits. That is, not all (pairs of) qubits may allow the same set of quantum operations to be performed on them.
 
 
 \begin{xstretch}

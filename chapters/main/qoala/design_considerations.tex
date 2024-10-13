@@ -22,7 +22,7 @@ or secret sharing~\cite{hillery1999quantum} (a program each on many nodes).
 Programs may involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
 
 \textit{Network schedule}.
-A quantum network stack has been proposed~\cite{dahlberg2019link} and implemented~\cite{pompili2022experimental} that turns entanglement generation into a robust service independent of the quantum hardware platform.
+A quantum network stack has been proposed~\cite{dahlberg2019link} and implemented \cite{pompili2022experimental} that turns entanglement generation into a robust service independent of the quantum hardware platform.
 Important for the design of an architecture for the execution of quantum internet applications is that in this stack, the nodes will establish a network schedule of time slots in which they will trigger entanglement generation (due to need to synchronize entanglement generation at the physical layer~\cite{dahlberg2019link} at high-precision (ns)).
 This means that once entanglement has been requested from the network, the nodes can use only the slots in the network schedule to produce entanglement between them, imposing constraints on the ability to schedule applications. What's more, in present day systems~\cite{pompili2021realization, krutyanskiy2023entanglement} limitations in the physical devices prohibit the execution of local operations while engaging in network operations (entanglement generation), creating further dependencies between the local quantum execution and entanglement generation. 
 As the specifics of network scheduling~\cite{network-scheduling, skrzypczyk2021architecture} are not within scope of this paper,
