@@ -1,7 +1,70 @@
 \chapter{Conclusion}
 \label{chp:conclusion}
 
-\todo{}
+In this final chapter, we provide a brief summary of the work presented in this thesis and list possible future lines of research and development.
+
+\section{Summary of results}
+In this thesis, we addressed the gap that exists for quantum networks: namely that there is no programming and execution framework for quantum network (or internet) applications.
+The main goal was to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optimizing runtime performance}.
+
+In the previous chapters we presented building blocks towards this objective.
+In \cref{chp:netqasm} the low-level instruction set NetQASM was introduced for representing quantum operations.
+We also defined a software development kit (SDK) that allows one to write programs in Python and which compiles quantum code into NetQASM subroutines.
+In \cref{chp:qnodeos} we introduced an operating system, QNodeOS, that executes these programs.
+In \cref{chp:qoala} we improved on the design of the operating system and presented the Qoala program format and execution model.
+
+\paragraph{QNodeOS}
+We designed and implemented the first architecture allowing high-level programming and execution of quantum network applications. To deploy our system onto nodes separated by several kms it would be desirable to merge both the CNPU and the QNPU onto one system board, ideally with mutual access to a shared memory to avoid ms delays in their communication. Such a merge would also allow the definition of a joint classical-quantum executable and processes, opening further doors to reduce latencies by a better scheduling control.
+
+\paragraph{Qoala}
+Qoala is the first architecture for executing quantum applications that addresses the need for scheduling and compiling hybrid classical-quantum programs for a quantum internet.
+This allows Qoala to ensure successful execution of quantum programs even in the presence of limited quantum memory lifetimes, and opens the door for a compile time optimization of the hybrid classical-quantum program.
+
+\paragraph{Compiler}
+We have discussed design considerations for a Qoala program compiler, and proposed a high-level architecture for such a compiler.
+Our overall recommendation is to re-use existing compilation techniques wherever possible, such as for purely classical code segments and purely local quantum code segments.
+We also recommend using existing infrastructure such as MLIR in order to (1) re-use existing techniques and (2) represent the hybrid nature of quantum network programs.
+Moreover, we have provided pointers for (quantum) network-specific optimizations, including instruction re-ordering and inserting deadlines to code blocks.
+
+\section{Future work}
+
+
+\paragraph{QNodeOS}
+Our work provides a framework for a new domain of computer science research into programming quantum network applications on quantum processors including: novel real-time~\cite{ramamritham_scheduling_1994} scheduling algorithms for classical-quantum processes, compile methods for quantum network applications, or novel programming language concepts including entanglement to make software development even easier, thus advancing the vision to make quantum network technology broadly available.
+
+
+\paragraph{Qoala}
+By building on an existing quantum network stack~\cite{dahlberg2019link, pompili2022experimental} and the implementation of QNodeOS on quantum hardware~\cite{pompili2022experimental, carlothesis} we pave the way for the real-world implementation of Qoala in a platform-independent way on diverse hardware platforms including NV centers in diamond~\cite{pompili2021realization, pompili2022experimental}, or Ion Trap~\cite{krutyanskiy2023entanglement,krutyanskiy2023telecom} quantum processors. 
+Such an implementation would require, however, a new classical control hardware as opposed to~\cite{pompili2022experimental, carlothesis}, e.g. by placing CPS and QPS on a single board with access to an on-chip shared memory. 
+
+Our simulator implementation already now opens the door for further computer science research in executing quantum internet applications:
+\textit{Advanced scheduling algorithms:}
+More sophisticated scheduling strategies may lead to higher success probabilities and lower makespan when concurrently executing multiple program instances, where inspiration may come from~\cite{topcuoglu2002performance, baruah2011scheduling, andersson2006multiprocessor, polychronopoulos1991hierarchical}. 
+In the quantum domain, missing the deadline will result in a degradation of the success probability as a function of the time by which the deadline was exceeded.
+This suggest the use of time-utility functions (TUF, see e.g.~\cite{jensen1993timeliness, li2004utility}) to inform scheduling decisions, where it is an open question how such TUF could even be defined in the quantum domain.
+Our work also raises the question on what fundamental tradeoffs between the classical (makespan) and quantum (success probability) performance metrics are at all possible.
+\textit{Compiler design:}
+Qoala's program format now allows for a compiler design that takes into account the hybrid and networked nature of programs.
+It is an open question to design compilers enabling effective code optimization and translation of different types of high-level code into executables.
+\textit{Capability negotiation:}
+We assumed that the compiler provides advice that the nodes use in a capability negotiation and demand registration (Section~\ref{qoala:sec:program_instantiation}).
+It is an open question how to best compute such advise, and find efficient protocols for negotiating capabilities and register demand.
+\textit{Network schedule:}
+As expected, our evaluation shows that application performance depends on the network schedule, where we emphasize that ensuring network service is out of scope for Qoala as en environment for executing applications.
+This highlights a need for understanding the quality of service a quantum network should provide, as well as to design good network scheduling algorithms to satisfy them, in order to achieve good application performance.
+
+
+
+\paragraph{Compiler}
+More research is needed for the ideas presented in this chapter before a detailed compiler design can be completed.
+For example, how should developers describe their fidelity constraints in high-level source code?
+How can a compiler translate such constraints into deadlines?
+Also, the idea of using session types for protocol descriptions must be investigated more.
+Finally, evaluation of the compiler design is crucial to test the merit of these ideas and to guide further research.
+Evaluation may be done by inspecting the compilation output (for instance, the number of (blocks of) instructions in the Qoala executable) or the runtime performance.
+However, we note that the runtime performance (including makespan and application success probability) also depends on the node scheduler and network schedule.
+Therefore, future research may want to focus on the joint compilation-scheduling problem.
+
 
 \begin{xstretch}
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
