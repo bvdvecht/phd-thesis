@@ -6,30 +6,34 @@ In this final chapter, we provide a brief summary of the work presented in this 
 \section{Summary of results}
 In \cref{chp:intro} we have explained that for quantum networks, there is no programming and execution framework for quantum network (or internet) applications.
 Our main goal has hence been to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optimizing runtime performance}.
-In \cref{chp:netqasm,chp:qnodeos,chp:qoala} we presented concrete (system) architectures towards achieving this goal, and in \cref{chp:compiler} we have discussed recommendations for another architecture.
+In \cref{chp:netqasm,chp:qnodeos,chp:qoala,chp:compiler} we presented novel (system) architectures towards achieving this goal.
 
 
 \paragraph{NetQASM}
-In \cref{chp:netqasm} we introduced the low-level instruction set \ac{NetQASM} which can express quantum network instructions including remote entanglement generation.
-\ac{NetQASM} enables the development of quantum internet applications in a platform-independent manner, by providing a high-level SDK as well as hardware-specific flavors.
-We also introduced an initial model of execution for quantum network nodes \ac{NetQASM}, which consists of a \ac{CNPU} performing classical processing and communication with other nodes, and a \ac{QNPU} responsible for executing quantum instructions as well as delivering entanglement to user applications.
+In \cref{chp:netqasm} we introduced the low-level instruction set NetQASM which can express quantum network instructions including remote entanglement generation.
+NetQASM enables the development of quantum network applications in a hardware-agnostic manner by providing a high-level SDK, and by making the instruction set hardware-independent (although we also allow hardware-specific optimizations).
+We also introduced an model of execution for quantum network nodes, which consists of a CNPU performing classical processing and communication with other nodes, and a QNPU responsible for executing quantum instructions as well as delivering entanglement to user applications.
+By using virtualized quantum memory spaces, NetQASM allows multitasking on a node: the concurrent execution of multiple applications, in order to increase device utilization.
+We validated and evaluated NetQASM in simulation.
 
 
 \paragraph{QNodeOS}
 
-In \cref{chp:qnodeos} we built on top of our execution model from \cref{chp:netqasm}, and presented a detailed full-stack system architecture --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
-We implement this architecture on a setup with two real physical quantum network nodes, and show that our architecture can successfully execute quantum network applications.
-We have shown that \ac{QNodeOS} is platform-agnostic by also connecting it to a quantum device with trapped ions.
-We evaluated the performance of our architecture by looking at application throughput and success probability, and validated that it can do multitasking.
+In \cref{chp:qnodeos} we extended our execution model from \cref{chp:netqasm}, and presented a detailed full-stack system architecture --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
+QNodeOS is an architecture that spans both CNPU and QNPU, and describes how user applications written with the NetQASM SDK can be executed, by also incorporating the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
+We have validated our architecture by implementing it on real hardware: we showed the successful execution of simple quantum network applications on a setup of two nodes based on NV centers.
+Moreover we have shown that QNodeOS is platform-agnostic by also connecting it to a quantum device with trapped ions.
+Finally we validated that QNodeOS can do multitasking of multiple applications and can increase quantum device utility this way.
 
 \paragraph{Qoala}
-We learned from \ac{QNodeOS} that there are opportunities to improve compilation and scheduling.
-In \cref{chp:qoala} we explain these opportunities and propose an improved architecture --- Qoala --- for executing applications on quantum network nodes.
-Qoala that addresses the compilation and scheduling challenges found in QNodeOS, by allowing hybrid classical-quantum compilation and scheduling.
-We show how this architecture enables strategies to achieve better application performance.
+We learned from QNodeOS that there are opportunities to improve compilation and scheduling.
+In \cref{chp:qoala} we explained these opportunities and propose an improved architecture --- Qoala --- for executing applications on quantum network nodes.
+In the Qoala architecture, the split between CNPU and QNPU (in \cref{chp:qoala} called CPS and QPS) is lessened: Qoala describes a hybrid classical-quantum format of programs, allowing more advanced compilation, and a node-wide scheduler that allows more advanced scheduling.
+We evaluated how Qoala enables improvement of both compilation and scheduling in simulation.
 
 \paragraph{Compiler}
-We have discussed design considerations for a Qoala program compiler, and proposed a high-level architecture for such a compiler.
+While the Qoala architecture enables better compilation in the first place, in \cref{chp:compiler} we discussed how such a compiler could look like.
+We discussed design considerations and proposed a high-level architecture for such a compiler.
 Our overall recommendation is to re-use existing compilation techniques wherever possible, such as for purely classical code segments and purely local quantum code segments.
 We also recommend using existing infrastructure such as MLIR in order to (1) re-use existing techniques and (2) represent the hybrid nature of quantum network programs.
 Moreover, we have provided pointers for (quantum) network-specific optimizations, including instruction re-ordering and inserting deadlines to code blocks.
@@ -41,14 +45,16 @@ Moreover, we have provided pointers for (quantum) network-specific optimizations
 We believe that our work has contributed to addressing the objective of enabling programming and execution of arbitrary quantum network nodes, by designing and implementing the frameworks mentioned above.
 Still, there remain areas for improvement and more research.
 
-\paragraph{Validate Qoala on real hardware}
-First, it would be interesting to see how much improvement Qoala has over \ac{QNodeOS} by performing the same experiments with Qoala as we did with QNodeOS in \cref{chp:qnodeos}.
-Furthermore, the evaluation of Qoala that has been done in simulation should be repeated on hardware.
-Such an implementation would require, however, a new classical control hardware as opposed to QNodeOS, e.g. by placing CPS and QPS on a single board with access to an on-chip shared memory. 
+\paragraph{Implement Qoala on real hardware}
+Although we have validated Qoala's improvements over QNodeOS in simulation, it is important to validate this on a real implementation as well.
+A real implementation of Qoala, by upgrading the existing QNodeOS implementation would enable running the same experiments on real hardware with Qoala as we did with QNodeOS in \cref{chp:qnodeos}.
+% Such an implementation would require, however, a new classical control hardware as opposed to QNodeOS, e.g. by placing CPS and QPS on a single board with access to an on-chip shared memory. 
 
 
 \paragraph{Scaling up}
-All the work presented here has been evaluated on small networks, either real ones (\cref{chp:qnodeos}) or in simulation (\cref{chp:netqasm,chp:qoala}).
+All the work presented here has been evaluated on small networks, whether it be on real hardware (\cref{chp:qnodeos}) or in simulation (\cref{chp:netqasm,chp:qoala}).
+Evaluating Qoala on larger systems is beneficial.
+THis includes: larger networks, more applications, more qubits per node, more instructions per program.
 The experiments on real hardware have been tested only on NV centers, on a network with only two nodes, with one qubit per node.
 It would be good to test Qoala on more nodes, and with more applications running with multitasking.
 
