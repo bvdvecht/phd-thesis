@@ -21,8 +21,7 @@ All code can be found at~\cite{git_netqasm} and~\cite{git_squidasm}, including:
     (3) support for running applications written in the SDK on the simulators NetSquid~\cite{netsquid,coopmans2021netsquid} and SimulaQron~\cite{dahlberg2018simulaqron}, and
     (4) implemented applications in \ac{NetQASM}, including: anonymous transmission~\cite{Christandl2005anonymous}, BB84~\cite{bb84}, blind quantum computing~\cite{broadbent2009universal,fitzsimons2017unconditionally}, CHSH game~\cite{Kaniewski2016}, performing a distributed CNOT~\cite{denchev2008distributed}, magic square game~\cite{brassard1999magicsquare}, teleportation~\cite{bennett1993teleporting}.
 
-\subsection{SDK}
-\label{netqasm:sec:sdk}
+\paragraph{SDK}
 The SDK of \ac{NetQASM} uses a similar framework to the SDK used by the predecessor \ac{CQC}~\cite{git_cqc}.
 Any program on a node starts by setting up a \texttt{NetQASMConnection} to the \ac{QNPU}-implementation in the \emph{backend}.
 The \texttt{NetQASMConnection} encapsulates all communication that the \ac{CNPU} does with the \ac{QNPU}.

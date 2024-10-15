@@ -55,7 +55,7 @@ We consider a teleportation application where a \textit{sender} program teleport
 It is assumed that the underlying platform is based on nitrogen-vacancy centers in diamond (NV) and use well-established models for both the noise and operations supported on such platforms, see \cref{app:simulation}.
 The sender program uses two qubits: one to create entanglement with the receiver (qubit E), and one to send (teleport) to the receiver (qubit T).
 At some point, the sender measures both qubits, after which it sends the outcomes to the receiver so that it can do the relevant corrections on its received qubit.
-We assume that the sender program is written in a higher-level language like, like in our SDK (\cref{netqasm:sec:sdk}), and in such a way that it first issues a measurement operation on qubit T, and then on E. However, due to the differences in characteristics of the physical qubits, as will be explained below, it is more efficient to first do the measurement on E, and then on T. Now we consider two scenarios, namely
+We assume that the sender program is written in a higher-level language like, like in our SDK (\cref{netqasm:sec:python-sdk}), and in such a way that it first issues a measurement operation on qubit T, and then on E. However, due to the differences in characteristics of the physical qubits, as will be explained below, it is more efficient to first do the measurement on E, and then on T. Now we consider two scenarios, namely
 \begin{itemize}
   \item \textbf{Unit-modules (UM)}.
         We assume that the sender program is written and executed on a software stack implementing \ac{NetQASM}, which means that the application's view of its quantum working memory is in the form of a unit module.

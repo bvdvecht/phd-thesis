@@ -60,13 +60,12 @@ It would be good to test Qoala on more nodes, and with more applications running
 
 \paragraph{Compiler design}
 In \cref{chp:compiler} we discussed recommendations for the design of a compiler.
-More research is needed for the ideas presented in this chapter before a detailed compiler design can be completed.
-For example, how should developers describe their fidelity constraints in high-level source code?
+A first step would be to actually implement a proposed design and evaluate it.
 How can a compiler translate such constraints into deadlines?
 Finally, evaluation of the compiler design is crucial to test the merit of these ideas and to guide further research.
 However, as discussed in \cref{chp:compiler}, application performance depends not only on compilation, but also on scheduling, which leads to the next point.
 
-\paragraph{Native classical code execution}
+Furthermore, one could look at compilation to classical native code.
 Qoala uses the HostLang language to represent classical operations, in classical blocks.
 We mentioned in \cref{chp:qoala} that compilation down to native classical code such as x86 would be possible.
 It is worth investigating this and also consider using WebAssembly outside of the browser.
