@@ -225,7 +225,7 @@ Since quantum memory decoheres over time, a general optimization for the compile
 Because of the comparably long duration of network operations, special attention must be made by the compiler to minimize the time that there is quantum memory alive while doing a network operations.
 This may mean that the compiler should re-order operations (without changing the behavior of the program) around network operations, such as exemplified in \cref{compiler:lst:reorder-network-ops}.
 
-\paragraph{Non-deterministic times}
+\paragraph{Non-deterministic durations}
 Not only are network-related operations slow, their duration is also non-deterministic (\cref{fig:delcomp-latencies-variance} and \cref{fig:delcomp-epr-rate}).
 Even with optimizations (like re-ordering local operations) to minimize the time that quantum memory must remain alive, an network operation (such as entanglement generation) may take too long --- resulting in a too low quantum memory to produce meaningful results.
 This raises two points:

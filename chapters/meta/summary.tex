@@ -2,34 +2,26 @@
 \addcontentsline{toc}{chapter}{Summary}
 \setheader{Summary}
 
-Computers and computer networks can hardly be imagined in our modern day in which we rely on them so much.
-\emph{Quantum} computers and quantum networks present opportunities for applications that are impossible on non-quantum (or \emph{classical}) computers and networks.
-While classical, digital, computers and networks represent data as 0s and 1s (bits), quantum computers use quantum bits (qubits) that can exist in multiple states simultaneously, thanks to the principles of superposition and entanglement.
-This allows quantum computers to perform certain calculations much faster than classical computers.
-Quantum networks use quantum entanglement to realize quantum connections which enables new types of applications.
-Scaling up of quantum networks is expected to result in a global \textit{quantum internet}.
-in which, similar to the classical internet, arbitrary quantum devices can participate and communicate with each other.
+\todo{}
 
-Development of new applications relies on programming languages to write the code, compilers to translate that code into machine-readable instructions, and runtime environments (such as operating systems) to execute the application.
+% Computers and computer networks enable a wide variety of applications.
+% \emph{Quantum} computers and quantum networks present opportunities for applications that are impossible on non-quantum (or \emph{classical}) computers and networks.
+% Scaling up of quantum networks is expected to result in a global \textit{quantum internet}, in which, similar to the classical internet, arbitrary quantum devices can participate and communicate with each other.
+% Development of new applications relies on programming languages to write the code, compilers to translate that code into machine-readable instructions, and runtime environments (such as operating systems) to execute the application.
 
-In this thesis, we address the gap that exists for quantum networks: namely that there is no programming and execution framework for quantum network (or internet) applications.
-The main goal is to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optimizing runtime performance}.
+% In this thesis, we address the gap that exists for quantum networks: namely that there is no programming and execution framework for quantum network (or internet) applications.
+% The main goal is to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optimizing runtime performance}.
 
-We first address the question of how one should represent quantum network applications as programming code.
-Programming an application is one step; executing it on real quantum network nodes is another.
-We tackle the challenge of executing arbitrary applications --- anything a programmer might write using our representation  --- on quantum network nodes.
-We investigate how we can perform compilation and scheduling in order to increase performance of applications.
+% To reach this goal, we present new architectures, tools, and paradigms.
+% We present a programming representation for quantum network applications.
+% This representation includes a new low-level instruction set architecture tailored to quantum network applications,
+% but it also contains a high-level software development kit, enabling developers to express their application logic.
+% We purposefully make NetQASM hardware-independent and extendible.
 
-To reach this goal, we present new architectures, tools, and paradigms.
-We present a programming representation for quantum network applications.
-This representation includes a new low-level instruction set architecture tailored to quantum network applications,
-but it also contains a high-level software development kit, enabling developers to express their application logic.
-We purposefully make NetQASM hardware-independent and extendible.
+% We then build a detailed full-stack system architecture for executing arbitrary applications on quantum network nodes.
+% We implement this architecture on a setup with two real physical quantum network nodes, and show that our architecture can successfully execute quantum network applications.
+% We report on the performance of our architecture by looking at application throughput and success probability.
 
-We then build a detailed full-stack system architecture for executing arbitrary applications on quantum network nodes.
-We implement this architecture on a setup with two real physical quantum network nodes, and show that our architecture can successfully execute quantum network applications.
-We report on the performance of our architecture by looking at application throughput and success probability.
-
-Based on what we learned from our first implementation and evaluation, we propose an improved architecture, addressing the compilation and scheduling challenges that we found, by allowing hybrid classical-quantum compilation and scheduling.
-We show how this architecture enables strategies to achieve better application performance.
-Finally we discuss how compilers may be written.
+% Based on what we learned from our first implementation and evaluation, we propose an improved architecture, addressing the compilation and scheduling challenges that we found, by allowing hybrid classical-quantum compilation and scheduling.
+% We show how this architecture enables strategies to achieve better application performance.
+% Finally we discuss how compilers may be written.

@@ -139,17 +139,8 @@ Nodes are not forced to attempt entanglement in corresponding time slots, and ca
 
 \section{Quantum network applications}
 Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
-Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.\todo{schematic figure of BQC (including cartoon from QNE?)}
+Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
 In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/background/bqc_circuit.pdf}
-    \caption{
-      BQC circuit \todo{elaborate}
-    }
-    \label{fig:example_circuit}
-\end{figure}
 
 \subsection{Programs}
 Throughout this thesis, we will use the following terminology.
@@ -166,8 +157,8 @@ Such applications are split into distinct \textit{programs} each of which runs o
 
 
 \paragraph{Program ingredients}
-% \todo{unit of information: bit vs qubit}
-% \todo{unit of instruction still classical in quantum computing}
+% unit of information: bit vs qubit}
+% unit of instruction still classical in quantum computing
 
 The single-node programs that constitute a quantum internet application are hybrid in nature (see Fig~\ref{fig:program_illustration}):
 First, they contain quantum operations, such as local quantum gates and measurements (e.g. to perform a server computation in BQC), and entanglement generation (e.g. to produce key in QKD). Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
