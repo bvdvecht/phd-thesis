@@ -24,7 +24,7 @@ We define the quality that we evaluate as the error rate of these trap rounds, s
 We run these applications on SquidASM, where we simulate realistic quantum hardware.
 Specifically, we simulate nodes based on nitrogen-vacancies (NV) in diamond, that can do heralded entanglement generation between each other.
 The simulated hardware uses noise models that are also used in~\cite{coopmans2021netsquid}.
-For more details, see~\cref{app:simulation}.
+For more details, see~\cref{netqasm:sec:simulation}.
 
 A note on how we chose what to evaluate and what not.
 We listed several design considerations in ~\cref{netqasm:sec:design_considerations}.
@@ -52,7 +52,7 @@ If the \ac{CNPU} layer does not know this mapping, it cannot know that the instr
 With knowledge of the unit module, on the other hand, the \ac{CNPU} can optimize the order and the overall application performance is improved.
 
 We consider a teleportation application where a \textit{sender} program teleports a single qubit to another \textit{receiver} program.
-It is assumed that the underlying platform is based on nitrogen-vacancy centers in diamond (NV) and use well-established models for both the noise and operations supported on such platforms, see \cref{app:simulation}.
+It is assumed that the underlying platform is based on nitrogen-vacancy centers in diamond (NV) and use well-established models for both the noise and operations supported on such platforms, see \cref{netqasm:sec:simulation}.
 The sender program uses two qubits: one to create entanglement with the receiver (qubit E), and one to send (teleport) to the receiver (qubit T).
 At some point, the sender measures both qubits, after which it sends the outcomes to the receiver so that it can do the relevant corrections on its received qubit.
 We assume that the sender program is written in a higher-level language like, like in our SDK (\cref{netqasm:sec:python-sdk}), and in such a way that it first issues a measurement operation on qubit T, and then on E. However, due to the differences in characteristics of the physical qubits, as will be explained below, it is more efficient to first do the measurement on E, and then on T. Now we consider two scenarios, namely
@@ -128,7 +128,7 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
         performing step 6 after (\textbf{No unit modules}) and before
         (\textbf{Unit modules}) step 4 and 5. Execution time of the native
         two-qubit gate is set to 0.5 ms. The rest of the parameters used are
-        listed in \cref{app:simulation}. Each point is the average over each of
+        listed in \cref{netqasm:sec:simulation}. Each point is the average over each of
         the six Pauli states as initial state, repeated 100 times.}
     \label{fig:sweep_gate_noise}
 \end{figure}
@@ -143,7 +143,7 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
         of the NV-platform, both for the case of performing step 6 after
         (\textbf{No unit modules}) and before (\textbf{Unit modules}) step 4 and
         5. Dephasing parameter of the native two-qubit gate is set to 0.02. The
-        rest of the parameters used are listed in \cref{app:simulation}. Each
+        rest of the parameters used are listed in \cref{netqasm:sec:simulation}. Each
         point is the average over each of the six Pauli state as initial state,
         repeated 100 times. In both figures, error bars are smaller than the drawn
         dots.}
@@ -176,7 +176,7 @@ Again we compare two scenarios, in this case:
 We implemented this by writing two separate programs in the SDK, one for the client and one for the server.
 The SDK automatically compiles the relevant parts of these programs into \ac{NetQASM} subroutines.
 Classical communication (values $\delta_1$, $m_1$ and $\delta_2)$ is done purely between the two simulated application layers, so these operations are not compiled to \ac{NetQASM} subroutines.
-More details about the simulation can be found in \cref{app:simulation}.
+More details about the simulation can be found in \cref{netqasm:sec:simulation}.
 
 The protocol is a verifiable blind quantum protocol~\cite{fitzsimons2017unconditionally}, which means that the circuit in~\cref{fig:bqc_app} is run multiple times, namely once per round.
 Some of these rounds are \textit{trap rounds} in which the client chooses a special set of input values.

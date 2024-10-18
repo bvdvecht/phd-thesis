@@ -9,7 +9,7 @@ Still to do a final edit.}
 
 \section{Quantum networks}
 A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
-More specifically, we assume quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels} (\cref{fig:network_model}).
+More specifically, we assume quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels} (\cref{background:fig:network_model}).
 Classical channels enable classical communication between nodes, while quantum channels are used for \textit{entanglement} generation between nodes.
 Some of these devices are repeater nodes, assisting in long-distance entanglement generation.
 So-called \textit{end nodes} (or \textit{processing nodes}, and hereafter called just `nodes') can be seen as quantum computers:
@@ -42,7 +42,7 @@ We note that such a quantum internet will likely exist alongside the classical i
         This abstraction is a key element enabled by a quantum network stack such as~\cite{dahlberg_2019_egp}, and exactly analogous to similar abstractions used in classical networking, where e.g. a web browser can be executed on a laptop independently of how the internet connection between the laptop and a web server is realized.
         % In the same way, QNodeOS can in fact operate also on end nodes separated by a large quantum network of the future, in which many intermediary nodes may lie on the path connecting the end nodes.
     }
-    \label{fig:network_model}
+    \label{background:fig:network_model}
 \end{figure}
 
 \subsection{Quantum end nodes}
@@ -76,7 +76,7 @@ Therefore, the timing and duration of operations (such as local gates or entangl
 Finally, classical links exist between nodes for sending classical messages.
 
 Since end nodes can control their memory and entanglement generation, they can run arbitrary \textit{user programs}.
-End nodes can both communicate classically and generate entanglement between each other, either directly or through repeaters and routers, (\cref{fig:network_model}). Nodes in the network other than end nodes, such as repeaters and routers, do not execute user programs; rather these run protocols that are part of some level in the
+End nodes can both communicate classically and generate entanglement between each other, either directly or through repeaters and routers, (\cref{background:fig:network_model}). Nodes in the network other than end nodes, such as repeaters and routers, do not execute user programs; rather these run protocols that are part of some level in the
 network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
 These internal nodes in the network perform elementary link generation and entanglement swapping in order to generate long-distance remote entanglement between end nodes~\cite{dahlberg2019linklayer}.
 
@@ -88,7 +88,7 @@ Quantum computing consists of performing operations on quantum bits (qubits).
 
 \paragraph{Circuits and gates}
 A quantum program is typically represented as a \emph{quantum circuit}.
-\Cref{fig:example_circuit} shows an example circuit of 2 qubits.
+\Cref{background:fig:example_circuit} shows an example circuit of 2 qubits.
 
 \begin{figure}[t]
     \centering
@@ -97,7 +97,7 @@ A quantum program is typically represented as a \emph{quantum circuit}.
       Example circuit of 2 qubits (horizontal lines).
       \todo{elaborate}
     }
-    \label{fig:example_circuit}
+    \label{background:fig:example_circuit}
 \end{figure}
 
 

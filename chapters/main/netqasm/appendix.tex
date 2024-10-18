@@ -1,3 +1,7 @@
+\chapter{NetQASM details}
+\label{app:netqasm}
+
+
 \section{Flow of messages}
 \label{netqasm:sec:app-messages}
 Here we define the content of each of the messages being sent between the \ac{CNPU} and the \ac{QNPU}.
@@ -57,7 +61,7 @@ In this section we give the exact definition of the types of operands used in th
 Each instruction of \ac{NetQASM} takes one or more operands.
 There are five types of operands, which are listed and described below.
 Each instruction has a fixed types of operands at each position.
-The exact operands for each instruction is listed in \cref{app:instructions}.
+The exact operands for each instruction is listed in \cref{netqasm:sec:instructions}.
 We note also that in the human-readable text-form of \ac{NetQASM}, there are also \textit{branch variables}.
 However, these are always replaced by \IMMEDIATE{}s (constants), corresponding to the instruction number of the subroutine, before serializing, see \cref{netqasm:sec:branch_variables}.
 
@@ -99,7 +103,7 @@ store R0 @0[1]\end{nqcode}
         This is handled by the compiler by using a \nq{set}-command before.
   \item \textbf{ARRAY\_SLICE}: Specifies a slice of an array.
         Takes the form \nq{@a[s:e]}, where \nq{a} specifies the address, \nq{s} the start-index (inclusive) and \nq{e} the end-index (exclusive).
-        The following instruction waits for the second to the fourth entry of array with address \nq{0} to become not \nq{null}, see \cref{app:waiting}.
+        The following instruction waits for the second to the fourth entry of array with address \nq{0} to become not \nq{null}, see \cref{netqasm:sec:waiting}.
         \begin{nqcode}
 wait_all @0[1:4]\end{nqcode}
         In the text-form \nq{s} and \nq{e} can either be an \IMMEDIATE{}s or a \REGISTER{}s, however in the binary encoding defined used at~\cite{git_netqasm}, \nq{s} and \nq{e} are always a \REGISTER{}s.
@@ -197,7 +201,7 @@ h Q0\end{nqcode}
 Note that \nq{Q0} is used twice but the value of the register is different.
 
 \section{Instructions}
-\label{app:instructions}
+\label{netqasm:sec:instructions}
 \setlist[itemize]{leftmargin=*}
 Here we list the current instructions part of the \textbf{vanilla flavor} of \ac{NetQASM}.
 For the most up to date version of the language, refer to~\cite{git_netqasm}.
@@ -250,7 +254,7 @@ The compiler will then replace these, using the \nq{set}-command.
 
         \nq{<reg>}: The register to store the value to.
         \nq{<arr-ent>}: The array-entry holding the value.
-  \item \nq{undef <arr-ent>}: Sets an entry of an array to \nq{null}, see \cref{app:waiting}.
+  \item \nq{undef <arr-ent>}: Sets an entry of an array to \nq{null}, see \cref{netqasm:sec:waiting}.
 
         \nq{<arr-ent>}: Array-entry to make \nq{null}.
   \item \nq{lea <reg> <addr>}: Loads a given address of an array to a register.
@@ -360,15 +364,18 @@ There is a number of single-qubit gates which all have the following structure
 Single-qubit gates without additional arguments are the following.
 \begin{itemize}
   \item \nq{x}: X-gate.
-        \begin{equation}\label{eq:pauli_x}
+        \begin{equation}
+          \label{netqasm:eq:pauli_x}
           X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}
         \end{equation}
   \item \nq{y}: Y-gate.
-        \begin{equation}\label{eq:pauli_y}
+        \begin{equation}
+          \label{netqasm:eq:pauli_y}
           Y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}
         \end{equation}
   \item \nq{z}: Z-gate.
-        \begin{equation}\label{eq:pauli_z}
+        \begin{equation}
+          \label{netqasm:eq:pauli_z}
           Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
         \end{equation}
   \item \nq{h}: Hadamard gate.
@@ -497,7 +504,7 @@ This command does not initiate the entanglement generation but is used to provid
 \end{itemize}
 
 \subsection{Waiting}
-\label{app:waiting}
+\label{netqasm:sec:waiting}
 
 There are three wait-commands that can wait for entries in arrays to become \emph{defined}, i.e. not \nq{null}.
 Entries in a new array is by default \nq{null} (\emph{undefined}).
@@ -577,7 +584,7 @@ A subroutine written in text form will first be preprocessed, which does the fol
 \section{Examples}
 Here we list some examples of programs written in \ac{NetQASM}.
 In \cref{netqasm:sec:examples_netqasm}, we show some examples written directly in the \ac{NetQASM}-language.
-In \cref{app:examples_sdk}, we show the corresponding examples, instead written in the Python SDK.
+In \cref{netqasm:sec:examples_sdk}, we show the corresponding examples, instead written in the Python SDK.
 
 \subsection{NetQASM}
 \label{netqasm:sec:examples_netqasm}
@@ -732,7 +739,7 @@ meas Q0 M0
 ret_req M0\end{nqcode}
 
 \subsection{SDK}
-\label{app:examples_sdk}
+\label{netqasm:sec:examples_sdk}
 Each of the examples in this section are functionally the same as the examples in \cref{netqasm:sec:examples_netqasm}.
 A compiler will produce a similar subroutine as the examples in the previous section but might vary depending on the exact implementation of the compiler.
 
@@ -808,3 +815,9 @@ epr_sockets=[epr_socket]
   # Measure the entangled qubit
   m = epr.measure()
 \end{pycode}
+
+
+
+\begin{xstretch}
+\printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
+\end{xstretch}

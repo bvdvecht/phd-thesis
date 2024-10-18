@@ -1,5 +1,5 @@
 \section{Simulation details}
-\label{app:simulation}
+\label{netqasm:sec:simulation}
 
 In this section we detail how simulations in \cref{netqasm:sec:evaluation} were
 performed and what models and parameters were used. All simulations used the
@@ -34,7 +34,7 @@ mapping this to
   \rho_\mathrm{noisy}=(1-p)\rho_\mathrm{ideal} + \frac{p}{3}X\rho_\mathrm{ideal}X + \frac{p}{3}Y\rho_\mathrm{ideal}Y + \frac{p}{3}Z\rho_\mathrm{ideal}Z
 \end{equation}
 where $X$, $Y$ and $Z$ are the Pauli operators in
-\cref{eq:pauli_x,eq:pauli_y,eq:pauli_z}, $p=\frac{4}{3}(1 - F)$, with $F$ being
+\cref{neqtasm:eq:pauli_x,netqasm:eq:pauli_y,netqasm:eq:pauli_z}, $p=\frac{4}{3}(1 - F)$, with $F$ being
 the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
 (energy/thermal relaxation time) and $T_2$ (dephasing time)~\cite{Nielsen2010}.
 
