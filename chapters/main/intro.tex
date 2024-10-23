@@ -1,9 +1,9 @@
 \chapter{Introduction}
 \label{chp:intro}
 
-\lettrine{A} world without computers and computer networks can hardly be imagined in our modern day in which we rely on them so much.
+\lettrine{A} world without computers and computer networks can hardly be imagined in our modern day.
 From basic tasks like communication and information retrieval to more complex functions such as running businesses, managing global logistics, and advancing scientific research, we rely on these computers and networks to work efficiently and stay connected.
-Computers are \emph{programmable}, meaning that one can give them an arbitrary list of instructions --- a recipe if you will --- which means they are able to perform a large variety of functions.
+Computers are \emph{programmable}, meaning that one can give them an arbitrary list of instructions --- a recipe if you will --- according to which they perform a large variety of functions.
 When connected through networks, computers can share data, resources, and applications across the world, amplifying their power and functionality.
 This combination of programmability and networking has given rise to technologies like the internet, cloud computing, and distributed systems, all of which form the foundation of today's digital world and has had a transformative impact on our society~\cite{castells_impact_2013}.
 % The advancements in computing and networking technologies have given rise to a wide range of \emph{applications}, including text processing, internet browsing, emailing, video games, and mobile phone apps, but also more modern one like artificial intelligence (AI), virtual reality, and blockchain technologies.
@@ -50,7 +50,9 @@ In order to achieve, for quantum networks, the same level of programmability as 
 It is true that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking, in order to realize the above framework.
 However, quantum network applications present unique challenges that are not addressed by existing solutions.
 
+\steph{it could help to enumerae the challenges as there is other text in betwen below. 1. (Challenge 1)... 2. (Challenge 2) etc}
 First, at the time of starting this work there simply did not exist a representation for quantum network applications, high-level nor low-level.
+\steph{It could be very helpful here to put the figure explaining there are two programs one of each node. you can copy it from the chapter later and refer in the chapter, even copying the caption. The current text here doesnt make the single program vs multiple interacting programs very clear yet I thnk}
 An initial approach at addressing this was presented with the CQC interface~\cite{dahlberg2018simulaqron}, but this is more a protocol for communication between classical and quantum devices rather than a unified programming model.
 Existing quantum computing languages and compilers~\cite{heim_quantum_2020, larose_overview_2019} do not support instructions for creating entanglement with remote nodes, while these are crucial for quantum network applications.
 Furthermore, there is not yet a hardware-agnostic framework for quantum network programming.
@@ -87,6 +89,7 @@ Such idle times present an opportunity to do \emph{multitasking} --- running mul
 In this thesis, we address the gap that exists for quantum networks: namely that there is no programming and execution framework for quantum network (or internet) applications.
 The main goal is to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optimizing runtime performance}.
 We work towards this goal by addressing the following research questions:
+\steph{you can be much more confident. you can say "This thesis puts forward the first..." This allows later optimizing..."}
 
 % Main objective
 % - A programmer should be able to write a quantum network application in an abstract representation (i.e. using high-level concepts without having to know details of physical realizations of quantum networks)
@@ -155,6 +158,7 @@ In \cref{chp:compiler} we discuss in more detail how Qoala can be used for impro
 Finally, in \cref{chp:conclusion} we conclude and reflect upon future directions.
 
 
+\steph{it could be really cool to have a figure here to explain you really put together all pieces of the puzzle: netqasm (Chapter1), qnodeos, etc - this figure could e.g. just be a form of stack picture (either putting qnodeos or qoala together, or updating it)}
 
 
 % \section{Data and Software Availability}

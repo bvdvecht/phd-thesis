@@ -103,7 +103,7 @@ Increasing expected runtime performance can be done in many ways, which are disc
 \label{compiler:sec:related-work}
 
 \subsection{Compilers for classical computing.}
-Compilers for classical computers have been developed and used since the creation of the first digital computers and are therefore a well-studied topic~\cite{aho_compilers_2006}.
+Compilers for classical computers have been developed and used since the creation of the first digital computers and are therefore a well-studied topic~\cite{aho_compilers_2006}.\steph{I would expect a specific reference beyond [1] for this statement}
 A common architecture for compilers is to use one or more \ac{IR}s.
 In this model, the high-level program source code is first translated by a \emph{front-end} compiler to the (highest-level) \ac{IR}, then possibly translated to lower-level \ac{IR}s, before it is translated from the (lowest-level) \ac{IR} by a \emph{back-end} compiler to machine code (\cref{compiler:fig:frontend-backend}).
 Separating the front-end from the back-end enables extensibility of the compiler: for each high-level language for which one wants to implement a compiler, only a front-end must be developed, since further compilation can happen using existing back-ends.
@@ -119,7 +119,7 @@ A well-known compiler that uses this model is LLVM~\cite{lattner_llvm_2004} whic
 \end{figure}
 
 Compilers for classical computers perform code optimizations.
-Code optimization techniques include
+Code optimization techniques include \steph{again I would expect more specific references to where this was first proposed maybe then just [1]}
 \begin{itemize}
   \item \emph{Target-independent optimization}, such as including removal of dead (unused) code, optimizations of looping constructs and combining common expressions to reduce code, and
   \item \emph{Target-dependent optimization}, such as register allocation, instruction re-ordering, branch prediction and elimination, vectorization and cache optimization.
@@ -148,8 +148,8 @@ Also more high-level languages exist such as Q\# and Scaffold~\cite{svore_q_2018
 
 \paragraph{Circuit optimizers}
 Compilers for quantum computing programs often try to optimize circuit depth (number of gates) and width (number of qubits).
-Most compilers focus on \ac{NISQ} computers, dealing with resource constraints (like limited qubit availability, and restricted topology)\cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022} and qubit mapping\cite{li_tackling_2019, zhang_context-sensitive_2020, bandic_mapping_2023, nishio_extracting_2020}.
-Benchmarks exist with which to compare compilers, by looking at the output, like circuit size.
+Most compilers focus on \ac{NISQ} computers, dealing with resource constraints (like limited qubit availability, and restricted topology) \cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022} and qubit mapping \cite{li_tackling_2019, zhang_context-sensitive_2020, bandic_mapping_2023, nishio_extracting_2020}.
+Benchmarks exist \steph{citation needed} with which to compare compilers, by looking at the output, like circuit size.
 
 \paragraph{Hybrid classical-quantum compilers}
 In the last years, more focus has been brought on hybrid classical-quantum compilers.
@@ -179,15 +179,16 @@ A quantum-specific IR has been created: QIR~\cite{haner_software_2018, geller_in
 
 \subsection{Compilers for quantum networking.}
 For quantum networking, compilation has not much been studied.
-For distributed quantum computing, which is similar, compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
+For distributed quantum computing, which is similar \steph{similar to what? I do btw not at all think it is similar given it optimizes a single program including also the distribution over processsors?}, compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
 One approach is to take the input circuit and first split it into separate circuits: circuit cutting~\cite{chatterjee_qurzon_2022}
 
 Intermediate representations have also been proposed for network-related quantum programs:
-an extension to QIR for network-related programs, NetQIR, has been proposed~\cite{vazquez-perez_netqir_2024}, and InQuIR~\cite{nishio_inquir_2023} for distributed quantum computing.
+an extension to QIR for network-related programs, NetQIR \steph{the way its written one doesnt understand that netqir is also for distributed comp}, has been proposed~\cite{vazquez-perez_netqir_2024}, and InQuIR~\cite{nishio_inquir_2023} for distributed quantum computing. \steph{There is some easy but important explanation missing here on why they do not already solve the problem}
 
 
 \subsection{Session types}
 \label{compiler:sec:session-types}
+\steph{the jump from many subsxection on compilers to session types is a bit...aprupt. maybe expand the title of this or say "Other background: Session types" or so. In addition, say why we are talking about this now as its non obvius for the reader}
 
 Session types is a formalism used for defining communication protocols between different parties \cite{honda_language_1998}.
 They can be used to for example specify the order in which messages need to be sent and received.
@@ -264,7 +265,7 @@ We may consider two alternatives:
 
 \paragraph{Target-specific optimization}
 The compiler may perform optimizations specific to the hardware that a program will run on.
-The \acf{EHI} (\cref{qoala:sec:runtime_environment}) can serve as the target for a compiler.
+The \acf{EHI} (\cref{qoala:sec:runtime_environment}) can serve as the target for a compiler. \steph{asvice produced by compiler?}
 
 
 
@@ -302,7 +303,7 @@ Dialects have been created for quantum such that quantum types can be represente
 
 The front-end language is not a primary concern; we want to leave design and implementations open.
 We also want to allow multiple (existing) high-level formats.
-We recommend using the existing technique of IRs, gradually lowering code and performing optimizations at each level.
+We recommend using the existing technique of IRs, gradually lowering code \steph{lowering code is not well explained} and performing optimizations at each level.
 Specifically, we recommend \ac{MLIR} since it enables defining intermediate representations specifically for quantum networking, while still having access to standard (classical) LLVM optimizations.
 
 One may consider at least two \ac{IR}s (\cref{compiler:fig:overall-design}):
@@ -310,7 +311,7 @@ One may consider at least two \ac{IR}s (\cref{compiler:fig:overall-design}):
   \item A high-level \ac{IR} (QoalaHIR), consisting of a uniform hybrid classical-quantum representation of operations, where quantum values are native types.
   Native quantum values allow \emph{value-semantics}, meaning that quantum operations consume and produce quantum state values.
   This is in contrast with memory semantics where qubits are seen as pointers (such as in QIR~\cite{haner_software_2018, geller_introducing_2020}) and where quantum operations have side-effects.
-  By using value-semantics, the compiler can perform (quantum) data-flow analysis in order to apply classical optimization techniques such as loop unrolling or dead code elimination~\cite{peduri_qssa_2022, ittah_enabling_2022}.
+  By using value-semantics, the compiler can perform (quantum) data-flow analysis in order to apply classical optimization techniques such as loop unrolling or dead code elimination~\cite{peduri_qssa_2022, ittah_enabling_2022}. \steph{you had another figure on your slides at some point more detailed than figure 6.3 above - maybe helpful here?}
   \item A low-level \ac{IR} (QoalaLIR), where classical code is explicitly separated from quantum code.
   The classical code segments will eventually compile down to classical Qoala blocks (classical local and classical networking blocks, \cref{qoala:sec:program_structure}), while quantum code segments will eventually compile down to quantum Qoala blocks (local routines and request routines, \cref{qoala:sec:program_structure}).
   The explicit separation (1) makes it easier to perform the back-end compilation step (going from low-level IR to Qoala executable) since the formats are already similar and (2) forces the compiler to decide on \emph{where} to make the separations, allowing it to optimize it (see below).
@@ -322,7 +323,7 @@ One may consider at least two \ac{IR}s (\cref{compiler:fig:overall-design}):
 \paragraph{Support fidelity and timing constraints in high-level language}
 As mentioned above, we do not want to specify one specific high-level language for developers to write their quantum network programs in.
 Instead we want to allow multiple (existing) high-level formats in order to provide flexibility in adoption.
-The NetQASM SDK (\cref{chp:netqasm} and \cref{chp:qnodeos}) may be used.
+The NetQASM SDK (\cref{chp:netqasm} and \cref{chp:qnodeos}) may be used. \steph{say what language that is}
 However, we recommend adding constructs to the high-level language for supplying fidelity and timing constraints.
 In this way, the developer can indicate that certain parts of the code are critical, and that the compiler should handle this by adding deadline constraints.
 For example, a developer may indicate that a particular qubit variable must have at least $F$ fidelity compared to some ideal state at the moment it gets measured;
@@ -330,7 +331,7 @@ the compiler, seeing that certain network-related operations happen while this q
 In order to meet the required fidelity, then, the compiler can insert a deadline for the network-related operations corresponding to the maximum time that still realizes fidelity $F$.
 
 
-\paragraph{Use EHI as compilation target}
+\paragraph{Use \acf{EHI} as compilation target}
 A compiler must have an explicit \emph{target} that describes the software and hardware characteristics that the compiled executable must be compatible with.
 This target includes at least the qubit topology of the quantum memory and the NetQASM flavor (i.e. the allowed quantum instructions, see also \cref{netqasm:sec:design_decisions_language}).
 This information can come from the \ac{EHI}.
@@ -419,6 +420,7 @@ q.measure()
   \label{compiler:lst:reorder-network-ops}
 \end{figure}
 
+\steph{please add a section on implementation - even without evaluation that explains what was implemented - even if its just 1 pages succint with a link to tud gitlab or so,  this is great work already, and is very good to mention even without the evaluation}
 
 \section{Conclusion}
 We have discussed design considerations for a Qoala program compiler, and proposed a high-level architecture for such a compiler.
