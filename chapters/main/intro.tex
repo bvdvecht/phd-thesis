@@ -50,12 +50,28 @@ In order to achieve, for quantum networks, the same level of programmability as 
 It is true that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking, in order to realize the above framework.
 However, quantum network applications present unique challenges that are not addressed by existing solutions.
 
-\steph{it could help to enumerae the challenges as there is other text in betwen below. 1. (Challenge 1)... 2. (Challenge 2) etc}
-First, at the time of starting this work there simply did not exist a representation for quantum network applications, high-level nor low-level.
 \steph{It could be very helpful here to put the figure explaining there are two programs one of each node. you can copy it from the chapter later and refer in the chapter, even copying the caption. The current text here doesnt make the single program vs multiple interacting programs very clear yet I thnk}
+
+\begin{figure}% [ht]
+    \centering
+    \includegraphics[scale=0.35]{figures/qoala/program_illustration.png}
+    \caption{\todo{check if this figure makes sense (too much detail?)} \todo{refer to this in text}
+      Example application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
+        (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by  network controller).
+        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit)
+        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time)
+        (5) Execution of a quantum circuit on qubit B at Node 2 depending on the classical bit. The quality of qubit B has degraded during the time elapsed since (1). 
+        (6) Node 2 measures qubit B and outputs the classical result.
+    }
+    \label{intro:fig:program_illustration}
+\end{figure}
+
+
+\textbf{Challenge 1.} First, at the time of starting this work there simply did not exist a representation for quantum network applications, high-level nor low-level.
 An initial approach at addressing this was presented with the CQC interface~\cite{dahlberg2018simulaqron}, but this is more a protocol for communication between classical and quantum devices rather than a unified programming model.
 Existing quantum computing languages and compilers~\cite{heim_quantum_2020, larose_overview_2019} do not support instructions for creating entanglement with remote nodes, while these are crucial for quantum network applications.
-Furthermore, there is not yet a hardware-agnostic framework for quantum network programming.
+
+\textbf{Challenge 2.} Furthermore, there is not yet a hardware-agnostic framework for quantum network programming.
 Just as with classical and quantum computing, such an abstraction is needed to shield developers from low-level hardware details (especially since there are multiple promising technologies including color centers in diamond~\cite{ruf_quantum_2021} and trapped ions~\cite{monroe_quantum_2013, reiserer_cavity-based_2015}), enabling them to focus on application logic.
 
 We should first highlight the difference between the quantum network applications we consider in this thesis and \emph{distributed quantum computing} (DQC)~\cite{caleffi_distributed_2024}.
@@ -67,21 +83,21 @@ For DQC there have in the recent years been developments in the creation of fram
 By contrast, the quantum network applications we consider in this work involve independent nodes, each of which determines which programs to run, how to compile them, and how to schedule tasks.
 This is similar to the classical internet, where nodes run applications autonomously and decide when and how to interact with others.
 Indeed, our model focuses more on applications for a future quantum internet, rather than on DQC.
-
 With this distinction clear, we can consider other challenges in realizing the aforementioned needed framework for quantum network (or internet) applications.
-Quantum network applications consist of a hybrid of classical and quantum code segments.
+
+\textbf{Challenge 3.} Quantum network applications consist of a hybrid of classical and quantum code segments.
 While such hybrid code is also seen in quantum computing --- such as \textit{variational quantum eigensolvers (VQE)}~\cite{diadamo2021distributed, liu2022layer} or \textit{quantum approximate optimization algorithms (QAOA)}~\cite{farhi2014quantum} ---
 these typically alternate between classical code and quantum circuits, never leaving quantum memory `live' while doing extensive classical computations.
 By contrast, quantum network applications are more \textit{interactive}: classical and quantum code segments may run concurrently, communicating and influencing each other in real-time.
 For instance, a quantum circuit may ``pause'' halfway, keeping quantum states in memory, and wait for a value from a classical segment (like a classical message from a remote node) before continuing.
 Given the limited lifetime of quantum memories (quantum states decoherence --- decrease in quality over time)~\cite{shor_scheme_1995}, scheduling and synchronizing these interdependent quantum and classical segments is needed in order to achieve adequate application execution.
 
-Another crucial part of quantum network applications is entanglement generation between nodes.
+\textbf{Challenge 4.} Another crucial part of quantum network applications is entanglement generation between nodes.
 Research is being done on how to realize a \emph{quantum network stack}~\cite{dahlberg2019linklayer,kozlowski2020networklayer, caleffi_2017_optimal}, which organizes entanglement generation in networks, including timing synchronization, routing, and serving application requests~\cite{gauthier_control_2023};
 however, integration of applications with such a stack has not yet been implemented and studied.
 Moreover, this integration requires handling both local application instructions and network-wide communication, which introduces a large span of time scales, a challenge for designing a software architecture for quantum network nodes: entanglement generation requires very precise (nanosecond) timing synchronization between the network nodes~\cite{dahlberg2019link}, while application logic, including classical messaging between nodes may be on the order of milliseconds.
 
-Finally, quantum network applications often have moments in which they are idle since they have to wait for a message to arrive from another node.
+\textbf{Challenge 5.} Finally, quantum network applications often have moments in which they are idle since they have to wait for a message to arrive from another node.
 Such idle times present an opportunity to do \emph{multitasking} --- running multiple applications concurrently --- on a node, in order to make more efficient use of quantum hardware.
 
 
@@ -89,7 +105,6 @@ Such idle times present an opportunity to do \emph{multitasking} --- running mul
 In this thesis, we address the gap that exists for quantum networks: namely that there is no programming and execution framework for quantum network (or internet) applications.
 The main goal is to \emph{enable programming and execution of arbitrary quantum network applications in a hardware-agnostic way while optimizing runtime performance}.
 We work towards this goal by addressing the following research questions:
-\steph{you can be much more confident. you can say "This thesis puts forward the first..." This allows later optimizing..."}
 
 % Main objective
 % - A programmer should be able to write a quantum network application in an abstract representation (i.e. using high-level concepts without having to know details of physical realizations of quantum networks)
@@ -130,13 +145,14 @@ We work towards this goal by addressing the following research questions:
 
 
 \section{Thesis Outline}
-In this thesis, we work towards our goal of enabling programming and execution of quantum network applications.
+With this thesis, we achieve the goal of enabling programming and execution of quantum network applications.
+
 We do this by presenting new architectures, tools, and paradigms.
 
 In \cref{chp:background}, we first provide more background information about quantum internet applications.
 It introduces concepts and terminology that are used in the following chapters.
 
-In \cref{chp:netqasm}, we present NetQASM: a programming representation for quantum network applications, addressing Q1.
+In \cref{chp:netqasm}, we present NetQASM: the first programming representation for quantum network applications, addressing Q1.
 This representation includes a new low-level instruction set architecture tailored to quantum network applications,
 but it also contains a high-level software development kit, enabling developers to express their application logic.
 We purposefully make NetQASM hardware-independent and extendible.
@@ -145,7 +161,8 @@ We evaluate our design choices in simulation.
 
 In \cref{chp:qnodeos} we fully focus on the question of application execution (Q2).
 Building on top of our execution model from \cref{chp:netqasm}, we present a detailed full-stack system architecture --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
-We implement this architecture on a setup with two real physical quantum network nodes, and show that our architecture can successfully execute quantum network applications.
+This architecture is the first of its kind.
+We implement QNodeOS on a setup with two real physical quantum network nodes, and show that our architecture can successfully execute quantum network applications.
 We report on the performance of our architecture by looking at application throughput and success probability.
 
 
@@ -158,7 +175,12 @@ In \cref{chp:compiler} we discuss in more detail how Qoala can be used for impro
 Finally, in \cref{chp:conclusion} we conclude and reflect upon future directions.
 
 
-\steph{it could be really cool to have a figure here to explain you really put together all pieces of the puzzle: netqasm (Chapter1), qnodeos, etc - this figure could e.g. just be a form of stack picture (either putting qnodeos or qoala together, or updating it)}
+\begin{figure}[t]
+    \centering
+    \includegraphics[scale=0.35]{figures/intro/chapters_overview.png}
+    \caption{\todo{caption}}
+    \label{intro:fig:chapters_overview}
+\end{figure}
 
 
 % \section{Data and Software Availability}

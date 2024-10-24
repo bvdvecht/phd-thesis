@@ -103,7 +103,7 @@ Increasing expected runtime performance can be done in many ways, which are disc
 \label{compiler:sec:related-work}
 
 \subsection{Compilers for classical computing.}
-Compilers for classical computers have been developed and used since the creation of the first digital computers and are therefore a well-studied topic~\cite{aho_compilers_2006}.\steph{I would expect a specific reference beyond [1] for this statement}
+Compilers for classical computers have been developed and used since the creation of the first digital computers and are therefore a well-studied topic~\cite{aho_compilers_2006, glass1969elementary, schneck_survey_1973, wexelblat_history_1978}.
 A common architecture for compilers is to use one or more \ac{IR}s.
 In this model, the high-level program source code is first translated by a \emph{front-end} compiler to the (highest-level) \ac{IR}, then possibly translated to lower-level \ac{IR}s, before it is translated from the (lowest-level) \ac{IR} by a \emph{back-end} compiler to machine code (\cref{compiler:fig:frontend-backend}).
 Separating the front-end from the back-end enables extensibility of the compiler: for each high-level language for which one wants to implement a compiler, only a front-end must be developed, since further compilation can happen using existing back-ends.
@@ -119,12 +119,12 @@ A well-known compiler that uses this model is LLVM~\cite{lattner_llvm_2004} whic
 \end{figure}
 
 Compilers for classical computers perform code optimizations.
-Code optimization techniques include \steph{again I would expect more specific references to where this was first proposed maybe then just [1]}
+Code optimization techniques include
 \begin{itemize}
-  \item \emph{Target-independent optimization}, such as including removal of dead (unused) code, optimizations of looping constructs and combining common expressions to reduce code, and
-  \item \emph{Target-dependent optimization}, such as register allocation, instruction re-ordering, branch prediction and elimination, vectorization and cache optimization.
+  \item \emph{Target-independent optimization}~\cite{frailey_intermediate_1979}, such as including removal of dead (unused) code, optimizations of looping constructs and combining common expressions to reduce code, and
+  \item \emph{Target-dependent optimization}~\cite{chaitin_register_1981, smith_study_1981}, such as register allocation, instruction re-ordering, branch prediction and elimination, vectorization and cache optimization.
 \end{itemize}
-These optimizations typically aim to improve execution speed and memory efficiency~\cite{aho_compilers_2006}.
+These optimizations typically aim to improve execution speed and memory efficiency~\cite{schneck_survey_1973, aho_compilers_2006}.
 
 \subsection{Compilers for classical networking.}
 Classical applications that use networking are also compiled by classical compilers.
@@ -148,21 +148,21 @@ Also more high-level languages exist such as Q\# and Scaffold~\cite{svore_q_2018
 
 \paragraph{Circuit optimizers}
 Compilers for quantum computing programs often try to optimize circuit depth (number of gates) and width (number of qubits).
-Most compilers focus on \ac{NISQ} computers, dealing with resource constraints (like limited qubit availability, and restricted topology) \cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022} and qubit mapping \cite{li_tackling_2019, zhang_context-sensitive_2020, bandic_mapping_2023, nishio_extracting_2020}.
-Benchmarks exist \steph{citation needed} with which to compare compilers, by looking at the output, like circuit size.
+Most compilers focus on \ac{NISQ} computers, dealing with resource constraints (like limited qubit availability, and restricted topology) \cite{chong_programming_2017, murali_full-stack_2019, bandic_full-stack_2022} and qubit mapping~\cite{li_tackling_2019, zhang_context-sensitive_2020, bandic_mapping_2023, nishio_extracting_2020}.
+Benchmarks exist~\cite{li_qasmbench_2023, tomesh_supermarq_2022} with which to compare compilers, by looking at the output, like circuit size.
 
 \paragraph{Hybrid classical-quantum compilers}
 In the last years, more focus has been brought on hybrid classical-quantum compilers.
-This can be seen in the proposal of full-stack architectures, including classical and quantum processing\cite{murali_full-stack_2019, khammassi_openql_2021, mccaskey_xacc_2020}, and the focus on hybrid quantum computing programs, like \acf{VQE}~\cite{diadamo2021distributed, liu2022layer} or \acf{QAOA}~\cite{farhi2014quantum}
+This can be seen in the proposal of full-stack architectures, including classical and quantum processing~\cite{murali_full-stack_2019, khammassi_openql_2021, mccaskey_xacc_2020}, and the focus on hybrid quantum computing programs, like \acf{VQE}~\cite{diadamo2021distributed, liu2022layer} or \acf{QAOA}~\cite{farhi2014quantum}
 
 One can distinguish two approaches:
 \begin{itemize}
-\item integration of classical and quantum code but optimization is separate or limited: \cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
-\item joint classical-quantum optimization (MLIR-based, LLVM based): \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
+\item integration of classical and quantum code but optimization is separate or limited~\cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
+\item joint classical-quantum optimization (MLIR-based, LLVM based)~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
 \end{itemize}
 
-In order to deal with the hybrid code of hybrid programs, often intermediate representations (IRs) are used \cite{nigam_compiler_2021, nishio_inquir_2023}.
-The existing LLVM framework has been re-used and integrated in quantum compilers \cite{murali_noise-adaptive_2019, murali_full-stack_2019, litteken_updated_2020}.
+In order to deal with the hybrid code of hybrid programs, often intermediate representations (IRs) are used~\cite{nigam_compiler_2021, nishio_inquir_2023}.
+The existing LLVM framework has been re-used and integrated in quantum compilers~\cite{murali_noise-adaptive_2019, murali_full-stack_2019, litteken_updated_2020}.
 A quantum-specific IR has been created: QIR~\cite{haner_software_2018, geller_introducing_2020}.
 
 % Qunity: formal hybrid language, but only compiles to circuit (openqasm).
@@ -179,23 +179,25 @@ A quantum-specific IR has been created: QIR~\cite{haner_software_2018, geller_in
 
 \subsection{Compilers for quantum networking.}
 For quantum networking, compilation has not much been studied.
-For distributed quantum computing, which is similar \steph{similar to what? I do btw not at all think it is similar given it optimizes a single program including also the distribution over processsors?}, compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
+For distributed quantum computing, compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
 One approach is to take the input circuit and first split it into separate circuits: circuit cutting~\cite{chatterjee_qurzon_2022}
+However, as also explained in \cref{chp:intro}, distributed quantum computing --- although also dealing with multiple nodes or cores --- is different from quantum networking: in distributed quantum computing, a single compiler produces circuits for each node, whereas in quantum networking each node is independent and has its own compiler.
 
 Intermediate representations have also been proposed for network-related quantum programs:
-an extension to QIR for network-related programs, NetQIR \steph{the way its written one doesnt understand that netqir is also for distributed comp}, has been proposed~\cite{vazquez-perez_netqir_2024}, and InQuIR~\cite{nishio_inquir_2023} for distributed quantum computing. \steph{There is some easy but important explanation missing here on why they do not already solve the problem}
+an extension to QIR for network-related programs, NetQIR~\cite{vazquez-perez_netqir_2024} and InQuIR~\cite{nishio_inquir_2023}. However, these are also for distributed quantum computing, and hence not for quantum networking which we are dealing with in this work.
 
 
 \subsection{Session types}
 \label{compiler:sec:session-types}
-\steph{the jump from many subsxection on compilers to session types is a bit...aprupt. maybe expand the title of this or say "Other background: Session types" or so. In addition, say why we are talking about this now as its non obvius for the reader}
 
-Session types is a formalism used for defining communication protocols between different parties \cite{honda_language_1998}.
+As mentioned above, compilers may also perform correctness checking.
+In the context of networked programs, one may define correctness as including adherence to a (communication) protocol.
+\emph{Session types} is a formalism used for defining communication protocols between different parties~\cite{honda_language_1998}.
 They can be used to for example specify the order in which messages need to be sent and received.
 By having the protocol in a well-defined format, the parties can check whether they adhere to the agreed upon protocol.
 Tools exist that can check at compile-time if a program adheres to a communication protocol~\cite{davidson_model_nodate, ardeshir-larijani_automated_2018}.
-Session types may be used for two parties, but multi-party session types also exist \cite{honda_multiparty_2016}.
-Multiparty session types have been considered for quantum network programs: \cite{lanese_towards_2024}.
+Session types may be used for two parties, but multi-party session types also exist~\cite{honda_multiparty_2016}.
+Multiparty session types have been considered for quantum network programs~\cite{lanese_towards_2024}.
 Timed session types are an extension to session types, adding explicit time constraints to operations~\cite{bartoletti_timed_2017}.
 Timed session types have not yet been applied to quantum.
 
@@ -265,7 +267,7 @@ We may consider two alternatives:
 
 \paragraph{Target-specific optimization}
 The compiler may perform optimizations specific to the hardware that a program will run on.
-The \acf{EHI} (\cref{qoala:sec:runtime_environment}) can serve as the target for a compiler. \steph{asvice produced by compiler?}
+The \acf{EHI} (\cref{qoala:sec:runtime_environment}) can serve as the target for a compiler, such that the compiler can insert advice (such as deadlines to code blocks) for the scheduler.
 
 
 
@@ -303,7 +305,7 @@ Dialects have been created for quantum such that quantum types can be represente
 
 The front-end language is not a primary concern; we want to leave design and implementations open.
 We also want to allow multiple (existing) high-level formats.
-We recommend using the existing technique of IRs, gradually lowering code \steph{lowering code is not well explained} and performing optimizations at each level.
+We recommend using the existing technique of IRs, gradually lowering code (translating to a lower-level IR) and performing optimizations at each level.
 Specifically, we recommend \ac{MLIR} since it enables defining intermediate representations specifically for quantum networking, while still having access to standard (classical) LLVM optimizations.
 
 One may consider at least two \ac{IR}s (\cref{compiler:fig:overall-design}):
@@ -323,7 +325,7 @@ One may consider at least two \ac{IR}s (\cref{compiler:fig:overall-design}):
 \paragraph{Support fidelity and timing constraints in high-level language}
 As mentioned above, we do not want to specify one specific high-level language for developers to write their quantum network programs in.
 Instead we want to allow multiple (existing) high-level formats in order to provide flexibility in adoption.
-The NetQASM SDK (\cref{chp:netqasm} and \cref{chp:qnodeos}) may be used. \steph{say what language that is}
+The NetQASM SDK (\cref{chp:netqasm} and \cref{chp:qnodeos}) may be used, which is implemented in Python.
 However, we recommend adding constructs to the high-level language for supplying fidelity and timing constraints.
 In this way, the developer can indicate that certain parts of the code are critical, and that the compiler should handle this by adding deadline constraints.
 For example, a developer may indicate that a particular qubit variable must have at least $F$ fidelity compared to some ideal state at the moment it gets measured;
@@ -350,7 +352,7 @@ For classical code, existing optimization can be used from MLIR (part of LLVM), 
 For quantum code, also existing techniques can be used, see \cref{compiler:sec:compilers-qc}.
 These include circuit mapping and gate optimization techniques.
 
-Moreover, by using the hybrid classical-quantum format of QoalaHIR we can re-use existing optimizations such as loop unrolling and other, see \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
+Moreover, by using the hybrid classical-quantum format of QoalaHIR we can re-use existing optimizations such as loop unrolling and other, see~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
 This also enables cross-subroutine optimizations, something not possible in NetQASM.
 
 Other metrics the compiler should optimize for are
@@ -373,7 +375,7 @@ For network-related operations, see below.
 
 \textbf{Perform optimizations on joint classical-quantum representation}
 Make use of the fact that classical and quantum code can be jointly analyzed and optimized.
-Use existing techniques, see \cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
+Use existing techniques, see~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
 Use existing \ac{MLIR} infrastructure.
 
 \textbf{Optimize using noise characteristics}
@@ -421,6 +423,10 @@ q.measure()
 \end{figure}
 
 \steph{please add a section on implementation - even without evaluation that explains what was implemented - even if its just 1 pages succint with a link to tud gitlab or so,  this is great work already, and is very good to mention even without the evaluation}
+
+\section{Implementation}
+We report on a preliminary implementation of our compiler design.
+
 
 \section{Conclusion}
 We have discussed design considerations for a Qoala program compiler, and proposed a high-level architecture for such a compiler.
