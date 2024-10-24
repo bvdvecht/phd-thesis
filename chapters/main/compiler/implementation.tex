@@ -1,5 +1,6 @@
 \section{Implementation}
 \todo{IMprove this section}
+\todo{make sure consistency QoalaHIR vs HIR etc}
 
 We report on a preliminary implementation of our compiler design, using MLIR and LLVM.
 This implementation has focused mainly on translating high-level code to a Qoala executable, using Intermediate Representations (IRs) as proposed in the previous section.
@@ -13,54 +14,46 @@ Each IR is associated with a particular set of MLIR dialects.
 The Qoala compiler uses four custom MLIR dialects, called \texttt{QNet}, \texttt{QMem}, \texttt{QoalaHost}, and \texttt{Netqasm}, explained in more detail below.
 
 \begin{itemize}
-\item HIR (High-level): A higher-level IR, where operations are closely related
-  to the python source.
-  Quantum operations are represented using the \texttt{QNet} dialect, which consume and produce quantum *values*.
-  Programs in the HIR format use the following dialects: \texttt{QNet}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor}.
-\item MIR (Mid-level): A mid level IR, similar to HIR but with explicit memory locations, using the \texttt{QMem} dialect instead of \texttt{QNet}.
-\item LIR (Low-level): A lower level IR, where operations are closer to the
-  classical and quantum assembly instructions.
-  Quantum operations are represented using the \texttt{Netqasm} dialect, which take quantum *registers* ("quantum memory pointers") as operands
-  and have side-effects on the quantum value stored in the registers.
-  Programs in the LIR format use the following dialects: \texttt{QoalaHost}, \texttt{Netqasm}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}.
+    \item HIR (High-level): A higher-level IR, where operations are closely related
+    to the python source.
+    Quantum operations are represented using the \texttt{QNet} dialect, which consume and produce quantum \emph{values}.
+    Programs in the HIR format use the following dialects: \texttt{QNet}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor}.
+    \item MIR (Mid-level): A mid level IR, similar to HIR but with explicit memory locations, using the \texttt{QMem} dialect instead of \texttt{QNet}.
+    \item LIR (Low-level): A lower level IR, where operations are closer to the
+    classical and quantum assembly instructions.
+    Quantum operations are represented using the \texttt{Netqasm} dialect, which take quantum *registers* ("quantum memory pointers") as operands
+    and have side-effects on the quantum value stored in the registers.
+    Programs in the LIR format use the following dialects: \texttt{QoalaHost}, \texttt{Netqasm}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}.
 \end{itemize}
 
-\subsection{Passes}
-The MLIR optimization pipeline applies the folliwng operations:
-\begin{itemize}
-\item apply optimzation passes on the QoalaHIR code
-\item transform QoalaHIR to QoalaLIR
-\item apply optimzation passes on the QoalaLIR code
-\item generate `.iqoala` code from QoalaLIR
-\end{itemize}
+\subsection{Lowering passes}
+We have implemented the following compiler passes:
 
-This optimization pipeline introduce modifications in different levels of the process:
-\begin{itemize}
-\item At HIR level: operations can be re-order, respecting the restrictions specified
-  [in the HIR specification document](dialects/HIR.md).
-\item Conversion from HIR to LIR: High-level qubit allocations instructions are exploded
-  into the lower-level qubit allocation operations, which includes allocation,
-  initialization and value writing/reading.
-\item At LIR level: operations belonging to the same local quantum functions are grouped
-  into functions ("functionize") to aid the scheduling at runtime.
-\end{itemize}
+\paragraph{HIR to MIR}
+Go from a value-semantics representation (qubits are values that are consumed and produces by operations) in the \texttt{qnet} dialect to memory-semantics representation (qubits are pointers and quantum operations acting on qubit pointers have side effects) in the \texttt{qmem} dialect.
 
+\paragraph{MIR functionizing}
+Split MIR code into functions.
+This `functionizing' is done in such a way that the program structure already resembles the final Qoala executable structure.
 
-The Qoala compiler also defines an optimization pipeline that analyses and
-transforms the code to improve its performance and prepare it for the final
-translation in the iQoala format.
+Functionizing algorithm:
+\begin{enumerate}
+\item Loop over all operations in the order they are given until either a classical receive operation or an entanglement operation is found. (When the end of the program is reached, exit.)
+\item Create one or more new functions:
+    \begin{itemize}
+        \item If a classical receive operation was encountered: gather all quantum operations found so far, plus all (possibly non-quantum) operations that produce values used by these quantum operations. Put all these operations inside 1 new function and replace the original MIR code with a call to this new function.
+        \item If an entanglement operation was encountered: gather all \emph{non-entanglement} operations found so far, and put them in a new function (F1) (like in the previous point).
+        Additionally, create a second new function (F2) containing the entanglement operation itself, including the corresponding allocation operation. Replace the original MIR code with calls to F1 and F2.
+    \end{itemize}
+\item Go back to (1) starting at the operation after the previously found receive or entanglement operation. Note that classical receive operations always remain \emph{outside} newly created functions, whereas entanglement operations are always moved \emph{into} their own new functions.
+\end{enumerate}
 
-To this end, the optimization pipeline makes use of the MLIR framework to
-define intermediate representations as *dialects*. Later, the optimization
-tools can apply *passes* on the intances of the program expressed using the
-MLIR dialects.
+\paragraph{MIR to LIR}
+Convert operations inside functions to the `netqasm' dialect.
+Convert other operations to the `qoalahost' dialect.
+The format is now already close to a Qoala executable (`.iqoala').
 
-
-\subsection{Lowering}
-Transforming from HIR to LIR hence involves lowering QNet operations to QoalaHost and Netqasm operations.
-On top of that, both HIR and LIR have additional constraints about the structure of code in that representation which need to be respected.
-
-\subsection{Python SDK}
+\subsection{General steps}
 We have implemented a new, bare-bones, SDK for the purpose of trying our compiler; in the future we aim to merge this with the NetQASM SDK such that programs written in this existing SDK can immediately be compiled using our compiler.
 
 \begin{itemize}
@@ -75,28 +68,22 @@ We have implemented a new, bare-bones, SDK for the purpose of trying our compile
 \item The \texttt{.iqoala} file can then be executed by a Qoala runtime.
 \end{itemize}
 
-The Python SDK acts as the "frontend" of the qoala compiler. In this sense,
-the output of the Python SDK is a \texttt{.mlir} file in the QoalaHIR dialect.
-By using Python as a the high-level language of the programs, we can take advantage
-of the python interpreter to perform the parsing of the code and an initial
-syntactical analysis.
-To complete the frontend analysis, the Qoala libraries could also embed a
-semantical analysis to check the correctness of the applied quantum operations.
-As mentioned before, the main goal of this Python SDK (frontend) will be to
-create a High Level representation of the program, using the QoalaHLIR
-language, which will be the main input of the optimization pipeline int he next stages.
-
-
-
 
 \subsection{Example lowering}
+
+Take the below example program written in the high-level Qoala Python SDK.
+The program creates first creates an entangled qubit (\texttt{q}) with remote node Bob, after which a Hadamard gate is applied on \texttt{q}.
+Then, the program waits to a receive classical real number (a float) as a classical message from Bob, calling it \texttt{t1}.
+An x-rotation gate is applied on \texttt{q} with angle \texttt{t1}.
+Finally, \texttt{q} is measured, producing bit \texttt{m} which is returned as result of this program.
 
 \begin{pycode}
 class MyProgram(QoalaProgram):
     def main(self, ctx: QoalaContext):
-        q = ctx.new_qubit()
-        e = ctx.entangle_keep("Bob")
-        ctx.cnot(q, e)
+        q = ctx.entangle_keep("Bob")
+        ctx.hadamard(q)
+        t1 = ctx.recv_float("Bob")
+        ctx.rot_x(q, t1)
         m = ctx.measure(q)
         ctx.add_return(m)
 
@@ -106,7 +93,10 @@ with open("program.mlir", "w") as f:
     f.write(mlir.text())
 \end{pycode}
 
-\paragraph{HIR}
+The \texttt{program.compile()} method produces an in-memory representation of this program but in QoalaHIR format.
+Finally, it is written to the file \texttt{program.mlir}, which can then be fed to \texttt{qoala-opt}, the main Qoala compiler.
+The QoalaHIR format looks as follows:
+
 \begin{pycode}
 qnet.func @main() -> i1 {
     %q = qnet.eprs {N = 1, remote = @Bob} : !qnet.qubit
@@ -119,7 +109,19 @@ qnet.func @main() -> i1 {
 }
 \end{pycode}
 
-\paragraph{MIR}
+As can be seen, the variable \texttt{q} from the original Python program is now called \texttt{\%q} (using \texttt{\%} is MLIR syntax), and is the result of the \texttt{eprs} operations defined in the \texttt{qnet} dialect.
+This operation produces a variable of type \texttt{!qnet.qubit}, a native \texttt{qnet} type.
+
+The hadamard operation in the \texttt{qnet} dialect \emph{consumes} \texttt{!qnet.qubit} values (in this case, \texttt{\%q}) and \emph{produces a new} \texttt{!qnet.qubit} value (in this case, \texttt{\%q2}).
+Using value-semantics (consuming and producing values) allows for already-existing MLIR optimization passes (such as dead code elimination, but not shown in this example) to be applied on our custom \texttt{qnet} dialect as well.
+
+\paragraph{Lowering HIR to MIR}
+
+When lowering the above HIR code to MIR, the change is that instead of using value-semantics for qubits, now explicit allocations are done for quantum memory.
+Quantum operations are applied on quantum pointers, and have side effects.
+(In contrast to consuming a quantum \emph{value} and producing a new one.)
+As can be seen below, the \texttt{qnet.eprs} operation producing qubit variable \texttt{\%q} is replaced by a \texttt{qalloc} operation (in the \texttt{qmem} dialect), producing a qubit \emph{pointer} \texttt{\%qptr} (not a quantum value), followed by a \texttt{eprs} operation (in the \texttt{qmem} dialect instead of the \texttt{qnet} dialect) which acts on \texttt{\%qptr}.
+
 \begin{pycode}
 qmem.func @main() -> i1 {
     %qptr = qmem.qalloc : i32
@@ -133,7 +135,12 @@ qmem.func @main() -> i1 {
 }
 \end{pycode}
 
-\paragraph{MIR (functionized)}
+\paragraph{Functionizing MIR}
+On MIR code, a \emph{functionizing} pass is applied, which splits quantum code into separate functions that are called from the main function.
+The main function itself only keeps classical instructions.
+Here we see the first split that eventually becomes the split between CPS code (in the main function) and QPS code (in the separate functions).
+The result of applying the \texttt{functionize} pass on the above MIR code looks like this:
+
 \begin{pycode}
 qmem.func @routine1() -> i32 {
     %qptr = qmem.qalloc : i32
@@ -161,7 +168,12 @@ qmem.func @main() -> i1 {
 }
 \end{pycode}
 
-\paragraph{LIR}
+\paragraph{Lowering functionized MIR to LIR}
+When lowering to LIR, the quantum functions are replaced by either \texttt{request\_routine} operations (for functions containing EPR creation operations) or \texttt{local\_routine} operations (for function with only local quantum operations).
+Moreover, these functions are now all in the \texttt{netqasm} dialect.
+The code in the main function is replaced by appropriate operations in the \texttt{qoalahost} dialect.
+As can be seen below, the structure of the resulting LIR code already looks close to the final Qoala executable (\texttt{.iqoala}) format: \texttt{netqasm.request\_routine} functions can be mapped to Qoala Request Routines (\todo{REF to qoala chapter}), \texttt{netqasm.local\_routine} functions can be mapped to Qoala Local Routines (\todo{REF to qoala chapter}), and the \texttt{main\_func} code can be mapped to Qoala Host code (\todo{REF to qoala chapter}).
+
 \begin{pycode}
 netqasm.request_routine @req1() -> i32 {
     %vqubit = netqasm.qalloc : i32
