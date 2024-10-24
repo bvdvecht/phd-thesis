@@ -1,0 +1,197 @@
+\section{Implementation}
+\todo{IMprove this section}
+
+We report on a preliminary implementation of our compiler design, using MLIR and LLVM.
+This implementation has focused mainly on translating high-level code to a Qoala executable, using Intermediate Representations (IRs) as proposed in the previous section.
+We have not yet implemented any optimizations, but note that our implementation can easily incorporate these by writing these as \emph{passes} (a construct in LLVM) that are applied on the IRs.
+
+\subsection{IRs}
+Our compiler is implemented using the LLVM framework (C++), making use of the MLIR subproject of MLIR.
+The Qoala compiler uses three intermediate representations (IRs).
+These are the High-level Intermediate Representation (HIR), Mid-level Intermediate Representation (MIR), and the Low-level Intermediate Representation (LIR).
+Each IR is associated with a particular set of MLIR dialects.
+The Qoala compiler uses four custom MLIR dialects, called \texttt{QNet}, \texttt{QMem}, \texttt{QoalaHost}, and \texttt{Netqasm}, explained in more detail below.
+
+\begin{itemize}
+\item HIR (High-level): A higher-level IR, where operations are closely related
+  to the python source.
+  Quantum operations are represented using the \texttt{QNet} dialect, which consume and produce quantum *values*.
+  Programs in the HIR format use the following dialects: \texttt{QNet}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor}.
+\item MIR (Mid-level): A mid level IR, similar to HIR but with explicit memory locations, using the \texttt{QMem} dialect instead of \texttt{QNet}.
+\item LIR (Low-level): A lower level IR, where operations are closer to the
+  classical and quantum assembly instructions.
+  Quantum operations are represented using the \texttt{Netqasm} dialect, which take quantum *registers* ("quantum memory pointers") as operands
+  and have side-effects on the quantum value stored in the registers.
+  Programs in the LIR format use the following dialects: \texttt{QoalaHost}, \texttt{Netqasm}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}.
+\end{itemize}
+
+\subsection{Passes}
+The MLIR optimization pipeline applies the folliwng operations:
+\begin{itemize}
+\item apply optimzation passes on the QoalaHIR code
+\item transform QoalaHIR to QoalaLIR
+\item apply optimzation passes on the QoalaLIR code
+\item generate `.iqoala` code from QoalaLIR
+\end{itemize}
+
+This optimization pipeline introduce modifications in different levels of the process:
+\begin{itemize}
+\item At HIR level: operations can be re-order, respecting the restrictions specified
+  [in the HIR specification document](dialects/HIR.md).
+\item Conversion from HIR to LIR: High-level qubit allocations instructions are exploded
+  into the lower-level qubit allocation operations, which includes allocation,
+  initialization and value writing/reading.
+\item At LIR level: operations belonging to the same local quantum functions are grouped
+  into functions ("functionize") to aid the scheduling at runtime.
+\end{itemize}
+
+
+The Qoala compiler also defines an optimization pipeline that analyses and
+transforms the code to improve its performance and prepare it for the final
+translation in the iQoala format.
+
+To this end, the optimization pipeline makes use of the MLIR framework to
+define intermediate representations as *dialects*. Later, the optimization
+tools can apply *passes* on the intances of the program expressed using the
+MLIR dialects.
+
+
+\subsection{Lowering}
+Transforming from HIR to LIR hence involves lowering QNet operations to QoalaHost and Netqasm operations.
+On top of that, both HIR and LIR have additional constraints about the structure of code in that representation which need to be respected.
+
+\subsection{Python SDK}
+We have implemented a new, bare-bones, SDK for the purpose of trying our compiler; in the future we aim to merge this with the NetQASM SDK such that programs written in this existing SDK can immediately be compiled using our compiler.
+
+\begin{itemize}
+\item Programmer writes source code in Python using the Qoala Python SDK, similar to the NetQASM SDK (\cref{chp:netqasm}).
+\item The Python SDK itself provides a \texttt{compile} function that executes the source code
+  which produces a \texttt{.mlir} file containing the program code in QoalaHIR format.
+\item This Python SDK implements \textit{some} functionality present in the "frontend" of a classical
+  compiler, for example, a semantical analysis to check the validity of the classical and
+  quantum operations specified in the program 
+\item A separate \texttt{opt}-like tool (built using LLVM/MLIR) takes the \texttt{.mlir} as input and produces
+  (after several applying passes) a \texttt{.iqoala} file.
+\item The \texttt{.iqoala} file can then be executed by a Qoala runtime.
+\end{itemize}
+
+The Python SDK acts as the "frontend" of the qoala compiler. In this sense,
+the output of the Python SDK is a \texttt{.mlir} file in the QoalaHIR dialect.
+By using Python as a the high-level language of the programs, we can take advantage
+of the python interpreter to perform the parsing of the code and an initial
+syntactical analysis.
+To complete the frontend analysis, the Qoala libraries could also embed a
+semantical analysis to check the correctness of the applied quantum operations.
+As mentioned before, the main goal of this Python SDK (frontend) will be to
+create a High Level representation of the program, using the QoalaHLIR
+language, which will be the main input of the optimization pipeline int he next stages.
+
+
+
+
+\subsection{Example lowering}
+
+\begin{pycode}
+class MyProgram(QoalaProgram):
+    def main(self, ctx: QoalaContext):
+        q = ctx.new_qubit()
+        e = ctx.entangle_keep("Bob")
+        ctx.cnot(q, e)
+        m = ctx.measure(q)
+        ctx.add_return(m)
+
+program = MyProgram()
+mlir = program.compile()  # `compile` is defined in `QoalaProgram`
+with open("program.mlir", "w") as f:
+    f.write(mlir.text())
+\end{pycode}
+
+\paragraph{HIR}
+\begin{pycode}
+qnet.func @main() -> i1 {
+    %q = qnet.eprs {N = 1, remote = @Bob} : !qnet.qubit
+    %q2 = qnet.hadamard %q : !qnet.qubit
+    %floats1 = qnet.recv_floats {remote = @Bob, length = 1 : i32} : tensor<1xf32>
+    %t1 = tensor.extract %floats1[%zero] : tensor<1xf32>
+    %q3 = qnet.rot_x %q2, %t1 : !qnet.qubit
+    %m = qnet.measure %q3 : i1
+    qnet.return %m : i1
+}
+\end{pycode}
+
+\paragraph{MIR}
+\begin{pycode}
+qmem.func @main() -> i1 {
+    %qptr = qmem.qalloc : i32
+    qmem.eprs %qptr
+    qmem.hadamard %qptr
+    %floats1 = qmem.recv_floats {remote = @Bob, length = 1 : i32} : tensor<1xf32>
+    %t1 = tensor.extract %floats1[%zero] : tensor<1xf32>
+    qmem.rot_x %qptr, %t1
+    %m = qmem.measure %qptr : i1
+    qmem.return %m : i1
+}
+\end{pycode}
+
+\paragraph{MIR (functionized)}
+\begin{pycode}
+qmem.func @routine1() -> i32 {
+    %qptr = qmem.qalloc : i32
+    qmem.eprs %qptr
+    qmem.return %qptr : i32
+}
+
+qmem.func @routine2(%qptr: i32) -> i32 {
+    qmem.hadamard %qptr
+    qmem.return %qptr : i32
+}
+
+qmem.func @routine3(%qptr: i32, %t1: f32) -> i1 {
+    qmem.rot_x %qptr, %t1
+    %m = qmem.measure %qptr : i1
+}
+
+qmem.func @main() -> i1 {
+    %qptr = qmem.call @routine1() : () -> i32
+    qmem.call @routine2(%qptr) : () -> i32
+    %floats1 = qmem.recv_floats {remote = @Bob, length = 1 : i32} : tensor<1xf32>
+    %t1 = tensor.extract %floats1[%zero] : tensor<1xf32>
+    %m = call @routine3(%qptr1, %t1) : (i32, f32) -> i1
+    qmem.return %m : i1
+}
+\end{pycode}
+
+\paragraph{LIR}
+\begin{pycode}
+netqasm.request_routine @req1() -> i32 {
+    %vqubit = netqasm.qalloc : i32
+    netqasm.eprs %vqubit {remote = @Bob}
+    return %vqubit : i32
+}
+
+netqasm.local_routine @subrt2(%vqubit: i32) {
+    netqasm.hadamard %vqubit
+    return
+}
+
+netqasm.local_routine @subrt3(%vqubit: i32, %num: i32, %denom: i32) {
+    netqasm.rot_x %vqubit, %num, %denom
+    %m = netqasm.measure %vqubit : i1
+    return %m : i1
+}
+
+qoalahost.main_func @main() -> i1{
+    %zero = arith.constant 0 : index
+    %vqubit = qoalahost.call @req1() : () -> i32
+    netqasm.call @subrt2(%vqubit, %num1, %denom1) : (i32, i32, i32) -> ()
+
+    %floats1 = qoalahost.recv_floats {remote = @Bob, length = 1 : i32} : tensor<1xf32>
+    %t1 = tensor.extract %floats1[%zero] : tensor<1xf32>
+    %num1, %denom1 = func.call @conver_float_to_num_and_denom(%t1) : (f32) -> (i32, i32)
+
+    %m = netqasm.call @subrt3(%vqubit, %num1, %denom1) : (i32, i32, i32) -> i1
+    qoalahost.return %m : i1
+}
+\end{pycode}
+
+
