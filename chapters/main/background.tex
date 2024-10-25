@@ -70,7 +70,6 @@ We remark that on near-term quantum processors, the types of operations also dep
 That is, not all (pairs of) qubits may allow the same set of quantum operations to be performed on them.
 
 \paragraph{Noise and decoherence}
-\todo{elaborate}
 Qubits are sensitive to \emph{decoherence} and have limited lifetimes.
 Therefore, the timing and duration of operations (such as local gates or entanglement generation with another node) have an impact on the quality of quantum memory. Classical processors control the quantum hardware, and also perform classical computation.
 Finally, classical links exist between nodes for sending classical messages.
@@ -92,23 +91,21 @@ A quantum program is typically represented as a \emph{quantum circuit}.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.8\linewidth]{figures/background/local_circuit.png}
+    \includegraphics[width=0.8\linewidth]{figures/background/local_circuit.pdf}
     \caption{
-      Example circuit of 2 qubits (horizontal lines).
-      \todo{elaborate}
+        Two representations of an example quantum application using two qubits.
+        This program can run on a quantum computer, which may be a node in a quantum network.
+        Left: circuit model of the program.
+        A horizontal line represents a single qubit.
+        Blocks are quantum gates applied on qubits; there are single-qubit gates (such as a rotation gate around axis $X$ with angle $\pi$ (\texttt{R\_X(pi)})) and multi-qubit gates (such as a CNOT; note that a CNOT gate is also sometimes depicted as a vertical line and an XOR symbol on one of the qubits).
+        Time goes from left to right, so the gates are applied in the order (left to right) they are depicted.
+        A measurement `gate' destroys the qubit and produces a classical bit, depicted by a double line.
+        Right: the same program but represented in a programming language (language shown is fictional and for illustration purposes only; in \cref{chp:netqasm} we present a real, detailed language).
+        This is what a developer might write when programming (`coding') the program.
     }
     \label{background:fig:local_circuit}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/background/2node_circuit.png}
-    \caption{
-      Example circuit of 2 nodes.
-      \todo{elaborate}
-    }
-    \label{background:fig:2node_circuit}
-\end{figure}
 
 
 A quantum circuit describes the operations that are to be performed on the quantum memory consisting of individual qubits.
@@ -120,7 +117,7 @@ The code, or the `recipe` of quantum programs is hence classical.
 The information and memory that the program manipulates is quantum.
 Besides quantum operations, there may be limited classical control, such as a gate being executed depending on a measurement outcome.
 Typically, a quantum circuit is executed in one go, on a very small timescale.
-Quantum memory used for quantum computing \todo{cite hardware platforms} often only stays coherent (alive and useful) for microseconds.
+Quantum memory used for quantum computing~\cite{de_leon_materials_2021} often only stays coherent (alive and useful) for microseconds.
 
 \paragraph{Hybrid classical-quantum processing}
 Hybrid classical-quantum programs are used to realize e.g. \textit{variational quantum eigensolvers (VQE)}~\cite{diadamo2021distributed, liu2022layer} or \textit{quantum approximate optimization algorithms (QAOA)}~\cite{farhi2014quantum}.
@@ -146,11 +143,31 @@ A schedule consists of sequential time slots, each with a start time and duratio
 Nodes are not forced to attempt entanglement in corresponding time slots, and can instead choose to do local processing instead.
 
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\linewidth]{figures/background/2node_circuit.pdf}
+    \caption{
+        Two representations of an example two-node quantum network application.
+        The application is run on the nodes Alice (possessing one qubit) and Bob (possessing two qubits).
+        Left: circuit model of the application.
+        The Entangle operation is depicted here as a two-qubit gate; however since it acts on qubits in different nodes (Alice and Bob),
+        this is not as trivial as a local two-qubit gate such as the CNOT.
+        Furthermore, classical communication may happen in the form of sending a message.
+        In this case, after measuring her qubit, Alice sends the classical outcome bit $m$ to Bob.
+        Bob then uses this in his local X-rotation gate.
+        Right: the same program but represented in a programming language.
+        Since Alice and Bob are separated nodes, they each program their own local code.
+        This code may however include external operations, such as entanglement creation with the other node, and sending or receiving messages.
+        Note that these operations must match --- something they are responsible for themselves, by e.g. following some pre-established protocol.
+    }
+    \label{background:fig:2node_circuit}
+\end{figure}
 
 \section{Quantum network applications}
 Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
-Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
+Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert_1991_e91}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
 In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
+
 
 \subsection{Programs}
 Throughout this thesis, we will use the following terminology.
@@ -250,7 +267,7 @@ Makespan is the time it takes to execute (all repetitions of) the application.
 The success probability is the one mentioned above.
 It is typically related to quantum fidelity $F \in [0, 1]$, which is a measure of closeness of a quantum state to some ideal quantum state.
 Noisy quantum systems produce non-perfect quantum states ($F < 1$) which decrease application success probability.
-For quantum network nodes, we consider common classical metrics~\cite{stankiewicz_commag}\todo{better refs}: utility (fraction of time that a node is doing useful things), throughput (amount of application executions per time unit) and latency (which may be between internal components of a node, or between nodes).
+For quantum network nodes, we consider common classical metrics~\cite{stankiewicz_commag}: utility (fraction of time that a node is doing useful things), throughput (amount of application executions per time unit) and latency (which may be between internal components of a node, or between nodes).
 
 
 

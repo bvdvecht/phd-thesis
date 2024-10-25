@@ -158,7 +158,7 @@ This can be seen in the proposal of full-stack architectures, including classica
 One can distinguish two approaches:
 \begin{itemize}
 \item integration of classical and quantum code but optimization is separate or limited~\cite{litteken_updated_2020, fux_quingo_2021, khalate_llvm-based_2022, younis_quantum_2022}
-\item joint classical-quantum optimization (MLIR-based, LLVM based)~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
+\item joint classical-quantum optimization (MLIR-based~\cite{lattner_mlir_2020}, LLVM based)~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
 \end{itemize}
 
 In order to deal with the hybrid code of hybrid programs, often intermediate representations (IRs) are used~\cite{nigam_compiler_2021, nishio_inquir_2023}.
@@ -306,19 +306,21 @@ Dialects have been created for quantum such that quantum types can be represente
 The front-end language is not a primary concern; we want to leave design and implementations open.
 We also want to allow multiple (existing) high-level formats.
 We recommend using the existing technique of IRs, gradually lowering code (translating to a lower-level IR) and performing optimizations at each level.
-Specifically, we recommend \ac{MLIR} since it enables defining intermediate representations specifically for quantum networking, while still having access to standard (classical) LLVM optimizations.
+Specifically, we recommend \ac{MLIR}~\cite{lattner_mlir_2020} since it enables defining intermediate representations specifically for quantum networking, while still having access to standard (classical) LLVM optimizations.
 
-One may consider at least two \ac{IR}s (\cref{compiler:fig:overall-design}):
+One may consider at least three \ac{IR}s (\cref{compiler:fig:overall-design}):
 \begin{itemize}
   \item A high-level \ac{IR} (QoalaHIR), consisting of a uniform hybrid classical-quantum representation of operations, where quantum values are native types.
   Native quantum values allow \emph{value-semantics}, meaning that quantum operations consume and produce quantum state values.
   This is in contrast with memory semantics where qubits are seen as pointers (such as in QIR~\cite{haner_software_2018, geller_introducing_2020}) and where quantum operations have side-effects.
-  By using value-semantics, the compiler can perform (quantum) data-flow analysis in order to apply classical optimization techniques such as loop unrolling or dead code elimination~\cite{peduri_qssa_2022, ittah_enabling_2022}. \steph{you had another figure on your slides at some point more detailed than figure 6.3 above - maybe helpful here?}
-  \item A low-level \ac{IR} (QoalaLIR), where classical code is explicitly separated from quantum code.
+  By using value-semantics, the compiler can perform (quantum) data-flow analysis in order to apply classical optimization techniques such as loop unrolling or dead code elimination~\cite{peduri_qssa_2022, ittah_enabling_2022}.
+  \item A mid-level \ac{IR} (QoalaMIR), where classical code is explicitly separated from quantum code.
   The classical code segments will eventually compile down to classical Qoala blocks (classical local and classical networking blocks, \cref{qoala:sec:program_structure}), while quantum code segments will eventually compile down to quantum Qoala blocks (local routines and request routines, \cref{qoala:sec:program_structure}).
   The explicit separation (1) makes it easier to perform the back-end compilation step (going from low-level IR to Qoala executable) since the formats are already similar and (2) forces the compiler to decide on \emph{where} to make the separations, allowing it to optimize it (see below).
-  QoalaLIR explicitly maps qubit values to quantum memory locations, hence not using value-semantics.
+  QoalaMIR explicitly maps qubit values to quantum memory locations, hence not using value-semantics.
   By including quantum memory, the compiler can do hardware-specific optimizations such as qubit mapping.
+  \item A low-level \ac{IR} (QoalaLIR), where operations are as close as possible to the native Qoala instructions (including QoalaHost instructions and NetQASM instructions).
+  From this QoalaLIR representation, it is then relatively straightforward to convert the program to the Qoala executable (\texttt{.iqoala}) format.
 \end{itemize}
 
 
