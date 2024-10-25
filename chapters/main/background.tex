@@ -6,6 +6,36 @@
 \reminder{Status: mostly copied from intro/background sections from paper chapters.
 Still to do a final edit.}
 
+\todo{from qnodeos suppl}
+Within a quantum network, one can distinguish between two main types of nodes: First, there are \emph{end nodes}~\cite{wehner_2018_stages}, with which users execute quantum network applications.
+Classically, such end nodes are laptops, phones or other devices.
+In the quantum domain, end nodes may be simple photonic devices that can only create or measure quantum states, or they may be quantum processors capable of arbitrary qubit operations and storage of information within a quantum memory.
+The type of end node dictates what applications are possible~\cite{wehner_2018_stages}, and we have chosen to focus on the most general form of an end node, namely, a quantum processor.
+More precisely, our goal is to enable programming and execution of arbitrary quantum network applications on end nodes that are quantum processors.
+For the remainder of this text, we will thus always take end nodes to be quantum-processor end nodes.
+
+Second, a quantum network can include \emph{intermediate nodes} that perform routines necessary to connect two or more end nodes (\cref{fig:network_nodes}).
+We refer the reader with a background in computer science to~\cite{vanMeter_book} for a gentle introduction to quantum networks. 
+Intermediate nodes, such as quantum-repeater nodes, are used to establish long-distance entanglement between remote end nodes.
+These intermediate nodes may employ protocols such as entanglement swapping and entanglement distillation in order to realize end-to-end links with sufficiently high fidelity for network applications.
+These protocols are handled by a network stack (see, e.g.~\cite{dahlberg_2019_egp}) that exists at each node.
+The network stack includes a link layer, a network layer, a control plane, and other networking functions; it is responsible for entanglement generation.
+
+Intermediate nodes do not execute user applications, which is done only by end nodes. 
+Therefore, only end nodes need to have an additional stack implementing the application layer in a network, which is referred to as an \emph{application stack} (see \cref{fig:network_nodes}).
+The application stack is responsible for the execution of arbitrary user applications, and integrates with the network stack for entanglement generation over the network.
+We remark that it is the purpose of a network layer~\cite{dahlberg_2019_egp, kozlowski_2020_qnp} to provide a service to the application layer that allows entanglement generation with remote end nodes.
+Importantly, this service should not require the application layer to have any knowledge about the connectivity of the network.
+While QNodeOS can in principle also be run on intermediate nodes as it already implements a network stack, we remark that it is designed primarily to enable the execution of applications on end nodes, which is the focus of this paper. 
+
+\paragraph{End Node Quantum Memory}
+
+A quantum processor end nodes possesses quantum memory in the form of qubits, and allows gates and measurements to be executed on such qubits, which can be used to realize user applications. These qubits may be physical qubits, but may also be logical qubits (multiple physical qubits together representing one more robust usable qubit) in case the end node does error correction~\cite{lidar2013quantum}. For our architecture it does matter how qubits are realized in the QDevice (which may internally employ quantum error correction), as long as the QDevice follows our system model.
+
+\paragraph{Entanglement}
+
+Entanglement is a phenomenon in quantum physics where two or more particles are correlated in a way that is not possible classically. In a quantum network, such entangled particles may be established across separate nodes, realizing a quantum connection between those nodes. Entanglement can be used by quantum network applications as a resource in order to realize applications~\cite{wehner_2018_stages} that are impossible with classical networks, including applications such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
+
 
 \section{Quantum networks}
 A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
@@ -27,20 +57,17 @@ We note that such a quantum internet will likely exist alongside the classical i
     % \includegraphics[width=0.4\linewidth]{figures/netqasm/network_model.png}
     \includegraphics[width=0.8\linewidth]{figures/background/network_nodes.pdf}
     \caption{
-        Schematic overview of a quantum network.
+        \textbf{Schematic overview of a quantum network.}
         A quantum network consists of nodes (yellow and grey circles) that are connected by classical and quantum communication channels (grey lines).
-        Each node implements a physical layer (green boxes and lines) that enables entanglement generation between neighboring nodes.
-        % The physical layer is the domain of the QDevice.
-        Each node implements a network stack including a network layer (red boxes and lines, which may be subdivided into a separate link layer and a network layer~\cite{dahlberg_2019_egp, kozlowski_2019_towards}).
-        This layer realizes long-distance entanglement creation between nodes, and may include protocols such as entanglement swapping and distillation.
-        % As QNodeOS implements a network stack, it can also be deployed on intermediary nodes in the network, where e.g. entanglement distillation could be added to the protocol realizing the network layer service implemented by QNodeOS.
+        Each node implements a physical layer (green boxes and lines) that enables entanglement generation with neighboring nodes.
+        Each node also implements a network stack, including a network layer (red boxes and lines, which may be subdivided into a separate link layer and a network layer~\cite{dahlberg_2019_egp, kozlowski_2019_towards}).
+        This layer realizes long-distance entanglement creation between nodes and may include protocols such as entanglement swapping and distillation.
         \newline
-        We emphasize that the focus of this work is to program and execute applications on the end nodes, i.e. enabling the application layer in networking terms.
+        We emphasize however that the focus of this work is to program and execute applications on the end nodes, i.e. enabling the application layer in networking terms.
         Only \emph{end nodes} (yellow circles) implement an additional application layer (blue boxes and line), which executes arbitrary user applications.
-        From the perspective of this layer, end nodes are logically directly connected (blue line) and this layer is hence independent from implementations and protocols in the network layer, and is only dependent on the service  provided by the network layer.
-        Logically directly connected means that the application layer relies on the service of the network layer to enable end-to-end entanglement generation between end nodes, and no longer needs to concern itself how the entanglement is generated.
-        This abstraction is a key element enabled by a quantum network stack such as~\cite{dahlberg_2019_egp}, and exactly analogous to similar abstractions used in classical networking, where e.g. a web browser can be executed on a laptop independently of how the internet connection between the laptop and a web server is realized.
-        % In the same way, QNodeOS can in fact operate also on end nodes separated by a large quantum network of the future, in which many intermediary nodes may lie on the path connecting the end nodes.
+        From the perspective of this layer, end nodes are logically directly connected (blue line), and this layer is hence independent from implementations and protocols in the network layer and is only dependent on the service  provided by the network layer.
+        Logically directly connected means that the application layer relies on the service of the network layer to enable end-to-end entanglement generation between end nodes and does not concern itself with how the entanglement is generated.
+        This abstraction is a key element enabled by a quantum network stack such as~\cite{dahlberg_2019_egp} and exactly analogous to abstractions used in classical networking, where e.g. a web browser can be executed on a laptop independently of how the internet connection between the laptop and a web server is realized.
     }
     \label{background:fig:network_model}
 \end{figure}

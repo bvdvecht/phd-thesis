@@ -281,10 +281,11 @@ We list recommendations for an architecture of a Qoala program compiler, based o
     Overall, the same structure is used as in \cref{compiler:fig:frontend-backend}, but now with two \ac{IR}s.
     Source code (in any high-level language) is first translated into a high-level \ac{IR} called QoalaHIR. In this \ac{IR}, classical and quantum code can be mixed arbitrarily, allowing optimizations to be applied on the whole hybrid code.
     QoalaHIR has quantum values as native types, which enables the compiler to do (quantum) data-flow analysis in order to apply existing optimizations that make use of these def-use chains of quantum values~\cite{peduri_qssa_2022}. Control-flow may be complex.
-    After applying optimizations on QoalaHIR, the program is translated to a low-level \ac{IR} (QoalaLIR) in which an explicit distinction is made between code that will run on the CPS and code that will be run on the QPS.
+    After applying optimizations on QoalaHIR, the program is translated to a mid-level \ac{IR} (QoalaMIR) in which an explicit distinction is made between code that will run on the CPS and code that will be run on the QPS.
     Quantum values are now represented as pointers to memory locations, which means that quantum operations are in the circuit model, enabling existing quantum circuit optimization techniques.
-    These optimizations may be hardware-specific and noise-aware.
-    Finally, a back-end compiler translates the QoalaLIR code into Qoala program code.
+    Then, a translation is made to the low-level IR QoalaLIR, in which the program is explicitly represented in a format close to the final Qoala executable.
+    Optimizations on QoalaLIR may be hardware-specific and noise-aware.
+    Finally, a back-end compiler translates the QoalaLIR code into an actual Qoala executable (\texttt{.iqoala}).
     }
     \label{compiler:fig:overall-design}
 \end{figure}

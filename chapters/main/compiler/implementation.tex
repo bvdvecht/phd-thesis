@@ -1,30 +1,29 @@
 \section{Implementation}
 
-We report on a preliminary implementation of our compiler design, using MLIR and LLVM.
-This implementation has focused mainly on translating high-level code to a Qoala executable, using Intermediate Representations (IRs) as proposed in the previous section.
-We have not yet implemented any optimizations, but note that our implementation can easily incorporate these by writing these as \emph{passes} (a construct in LLVM) that are applied on the IRs.
+We report on a preliminary implementation of our compiler, using the LLVM framework (C++), specifically making use of the MLIR subproject of LLVM~\cite{lattner_mlir_2020}.
+This implementation focuses mainly on translating high-level code to a Qoala executable, using \acf{IR}s as proposed in the previous section.
+We have not yet implemented any optimizations, but we emphasize that our implementation can easily incorporate optimizations by writing these as \emph{passes} (a construct in LLVM~\cite{lattner_llvm_2004}) that are applied on the IRs.
 
-\subsection{IRs}
-Our compiler is implemented using the LLVM framework (C++), making use of the MLIR subproject of LLVM~\cite{lattner_mlir_2020}.
-The Qoala compiler uses three intermediate representations (IRs).
-These are the high-level IR (QoalaHIR), mid-level IR (QoalaMIR), and the low-level IR (QoalaLIR).
-Each IR is associated with a particular set of MLIR dialects.
-The Qoala compiler uses four custom MLIR dialects, called \texttt{QNet}, \texttt{QMem}, \texttt{QoalaHost}, and \texttt{Netqasm}, explained in more detail below.
+\subsection{Overview}
+The Qoala compiler uses three intermediate representations (IRs):
+a high-level IR (QoalaHIR), a mid-level IR (QoalaMIR), and a low-level IR (QoalaLIR).
+Each IR is associated with a particular set of MLIR \emph{dialects}~\cite{lattner_mlir_2020}.
+The Qoala compiler uses four custom MLIR dialects, called \texttt{qnet}, \texttt{qmem}, \texttt{qoalahost}, and \texttt{netqasm}, explained in more detail below.
 
 \begin{itemize}
     \item QoalaHIR (High-level): A higher-level IR, where operations are closely related
     to the python source.
-    Quantum operations are represented using the \texttt{QNet} dialect, which consume and produce quantum \emph{values}.
-    Programs in the QoalaHIR format use the following dialects: \texttt{QNet}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor}.
-    \item QoalaMIR (Mid-level): A mid level IR, similar to QoalaHIR but with explicit memory locations, using the \texttt{QMem} dialect instead of \texttt{QNet}.
+    Quantum operations are represented using the \texttt{qnet} dialect, which consume and produce quantum \emph{values}.
+    Programs in the QoalaHIR format use the following dialects: \texttt{qnet} (Qoala-specific dialect), and \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor} (default dialects in MLIR, which support complex control-flow and data structures).
+    \item QoalaMIR (Mid-level): A mid level IR, similar to QoalaHIR but with explicit memory locations, using the Qoala-specific \texttt{qmem} dialect instead of \texttt{qnet}.
     \item QoalaLIR (Low-level): A lower level IR, where operations are closer to the classical and quantum assembly instructions.
-    Quantum operations are represented using the \texttt{Netqasm} dialect, which take quantum *registers* ("quantum memory pointers") as operands
-    and have side-effects on the quantum value stored in the registers.
-    Programs in the QoalaLIR format use the following dialects: \texttt{QoalaHost}, \texttt{Netqasm}, \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}.
+    Quantum operations are represented using the \texttt{netqasm} dialect, which take quantum quantum memory pointers as operands and have side-effects on the quantum value stored in the registers.
+    Programs in the QoalaLIR format use the following dialects: \texttt{qoalahost} (Qoala-specific), \texttt{netqasm} (Qoala-specific), and \texttt{arith}, \texttt{cf}, \texttt{memref}, \texttt{async} (standard MLIR dialects).
+    We note that only simple control-flow and data structures are supported (\texttt{cf} and \texttt{memref}), since they map more directly onto the allowed control-flow and data structures in Qoala executables.
 \end{itemize}
 
 \subsection{Lowering passes}
-We have implemented the following compiler passes:
+We have implemented the following compiler passes for lowering QoalaHIR code into QoalaLIR code (\cref{compiler:fig:overall-design}).
 
 \paragraph{QoalaHIR to QoalaMIR}
 Go from a value-semantics representation (qubits are values that are consumed and produces by operations) in the \texttt{qnet} dialect to memory-semantics representation (qubits are pointers and quantum operations acting on qubit pointers have side effects) in the \texttt{qmem} dialect.
@@ -47,11 +46,11 @@ Functionizing algorithm:
 \end{enumerate}
 
 \paragraph{QoalaMIR to QoalaLIR}
-Convert operations inside functions to the `netqasm' dialect.
-Convert other operations to the `qoalahost' dialect.
-The format is now already close to a Qoala executable (`.iqoala').
+Convert operations inside functions to the \texttt{netqasm} dialect.
+Convert other operations to the \texttt{qoalahost} dialect.
+The format is now already close to a Qoala executable (\texttt{.iqoala}).
 
-\subsection{General steps}
+\subsection{Python SDK}
 We have implemented a new, bare-bones, SDK for the purpose of trying our compiler; in the future we aim to merge this with the NetQASM SDK such that programs written in this existing SDK can immediately be compiled using our compiler.
 
 \begin{itemize}
