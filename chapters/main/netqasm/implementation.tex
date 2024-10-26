@@ -14,6 +14,12 @@ The \ac{QNPU} returns to the \ac{CNPU} an assigned application ID for the regist
 The \ac{CNPU} and the \ac{QNPU} are assumed to run independently and in parallel.
 For example, while a subroutine is being executed by the \ac{QNPU}, the \ac{CNPU} could in principle do other operations, such as heavy processing or communication with another node.
 
+\begin{figure}
+      \centering
+      \includegraphics[width=0.6\linewidth]{figures/netqasm/message-flow.pdf}
+      \caption{Flow of messages between the \ac{CNPU} and the \ac{QNPU}.}
+      \label{fig:message_sequence}
+\end{figure}
 
 \Cref{fig:message_sequence} shows an example of a message exchange between the \ac{CNPU} and the \ac{QNPU}.
 The content of these messages is further detailed in~\cref{netqasm:sec:app-messages}.

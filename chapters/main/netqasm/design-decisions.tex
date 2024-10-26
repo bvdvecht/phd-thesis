@@ -1,8 +1,6 @@
 \section{Design Decisions}
 \label{netqasm:sec:design_decisions}
 
-\todo{Re-create Figure 5 from netqasm paper?}
-
 Based on the use-cases, design considerations and requirements, we have designed the low-level language \ac{NetQASM} as an API to the \ac{QNPU}.
 In this section we present concepts and design decisions we have taken.
 Details on the mode of execution and the \ac{NetQASM}-language are presented in \cref{netqasm:sec:implementation}.
@@ -53,7 +51,7 @@ The \ac{QNPU} may directly write to the shared memory, for example when entangle
 
 \begin{figure}[t]
       \centering
-      \includegraphics[width=0.6\linewidth]{figures/netqasm/classical-quantum-interaction.pdf}
+      \includegraphics[width=0.8\linewidth]{figures/netqasm/classical-quantum-interaction.pdf}
       \caption{Program interaction between the \ac{CNPU} and a quantum device in
             both the case of \emph{hybrid-quantum computing} (a)
             and quantum networks (b). In the case of hybrid-quantum
