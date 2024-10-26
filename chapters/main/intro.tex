@@ -177,8 +177,15 @@ Finally, in \cref{chp:conclusion} we conclude and reflect upon future directions
 
 \begin{figure}[t]
     \centering
-    \includegraphics[scale=0.35]{figures/intro/chapters_overview.png}
-    \caption{\todo{caption}}
+    \includegraphics[width=\linewidth]{figures/intro/chapters_overview.pdf}
+    \caption{Visualization of how the architectures presented in this thesis fit together.
+      Left: high-level schematic of a quantum network node stack. A developer writes a program using the NetQASM SDK (\cref{chp:netqasm}), which is executed by QNodeOS (\cref{chp:qnodeos}).
+      QNodeOS internally uses NetQASM (\cref{chp:netqasm}) to communicate between classical and quantum system (CNPU, QNPU, see \cref{chp:qnodeos}).
+      QNodeOS controls the quantum network device containing quantum memory (qubits, purple circles, some of which may be entangled with qubits in other nodes).
+      \newline
+      Right: Same quantum network node stack but updates: Qoala is an updated execution framework, still using CNPU and QNPU, but adding a scheduler and shared memory (\cref{chp:qoala}).
+      Moreover, a compiler (\cref{compiler}) first converts source code into an executable.
+    }
     \label{intro:fig:chapters_overview}
 \end{figure}
 

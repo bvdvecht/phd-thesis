@@ -3,8 +3,18 @@
  {Preliminaries}
 \label{chp:background}
 
-\reminder{Status: mostly copied from intro/background sections from paper chapters.
-Still to do a final edit.}
+\section{Quantum networks}
+
+A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
+More specifically, we assume quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels} (\cref{background:fig:network_model}).
+Classical channels enable classical communication between nodes, while quantum channels are used for \textit{entanglement} generation between nodes.
+Some of these devices are repeater nodes, assisting in long-distance entanglement generation.
+So-called \textit{end nodes} (or \textit{processing nodes}, and hereafter called just `nodes') can be seen as quantum computers:
+they contain a \textit{quantum processor} that can run arbitrary (quantum) programs.
+These end nodes have access to a quantum memory consisting of qubits, on which they can perform operations, including quantum computations.
+Some of these qubits may be used for establishing an entangled quantum state with a remote node.
+An end node also possesses a classical processor and a classical memory.
+Furthermore, an end node can send and receive classical messages to and from other end nodes in the network.
 
 \todo{from qnodeos suppl}
 Within a quantum network, one can distinguish between two main types of nodes: First, there are \emph{end nodes}~\cite{wehner_2018_stages}, with which users execute quantum network applications.
@@ -12,7 +22,7 @@ Classically, such end nodes are laptops, phones or other devices.
 In the quantum domain, end nodes may be simple photonic devices that can only create or measure quantum states, or they may be quantum processors capable of arbitrary qubit operations and storage of information within a quantum memory.
 The type of end node dictates what applications are possible~\cite{wehner_2018_stages}, and we have chosen to focus on the most general form of an end node, namely, a quantum processor.
 More precisely, our goal is to enable programming and execution of arbitrary quantum network applications on end nodes that are quantum processors.
-For the remainder of this text, we will thus always take end nodes to be quantum-processor end nodes.
+For the remainder of this work, we will thus always take end nodes to be quantum-processor end nodes.
 
 Second, a quantum network can include \emph{intermediate nodes} that perform routines necessary to connect two or more end nodes (\cref{fig:network_nodes}).
 We refer the reader with a background in computer science to~\cite{vanMeter_book} for a gentle introduction to quantum networks. 
@@ -26,31 +36,6 @@ Therefore, only end nodes need to have an additional stack implementing the appl
 The application stack is responsible for the execution of arbitrary user applications, and integrates with the network stack for entanglement generation over the network.
 We remark that it is the purpose of a network layer~\cite{dahlberg_2019_egp, kozlowski_2020_qnp} to provide a service to the application layer that allows entanglement generation with remote end nodes.
 Importantly, this service should not require the application layer to have any knowledge about the connectivity of the network.
-While QNodeOS can in principle also be run on intermediate nodes as it already implements a network stack, we remark that it is designed primarily to enable the execution of applications on end nodes, which is the focus of this paper. 
-
-\paragraph{End Node Quantum Memory}
-
-A quantum processor end nodes possesses quantum memory in the form of qubits, and allows gates and measurements to be executed on such qubits, which can be used to realize user applications. These qubits may be physical qubits, but may also be logical qubits (multiple physical qubits together representing one more robust usable qubit) in case the end node does error correction~\cite{lidar2013quantum}. For our architecture it does matter how qubits are realized in the QDevice (which may internally employ quantum error correction), as long as the QDevice follows our system model.
-
-\paragraph{Entanglement}
-
-Entanglement is a phenomenon in quantum physics where two or more particles are correlated in a way that is not possible classically. In a quantum network, such entangled particles may be established across separate nodes, realizing a quantum connection between those nodes. Entanglement can be used by quantum network applications as a resource in order to realize applications~\cite{wehner_2018_stages} that are impossible with classical networks, including applications such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
-
-
-\section{Quantum networks}
-A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
-More specifically, we assume quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels} (\cref{background:fig:network_model}).
-Classical channels enable classical communication between nodes, while quantum channels are used for \textit{entanglement} generation between nodes.
-Some of these devices are repeater nodes, assisting in long-distance entanglement generation.
-So-called \textit{end nodes} (or \textit{processing nodes}, and hereafter called just `nodes') can be seen as quantum computers:
-they contain a \textit{quantum processor} that can run arbitrary (quantum) programs.
-These end nodes have access to a quantum memory consisting of qubits, on which they can perform operations, including quantum computations.
-Some of these qubits may be used for establishing an entangled quantum state with a remote node.
-An end node also possesses a classical processor and a classical memory.
-Furthermore, an end node can send and receive classical messages to and from other end nodes in the network.
-Nodes can also exchange classical messages (e.g. via dedicated classical links or the internet), where no guarantees are assumed on their message delivery times. 
-A future \textit{quantum internet}~\cite{Wehner2018stages, kimble2008quantum} is a global network of quantum networks.
-We note that such a quantum internet will likely exist alongside the classical internet, rather than replace it.
 
 \begin{figure}[t]
     \centering
@@ -72,7 +57,8 @@ We note that such a quantum internet will likely exist alongside the classical i
     \label{background:fig:network_model}
 \end{figure}
 
-\subsection{Quantum end nodes}
+\paragraph{End Node Quantum Memory}
+
 As mentioned above, end nodes in a quantum network possess a quantum processor acting on quantum memory.
 These processors differ from classical processors in a number of ways.
 Firstly, quantum memory has limited lifetime, meaning that its quality degrades over time.
@@ -96,6 +82,14 @@ Quantum processors in general offer two types of qubits (see e.g.~\cite{dahlberg
 We remark that on near-term quantum processors, the types of operations also depends on the connectivity of the qubits.
 That is, not all (pairs of) qubits may allow the same set of quantum operations to be performed on them.
 
+A quantum processor end nodes possesses quantum memory in the form of qubits, and allows gates and measurements to be executed on such qubits, which can be used to realize user applications.
+These qubits may be physical qubits, but may also be logical qubits (multiple physical qubits together representing one more robust usable qubit) in case the end node does error correction~\cite{lidar2013quantum}.
+For our architecture it does matter how qubits are realized in the QDevice (which may internally employ quantum error correction), as long as the QDevice follows our system model.
+
+\paragraph{Entanglement}
+
+Entanglement is a phenomenon in quantum physics where two or more particles are correlated in a way that is not possible classically. In a quantum network, such entangled particles may be established across separate nodes, realizing a quantum connection between those nodes. Entanglement can be used by quantum network applications as a resource in order to realize applications~\cite{wehner_2018_stages} that are impossible with classical networks, including applications such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
+
 \paragraph{Noise and decoherence}
 Qubits are sensitive to \emph{decoherence} and have limited lifetimes.
 Therefore, the timing and duration of operations (such as local gates or entanglement generation with another node) have an impact on the quality of quantum memory. Classical processors control the quantum hardware, and also perform classical computation.
@@ -108,6 +102,9 @@ These internal nodes in the network perform elementary link generation and entan
 
 \paragraph{Hardware implementations}
 There are various quantum hardware implementations for quantum network processors, such as nitrogen-vacancy centers in diamond~\cite{Bernien2014}, ion traps~\cite{moehring2007entanglement}, and neutral atoms~\cite{hofmann2012heralded,ritter2012elementary}, which all have different capabilities and gates that can be performed.
+
+
+
 
 \subsection{Quantum processing}
 Quantum computing consists of performing operations on quantum bits (qubits).

@@ -4,9 +4,3 @@
 It solves the question of dealing with the complexity of having both classical and quantum operations in a single program, while at the same time providing a relatively simple format for \ac{QNPU}-like layers to handle.
 Multiple applications, such as remote teleportation and blind quantum computation, have already been implemented.
 A simple compiler has been implemented that can translate code written in the higher-level SDK into \ac{NetQASM}.
-
-Additionally to the work in this paper, we are also developing a physical implementation of the \ac{QNPU}.
-\todo{Rewrite this part now that QNodeOS is finished}
-One key component in this implementation is the \emph{Quantum Node Operating System} (QNodeOS), which acts as the bridge between the applications and the physical layer.
-QNodeOS will be presented in a dedicated paper including results of a first integration test between \ac{NetQASM}, QNodeOS and underlying physical quantum hardware.
-This will mark the first time a quantum network node has been programmed using platform-independent code.

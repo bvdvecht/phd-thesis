@@ -51,17 +51,18 @@ The \ac{CNPU} may only read from the shared memory; writing to it can only be do
 The \ac{QNPU} may directly write to the shared memory, for example when entanglement finished and it writes the results to the array specified by the program.
 
 
-% \begin{figure}[t]
-%       \centering
-%       \caption{{\color{red} TODO: re-create image} Program interaction between the \ac{CNPU} and a quantum device in
-%             both the case of \emph{hybrid-quantum computing} (\cref{fig:hybrid:a})
-%             and quantum networks (\cref{fig:hybrid:b}). In the case of hybrid-quantum
-%             computing, qubits are reset in between circuits (in e.g. QASM). For
-%             quantum internet programs the qubits should on the other hand be
-%             kept in memory, since they might be entangled with another node and
-%             intended to be used further.}
-%       \label{fig:hybrid}
-% \end{figure}
+\begin{figure}[t]
+      \centering
+      \includegraphics[width=0.6\linewidth]{figures/netqasm/classical-quantum-interaction.pdf}
+      \caption{Program interaction between the \ac{CNPU} and a quantum device in
+            both the case of \emph{hybrid-quantum computing} (a)
+            and quantum networks (b). In the case of hybrid-quantum
+            computing, qubits are reset in between circuits (in e.g. QASM). For
+            quantum internet programs the qubits should on the other hand be
+            kept in memory, since they might be entangled with another node and
+            intended to be used further.}
+      \label{fig:hybrid}
+\end{figure}
 
 \subsubsection{Unit modules}
 In order to support systems with multitasking (\cref{netqasm:sec:design_considerations}), \ac{NetQASM} provides a virtualized model of the quantum memory to the program.
