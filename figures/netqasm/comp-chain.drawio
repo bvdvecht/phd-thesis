@@ -1,0 +1,76 @@
+<mxfile host="65bd71144e">
+    <diagram id="DsbN7y0O55lkxUoOcGIS" name="Page-1">
+        <mxGraphModel dx="1173" dy="787" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="9" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#001DBC;fontSize=16;fontColor=#ffffff;fillColor=none;dashed=1;dashPattern=1 1;strokeWidth=3;" vertex="1" parent="1">
+                    <mxGeometry x="75" y="130" width="325" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#001DBC;fontSize=16;fontColor=#ffffff;fillColor=none;dashed=1;dashPattern=1 1;strokeWidth=3;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="30" width="350" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;fontColor=#000000;" edge="1" parent="1" source="2" target="3">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Higher-level programming language" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#F21500;fontColor=#000000;strokeColor=#B20000;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="60" width="300" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;fontColor=#000000;" edge="1" parent="1" source="3" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Hybrid quantum-classical program" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#F21500;fontColor=#000000;strokeColor=#B20000;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="160" width="300" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;fontColor=#000000;" edge="1" parent="1" source="4" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="NetQASM (vanilla flavor)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="260" width="300" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=16;fontColor=#000000;" edge="1" parent="1" source="5" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="NetQASM (HW flavor)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#e3c800;strokeColor=#B09500;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="360" width="300" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="NetQASM (HW flavor)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="510" width="300" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="Application layer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="30" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Compilation" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="75" y="130" width="105" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="(multiple subroutines)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="225" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="(heavy compiling)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="105" y="323" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#001DBC;fontSize=16;fontColor=#ffffff;fillColor=none;dashed=1;dashPattern=1 1;strokeWidth=3;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="480" width="320" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="QNPU" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="480" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Full application, written by&lt;br&gt;a programmer (e.g. Python)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="65" width="220" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="Full application, multiple subroutines&lt;br&gt;compiled together, including also &lt;br&gt;classical logic at application level" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="150" width="280" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Virtual qubits part of allocated unit-module, abstract gates, single subroutine" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="250" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Same as above except for software-visible gates (platform-dependent)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="350" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Input from above" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;dashPattern=1 1;strokeWidth=3;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="500" width="300" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
