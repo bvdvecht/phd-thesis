@@ -204,7 +204,8 @@ Such applications are split into distinct \textit{programs} each of which runs o
 \begin{figure}% [ht]
     \centering
     \includegraphics[scale=0.35]{figures/qoala/program_illustration.png}
-    \caption{Example application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
+    \caption{Another visualization of a quantum network application, focusing on the different types of operations and the role of time and latencies.
+    This application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
         (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by  network controller).
         (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit)
         (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time)
@@ -223,7 +224,7 @@ Second, programs need to perform classical operations, such as message passing (
 A program is a series of instructions to be executed by a node.
 Instructions can be categorized into four types: local classical processing, classical message-passing, quantum local processing (quantum operations), and remote entanglement generation.
 A program can keep classical variables in a classical memory, and quantum variables (qubits) in the node's quantum memory during the execution.
-Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{fig:program_illustration}), e.g. QKD (two programs, one per node),
+Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{background:fig:program_illustration}), e.g. QKD (two programs, one per node),
 or secret sharing~\cite{hillery1999quantum} (a program each on many nodes).
 Programs may involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
 

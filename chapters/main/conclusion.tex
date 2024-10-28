@@ -1,7 +1,7 @@
 \chapter{Conclusion}
 \label{chp:conclusion}
 
-\steph{give yourself more credit (just like intro), sharpen}
+% \steph{give yourself more credit (just like intro), sharpen}
 
 In this final chapter, we provide a brief summary of the work presented in this thesis and list possible future lines of research and development.
 
@@ -12,7 +12,7 @@ In \cref{chp:netqasm,chp:qnodeos,chp:qoala,chp:compiler} we presented novel (sys
 
 
 \paragraph{NetQASM}
-In \cref{chp:netqasm} we introduced the low-level instruction set NetQASM which can express quantum network instructions including remote entanglement generation.
+In \cref{chp:netqasm} we introduced NetQASM --- the first ever instruction set that can express quantum network instructions including remote entanglement generation.
 NetQASM enables the development of quantum network applications in a hardware\-/agnostic manner by providing a high-level SDK, and by making the instruction set hardware\-/independent (although we also allow hardware-specific optimizations).
 We also introduced a model of execution for quantum network nodes, which consists of a CNPU performing classical processing and communication with other nodes, and a QNPU responsible for executing quantum instructions as well as delivering entanglement to user applications.
 By using virtualized quantum memory spaces, NetQASM allows multitasking on a node: the concurrent execution of multiple applications, in order to increase device utilization.
@@ -21,7 +21,7 @@ We validated and evaluated NetQASM in simulation.
 
 \paragraph{QNodeOS}
 
-In \cref{chp:qnodeos} we extended our execution model from \cref{chp:netqasm}, and presented a detailed full-stack system architecture --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
+In \cref{chp:qnodeos} we extended our execution model from \cref{chp:netqasm}, and presented the first ever full-stack system architecture for quantum network nodes --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
 QNodeOS is an architecture that spans both CNPU and QNPU, and describes how user applications written with the NetQASM SDK can be executed, by also incorporating the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
 We have validated our architecture by implementing it on real hardware: we showed the successful execution of simple quantum network applications on a setup of two nodes based on NV centers.
 Moreover we have shown that QNodeOS is platform-agnostic by also connecting it to a quantum device with trapped ions.

@@ -50,7 +50,7 @@ In order to achieve, for quantum networks, the same level of programmability as 
 It is true that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking, in order to realize the above framework.
 However, quantum network applications present unique challenges that are not addressed by existing solutions.
 
-\steph{It could be very helpful here to put the figure explaining there are two programs one of each node. you can copy it from the chapter later and refer in the chapter, even copying the caption. The current text here doesnt make the single program vs multiple interacting programs very clear yet I thnk}
+% \steph{It could be very helpful here to put the figure explaining there are two programs one of each node. you can copy it from the chapter later and refer in the chapter, even copying the caption. The current text here doesnt make the single program vs multiple interacting programs very clear yet I thnk}
 
 
 
@@ -167,11 +167,11 @@ Finally, in \cref{chp:conclusion} we conclude and reflect upon future directions
     \includegraphics[width=\linewidth]{figures/intro/chapters_overview.pdf}
     \caption{Visualization of how the architectures presented in this thesis fit together.
       Left: high-level schematic of a quantum network node stack. A developer writes a program using the NetQASM SDK (\cref{chp:netqasm}), which is executed by QNodeOS (\cref{chp:qnodeos}).
-      QNodeOS internally uses NetQASM (\cref{chp:netqasm}) to communicate between classical and quantum system (CNPU, QNPU, see \cref{chp:qnodeos}).
+      QNodeOS internally uses NetQASM (\cref{chp:netqasm}) to communicate between the classical and quantum systems (CNPU, QNPU, see \cref{chp:qnodeos}).
       QNodeOS controls the quantum network device containing quantum memory (qubits, purple circles, some of which may be entangled with qubits in other nodes).
       \newline
-      Right: Same quantum network node stack but updates: Qoala is an updated execution framework, still using CNPU and QNPU, but adding a scheduler and shared memory (\cref{chp:qoala}).
-      Moreover, a compiler (\cref{compiler}) first converts source code into an executable.
+      Right: Same quantum network node stack but with updates from \cref{chp:qoala,chp:compiler}: Qoala is an updated execution framework, still using the CNPU and QNPU, but adding a scheduler and shared memory (\cref{chp:qoala}).
+      Moreover, a compiler (\cref{chp:compiler}) first converts source code into an executable, which is then executed by Qoala.
     }
     \label{intro:fig:chapters_overview}
 \end{figure}
