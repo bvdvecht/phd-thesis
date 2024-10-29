@@ -4,6 +4,38 @@
 
 {\selectlanguage{dutch}
 
-\todo{}
+Kwantumnetwerken bestaan uit kwantumcomputers die met elkaar verbonden zijn, net zoals normale, niet-kwantum (hierna: \emph{klassieke}) computers en apparaten verbonden zijn in netwerken zoals het internet.
+Door gebruik te maken van kwantummechanische verschijnselen als superpositie en verstrengeling, bieden kwantumnetwerken toepassingen die onmogelijk zijn met klassieke computers en netwerken, zoals het maken van veilige encryptiesleutels en versleutelde kwantumberekeningen in de cloud.
+% De verwachting is dat opschalen van kwantumnetwerken resulteert in een globaal \emph{kwantuminternet} waarin, net zoals in het klassieke internet, onafhankelijke (kwantum)apparaten kunnen meedoen en met elkaar kunnen communiceren.
+Tot nu toe zijn er slechts simpele `proof of concepts' gedemonstreerd op kleinschalige kwantumnetwerken die speciaal voor die demonstratie waren geoptimaliseerd.
+Om gebruik van kwantumnetwerken te bevorderen, en daarmee adoptie te versnellen, is het nodig om (software)abstracties en tools te gebruiken waardoor het mogelijk is om verschillende, nieuwe toepassingen flexibel te programmeren en uit te voeren.
+Daarbij is het belangrijk dat (software)ontwikkelaars computerprogramma's kunnen schrijven zonder verstand te hoeven hebben van de onderliggende (kwantum)mechanismes, en dat nodes een besturingssysteem hebben dat in staat is zulke programma's uit te voeren.
+% Zo is het nodig dat (software)ontwikkelaars de mogelijkheid hebben om willekeurige, nieuwe toepassingen te programmeren, en dat deze uitgevoerd kunnen worden door de individuele \emph{nodes} (kwantumapparaten -en computers) in het kwantumnetwerk.
+% Dit opent de mogelijkheid om nieuwe toepassingen te verwezenlijken, zelfs toepassingen die nog bedacht moeten worden.
+% computer\emph{programma's} te schrijven die worden uitgevoerd door de individuele \emph{nodes} (kwantumapparaten -en computers) in het kwantumnetwerk.
+% Klassieke computers en netwerken zijn zo succesvol vanwege (software-) abstracties, zoals programmeertalen (zoals Python of C++) en besturingssystemen (zoals Windows of Linux).
+% Net zoals voor klassieke computers en netwerken, is het voor het verwezenlijken van nieuwe toepassingen voor kwantumnetwerken belangrijk om abstracties te hebben, zoals programmeer
+Dit soort abstracties en tools bestaan op het moment echter nog niet voor kwantumnetwerken.
+
+In dit proefschrift presenteren wij daarom nieuwe systeem- en softwarearchitecturen die het mogelijk maken om willekeurige kwantumnetwerkprogramma's the programmeren en uit te voeren.
+Hierbij komt een aantal uitdagingen kijken.
+Zo willen we graag onafhankelijk blijven van specifieke kwantumhardware (zodat we compatibel zijn met alle), moeten we rekening houden met het feit dat de kwaliteit van kwantumgeheugen tijdsafhankelijk is, en is het de vraag hoe we precies de mix van klassieke- en kwantumoperaties moeten representeren en uitvoeren.
+
+We presenteren een reeks architecturen die op elkaar voortbouwen.
+Eerst introduceren we NetQASM --- een instructieset voor kwantumnetwerkprogramma's dat instructies bevat voor het maken van verstrengeling met andere kwantumapparaten in het netwerk.
+Ook presenteren we een \emph{software development kit} --- een gereedschapskist voor softwareontwikkelaars om kwantumnetwerktoepassingen te programmeren zonder rekening te hoeven houden met de onderliggende kwantumhardware.
+
+Vervolgens presenteren we een besturingssysteem voor nodes --- QNodeOS --- dat in staat is om willekeurige programma's uit te voeren die zijn geprogrammeerd met NetQASM.
+We hebben QNodeOS geïmplementeerd en met succes getest op een echt kwantumnetwerk in het lab, bestaande uit twee kwantumcomputers gemaakt van \emph{NV centers}, en laten ook zien dat QNodeOS kan werken met andere hardwaretypes zoals \emph{trapped ions}.
+Hierbij kijken we naar hoe goed QNodeOS een 
+We focussen op \emph{latencies} en laten ook zien dat QNodeOS kan \emph{multitasken} waardoor we efficiënter gebruik maken van de hardware.
+
+Daarna onderzoeken we hoe we de kwaliteit van toepassingen kunnen verbeteren door te focussen op taakplanning (\emph{scheduling}) van programma's en op programma\emph{compilatie}.
+We presenteren een architectuur dat voortbouwt op QNodeOS --- Qoala --- waarin een scheduler het overzicht houdt over zowel klassieke- als kwantumtaken, waardoor nodes beter kunnen multitasken.
+Ook biedt Qoala de mogelijkheid om programma's eerst volledig te \emph{compileren}: vertalen van een programmeertaal naar een lager-niveau \emph{executable}.
+Hierbij onderzoeken we hoe we hiermee programma's kunnen optimaliseren.
+
+
+
 
 }

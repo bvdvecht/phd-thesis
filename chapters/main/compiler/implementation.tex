@@ -15,7 +15,7 @@ The Qoala compiler uses four custom MLIR dialects, called \texttt{qnet}, \texttt
     to the python source.
     Quantum operations are represented using the \texttt{qnet} dialect, which consume and produce quantum \emph{values}.
     Programs in the QoalaHIR format use the following dialects: \texttt{qnet} (Qoala-specific dialect), and \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor} (default dialects in MLIR, which support complex control-flow and data structures).
-    \item QoalaMIR (Mid-level): A mid level IR, similar to QoalaHIR but with explicit memory locations, using the Qoala-specific \texttt{qmem} dialect instead of \texttt{qnet}.
+    \item QoalaMIR (Mid-level): A mid level IR, similar to QoalaHIR but with explicit memory locations, using the Qoala-specific \texttt{qmem} dialect instead of \texttt{qnet} (\texttt{qmem} uses quantum pointers instead of quantum values).
     \item QoalaLIR (Low-level): A lower level IR, where operations are closer to the classical and quantum assembly instructions.
     Quantum operations are represented using the \texttt{netqasm} dialect, which take quantum quantum memory pointers as operands and have side-effects on the quantum value stored in the registers.
     Programs in the QoalaLIR format use the following dialects: \texttt{qoalahost} (Qoala-specific), \texttt{netqasm} (Qoala-specific), and \texttt{arith}, \texttt{cf}, \texttt{memref}, \texttt{async} (standard MLIR dialects).
@@ -38,7 +38,7 @@ Functionizing algorithm:
 \item Create one or more new functions:
     \begin{itemize}
         \item If a classical receive operation was encountered: gather all quantum operations found so far, plus all (possibly non-quantum) operations that produce values used by these quantum operations.
-        Put all these operations inside 1 new function and replace the original QoalaMIR code with a call to this new function.
+        Put all these operations inside a new function and replace the original QoalaMIR code with a call to this new function.
         \item If an entanglement operation was encountered: gather all \emph{non-entanglement} operations found so far, and put them in a new function (F1) (like in the previous point).
         Additionally, create a second new function (F2) containing the entanglement operation itself, including the corresponding allocation operation. Replace the original QoalaMIR code with calls to F1 and F2.
     \end{itemize}
@@ -51,10 +51,11 @@ Convert other operations to the \texttt{qoalahost} dialect.
 The format is now already close to a Qoala executable (\texttt{.iqoala}).
 
 \subsection{Python SDK}
-We have implemented a new, bare-bones, SDK for the purpose of trying our compiler; in the future we aim to merge this with the NetQASM SDK such that programs written in this existing SDK can immediately be compiled using our compiler.
+We have implemented a new, bare-bones, SDK for the purpose of trying our compiler; in the future we aim to merge this with the NetQASM SDK (\cref{chp:netqasm}) such that programs written in this existing SDK can immediately be compiled using our compiler.
+The SDK enables the following program development flow:
 
 \begin{itemize}
-\item Programmer writes source code in Python using the Qoala Python SDK, similar to the NetQASM SDK (\cref{chp:netqasm}).
+\item Programmer writes source code in Python using the Qoala Python SDK.
 \item The Python SDK itself provides a \texttt{compile} function that executes the source code
   which produces a \texttt{.mlir} file containing the program code in QoalaHIR format.
 \item This Python SDK implements \textit{some} functionality present in the "frontend" of a classical

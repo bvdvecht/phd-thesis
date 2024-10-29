@@ -1,34 +1,6 @@
 \section{Architecture}
 \label{qoala:sec:architecture}
 
-% \begin{table}[]
-% \begin{tabular}{|l|l|}
-% \hline
-% \textbf{Consideration}             & \textbf{Addressed by}                                                                         \\ \hline
-% \rowcolor{gray!25}
-% \textit{Fundamental}      &                                                                                      \\ \hline
-% Hybrid nature             & \begin{tabular}[c]{@{}l@{}}CPS/QPS distinction\\ Unified program format\end{tabular}     \\ \hline
-% \begin{tabular}[c]{@{}l@{}} Live classical-quantum \\ interactive nature \end{tabular}        & \begin{tabular}[c]{@{}l@{}}Shared memory\\ Scheduler\end{tabular}   \\ \hline
-% Networked nature        & \begin{tabular}[c]{@{}l@{}}Sockets\end{tabular}   \\ \hline
-% Concurrent execution           & \begin{tabular}[c]{@{}l@{}}Scheduler and tasks\\ Virtual quantum memory\end{tabular} \\ \hline
-% Asynchronous programs           & \begin{tabular}[c]{@{}l@{}}Scheduler and tasks\end{tabular} \\ \hline
-% \rowcolor{gray!25}
-% \textit{Technological}    &                                                                                      \\ \hline
-% Qubit lifetime            & Deadlines, scheduler\\ \hline
-% Local+networking          & Scheduler                                                                            \\ \hline
-% \rowcolor{gray!25}
-% \textit{Enabling}         &                                                                                      \\ \hline
-% Compilation               & \begin{tabular}[c]{@{}l@{}}Unified program format\\ EHI\end{tabular}                                                              \\ \hline
-% Scheduling                & Tasks, minimal assumptions                                                                  \\ \hline
-% Control-HW implementation & Minimal assumptions                                                                  \\ \hline
-% Hardware agnostic         &  \begin{tabular}[c]{@{}l@{}}NetQASM flavors\\ Exposed Hardware Interface\end{tabular}                                                                         \\ \hline
-% \end{tabular}
-% \caption{
-%     Design considerations (Section~\ref{qoala:sec:design_considerations}) and how they are addressed in the Qoala architecture (Section~\ref{qoala:sec:architecture}).
-% } % \label{tab:considerations_addressed}
-% \end{table}
-
-
 Based on these design considerations, we propose Qoala (see Fig.~\ref{fig:runtime_overview}), an execution environment for programmable nodes in a quantum internet. 
 Provided minimal hardware assumptions are met (Section~\ref{qoala:sec:minimal_hardware_assumptions}), 
 each node implements its own Qoala execution environment, supporting a specific \textit{program structure} (Section~\ref{qoala:sec:program_structure})
