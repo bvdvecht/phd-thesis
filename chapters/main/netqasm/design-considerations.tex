@@ -32,18 +32,18 @@ in the subsequent sections.
 
 
       \item \label{item:design_return} \textbf{Shared memory:}
-            As described in \cref{netqasm:sec:abstract_model}, we expect end-nodes to consist of an application layer and a \ac{QNPU}.
+            As described in \cref{netqasm:sec:abstract_model}, we expect end-nodes to consist of a \ac{CNPU} and a \ac{QNPU}.
             These two components have different capabilities.
-            For example, only the application layer has the ability to do arbitrary classical communication with other nodes.
+            For example, only the \ac{CNPU} has the ability to do arbitrary classical communication with other nodes.
             Only the \ac{QNPU} can do quantum operations.
             These restrictions lead the design in a certain way.
             The two components hence need to work together somehow.
             There needs to be model for interaction between the two, and also for shared memory.
 
-            Executing programs on an end-node is shared by the application layer and the \ac{QNPU} (see~\cref{netqasm:sec:abstract_model}).
-            Indeed, only the \ac{QNPU} can do quantum-related operations, whereas the application layer needs to do classical communication.
+            Executing programs on an end-node is shared by the \ac{CNPU} and the \ac{QNPU} (see~\cref{netqasm:sec:abstract_model}).
+            Indeed, only the \ac{QNPU} can do quantum-related operations, whereas the \ac{CNPU} needs to do classical communication.
             In order to make these work together, the two components have to share data somehow.
-            This includes the application layer requesting operations on the \ac{QNPU}, and sending the following from the \ac{QNPU} to the \ac{CNPU}:
+            This includes the \ac{CNPU} requesting operations on the \ac{QNPU}, and sending the following from the \ac{QNPU} to the \ac{CNPU}:
                 (1) measurement outcomes of qubits,
                 (2) information about entanglement generation, in particular a way to identify entangled pairs.
             This communication between \ac{CNPU} and \ac{QNPU} needs to be done during runtime of the program.
@@ -51,9 +51,9 @@ in the subsequent sections.
             The challenge for quantum network programs is to have a way to return data while quantum memory stays in memory.
 
       \item \textbf{Processing delay:}
-            Since we assume that the application layer and the \ac{QNPU} have to share execution of a single program, the interaction between the two layers should be efficient.
+            Since we assume that the \ac{CNPU} and the \ac{QNPU} have to share execution of a single program, the interaction between the two layers should be efficient.
             Unnecessary delays lead to reduced quality (see~\cref{netqasm:sec:introduction}).
-            The challenge is therefore to come up with an architecture for the interaction between the application layer and the \ac{QNPU}, as well as a way to let \ac{QNPU} execution not take too long.
+            The challenge is therefore to come up with an architecture for the interaction between the \ac{CNPU} and the \ac{QNPU}, as well as a way to let \ac{QNPU} execution not take too long.
       \item \textbf{Platform-independence:}
             As explained in~\cref{netqasm:sec:introduction}, hardware can have many different capabilities and gates that can be performed.
             However, application programmers should not need to know the details of the underlying hardware.

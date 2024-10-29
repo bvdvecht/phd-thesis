@@ -175,7 +175,7 @@ Again we compare two scenarios, in this case:
 
 We implemented this by writing two separate programs in the SDK, one for the client and one for the server.
 The SDK automatically compiles the relevant parts of these programs into \ac{NetQASM} subroutines.
-Classical communication (values $\delta_1$, $m_1$ and $\delta_2)$ is done purely between the two simulated application layers, so these operations are not compiled to \ac{NetQASM} subroutines.
+Classical communication (values $\delta_1$, $m_1$ and $\delta_2)$ is done purely between the two simulated \ac{CNPU}s, so these operations are not compiled to \ac{NetQASM} subroutines.
 More details about the simulation can be found in \cref{netqasm:sec:simulation}.
 
 The protocol is a verifiable blind quantum protocol~\cite{fitzsimons2017unconditionally}, which means that the circuit in~\cref{fig:bqc_app} is run multiple times, namely once per round.

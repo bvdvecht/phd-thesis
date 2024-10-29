@@ -114,9 +114,9 @@ and execute them on the end-nodes of a quantum network.
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/netqasm/multi_program_app_2.pdf}
-    \caption{A quantum network application consists of a program for each of the nodes involved in the application.
+    \caption{\todo{check if indeed CNPU and QNPU are meant here} A quantum network application consists of a program for each of the nodes involved in the application.
         Each program is locally executed by the node.
-        Program execution on each node is split into execution in an application layer, which can send and receive classical messages, and a quantum processor, which can create entanglement with another node.
+        Program execution on each node is split into execution in a \acf{CNPU}, which can send and receive classical messages, and a \acf{QNPU}, which can create entanglement with another node.
         The communication between nodes can hence be both classical and quantum.
         Communication instructions need to be matched by corresponding instructions in the other program.
         There is no global actor overseeing execution of each of the programs, and the nodes may be physically far apart.}
@@ -139,7 +139,7 @@ In this chapter we introduce an abstract model---including a \ac{QNPU}--- for en
 We then propose \ac{NetQASM}, an instruction set architecture that can be used to run arbitrary programs (of the form described in \cref{fig:program_decomp}) on end-nodes, as long as the end-nodes realize the model including the QNPU.
 
 \ac{NetQASM} consists of a specification of a low-level assembly-like language to express the quantum parts of quantum network program code.
-It also specifies how the application layer should interact with the \ac{QNPU} and how the assembly language can be used to execute (network) quantum code.
+It also specifies how the \ac{CNPU} should interact with the \ac{QNPU} and how the assembly language can be used to execute (network) quantum code.
 This is not possible using other QASM languages.
 
 The \ac{NetQASM} language is extendible using the concept of \textit{flavors}.
@@ -153,7 +153,7 @@ Using this flavor of the \ac{NetQASM} language enables the platform-independent 
 Platform-\textit{specific} flavors may be created to have quantum operations that are native and optimized for a specific hardware platform.
 As an example, we show a flavor tailored to the Nitrogen-Vacancy (NV) hardware, a promising platform for quantum network end-nodes~\cite{Taminiau2014, hanson2021realization}.
 
-In our model, application-specific classical communication only happens at the application layer (\cref{fig:app_programs}).
+In our model, application-specific classical communication only happens at the \ac{CNPU} (\cref{fig:app_programs}).
 In particular, this means that \ac{NetQASM} contains no provision for classical communication with the remote node.
 We remark that of course, classical control communication may be used by the \ac{QNPU} to realize the services of the quantum network stack accessed through \ac{NetQASM}.
 
@@ -165,7 +165,7 @@ In terms of precise timing, which is needed for entanglement generation, it is t
 
 With \ac{NetQASM}, we solve various problems that are unique to quantum internet programming:
     (1) for remote entanglement generation, we introduce new instruction types for making use of an underlying quantum network stack~\cite{dahlberg2019linklayer, kozlowski2020networklayer},
-    (2) for the close interaction between classical and quantum operations, we use a shared-memory model for sharing classical data between the application layer and the \ac{QNPU},
+    (2) for the close interaction between classical and quantum operations, we use a shared-memory model for sharing classical data between the \ac{CNPU} and the \ac{QNPU},
     (3) in order to run multiple applications on the same quantum node---which may be beneficial for overall resource usage (see~\cref{netqasm:sec:design_considerations})---we make use of virtualized quantum memory, similar to virtual memory in classical computing~\cite{arpaci2018operating},
     (4) since on some platforms, not all qubits may be used to generate remote entanglement, we introduce the concept of unit-modules describing qubit topologies with additional information per (virtual) qubit about which operations are possible.
 

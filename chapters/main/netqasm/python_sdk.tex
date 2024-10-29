@@ -32,7 +32,7 @@ When these methods are called, corresponding \ac{NetQASM} instructions are inclu
 One marks the end of a subroutine, and the start of another, either by explicitly calling \texttt{flush} on the \texttt{NetQASMConnection} or by ending the scope of the \nq{with NetQASMConnection ...} context.
 
 The following Python code shows a basic application written in the \ac{NetQASM} SDK.
-The application will be compiled into a single subroutine executed on the \ac{QNPU}, which creates a qubit, performs a Hadamard operation, measures the qubit and returns the result to the application layer.
+The application will be compiled into a single subroutine executed on the \ac{QNPU}, which creates a qubit, performs a Hadamard operation, measures the qubit and returns the result to the \ac{CNPU}.
 \subsubsection{Hello world/Hello Hadamard}
 Functionally the same as the \ac{NetQASM}-subroutine~\ref{netqasm:sec:example_nq_hello_world}.
 \begin{pycode}
