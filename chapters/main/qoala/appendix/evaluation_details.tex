@@ -16,12 +16,12 @@ For the evaluation in \cref{qoala:sec:demonstrating_architecture_effectiveness} 
 for the other evaluations we only considered the generic hardware type.
 
 \subsubsection{Generic hardware}
-The allowed gate set is expressed as a particular NetQASM flavour~\cite{dahlberg2022netqasm}.
+The allowed gate set is expressed as a particular NetQASM flavor~\cite{dahlberg2022netqasm}.
 
 \begin{itemize}
-  \item Allowed single-qubit gates (vanilla NetQASM flavour~\cite{dahlberg2022netqasm}):
+  \item Allowed single-qubit gates (vanilla NetQASM flavor~\cite{dahlberg2022netqasm}):
   \texttt{init}, \texttt{rot\_x}, \texttt{rot\_y}, \texttt{rot\_z}, \texttt{x}, \texttt{y}, \texttt{z}, \texttt{h}, \texttt{meas}.
-  \item Allowed two-qubit gates (vanilla NetQASM flavour): \texttt{cnot}, \texttt{cphase}.
+  \item Allowed two-qubit gates (vanilla NetQASM flavor): \texttt{cnot}, \texttt{cphase}.
 \end{itemize}
 
 Qubit decoherence times are expressed as T1 (amplitude damping) and T2 (dephasing time), which is commonly done in quantum computing.
@@ -38,9 +38,9 @@ Unless stated otherwise in the evaluation details below, the default noise and d
 Values from~\cite{avis2023requirements} and private communication.
 
 \begin{itemize}
-  \item Allowed single-qubit gates on communication qubit (NV NetQASM flavour): \texttt{init}, \texttt{rot\_x}, \texttt{rot\_y}, \texttt{meas}.
-  \item Allowed single-qubit gates on memory qubit (NV NetQASM flavour): \texttt{init}, \texttt{rot\_x}, \texttt{rot\_y}, \texttt{rot\_z}, \texttt{meas}.
-  \item Allowed two-qubit gates between communication qubit and memory qubit (NV NetQASM flavour): \texttt{crot\_x}, \texttt{crot\_y}.
+  \item Allowed single-qubit gates on communication qubit (NV NetQASM flavor): \texttt{init}, \texttt{rot\_x}, \texttt{rot\_y}, \texttt{meas}.
+  \item Allowed single-qubit gates on memory qubit (NV NetQASM flavor): \texttt{init}, \texttt{rot\_x}, \texttt{rot\_y}, \texttt{rot\_z}, \texttt{meas}.
+  \item Allowed two-qubit gates between communication qubit and memory qubit (NV NetQASM flavor): \texttt{crot\_x}, \texttt{crot\_y}.
 \end{itemize}
 
 Unless stated otherwise in the evaluation details below, the default noise and duration parameters used for the NV hardware are:
@@ -58,8 +58,8 @@ Unless stated otherwise in the evaluation details below, the default noise and d
 Values from~\cite{avis2023requirements} and private communication.
 
 \begin{itemize}
-  \item Allowed single-qubit gates (trapped ion NetQASM flavour): \texttt{init}, \texttt{rot\_z}, \texttt{meas}.
-  \item Allowed all-qubit gates (trapped ion NetQASM flavour): \texttt{init\_all}, \texttt{meas\_all}, \texttt{rot\_x\_all}, \texttt{rot\_y\_all}, \texttt{rot\_z\_all}, \texttt{bichromatic}.
+  \item Allowed single-qubit gates (trapped ion NetQASM flavor): \texttt{init}, \texttt{rot\_z}, \texttt{meas}.
+  \item Allowed all-qubit gates (trapped ion NetQASM flavor): \texttt{init\_all}, \texttt{meas\_all}, \texttt{rot\_x\_all}, \texttt{rot\_y\_all}, \texttt{rot\_z\_all}, \texttt{bichromatic}.
 \end{itemize}
 
 

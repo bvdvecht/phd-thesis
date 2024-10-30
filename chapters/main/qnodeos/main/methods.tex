@@ -126,7 +126,7 @@ Classical performance metrics include device utilization $T_{\text{util}} = 1 - 
 
 \paragraph{Experiment Procedure NV Demonstration}
 
-Applications are written in Python using the NetQASM SDK~\cite{dahlberg_2022_netqasm} (code in~\cref{qnodeos:sec:app_source}), with a compiler targeting the NV flavour~\cite{dahlberg_2022_netqasm}, as it includes quantum instructions that can be easily mapped to the physical instructions supported by the NV QDevice.
+Applications are written in Python using the NetQASM SDK~\cite{dahlberg_2022_netqasm} (code in~\cref{qnodeos:sec:app_source}), with a compiler targeting the NV flavor~\cite{dahlberg_2022_netqasm}, as it includes quantum instructions that can be easily mapped to the physical instructions supported by the NV QDevice.
 The client and server nodes independently start execution of their programs by invoking a Python script on their own CNPU, which then spawns the threads for each program.
 During application execution, the CNPUs have background processes running, including QDevice monitoring software.
 

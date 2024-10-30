@@ -164,7 +164,7 @@ This is an updated format compared to NetQASM 1.0 as presented in~\cite{dahlberg
     \centering
     \includegraphics[scale=0.4]{figures/qoala/netqasm_table.png}
     \caption{Overview of all NetQASM classical instructions, their syntax and their semantics.
-    Quantum instructions depend on the particular flavour~\cite{dahlberg2022netqasm} that is being used.}
+    Quantum instructions depend on the particular flavor~\cite{dahlberg2022netqasm} that is being used.}
     \label{qoala:fig:app:netqasm_table}
 \end{figure*}
 
@@ -220,11 +220,11 @@ These instructions can be classified as:
 \begin{itemize}
 \item shared memory access: \texttt{load} for reading LR inputs, \texttt{store} for writing LR results
 \item classical logic and control-flow: like \texttt{set} , \texttt{add}, or \texttt{jmp}
-\item quantum operations: gates from a specific flavour~\cite{dahlberg2022netqasm}
+\item quantum operations: gates from a specific flavor~\cite{dahlberg2022netqasm}
 \end{itemize}
 
-NetQASM instructions representing quantum operations are either \textit{core instructions} or \textit{flavour-specific} instructions.
-Core instructions are quantum hardware independent and are expected to be compatible with any QPS implementation. On top of the core instructions, flavour-specific instructions may be added and supported by a specific QPS implementation. For example, a QPS that controls an NV-centre may support NetQASM instructions of the NV flavour, which contain gate operations only available on this particular quantum hardware. Which NetQASM instructions are supported by the QPS is exposed to higher layers (including a compiler) as part of the EHI (see \cref{qoala:sec:app:ehi}). Using this information, a compiler may produce optimized NetQASM code using the flavour-specific NetQASM instructions.
+NetQASM instructions representing quantum operations are either \textit{core instructions} or \textit{flavor-specific} instructions.
+Core instructions are quantum hardware independent and are expected to be compatible with any QPS implementation. On top of the core instructions, flavor-specific instructions may be added and supported by a specific QPS implementation. For example, a QPS that controls an NV-centre may support NetQASM instructions of the NV flavor, which contain gate operations only available on this particular quantum hardware. Which NetQASM instructions are supported by the QPS is exposed to higher layers (including a compiler) as part of the EHI (see \cref{qoala:sec:app:ehi}). Using this information, a compiler may produce optimized NetQASM code using the flavor-specific NetQASM instructions.
 
 
 Note that NetQASM 2.0 \textbf{does not} contain (in contrast to NetQASM 1.0~\cite{dahlberg2022netqasm}):

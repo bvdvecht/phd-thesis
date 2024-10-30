@@ -148,7 +148,7 @@ For example, a single-qubit rotation gate is represented as an instruction conta
 These include classical instructions like storing and loading classical data, branching, and simple arithmetic.
 Different hardware platforms support different quantum operations.
 \ac{NetQASM} should also support platform-specific optimization (\cref{netqasm:sec:design_considerations}).
-Therefore, \ac{NetQASM} uses \textit{flavors} of quantum instructions (\cref{netqasm:sec:design_decisions_flavours}).
+Therefore, \ac{NetQASM} uses \textit{flavors} of quantum instructions (\cref{netqasm:sec:design_decisions_flavors}).
 The \textit{vanilla} flavor consists universal of a set of platform-independent quantum gates.
 Particular hardware platforms, such as the NV-centre, may use a special NV flavor, containing NV-specific instructions.
 A \ac{QNPU} implementation may use a custom mapping from vanilla instructions to platform-specific ones.
@@ -188,7 +188,7 @@ Based on this, the \ac{QNPU} can use the corresponding connection in the network
 \end{figure}
 
 \subsubsection{Flavors}
-\label{netqasm:sec:design_decisions_flavours}
+\label{netqasm:sec:design_decisions_flavors}
 We want to keep \ac{NetQASM} platform-independent.
 However, we also want the potential for platform-specific optimization (\cref{netqasm:sec:design_considerations}).
 Therefore we introduce the concept of \textit{flavors}.
