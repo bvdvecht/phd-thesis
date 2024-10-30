@@ -110,7 +110,7 @@ A \nq{cnot C S} vanilla instruction between a communication qubit (C) and a stor
 qubit (S) (as specified in the unit module) was mapped to the following NV
 instruction sequence:
 \begin{nqcode}
-  cx_dir C S PI_OVER_2
+  crot_x C S PI_OVER_2
   rot_z C -PI_OVER_2
   rot_x S -PI_OVER_2\end{nqcode}
 
@@ -121,7 +121,7 @@ instruction sequence:
   rot_y C PI_OVER_2
   rot_x C PI
   rot_y S PI_OVER_2
-  cx_dir C S PI_OVER_2
+  crot_x C S PI_OVER_2
   rot_z C -PI_OVER_2
   rot_x S -PI_OVER_2
   rot_y S PI_OVER_2
@@ -133,7 +133,7 @@ qubit (S) (as specified in the unit module) was mapped to the following NV
 instruction sequence:
 \begin{nqcode}
   rot_y S PI_OVER_2
-  cx_dir C S PI_OVER_2
+  crot_x C S PI_OVER_2
   rot_z C -PI_OVER_2
   rot_x S -PI_OVER_2
   rot_y S -PI_OVER_2\end{nqcode}

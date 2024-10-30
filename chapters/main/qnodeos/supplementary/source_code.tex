@@ -43,28 +43,6 @@
   \label{src:cnpu_runner}
 \end{figure*}
 
-\lstdefinelanguage{netqasm}
-{
-    morekeywords={
-        add, add, sub, addm, subm,
-        jmp, bez, bnz, beq, bne, blt, bge,
-        set, store, load, undef, lea,
-        array, qalloc, qfree,
-        wait_all, wait_any, wait_single,
-        ret_reg, ret_arr,
-        meas,
-        create_epr, recv_epr,
-        init, x, y, z, h, s, k, t, rot_x, rot_y, rot_z, cnot, cphase, cx_dir, cy_dir,
-        APPID, NETQASM,
-    }
-    sensitive=false,
-    morecomment=[l]{//},
-    morecomment=[s]{/*}{*/},
-    morecomment=[s][\color{blue}]{\#\ }{\ },
-    % morecomment=[s][\color{yellow}]{LOOP}{:},
-    morestring=[b]",
-}
-
 \clearpage
 
 \begin{figure*}[htbp]
