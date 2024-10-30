@@ -9,7 +9,7 @@
 \textit{Quantum nodes}.
 A quantum internet connects quantum nodes on which quantum programs may be 
 executed.
-%(Figure~\ref{qoala:fig:qoala_location}). 
+%(\cref{qoala:fig:qoala_location}). 
 In their most general form, such nodes
 are \textit{processing nodes} that have a quantum memory to store quantum bits (qubits) on which quantum operations (qubit initialization, quantum gates and measurements) can be performed. Pairs of nodes can establish \textit{entanglement} between them over a quantum network. Entanglement is a special property of two qubits (an \emph{entangled pair}), where one qubit is stored in the memory of each node. Nodes can also exchange classical messages (e.g. via dedicated classical links or the internet), where no guarantees are assumed on their message delivery times. 
 
@@ -17,7 +17,7 @@ are \textit{processing nodes} that have a quantum memory to store quantum bits (
 A program is a series of instructions to be executed by a node.
 Instructions can be categorized into four types: local classical processing, classical message-passing, quantum local processing (quantum operations), and remote entanglement generation.
 A program can keep classical variables in a classical memory, and quantum variables (qubits) in the node's quantum memory during the execution.
-Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{qoala:fig:program_illustration}), e.g. QKD (two programs, one per node),
+Multiple programs, each running on their own node, together form an \textit{application} (see \cref{qoala:fig:program_illustration}), e.g. QKD (two programs, one per node),
 or secret sharing~\cite{hillery1999quantum} (a program each on many nodes).
 Programs may involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
 

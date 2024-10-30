@@ -1,6 +1,6 @@
 \section{Program structure}
 \label{qoala:sec:app:program_structure}
-This section provides details about the structure and contents of Qoala programs as described in Section~\ref{qoala:sec:program_structure}.
+This section provides details about the structure and contents of Qoala programs as described in \cref{qoala:sec:program_structure}.
 
 
 \subsection{Program representation and components}
@@ -8,7 +8,7 @@ A Qoala program is represented in human-readable text format.
 This allows one to directly write Qoala programs, although our vision is that programmers write their code in a higher-level language, and that a compiler translates this into a Qoala program.
 
 In the main text, some parts of example programs were omitted for brevity.
-In Figure~\ref{qoala:fig:app:example_full_program} we show an example of a full Qoala program.
+In \cref{qoala:fig:app:example_full_program} we show an example of a full Qoala program.
 
 A Qoala program encompasses both classical and quantum code.
 These different code segments are put into different sections in the program.
@@ -42,9 +42,9 @@ Program metadata contains:
     \texttt{b2} calls local routine \texttt{post\_epr}, resulting in a classical vector with one value (\texttt{m0}).
     \texttt{b3} returns \texttt{m0} as the result of this program.
     \textit{Local routines section.} Consists of a single local routine called \texttt{post\_epr}.
-    It requires the virtual qubit (see Section~\ref{qoala:sec:app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
+    It requires the virtual qubit (see \cref{qoala:sec:app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
     Upon finishing the local routine, this qubit is not in use anymore (the \texttt{keeps} entry is empty).
-    The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see Section~\ref{qoala:sec:app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
+    The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see \cref{qoala:sec:app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
     \textit{Request routines section.} Consists of a single request routine called \texttt{req}.
     It represents a request to the network stack for generating a single entangled pair (\texttt{num\_pairs} is 1), which is kept in memory (\texttt{typ: create\_keep}; not measured immediately).
     This program acts as a `receiver' for entanglement generation (\texttt{role} attribute), which breaks symmetry in the entanglement generation process (the remote Alice program will have \texttt{role: sender}). Symmetry breaking is needed for the network stack to organize the entanglement generation.
@@ -123,7 +123,7 @@ The QH Language does not allow direct access to shared memory.
 Only variables from the local memory can be used.
 When calling and getting results from Local Routines (LRs) and Request Routines (RRs), values are automatically
 moved from local memory to shared memory. 
-Shared memory is discussed in more detail in Appendix~\ref{qoala:sec:app:shared_memory}.
+Shared memory is discussed in more detail in \cref{qoala:sec:app:shared_memory}.
 
 \subsubsection{Block format}
 
@@ -149,7 +149,7 @@ Example:
 \end{figure*}
 
 \subsubsection{QH instructions}
-A full list of QoalaHost instructions is given in Table~\ref{qoala:fig:app:qh_table}.
+A full list of QoalaHost instructions is given in \cref{qoala:fig:app:qh_table}.
 
 
 \subsection{NetQASM section}
@@ -187,7 +187,7 @@ The QPS is expected to have a local memory (only accessible by the QPS itself) c
 The four groups of registers are not inherently different. A compiler producing NetQASM code may use a certain group only for certain values, but this is not mandatory.
 
 \textbf{Shared Memory}
-See Appendix~\ref{qoala:sec:app:shared_memory} for more information about Shared Memory and arrays.
+See \cref{qoala:sec:app:shared_memory} for more information about Shared Memory and arrays.
 The QPS is expected to have access to Shared Memory (accessible by both the CPS and QPS).
 Two shared memory Arrays are available:
 \begin{itemize}
@@ -214,7 +214,7 @@ instr_name  op0 op1 ... opn
 
 where the number of operands can be 0 or more (no limit).
 
-A list of all NetQASM 2.0 instructions can be found in Table~\ref{qoala:fig:app:netqasm_table}.
+A list of all NetQASM 2.0 instructions can be found in \cref{qoala:fig:app:netqasm_table}.
 
 These instructions can be classified as:
 \begin{itemize}
@@ -224,7 +224,7 @@ These instructions can be classified as:
 \end{itemize}
 
 NetQASM instructions representing quantum operations are either \textit{core instructions} or \textit{flavour-specific} instructions.
-Core instructions are quantum hardware independent and are expected to be compatible with any QPS implementation. On top of the core instructions, flavour-specific instructions may be added and supported by a specific QPS implementation. For example, a QPS that controls an NV-centre may support NetQASM instructions of the NV flavour, which contain gate operations only available on this particular quantum hardware. Which NetQASM instructions are supported by the QPS is exposed to higher layers (including a compiler) as part of the EHI (see Appendix~\ref{qoala:sec:app:ehi}). Using this information, a compiler may produce optimized NetQASM code using the flavour-specific NetQASM instructions.
+Core instructions are quantum hardware independent and are expected to be compatible with any QPS implementation. On top of the core instructions, flavour-specific instructions may be added and supported by a specific QPS implementation. For example, a QPS that controls an NV-centre may support NetQASM instructions of the NV flavour, which contain gate operations only available on this particular quantum hardware. Which NetQASM instructions are supported by the QPS is exposed to higher layers (including a compiler) as part of the EHI (see \cref{qoala:sec:app:ehi}). Using this information, a compiler may produce optimized NetQASM code using the flavour-specific NetQASM instructions.
 
 
 Note that NetQASM 2.0 \textbf{does not} contain (in contrast to NetQASM 1.0~\cite{dahlberg2022netqasm}):
@@ -266,7 +266,7 @@ A Local routine (LR) header contains the following entries:
 \end{itemize}
 
 \textbf{Quantum memory usage annotations.}
-The LR header indicates which virtual qubits are used and freed by the LR. This makes it possible for the scheduler to decide which \texttt{LocalRoutine} task it may schedule when. For more information, see section Appendix~\ref{qoala:sec:app:scheduling_execution} on scheduling.
+The LR header indicates which virtual qubits are used and freed by the LR. This makes it possible for the scheduler to decide which \texttt{LocalRoutine} task it may schedule when. For more information, see section \cref{qoala:sec:app:scheduling_execution} on scheduling.
 The following listing provides an example:
 
 \begin{lstlisting}

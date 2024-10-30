@@ -44,12 +44,12 @@ The LHI allows for the configurations of
 The Native-To-Flavour (NTF) interface is used to define the translation from LHI physical quantum instructions to a NetQASM flavour.
 The QPS is expected to provide an implementation of the NTF, such that it can translate instruction in Local Routines (which are from a particular NetQASM flavour) into the corresponding hardware instructions.
 
-The Exposed Hardware Interface (EHI) is described in Section~\ref{qoala:sec:architecture}.
+The Exposed Hardware Interface (EHI) is described in \cref{qoala:sec:architecture}.
 The simulator provides automated tools for translating a combination of an LHI instance and a NTF into an EHI.
 
 \subsection{Simulator Architecture}
-The simulator defines various component and protocol classes representing the concepts defined in Section~\ref{qoala:sec:architecture}. These classes can be instantiated in a custom way, and can hence be seen as building blocks. The simulator provides a default way of using these blocks (namely, in the way explained in the Qoala architecture), but it is possible to use these blocks in another way to investigate different architectures.
-In Figure~\ref{qoala:fig:app:simulator} a schematic overview of the most important classes and their roles is given, and in Figure~\ref{qoala:fig:app:simulator_sequence} an overview is provided of the general sequence of actions involved when simulating the execution of one or more applications on a quantum network.
+The simulator defines various component and protocol classes representing the concepts defined in \cref{qoala:sec:architecture}. These classes can be instantiated in a custom way, and can hence be seen as building blocks. The simulator provides a default way of using these blocks (namely, in the way explained in the Qoala architecture), but it is possible to use these blocks in another way to investigate different architectures.
+In \cref{qoala:fig:app:simulator} a schematic overview of the most important classes and their roles is given, and in \cref{qoala:fig:app:simulator_sequence} an overview is provided of the general sequence of actions involved when simulating the execution of one or more applications on a quantum network.
 
 
 \begin{figure*}[hp]
@@ -57,14 +57,14 @@ In Figure~\ref{qoala:fig:app:simulator} a schematic overview of the most importa
     \includegraphics[width=\textwidth]{figures/qoala/simulator.png}
     \caption{High-level overview of the simulator architecture. Each box represents a component.
     A single network component can contain multiple nodes (two are shown, but there can be more).
-    Each node contains a node scheduler, CPS scheduler and QPS scheduler, implementing the algorithms as described in Appendix~\ref{qoala:sec:app:scheduling_execution}.
+    Each node contains a node scheduler, CPS scheduler and QPS scheduler, implementing the algorithms as described in \cref{qoala:sec:app:scheduling_execution}.
     A single entanglement distributor object creates entangled pairs and puts the qubits directly in the quantum memory of the nodes, in the QDevice.
     }
     \label{qoala:fig:app:simulator}
 \end{figure*}
 
-In our simulator, the network controller (Appendix~\ref{qoala:sec:app:entanglement_distribution})
-is implemented as a single centralized entity called EntDist (Figure~\ref{qoala:fig:app:simulator}).
+In our simulator, the network controller (\cref{qoala:sec:app:entanglement_distribution})
+is implemented as a single centralized entity called EntDist (\cref{qoala:fig:app:simulator}).
 
 \begin{figure*}[hp]
     \centering

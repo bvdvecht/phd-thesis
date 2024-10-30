@@ -1,7 +1,7 @@
 \section{QNodeOS Design and Implementation}
 \label{qnodeos:sec:design}
 
-We proceed with a more detailed description of the \ac{QNodeOS} architecture and implementation, where (for the reader's convenience) we include some information already found in the main part of the paper. Recall, that a quantum network application is realized by running separate programs, one on each end node of the quantum network that takes part in the quantum application. The individual programs interact with each other only via classical message passing and entanglement generation. Each program itself consists of classical and quantum blocks of code (see~\cref{qnodeos:sec:design-consid:challenges:application}) which require execution in the quantum memory for the application to succeed.
+We proceed with a more detailed description of the \ac{QNodeOS} architecture and implementation, where (for the reader's convenience) we include some information already found in \cref{qnodeos:sec:architecture,qnodeos:sec:methods}. Recall, that a quantum network application is realized by running separate programs, one on each end node of the quantum network that takes part in the quantum application. The individual programs interact with each other only via classical message passing and entanglement generation. Each program itself consists of classical and quantum blocks of code (see~\cref{qnodeos:sec:design-consid:challenges:application}) which require execution in the quantum memory for the application to succeed.
 
 \subsection{QNodeOS Architecture}
 \label{qnodeos:sec:appendix-arch}
@@ -10,7 +10,7 @@ We proceed with a more detailed description of the \ac{QNodeOS} architecture and
 \label{qnodeos:sec:appendix-arch-node_system}
 
 We remark that \ac{QNodeOS}---a real-time system for quantum network nodes---is designed to be deployed on end and intermediary nodes (\cref{qnodeos:sec:quantum-networks}), where \ac{QNodeOS} use on intermediary nodes can be restricted to facilitate entanglement generation over the network via a (series) of intermediate nodes.
-As the focus of this paper is the execution of quantum network application, we focus here on running \ac{QNodeOS} on end nodes.
+As the focus of this work is the execution of quantum network application, we focus here on running \ac{QNodeOS} on end nodes.
 
 In our model, as depicted in~\cref{qnodeos:fig:fig2}a, we divide the functions of a node into three high-level components:
 
@@ -44,8 +44,8 @@ We use here the \ac{NetQASM} \ac{SDK}~\cite{netqasm_sdk} to write programs, wher
 
 \paragraph{NetQASM Interface}
 
-Our interface between the \ac{CNPU} and the \ac{QNPU} (Section~\ref{qnodeos:sec:QNPU-api}) includes the \ac{NetQASM} interface 
-defined in~\cite[Appendix A]{dahlberg_2022_netqasm}. This interface in particular allows the \ac{CNPU} to register a program on the \ac{QNPU}, submit \ac{NetQASM} subroutines, and access the results of said subroutines.
+Our interface between the \ac{CNPU} and the \ac{QNPU} (\cref{qnodeos:sec:QNPU-api}) includes the \ac{NetQASM} interface defined in~\cite[Appendix A]{dahlberg_2022_netqasm}.
+This interface in particular allows the \ac{CNPU} to register a program on the \ac{QNPU}, submit \ac{NetQASM} subroutines, and access the results of said subroutines.
 
 \subsubsection{Program Processing Pipeline}
 
@@ -228,9 +228,9 @@ Upon receiving an entanglement request, the network stacks of the two nodes comm
 
 \subsubsection{Multitasking}
 
-Multi-tasking forms an essential element of our architecture already at the level of scheduling the network process in relation to any user process, to address the challenges inherent in the way entanglement is produced at the physical layer, requiring agreement on a network schedule (see Section~\ref{qnodeos:sec:arch-networking}, and main paper). For this important reason, the \ac{QNPU} is designed to arbitrate between these two processes (see \cref{qnodeos:fig:process-flow}), and to manage the resources being used by each of them. \emph{Multitasking}, hence, is a fundamental requirement for a system managing the hardware of a quantum network node, especially while such hardware has only limited resources available. 
+Multi-tasking forms an essential element of our architecture already at the level of scheduling the network process in relation to any user process, to address the challenges inherent in the way entanglement is produced at the physical layer, requiring agreement on a network schedule (see \cref{qnodeos:sec:arch-networking}). For this important reason, the \ac{QNPU} is designed to arbitrate between these two processes (see \cref{qnodeos:fig:process-flow}), and to manage the resources being used by each of them. \emph{Multitasking}, hence, is a fundamental requirement for a system managing the hardware of a quantum network node, especially while such hardware has only limited resources available. 
 
-To further increase the utility of the system, we also allow the multi-tasking of user processes (main paper):
+To further increase the utility of the system, we also allow the multi-tasking of user processes.
 Like in most operating systems, these tasks, which on the \ac{QNPU} are encapsulated into processes, can sometimes necessitate a resource which is not immediately available---for instance, a free qubit, or a qubit entangled with a remote one. Maximizing the utilization of the quantum device is also one of the goals of \ac{QNodeOS}, whose design allows multiple processes, user and kernel, to be active concurrently, so that whenever one is in a waiting state, another one can potentially be scheduled to use the quantum device.  This design aspect is relevant for quantum networking nodes, as the execution of the local program is often waiting, both for classical messages from remote nodes, as well as the generation of entanglement. 
 
 Lastly, multitasking is an important feature for systems that are to be shared by multiple users, and that offer each user the possibility to run multiple programs concurrently. The multitasking capabilities of \ac{QNodeOS} are also aimed at improving the average throughput and latency of user programs.
@@ -357,7 +357,7 @@ Even though this interface does not impose any formal timing constraints, it is 
 The QDevice receives physical instructions from QNodeOS, acts on them, and returns a response. For entanglement instructions, the QDevice must first synchronize with the QDevice on the other node (using classical communication). If the other QDevice is busy, (e.g. it is still trying to pass the CR check, see~\cref{qnodeos:sec:qdevice-nv} and \cite{pompili_2022_experimental}), synchronization fails, and an \texttt{ENT\_SYNC\_FAIL} response is returned (see~\cref{tab:qdevice-return-values}).
 
 \subsubsection{Instructions and Operands}
-\label{qnodeos:sec:sec:appendix-qdevice-instructions-operands}
+\label{qnodeos:sec:appendix-qdevice-instructions-operands}
 
 \begin{table}[t]
 \begin{tabularx}{\linewidth}{>{\ttfamily}l X}

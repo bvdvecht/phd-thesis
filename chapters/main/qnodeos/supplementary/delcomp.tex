@@ -232,7 +232,7 @@ As part of the \ac{DQC} execution, the \ac{QNPU} sends physical instructions to 
 
 \subsection{QNPU Network process analysis}
 
-In this section we focus on the execution of the network process in the \ac{QNPU} as observed in the execution of \ac{DQC}. The \ac{ER} sockets~\ref{qnodeos:sec:design_er_socket} are designed to facilitate the generation of entanglement belonging to a pair of user processes between two different \acp{QNPU}. In particular, the \ac{ER} socket allows the \ac{QNPU} to proceed with entanglement generation, while only one node may not have issued a request for entanglement yet. 
+In this section we focus on the execution of the network process in the \ac{QNPU} as observed in the execution of \ac{DQC}. The \ac{ER} sockets (\cref{qnodeos:sec:design_er_socket}) are designed to facilitate the generation of entanglement belonging to a pair of user processes between two different \acp{QNPU}. In particular, the \ac{ER} socket allows the \ac{QNPU} to proceed with entanglement generation, while only one node may not have issued a request for entanglement yet. 
 
 During execution of the \ac{DQC} application, the client \ac{QNPU} has a single user process $P_c$ for its \ac{DQC} program and the server \ac{QNPU} has a single user process $P_s$ for its \ac{DQC} program. Both user processes realize the repeated execution of subroutines that jointly realize the \ac{DQC} circuit (\cref{qnodeos:fig:fig3}a).
 

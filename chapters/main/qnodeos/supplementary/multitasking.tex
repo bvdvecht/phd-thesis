@@ -73,7 +73,7 @@ On the client \ac{QNPU}, for each \ac{LGT} user process $U$ the following sequen
 %
 The above sequence is for one execution of the \ac{LGT} circuit (\cref{qnodeos:fig:fig4}a), and is hence repeated many times.
 
-For the above sequences for user processes, only the internal order is fixed; the time in between steps depends on the \ac{QNPU} scheduler, as well as the time at which the \ac{CNPU} submits subroutines. Furthermore, since there are multiple user processes at the same time (for the server, only for $N > 1$), the above steps happen for each user process $U_i$ and the steps are interleaved. \cref{qnodeos:fig:multitasking-default,fig:multitasking-2-apps,fig:multitasking-wait-on-client} show examples of how these user processes can be interleaved on both client and server \ac{QNPU}.
+For the above sequences for user processes, only the internal order is fixed; the time in between steps depends on the \ac{QNPU} scheduler, as well as the time at which the \ac{CNPU} submits subroutines. Furthermore, since there are multiple user processes at the same time (for the server, only for $N > 1$), the above steps happen for each user process $U_i$ and the steps are interleaved. \cref{qnodeos:fig:multitasking-default,qnodeos:fig:multitasking-2-apps,qnodeos:fig:multitasking-wait-on-client} show examples of how these user processes can be interleaved on both client and server \ac{QNPU}.
 
 \subsubsection{DQC and LGT interleaving}
 

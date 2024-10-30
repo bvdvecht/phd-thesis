@@ -33,8 +33,7 @@ One marks the end of a subroutine, and the start of another, either by explicitl
 
 The following Python code shows a basic application written in the \ac{NetQASM} SDK.
 The application will be compiled into a single subroutine executed on the \ac{QNPU}, which creates a qubit, performs a Hadamard operation, measures the qubit and returns the result to the \ac{CNPU}.
-\subsubsection{Hello world/Hello Hadamard}
-Functionally the same as the \ac{NetQASM}-subroutine~\ref{netqasm:sec:example_nq_hello_world}.
+
 \begin{pycode}
   # Setup connection to backend
   # as the node Alice
@@ -53,8 +52,6 @@ Functionally the same as the \ac{NetQASM}-subroutine~\ref{netqasm:sec:example_nq
 
 The following \ac{NetQASM} subroutine is the result of translating the above Python code to \ac{NetQASM} of the vanilla (platform-independent) flavor.
 
-\subsubsection{Hello world/Hello Hadamard}\label{netqasm:sec:example_nq_hello_world}
-A simple subroutine which creates a qubit, performs a Hadamard, measures the qubit and returns the measurement outcome to the host.
 \begin{nqcode}
   # NETQASM 1.0
   # APPID 0

@@ -5,14 +5,14 @@ Networks of quantum processors have been realized using different quantum hardwa
 A first operating system QNodeOS~\cite{carlothesis} including a network stack~\cite{pompili2022experimental} has recently been designed and implemented on real quantum network nodes based on NV centers in diamond.
 QNodeOS makes use of the NetQASM execution framework~\cite{dahlberg2022netqasm}, where a classical \textit{host} dispatches NetQASM routines for execution by QNodeOS. 
 Our work builds on top of ideas of QNodeOS and NetQASM, but addresses critical challenges that were not handled by these previous systems, including the ability to schedule hybrid programs and to optimize over the whole program code.
-This meant, e.g., that QNodeOS was unable to have any scheduling control over the joint classical-quantum execution, which could lead to a failure in executing programs successfully (see Figure~\ref{qoala:fig:qoala_vs_qnos} for a comparison).
-Building on the only such systems that have seen real world implementation on quantum hardware, opens the door for a later implementation of Qoala on quantum hardware by implementing an improved low-level classical control hardware architecture (Section~\ref{qoala:sec:architecture}).
+This meant, e.g., that QNodeOS was unable to have any scheduling control over the joint classical-quantum execution, which could lead to a failure in executing programs successfully (see \cref{qoala:fig:qoala_vs_qnos} for a comparison).
+Building on the only such systems that have seen real world implementation on quantum hardware, opens the door for a later implementation of Qoala on quantum hardware by implementing an improved low-level classical control hardware architecture (\cref{qoala:sec:architecture}).
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\columnwidth]{figures/qoala/qoala_vs_qnos.png}
     \caption{
-        QNodeOS (\ref{chp:qnodeos}) vs. Qoala capabilities.
+        QNodeOS (\cref{chp:qnodeos}) vs. Qoala capabilities.
     }
     \label{qoala:fig:qoala_vs_qnos}
 \end{figure}

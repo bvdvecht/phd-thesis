@@ -1,6 +1,6 @@
 \section{Runtime environment}
 \label{qoala:sec:app:runtime_environment}
-In this section we provide more information about the runtime environment described in Section~\ref{qoala:sec:runtime_environment}.
+In this section we provide more information about the runtime environment described in \cref{qoala:sec:runtime_environment}.
 
 \subsection{Program instantiation}
 A program instance is a Qoala program with additional runtime- and context-specific information that is supplied when preparing execution of the program.
@@ -21,7 +21,7 @@ Based on the above additional information, a program instance can be created whi
 \item \textbf{Timing Information}: Deadlines for individual tasks. Computed using both the program's timing hints and information from the EHI.
 \end{itemize}
 
-Figure~\ref{qoala:fig:app:instantiation} provides a schematic example of program instantiation.
+\cref{qoala:fig:app:instantiation} provides a schematic example of program instantiation.
 
 \begin{figure}[ht]
     \centering
@@ -54,7 +54,7 @@ Note that this design leaves open how the shared memory can be implemented: eith
 
 
 \subsection{Arrays}
-The shared memory is logically divided into \textit{array elements} that can be allocated only by the CPS (Figure~\ref{qoala:fig:app:arrays}).
+The shared memory is logically divided into \textit{array elements} that can be allocated only by the CPS (\cref{qoala:fig:app:arrays}).
 Each element can hold a single 32-bit signed integer.
 The CPS can allocate shared memory space by specifying a \textit{size}, resulting in an allocated array.
 An array is an ordered list of array elements. 
@@ -64,12 +64,12 @@ Shared Memory is similar to the heap in classical OSes. Allocating an array is s
 
 Elements that have been allocated but never written to have an undefined value.
 
-An array may be named; it is written as \texttt{@arrayname}. An element in an array at index \texttt{i} is written as \texttt{@arrayname[i]}. This notation is used in NetQASM(Appendix~\ref{qoala:sec:app:netqasm}).
+An array may be named; it is written as \texttt{@arrayname}. An element in an array at index \texttt{i} is written as \texttt{@arrayname[i]}. This notation is used in NetQASM(\cref{qoala:sec:app:netqasm}).
 
 Arrays are used to share data between the CPS and the QPS.
 They are used for executing both LRs and RRs.
 
-The shared memory is logically divided into 5 \textit{regions} (Figure~\ref{qoala:fig:app:shared_memory}).
+The shared memory is logically divided into 5 \textit{regions} (\cref{qoala:fig:app:shared_memory}).
 Each of the regions contains array elements, and in each region, arrays can be allocated.
 The regions are only a logical division, where each arrays in a certain region are only used to hold data for a specific use-case:
 
@@ -140,7 +140,7 @@ The QPS is assumed to have access to a quantum random access memory (QRAM) consi
 Each qubit is a single location in the QRAM and can hold a single 2-dimensional quantum value, like $\ket{0}$ or $\ket{+}$.
 
 We distinguish between (1) the \textit{physical quantum memory space (PQMS)} consisting of \textit{physical qubits}
-and (2) a \textit{virtual quantum memory space (VQMS)} for each program instance (Section~\ref{qoala:sec:runtime_environment}).
+and (2) a \textit{virtual quantum memory space (VQMS)} for each program instance (\cref{qoala:sec:runtime_environment}).
 
 The topology (qubit connectivity) and noise characteristics of the PQMS are exposed as part of the EHI.
 Each program instance has access to its own VQMS, which is represented as a Unit Module~\cite{dahlberg2022netqasm}.
@@ -168,7 +168,7 @@ its decoherence rate per second.
 
 A UM can be seen as a subset of the full EHI of a node, specifically containing a subset of all qubits available in the node.
 
-Qubits in the Unit Module are called \textit{virtual qubits}. They are identified by their \textit{virtual IDs} and are mapped to physical qubits (Figure~\ref{qoala:fig:app:unit_module}).
+Qubits in the Unit Module are called \textit{virtual qubits}. They are identified by their \textit{virtual IDs} and are mapped to physical qubits (\cref{qoala:fig:app:unit_module}).
 
 
 
@@ -177,7 +177,7 @@ Quantum memory allocation and freeing is handled by a memory manager, which live
 The memory manager keeps track of the unit modules of all program instances, and maps virtual qubits to physical qubits. 
 
 Before starting a local routine or request routine, the memory manager allocates the corresponding qubits.
-For example, if a local routine for program instance $P$ defines in its metadata (see Appendix~\ref{qoala:sec:app:program_structure}) that it uses virtual qubits 0 and 1, the memory manager allocates virtual qubits 0 and 1 (if not already allocated).
+For example, if a local routine for program instance $P$ defines in its metadata (see \cref{qoala:sec:app:program_structure}) that it uses virtual qubits 0 and 1, the memory manager allocates virtual qubits 0 and 1 (if not already allocated).
 This involves finding currently unused physical qubits and mapping new virtual qubit to these free physical qubits.
 
 \begin{figure}[ht]
