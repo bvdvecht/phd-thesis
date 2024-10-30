@@ -21,7 +21,7 @@ QL and QC blocks are mapped to a sequence of CPS- and QPS tasks.
     a \texttt{SinglePair} task is created. If the request is for more than 1 pair, a \texttt{MultiPair} task is created. In both cases, an additional \texttt{PreCall} and a \texttt{PostCall} task are created with precedence constraints like for QL blocks.
     If there is a \texttt{join\_routines} on multiple request routines, multiple \texttt{PreCall}-Pair-\texttt{PostCall} task sets are created, without any dependencies between the task sets.
 \end{itemize}
-Figure~\ref{fig:app:task_creation} shows an overview of blocks and corresponding tasks and their precedence constraints.
+Figure~\ref{qoala:fig:app:task_creation} shows an overview of blocks and corresponding tasks and their precedence constraints.
 
 
 \subsection{Predictable vs unpredictable programs}
@@ -34,7 +34,7 @@ We say that control-flow is \textit{predictable} if it can be completely known b
 \textit{Unpredictable} control-flow, on the other hand, depends on values available only at runtime. 
 For predictable programs, all its tasks can be created before runtime.
 For unpredictable programs, (some of) its tasks must be created on-the-fly during program execution.
-Figure~\ref{fig:app:linear_non_linear} illustrates the difference between predictable and unpredictable programs.
+Figure~\ref{qoala:fig:app:linear_non_linear} illustrates the difference between predictable and unpredictable programs.
 
 \begin{figure}[ht]
     \centering
@@ -45,14 +45,14 @@ Figure~\ref{fig:app:linear_non_linear} illustrates the difference between predic
     The non-predictable program is similar but after executing block 2, control-flow may go back to block 1 (again), depending on a runtime value (e.g. the result of RR 1).
     Hence, the number of times that blocks 1 and 2 are executed is not known beforehand, and therefore the number of tasks is also not known.
     }
-    \label{fig:app:linear_non_linear}
+    \label{qoala:fig:app:linear_non_linear}
 \end{figure}
 
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth]{figures/qoala/task_creation.png}
     \caption{Overview of different host blocks with corresponding tasks. In the rightmost column, tasks with a dark background are QPS tasks, the others are CPS tasks. This example shows that tasks contain data about the program segment they correspond to, such as \texttt{LocalRoutine} tasks having the name of the routine they are executing.}
-    \label{fig:app:task_creation}
+    \label{qoala:fig:app:task_creation}
 \end{figure*}
 
 
@@ -106,7 +106,7 @@ Each scheduler maintains their own task graph,
 which is a directed acyclic graph (DAG) in which the nodes represent tasks and edges represent precedence constraints.
 The node scheduler task graph contains all tasks (CPS or QPS) that are to be executed.
 Each processor scheduler task graph is a partial copy of the node scheduler task graph containing only the tasks that can be executed by its own processor.
-Edges in the node scheduler graph between heterogenous tasks (i.e. between CPS and QPS tasks) are represented in the partial processor graphs by the \textit{external dependencies} node attribute. See Figure~\ref{fig:app:task_graph_partial} for an example.
+Edges in the node scheduler graph between heterogenous tasks (i.e. between CPS and QPS tasks) are represented in the partial processor graphs by the \textit{external dependencies} node attribute. See Figure~\ref{qoala:fig:app:task_graph_partial} for an example.
 When a processor scheduler finishes a task, it is removed from the task graph and a signal is sent to the node scheduler.
 The node scheduler updates its own task graph accordingly, and may then add new tasks to the task graph of the processor scheduler.
 Note that although the processor task graphs are accessible by both the owning processor scheduler and the node scheduler, there are no read/write conflicts
@@ -135,7 +135,7 @@ During runtime, the node scheduler may create new tasks based on the control-flo
         Task 5 depends on task 4, which is external from the perspective of the CPS scheduler (indicated using the \texttt{external-dependencies} attribute).
         Note that Task 3 is not needed at all in the partial graph; only the dependency on task 4.
     }
-    \label{fig:app:task_graph_partial}
+    \label{qoala:fig:app:task_graph_partial}
 \end{figure}
 
 \subsection{Task graph splitting}
@@ -175,7 +175,7 @@ Furthermore, the following read and write access is given:
     \centering
     \includegraphics[width=\textwidth]{figures/qoala/runtime_detailed.png}
     \caption{Detailed runtime overview}
-    \label{fig:app:runtime_detailed}
+    \label{qoala:fig:app:runtime_detailed}
 \end{figure*}
 
 
@@ -274,9 +274,9 @@ One can force all instances to be run in sequence, rather than interleaved, resu
 \begin{figure*}
     \newcommand{\networkcontrollerfigheight}{4.5cm}
     \centering
-    \subfloat[\centering \label{fig:app:network_controller_requests}]{{\includegraphics[height=\networkcontrollerfigheight, keepaspectratio]{figures/qoala/network_controller_requests.png}}}%
+    \subfloat[\centering \label{qoala:fig:app:network_controller_requests}]{{\includegraphics[height=\networkcontrollerfigheight, keepaspectratio]{figures/qoala/network_controller_requests.png}}}%
     \qquad
-    \subfloat[\centering \label{fig:app:network_controller_requests_distributed}]{{\includegraphics[height=\networkcontrollerfigheight, keepaspectratio]{figures/qoala/network_controller_requests_distributed.png}}}%
+    \subfloat[\centering \label{qoala:fig:app:network_controller_requests_distributed}]{{\includegraphics[height=\networkcontrollerfigheight, keepaspectratio]{figures/qoala/network_controller_requests_distributed.png}}}%
     \caption{
     Different implementations of network controller and network stack.
     (a) The network controller is centralized and the nodes send requests to this controller
@@ -284,7 +284,7 @@ One can force all instances to be run in sequence, rather than interleaved, resu
     (b) The network controller is distributed over the nodes. Inside each node there is a network stack which autonomously talks with the network stack of other nodes and synchronizes entanglement generation.
     Execution of \texttt{SinglePair} and \texttt{MultiPair} tasks involves sending a request to the network stack within the node, which then handles pair generation by synchronizing with the network stack in other nodes.
     }%
-    \label{fig:app:network_controller_types}
+    \label{qoala:fig:app:network_controller_types}
 \end{figure*}
 
 
@@ -324,13 +324,13 @@ The assumption about entanglement generation are as follows.
 
 \textbf{Network controller with time slots.}
 Conceptually, there is a network controller that oversees entanglement generation and distribution across the whole network.
-Qoala does not care whether this controller is implemented as a single entity, or is distributed in some way across multiple (processing) nodes (Figure~\ref{fig:app:network_controller_types}).
+Qoala does not care whether this controller is implemented as a single entity, or is distributed in some way across multiple (processing) nodes (Figure~\ref{qoala:fig:app:network_controller_types}).
 The network controller maintains a global timeline divided into \textit{time slots}, which can have arbitrary length.
 Each time slot may be assigned to a \textit{session}, which is a 4-tuple $(N1, P1, N2, P2)$ where $N1$ ($N2$) is the name of a node in the network and $P1$ ($P2$) is an ID of a program instance running within $N1$ ($N2$).
 A session hence represents a pair of running program instances across two nodes, and it is such pairs of program instances that want to create entanglement with each other. 
 If a time slot is assigned to some session $(N1, P1, N2, P2)$, only program instances $P1$ and $P2$ (on nodes $N1$ and $N2$) may create entanglement with each other during this time slot.
 
-Populating the network controller's time slot with sessions is the result of (1) demand registration by nodes in the network, followed by (2) network schedule generation by the network controller itself, which we do not consider here (Figure~\ref{fig:app:network_controller_setup}).
+Populating the network controller's time slot with sessions is the result of (1) demand registration by nodes in the network, followed by (2) network schedule generation by the network controller itself, which we do not consider here (Figure~\ref{qoala:fig:app:network_controller_setup}).
 In the following, we simply assume that the network controller has a list of time slots assigned to sessions relating to program instances that are being run, and that these time slots are also known by the individual processing nodes.
 
 \begin{figure*}[ht]
@@ -341,7 +341,7 @@ In the following, we simply assume that the network controller has a list of tim
     2. The outcome of Capability Negotiation, which contains demands about entanglement generation, is sent to the network controller (Demand Registration).
     3. Based on the demands from the nodes, the network controller constructs a network schedule consisting of time slots. Each time slot is assigned to zero or more \textit{sessions}, which correspond to program instance pairs.
     }
-    \label{fig:app:network_controller_setup}
+    \label{qoala:fig:app:network_controller_setup}
 \end{figure*}
 
 \textbf{On-demand entanglement requests.} At runtime, nodes implementing Qoala may send requests to the \textit{network stack}.
@@ -362,8 +362,8 @@ Depending on the scheduler implementation, this task may be executed again at a 
 \textbf{Entanglement generation as a black box.} We assume that all nodes can create entanglement with all nodes, orchestrated by the network controller.
 Qoala does not assume anything about the existence of repeater nodes or entanglement routing algorithms.
 Rather, a node sending a request for entanglement (in a suitable time slot) will either get this entanglement (created in some way, irrelevant to Qoala) or not (creation failed for some reason, again irrelevant to Qoala).
-The network stack and controller may be implemented in various ways, such as illustrated in Figure~\ref{fig:app:network_controller_types}.
+The network stack and controller may be implemented in various ways, such as illustrated in Figure~\ref{qoala:fig:app:network_controller_types}.
 
 
 \subsection{Detailed runtime overview}
-Figure~\ref{fig:app:runtime_detailed} provides an overview of the runtime architecture.
+Figure~\ref{qoala:fig:app:runtime_detailed} provides an overview of the runtime architecture.

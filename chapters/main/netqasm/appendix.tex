@@ -207,15 +207,12 @@ Here we list the current instructions part of the \textbf{vanilla flavor} of \ac
 For the most up to date version of the language, refer to~\cite{git_netqasm}.
 Commands are specified as follows:
 \begin{itemize}
-  \item \nq{name}: Description of instruction.
-        % Operands:
-        \begin{enumerate}
-          \item \IMMEDIATE : Description of op1
-          \item \REGISTER : Description of op2
-        \end{enumerate}
+  \item \nq{name <operand-type 1> <operand-type 2> ...}: Description of instruction.
+  
+        Description of operands.
 \end{itemize}
+Operand types can be \nq{reg} for a \REGISTER, \nq{imm} for an \IMMEDIATE, \nq{addr} for an \ADDRESS, \nq{arr-ent} for an \textbf{ARRAY\_ENTRY}, \nq{arr-slice} for an \textbf{ARRAY\_SLICE}.
 
-where \nq{name} is the name of the instruction, followed by the list of operands, specified by their type and description.
 We note that in the human-readable text-form of \ac{NetQASM}, it is allowed to provide an \IMMEDIATE\ for operands that are specified as \REGISTER.
 The compiler will then replace these, using the \nq{set}-command.
 
@@ -265,29 +262,22 @@ The compiler will then replace these, using the \nq{set}-command.
 
 \subsection{Classical logic}
 
-\todo{Rewrite below instructions in same format as above}
-
 There are three groups of branch instructions: nullary, unary and binary.
 
 \textbf{Nullary branching}
 \begin{itemize}
-  \item \nq{jmp}: Jump to a given line (unconditionally).
-        % Operands:
-        \begin{enumerate}
-          % \item \IMMEDIATE: Line to branch to.
-          \item \IMMEDIATE: Line to branch to.
-        \end{enumerate}
+  \item \nq{jmp <imm>}: Jump to a given line (unconditionally).
+
+        \nq{<imm>}: Line to branch to.
 \end{itemize}
 
 \textbf{Unary branching}
 There are two unary branching instructions: \nq{beq} and \nq{bnz}, which both have the following structure:
 \begin{itemize}
-  \item \nq{b\{ez,nz\}}: Branch to a given line if condition fulfilled, see below.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: Value $v$ in condition expression.
-          \item \IMMEDIATE: Line to branch to.
-        \end{enumerate}
+  \item \nq{b\{ez,nz\} <reg> <imm>}: Branch to a given line if condition fulfilled, see below.
+
+        \nq{<reg>}: Value $v$ in condition expression.
+        \nq{<imm>}: Line to branch to.
 \end{itemize}
 
 Branching occurs if:
@@ -299,13 +289,11 @@ Branching occurs if:
 \textbf{Binary branching}
 There are four binary branch instructions: \nq{beq}, \nq{bne}, \nq{blt} and \nq{bge}, which all have the following structure:
 \begin{itemize}
-  \item \nq{b\{eq,ne,lt,ge\}}: Branch if condition fulfilled, see below.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: Value 1 $v_1$ in conditional expression.
-          \item \REGISTER: Value 1 $v_1$ in conditional expression.
-          \item \IMMEDIATE: Line to branch to.
-        \end{enumerate}
+  \item \nq{b\{eq,ne,lt,ge\} <reg0> <reg1> <imm>}: Branch if condition fulfilled, see below.
+
+        \nq{<reg0>}: Value $v_1$ in conditional expression.
+        \nq{<reg1>}: Value $v_2$ in conditional expression.
+        \nq{<imm>}: Line to branch to.
 \end{itemize}
 
 Branching occurs if:
@@ -321,25 +309,21 @@ Branching occurs if:
 There are currently four binary classical operations: addition (\nq{add}), subtraction (\nq{sub}) and addition (\nq{addm}), subtraction (\nq{subm}) modulo a number.
 The first two have the following structure:
 \begin{itemize}
-  \item \nq{\{add,sub\}}: Perform a binary operation and store the result.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER Register to write result ($r$) to.
-          \item \REGISTER First operand in binary operation ($v_0$).
-          \item \REGISTER Second operand in binary operation ($v_1$).
-        \end{enumerate}
+  \item \nq{\{add,sub\} <reg0> <reg1> <reg2>}: Perform a binary operation and store the result.
+
+        \nq{<reg0>}: Register to write result ($r$) to.
+        \nq{<reg1>}: First operand in binary operation ($v_0$).
+        \nq{<reg2>}: Second operand in binary operation ($v_1$).
 \end{itemize}
 
 The second two have an additional operand to specify what module should be taken for the result:
 \begin{itemize}
-  \item \nq{\{add,sub\}m}: Perform a binary operation modulo \nq{mod} and store the result.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER Register to write result ($r$) to.
-          \item \REGISTER First operand in binary operation ($v_0$).
-          \item \REGISTER Second operand in binary operation ($v_1$).
-          \item \REGISTER Modulo in binary operation ($m$).
-        \end{enumerate}
+  \item \nq{\{add,sub\}m <reg0> <reg1> <reg2> <reg3>}: Perform a binary operation modulo $m$ and store the result.
+
+        \nq{<reg0>}: Register to write result ($r$) to.
+        \nq{<reg1>}: First operand in binary operation ($v_0$).
+        \nq{<reg2>}: Second operand in binary operation ($v_1$).
+        \nq{<reg3>}: Modulo in binary operation ($m$).
 \end{itemize}
 
 Binary operations are the following:
@@ -354,11 +338,9 @@ Binary operations are the following:
 \textbf{Single-qubit gates}
 There is a number of single-qubit gates which all have the following structure
 \begin{itemize}
-  \item \nq{instr}: Perform a single-qubit gate.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the qubit.
-        \end{enumerate}
+  \item \nq{instr <reg>}: Perform a single-qubit gate.
+
+        \nq{<reg>}: The virtual address of the qubit.
 \end{itemize}
 
 Single-qubit gates without additional arguments are the following.
@@ -404,13 +386,11 @@ The angles \nq{a} are specified by two integers \nq{n} and \nq{d} as:
 \end{equation}
 These instructions have the following structure
 \begin{itemize}
-  \item \nq{rot_\{x,y,z\}}: Perform a single-qubit rotation.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the qubit.
-          \item \IMMEDIATE: \nq{n}, for angle, see above.
-          \item \IMMEDIATE: \nq{d}, for angle, see above.
-        \end{enumerate}
+  \item \nq{rot_\{x,y,z\} <reg> <imm0> <imm1>}: Perform a single-qubit rotation.
+
+        \nq{<reg>}: Register containing the virtual address of the qubit.
+        \nq{<imm0>}: \nq{n}, for angle, see above.
+        \nq{<imm1>}: \nq{d}, for angle, see above.
 \end{itemize}
 
 Single-qubit rotations are the following.
@@ -423,12 +403,10 @@ Single-qubit rotations are the following.
 \textbf{Two-qubit gates}
 There are two two-qubit gates which have the following structure
 \begin{itemize}
-  \item \nq{\{cnot,cphase\}}: Perform a two-qubit operation.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the control qubit.
-          \item \REGISTER: The virtual address of the target qubit.
-        \end{enumerate}
+  \item \nq{\{cnot,cphase\} <reg0> <reg1>}: Perform a two-qubit operation.
+
+        \nq{<reg0>}: Register containing the virtual address of the control qubit.
+        \nq{<reg1>}: Register containing the virtual address of the target qubit.
 \end{itemize}
 
 Two-qubit gates are the following.
@@ -439,12 +417,10 @@ Two-qubit gates are the following.
 
 \textbf{Measurement}
 \begin{itemize}
-  \item \nq{meas}: Measure a qubit in the standard basis.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the qubit.
-          \item \REGISTER: The register to write outcome address to.
-        \end{enumerate}
+  \item \nq{meas <reg0> <reg1>}: Measure a qubit in the standard basis.
+
+        \nq{<reg0>}: Register containing the virtual address of the qubit.
+        \nq{<reg1>}: Register to write outcome address to.
 \end{itemize}
 
 \textbf{Pre-measurement rotations}
@@ -453,16 +429,14 @@ If the same measurement basis is used a lot, one can also make use of pre-measur
 A pre-measurement rotations is specified by either the \nq{pmr_xyx}, \nq{pmr_zxz} or \nq{pmr_yzy} which have the following structure.
 With any two of the bases X, Y and Z, one can do any rotation.
 \begin{itemize}
-  \item \nq{pmr_\{xyx,zxz,yzy\}}: Specify a pre-measurement rotation.
-        % Operands:
-        \begin{enumerate}
-          \item \IMMEDIATE: \nq{n0}, for angle of first rotation, see below.
-          \item \IMMEDIATE: \nq{d0}, for angle of first rotation, see below.
-          \item \IMMEDIATE: \nq{n1}, for angle of second rotation, see below.
-          \item \IMMEDIATE: \nq{d1}, for angle of second rotation, see below.
-          \item \IMMEDIATE: \nq{n2}, for angle of third rotation, see below.
-          \item \IMMEDIATE: \nq{d2}, for angle of third rotation, see below.
-        \end{enumerate}
+  \item \nq{pmr_\{xyx,zxz,yzy\} <imm0> <imm1> <imm2> <imm3> <imm4> <imm5>}: Specify a pre-measurement rotation.
+
+        \nq{<imm0>}: \nq{n0}, for angle of first rotation, see below.
+        \nq{<imm1>}: \nq{d0}, for angle of first rotation, see below.
+        \nq{<imm2>}: \nq{n1}, for angle of second rotation, see below.
+        \nq{<imm3>}: \nq{d1}, for angle of second rotation, see below.
+        \nq{<imm4>}: \nq{n2}, for angle of third rotation, see below.
+        \nq{<imm5>}: \nq{d2}, for angle of third rotation, see below.
 \end{itemize}
 If a pre-measurement rotation is specified, then three rotations are performed before measuring using a \nq{meas_rot}-command, see below.
 The axes of these rotations as given in the instruction name.
@@ -479,28 +453,24 @@ The remote node should also provide a \nq{recv_epr}-command.
 This command does not initiate the entanglement generation but is used to provide the virtual qubit IDs that should be used for the entangled qubits.
 
 \begin{itemize}
-  \item \nq{create_epr}: Create an EPR pair with a remote node.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: Remote node ID.
-          \item \REGISTER: EPR socket ID.
-          \item \REGISTER: Provides the address to the array containing the virtual qubit IDs for the entangled pairs in this request.
-                The value of the register should contain the address to an array with as many virtual qubit IDs stored as pair requested.
-          \item \REGISTER: Provides the address to the array which holds the rest of the arguments of the entanglement generation to the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
-                The value of the register should contain the address to an array with as entries as arguments in the entanglement generation request to the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer} (except remote node ID and EPR socket ID).
-          \item \REGISTER: Provides the address to the array to which information about the entanglement should be written.
-                The value of the register should contain the address to an array with as many entries as $n_\mathrm{pairs} \times n_\mathrm{args}$, where $num_\mathrm{args}$ is the number of arguments in the entanglement information provided by the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
-        \end{enumerate}
-  \item \nq{recv_epr}: Receive an EPR pair from a remote node.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: Remote node ID.
-          \item \REGISTER: EPR socket ID.
-          \item \REGISTER: Provides the address to the array containing the virtual qubit IDs for the entangled pairs in this request.
-                The value of the register should contain the address to an array with as many virtual qubit IDs stored as pair requested.
-          \item \REGISTER: Provides the address to the array to which information about the entanglement should be written.
-                The value of the register should contain the address to an array with as many entries as $n_\mathrm{pairs} \times n_\mathrm{args}$, where $n_\mathrm{args}$ is the number of arguments in the entanglement information provided by the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
-        \end{enumerate}
+  \item \nq{create_epr <reg0> <reg1> <reg2> <reg3> <reg4>}: Create an EPR pair with a remote node.
+
+        \nq{<reg0>}: Remote node ID.
+        \nq{<reg1>}: EPR socket ID.
+        \nq{<reg2>}: Provides the address to the array containing the virtual qubit IDs for the entangled pairs in this request.
+              The value of the register should contain the address to an array with as many virtual qubit IDs stored as pair requested.
+        \nq{<reg3>}: Provides the address to the array which holds the rest of the arguments of the entanglement generation to the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
+              The value of the register should contain the address to an array with as entries as arguments in the entanglement generation request to the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer} (except remote node ID and EPR socket ID).
+        \nq{<reg4>}: Provides the address to the array to which information about the entanglement should be written.
+              The value of the register should contain the address to an array with as many entries as $n_\mathrm{pairs} \times n_\mathrm{args}$, where $num_\mathrm{args}$ is the number of arguments in the entanglement information provided by the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
+  \item \nq{recv_epr <reg0> <reg1> <reg2> <reg3>}: Receive an EPR pair from a remote node.
+
+        \nq{<reg0>}: Remote node ID.
+        \nq{<reg1>}: EPR socket ID.
+        \nq{<reg2>}: Provides the address to the array containing the virtual qubit IDs for the entangled pairs in this request.
+              The value of the register should contain the address to an array with as many virtual qubit IDs stored as pair requested.
+        \nq{<reg3>}: Provides the address to the array to which information about the entanglement should be written.
+              The value of the register should contain the address to an array with as many entries as $n_\mathrm{pairs} \times n_\mathrm{args}$, where $n_\mathrm{args}$ is the number of arguments in the entanglement information provided by the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
 \end{itemize}
 
 \subsection{Waiting}
@@ -509,30 +479,22 @@ This command does not initiate the entanglement generation but is used to provid
 There are three wait-commands that can wait for entries in arrays to become \emph{defined}, i.e. not \nq{null}.
 Entries in a new array is by default \nq{null} (\emph{undefined}).
 \begin{itemize}
-  \item \nq{wait_all}: Wait for all entries in a given array slice to become not \nq{null}.
-        % Operands:
-        \begin{enumerate}
-          \item \textbf{ARRAY\_SLICE}: Array slice to wait for.
-        \end{enumerate}
-  \item \nq{wait_any}: Wait for any entry in a given array slice to become not \nq{null}.
-        % Operands:
-        \begin{enumerate}
-          \item \textbf{ARRAY\_SLICE}: Array slice to wait for.
-        \end{enumerate}
-  \item \nq{wait_single}: Wait for a single entry in an array to become not \nq{null}.
-        % Operands:
-        \begin{enumerate}
-          \item \textbf{ARRAY\_ENTRY}: Array entry to wait for.
-        \end{enumerate}
+  \item \nq{wait_all <arr-slice>}: Wait for all entries in a given array slice to become not \nq{null}.
+
+        \nq{<arr-slice>}: Array slice to wait for.
+  \item \nq{wait_any <arr-slice>}: Wait for any entry in a given array slice to become not \nq{null}.
+
+        \nq{<arr-slice>}: Array slice to wait for.
+  \item \nq{wait_single <arr-ent>}: Wait for a single entry in an array to become not \nq{null}.
+
+        \nq{<arr-ent>}: Array entry to wait for.
 \end{itemize}
 
 \subsection{Deallocation}
 \begin{itemize}
-  \item \nq{qfree}: Stop using a qubit in the unit module.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The virtual address of the qubit.
-        \end{enumerate}
+  \item \nq{qfree <reg>}: Stop using a qubit in the unit module.
+
+        \nq{<reg>}: Register containing the virtual address of the qubit.
 \end{itemize}
 
 
@@ -541,16 +503,12 @@ Entries in a new array is by default \nq{null} (\emph{undefined}).
 There are two commands for returning data to the \ac{CNPU}.
 These commands indicate that the copy of the memory on the \ac{CNPU} side should be updated, see above.
 \begin{itemize}
-  \item \nq{ret_reg}: Return a register.
-        % Operands:
-        \begin{enumerate}
-          \item \REGISTER: The register to return.
-        \end{enumerate}
-  \item \nq{ret_arr}: Return an array,
-        % Operands:
-        \begin{enumerate}
-          \item \ADDRESS: The address of the array to return.
-        \end{enumerate}
+  \item \nq{ret_reg <reg>}: Return a register.
+
+        \nq{<reg>}: The register to return.
+  \item \nq{ret_arr <addr>}: Return an array,
+
+        \nq{<addr>}: The address of the array to return.
 \end{itemize}
 
 \section{Preprocessing}

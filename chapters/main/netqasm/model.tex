@@ -25,7 +25,7 @@ One crucial difference between the \ac{CNPU} and the \ac{QNPU} is that the \ac{C
 The \ac{QNPU} can communicate classically to synchronize remote entanglement generation, but it does not allow arbitrary user-code classical communication.
 We use this restriction in order for the \ac{QNPU} to have relatively few resource requirements.
 
-The \ac{QNPU} consists of the following components, see \cref{fig:qnpu}:
+The \ac{QNPU} consists of the following components, see \cref{netqasm:fig:qnpu}:
 \begin{itemize}
     \item \textbf{Processor:}
             The processor controls the other components of the \ac{QNPU} and understands how to execute the operations specified by the \ac{CNPU}.
@@ -54,15 +54,15 @@ We do assume that the \ac{QNPU} only has limited classical processing power, and
         the \ac{QNPU} using \ac{NetQASM}. The processor inside the \ac{QNPU} can interact with
         all other components. Channels are connecting components with corresponding
         components in adjacent nodes in the network.}
-    \label{fig:qnpu}
+    \label{netqasm:fig:qnpu}
 \end{figure}
 
 
 
 \subsection{Applications and programs}
-As mentioned in~\cref{netqasm:sec:introduction}, quantum network \textit{applications} (or protocols) are multi-partite and distributed over multiple end-nodes.
+As also mentioned in~\cref{background:sec:applications}, quantum network \textit{applications} (or protocols) are multi-partite and distributed over multiple end-nodes.
 The unit of code that is executed on each of the end-nodes that are part of the application, is called a \textit{program}.
-We will use this terminology throughout the rest of the paper.
+We will use this terminology throughout the rest of this thesis.
 
 As mentioned in the previous section, the end-nodes are modeled such that there is a \ac{CNPU} and a \ac{QNPU}. We assume that execution of quantum network programs is handled by the \ac{CNPU}.
 How exactly the program is executed, and how the \ac{QNPU} is involved herein, is part of the \ac{NetQASM} proposal.

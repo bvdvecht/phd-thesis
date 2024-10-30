@@ -11,7 +11,7 @@ Details on the mode of execution and the \ac{NetQASM}-language are presented in 
 \subsubsection{Execution model}
 As described in \cref{netqasm:sec:abstract_model}, and also in \cref{netqasm:sec:design_considerations} program execution is split across the \ac{CNPU} and the \ac{QNPU}.
 Since the \ac{QNPU} is assumed to have limited processing power (\cref{netqasm:sec:abstract_model}), our design lets the \ac{CNPU} do most of the classical processing.
-The program blocks (\cref{fig:program_decomp}) are hence spread over two separate systems: blocks of purely classical code are executed by the \ac{CNPU}, and blocks of quantum code (containing both quantum operations and limited classical control) are executed by the \ac{QNPU}.
+The program blocks (\cref{netqasm:fig:program_decomp}) are hence spread over two separate systems: blocks of purely classical code are executed by the \ac{CNPU}, and blocks of quantum code (containing both quantum operations and limited classical control) are executed by the \ac{QNPU}.
 
 The quantum code (including limited classical control) is expressed using the \ac{NetQASM} language.
 The classical code is handled completely by the \ac{CNPU}, and we do not impose a restriction to its format.
@@ -23,7 +23,7 @@ Whenever quantum code needs to be executed, the \ac{CNPU} delegates this to the 
 Since processing delay should be minimized (\cref{netqasm:sec:design_considerations}), the communication between \ac{CNPU} and \ac{QNPU} should be minimized.
 Therefore, \ac{NetQASM} bundles the quantum operations together into blocks of instructions, called \textit{subroutines}, to be executed on the \ac{QNPU}.
 A program, then, consists of both both classical code and quantum code, and the quantum code is represented as one or more subroutines.
-These subroutines can be seen as the quantum code blocks of~\cref{fig:program_decomp}.
+These subroutines can be seen as the quantum code blocks of~\cref{netqasm:fig:program_decomp}.
 
 For most programs, we consider subroutines to be sent consecutively in time.
 However, if the \ac{QNPU} supports it, \ac{NetQASM} also allows to send multiple subroutines to be executed on the \ac{QNPU} at the same time, although this requires some extra care when dealing with shared memory.
@@ -34,7 +34,7 @@ Then, the \ac{CNPU} may send subroutines to the \ac{QNPU} for execution.
 
 
 \subsubsection{Shared classical memory}
-Since classical and quantum blocks in the code (as per \cref{fig:program_decomp}) can depend on each other, the \ac{CNPU} and the \ac{QNPU} need to have a way to communicate information to each other.
+Since classical and quantum blocks in the code (as per \cref{netqasm:fig:program_decomp}) can depend on each other, the \ac{CNPU} and the \ac{QNPU} need to have a way to communicate information to each other.
 For example, a subroutine may include a measurement instruction; the outcome of this measurement may be used by the \ac{CNPU} upon completion of the subroutine.
 Therefore, \ac{NetQASM} uses a shared memory model such that conceptually both layers can access and manipulate the same data. This solves the need to return data, and to do conditionals (\cref{netqasm:sec:design_considerations}).
 
@@ -59,14 +59,14 @@ The \ac{QNPU} may directly write to the shared memory, for example when entangle
             quantum internet programs the qubits should on the other hand be
             kept in memory, since they might be entangled with another node and
             intended to be used further.}
-      \label{fig:hybrid}
+      \label{netqasm:fig:hybrid}
 \end{figure}
 
 \subsubsection{Unit modules}
 In order to support systems with multitasking (\cref{netqasm:sec:design_considerations}), \ac{NetQASM} provides a virtualized model of the quantum memory to the program.
 This allows the \ac{QNPU} to do mapping between the virtualized memory and the physical memory and perform scheduling between programs.
 
-The quantum memory for a program is represented by a \textit{unit module} (\cref{fig:topology}).
+The quantum memory for a program is represented by a \textit{unit module} (\cref{netqasm:fig:topology}).
 A unit module defines the topology of the available qubits (which qubits are connected, i.e. on which qubit pairs a two-qubit gate can be executed), plus additional information on each qubit.
 This additional information consists of which gates are possible on which qubit or qubit pair.
 It also specifies if a qubit can be used for remote entanglement generation or not.
@@ -83,7 +83,7 @@ The following sequence of operations provides an example.
     (3) The \ac{CNPU} does some classical processing and waits for a classical message from (the \ac{CNPU} of) R.
     (4) Based on the contents of the message, the \ac{CNPU} sends a new subroutine to the \ac{QNPU} containing instructions to do certain operations on the entangled qubit.
         The subroutine can indeed access this qubit by using the same identifier as the first subroutine, since the quantum memory is still the same.
-        We note the contrast with (non-network) quantum computing, where quantum memory is reset at the end of each block of instructions (\cref{fig:hybrid}).
+        We note the contrast with (non-network) quantum computing, where quantum memory is reset at the end of each block of instructions (\cref{netqasm:fig:hybrid}).
 
 
 Unit modules contain \textit{virtual qubit IDs}.
@@ -125,7 +125,7 @@ Since application A uses the unit module and does not know about the physical me
             possibility of performing joint operations on those qubits, such as
             two-qubit gates, and also containing information about gate
             durations and noise.}
-      \label{fig:topology}
+      \label{netqasm:fig:topology}
 \end{figure}
 
 
@@ -184,7 +184,7 @@ Based on this, the \ac{QNPU} can use the corresponding connection in the network
       \includegraphics[width=0.6\linewidth]{figures/netqasm/nqasm_code_example}
       \caption{Example of NetQASM code for generating a single entangled pair with another node followed by a measurement.
             See the Appendix for more details of the instructions.}
-      \label{fig:nqasm_code_example}
+      \label{netqasm:fig:nqasm_code_example}
 \end{figure}
 
 \subsubsection{Flavors}

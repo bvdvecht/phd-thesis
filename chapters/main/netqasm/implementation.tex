@@ -5,7 +5,7 @@
 Here we explain the flow of messages between the \ac{CNPU} and the \ac{QNPU}.
 The \ac{CNPU} starts by declaring the registration of an application, including resource-requirements for the application.
 After this, the \ac{CNPU} sends some number of subroutines for the \ac{QNPU} to execute before declaring the application is finished.
-See \cref{fig:message_sequence} for a sequence diagram and below for a definition of the messages.
+See \cref{netqasm:fig:message_sequence} for a sequence diagram and below for a definition of the messages.
 In \cref{netqasm:sec:language} we will describe in more details the content of the subroutines and the format of instructions.
 The \ac{QNPU} returns to the \ac{CNPU} an assigned application ID for the registered application and returns data based on the subroutines executed.
 
@@ -16,10 +16,10 @@ For example, while a subroutine is being executed by the \ac{QNPU}, the \ac{CNPU
       \centering
       \includegraphics[width=0.5\linewidth]{figures/netqasm/message-flow.pdf}
       \caption{Flow of messages between the \ac{CNPU} and the \ac{QNPU}.}
-      \label{fig:message_sequence}
+      \label{netqasm:fig:message_sequence}
 \end{figure}
 
-\Cref{fig:message_sequence} shows an example of a message exchange between the \ac{CNPU} and the \ac{QNPU}.
+\Cref{netqasm:fig:message_sequence} shows an example of a message exchange between the \ac{CNPU} and the \ac{QNPU}.
 The content of these messages is further detailed in~\cref{netqasm:sec:app-messages}.
 
 
@@ -39,7 +39,7 @@ Instructions and operands are further specified in~\cref{netqasm:sec:operands}.
 \subsection{Instructions}
 \label{netqasm:sec:instructions}
 There are eight groups of instructions in the \textbf{core} of \ac{NetQASM}.
-Also summarized in \cref{fig:instructions}, these are:
+Also summarized in \cref{netqasm:fig:instructions}, these are:
 \begin{itemize}
       \item \textbf{Classical:} Classical arithmetic on integers.
       \item \textbf{Branch:} Branching operations for performing conditional logic.
@@ -59,17 +59,17 @@ Also summarized in \cref{fig:instructions}, these are:
             instructions. The quantum gates are defined as a set of software-visible
             gates part of a \ac{NetQASM} \textbf{flavor}. The \textbf{vanilla flavor}
             is the unique platform-independent \ac{NetQASM} \textbf{flavor} of
-            \ac{NetQASM}, which can be used by a compiler.}\label{fig:instructions}
+            \ac{NetQASM}, which can be used by a compiler.}\label{netqasm:fig:instructions}
 \end{figure}
 
 Quantum gates are specific to a \ac{NetQASM} \textbf{flavor} and given as a set of software-visible gates of a given platform, see \cref{netqasm:sec:design_considerations}.
-There is a single platform-independent \ac{NetQASM} \textbf{flavor} which we call the \textbf{vanilla flavor}, see \cref{fig:instructions}.
+There is a single platform-independent \ac{NetQASM} \textbf{flavor} which we call the \textbf{vanilla flavor}, see \cref{netqasm:fig:instructions}.
 The \textbf{vanilla flavor} can be used as an intermediate representation for a compiler.
 
 
 \subsection{Compilation}
 Although application programmers could write \ac{NetQASM} subroutines manually, and let their (classical) application code send these subroutines to the \ac{QNPU}, it is useful and more user-friendly to be able to write quantum internet applications in a higher level language, and have the quantum parts compiled to \ac{NetQASM} subroutines automatically.
-For this, we use the compilation steps depicted in \cref{fig:comp_chain}.
+For this, we use the compilation steps depicted in \cref{netqasm:fig:comp_chain}.
 The format and compilation of the higher-level programming language is not part of the \ac{NetQASM} specification.
 However, we do provide an implementation in the form of an SDK, see \cref{netqasm:sec:python-sdk}.
 
@@ -80,5 +80,5 @@ However, we do provide an implementation in the form of an SDK, see \cref{netqas
             \ac{NetQASM} \textbf{flavor} exposed by the specific platform. What is
             contained at each level is further specified to the right of the
             diagram.}
-      \label{fig:comp_chain}
+      \label{netqasm:fig:comp_chain}
 \end{figure*}

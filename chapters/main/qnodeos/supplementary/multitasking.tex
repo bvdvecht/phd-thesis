@@ -19,13 +19,13 @@ We stress that in our multitasking experiments, the exact same physical instruct
 \subsection{Tomography results}
 \label{qnodeos:sec:multitasking-tomography}
 
-We perform tomography when not multi-tasking, in order to verify our expectation that multi-tasking should not affect the quantum performance of \ac{LGT}: The tomography results of the \ac{LGT} application in the multitasking scenario are given in \cref{fig:fig4}c. We also ran the same \ac{LGT} application on the client in a non-multitasking scenario. In this case, the client ran the \ac{LGT} application and there was no \ac{DQC} application run at all (the server did nothing). The tomography results of \ac{LGT} for the non-mulitasking scenario are given in \cref{fig:tomography-no-multitasking}. The results are slightly different since the multitasking experiment was done on a different day than the non-multitasking experiment. However, within error bars we verify that multitasking does not affect the quantum performance of the \ac{LGT} application.
+We perform tomography when not multi-tasking, in order to verify our expectation that multi-tasking should not affect the quantum performance of \ac{LGT}: The tomography results of the \ac{LGT} application in the multitasking scenario are given in \cref{qnodeos:fig:fig4}c. We also ran the same \ac{LGT} application on the client in a non-multitasking scenario. In this case, the client ran the \ac{LGT} application and there was no \ac{DQC} application run at all (the server did nothing). The tomography results of \ac{LGT} for the non-mulitasking scenario are given in \cref{qnodeos:fig:tomography-no-multitasking}. The results are slightly different since the multitasking experiment was done on a different day than the non-multitasking experiment. However, within error bars we verify that multitasking does not affect the quantum performance of the \ac{LGT} application.
 
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/plots/noMT_gate_tomography.png}
 \caption{Local Gate Tomography results on the client node in a non-multitasking scenario.}
-\label{fig:tomography-no-multitasking}
+\label{qnodeos:fig:tomography-no-multitasking}
 \end{figure}
 
 \subsection{Scaling to more than two applications}
@@ -33,9 +33,9 @@ We perform tomography when not multi-tasking, in order to verify our expectation
 
 \subsubsection{QNPU processes and steps}
 
-For the scaling evaluation, we did an experiment for each $N \in \{1, 2, 3, 4, 5\}$. For each experiment, the client \ac{CNPU} started $N$ \ac{DQC}-client programs and $N$ \ac{LGT} programs concurrently (pseudocode in \cref{src:cnpu_runner}), and the server \ac{CNPU} started $N$ \ac{DQC}-server programs. In this section we discuss the observed behavior of the client and server \acp{QNPU} during these experiments. The client \ac{QNPU} has $2N$ user processes ($N$ \ac{DQC} user processes and $N$ LGT user processes), each of which continuously receives quantum blocks in the form of \ac{NetQASM} subroutines (C1 for \ac{DQC} processes and L1 for \ac{LGT} processes). These $2N$ user processes and the single client network process are scheduled by the client \ac{QNPU} scheduler. The server has $N$ user processes (all for \ac{DQC}) which are scheduled together with the server network process by the server \ac{QNPU} scheduler. \cref{fig:multitasking-default} shows a schematic diagram of the nominal (most often occurring) pattern of scheduling.
+For the scaling evaluation, we did an experiment for each $N \in \{1, 2, 3, 4, 5\}$. For each experiment, the client \ac{CNPU} started $N$ \ac{DQC}-client programs and $N$ \ac{LGT} programs concurrently (pseudocode in \cref{src:cnpu_runner}), and the server \ac{CNPU} started $N$ \ac{DQC}-server programs. In this section we discuss the observed behavior of the client and server \acp{QNPU} during these experiments. The client \ac{QNPU} has $2N$ user processes ($N$ \ac{DQC} user processes and $N$ LGT user processes), each of which continuously receives quantum blocks in the form of \ac{NetQASM} subroutines (C1 for \ac{DQC} processes and L1 for \ac{LGT} processes). These $2N$ user processes and the single client network process are scheduled by the client \ac{QNPU} scheduler. The server has $N$ user processes (all for \ac{DQC}) which are scheduled together with the server network process by the server \ac{QNPU} scheduler. \cref{qnodeos:fig:multitasking-default} shows a schematic diagram of the nominal (most often occurring) pattern of scheduling.
 
-In both S1 and C1, there is a single \texttt{create\_epr} \ac{NetQASM} instruction~\cite{dahlberg_2022_netqasm} for creating entanglement with the other node, followed by a \texttt{wait\_all} \ac{NetQASM} instruction that waits until the request entangled qubit is delivered. The \texttt{create\_epr} instruction is handled by the \ac{QNPU} processor by sending the entanglement request to the network stack. Upon executing the \texttt{wait\_all} instruction, the user process executing this subroutine (S1 or C1) goes into the waiting state (green stop sign in \cref{fig:multitasking-default}). When the network process completes (having created the entangled qubit), the user process can be resumed, finishing the subroutine (C1 or S1). 
+In both S1 and C1, there is a single \texttt{create\_epr} \ac{NetQASM} instruction~\cite{dahlberg_2022_netqasm} for creating entanglement with the other node, followed by a \texttt{wait\_all} \ac{NetQASM} instruction that waits until the request entangled qubit is delivered. The \texttt{create\_epr} instruction is handled by the \ac{QNPU} processor by sending the entanglement request to the network stack. Upon executing the \texttt{wait\_all} instruction, the user process executing this subroutine (S1 or C1) goes into the waiting state (green stop sign in \cref{qnodeos:fig:multitasking-default}). When the network process completes (having created the entangled qubit), the user process can be resumed, finishing the subroutine (C1 or S1). 
 
 On the server \ac{QNPU}, for each \ac{DQC} user process $U$ the following sequence is repeated:
 %
@@ -49,7 +49,7 @@ On the server \ac{QNPU}, for each \ac{DQC} user process $U$ the following sequen
     \item $U$ is activated; S2 is executed until completion; $U$ goes to \textit{idle}.
 \end{itemize}
 %
-The above sequence is for one execution of the \ac{DQC} circuit (\cref{fig:fig3}a), and is hence repeated many times.
+The above sequence is for one execution of the \ac{DQC} circuit (\cref{qnodeos:fig:fig3}a), and is hence repeated many times.
 
 On the client \ac{QNPU}, for each \ac{DQC} user process $U$ the following sequence is repeated:
 %
@@ -61,7 +61,7 @@ On the client \ac{QNPU}, for each \ac{DQC} user process $U$ the following sequen
     \item $U$ is activated; C1 is executed until completion; $U$ goes to \textit{idle}.
 \end{itemize}
 %
-The above sequence is for one execution of the \ac{DQC} circuit (\cref{fig:fig3}a), and is hence repeated many times.
+The above sequence is for one execution of the \ac{DQC} circuit (\cref{qnodeos:fig:fig3}a), and is hence repeated many times.
 
 On the client \ac{QNPU}, for each \ac{LGT} user process $U$ the following sequence is repeated:
 %
@@ -71,9 +71,9 @@ On the client \ac{QNPU}, for each \ac{LGT} user process $U$ the following sequen
     \item $U$ is activated; L1 is executed until completion; $U$ goes to \textit{idle}.
 \end{itemize}
 %
-The above sequence is for one execution of the \ac{LGT} circuit (\cref{fig:fig4}a), and is hence repeated many times.
+The above sequence is for one execution of the \ac{LGT} circuit (\cref{qnodeos:fig:fig4}a), and is hence repeated many times.
 
-For the above sequences for user processes, only the internal order is fixed; the time in between steps depends on the \ac{QNPU} scheduler, as well as the time at which the \ac{CNPU} submits subroutines. Furthermore, since there are multiple user processes at the same time (for the server, only for $N > 1$), the above steps happen for each user process $U_i$ and the steps are interleaved. \cref{fig:multitasking-default,fig:multitasking-2-apps,fig:multitasking-wait-on-client} show examples of how these user processes can be interleaved on both client and server \ac{QNPU}.
+For the above sequences for user processes, only the internal order is fixed; the time in between steps depends on the \ac{QNPU} scheduler, as well as the time at which the \ac{CNPU} submits subroutines. Furthermore, since there are multiple user processes at the same time (for the server, only for $N > 1$), the above steps happen for each user process $U_i$ and the steps are interleaved. \cref{qnodeos:fig:multitasking-default,fig:multitasking-2-apps,fig:multitasking-wait-on-client} show examples of how these user processes can be interleaved on both client and server \ac{QNPU}.
 
 \subsubsection{DQC and LGT interleaving}
 

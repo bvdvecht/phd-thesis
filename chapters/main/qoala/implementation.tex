@@ -19,7 +19,7 @@ Our implementation allows researchers to not only test Qoala, but also configure
 
 \subsection{Scheduler implementation}
 In our implementation, we use a two-level hierarchical scheduler architecture,
-consisting of a node-wide \textit{node scheduler} which controls two \textit{processor schedulers}, one for the CPS and one for the QPS (Figure~\ref{fig:scheduler_impl}, details in Appendix~\ref{qoala:sec:app:scheduling_execution}).
+consisting of a node-wide \textit{node scheduler} which controls two \textit{processor schedulers}, one for the CPS and one for the QPS (Figure~\ref{qoala:fig:scheduler_impl}, details in Appendix~\ref{qoala:sec:app:scheduling_execution}).
 Such an approach has been used in other contexts not related to quantum networks~\cite{polychronopoulos1991hierarchical, girkar1994hierarchical}.
 
 Each scheduler maintains their own task graph.
@@ -39,7 +39,7 @@ In our evaluation (Section~\ref{qoala:sec:evaluation}), deadlines are used as \t
     \caption{Overview of our hierarchical scheduler implementation.
     The node scheduler maintains a graph of all tasks. The CPS and QPS maintain partial graphs with only tasks they can execute themselves. Partial graphs are updated by the node scheduler. 
     The CPS scheduler has access to a buffer with classical messages from other nodes, activating \texttt{HostEvent} tasks. The QPS scheduler has access to the network schedule, determining allowed start times of \texttt{Pair} tasks.}
-    \label{fig:scheduler_impl}
+    \label{qoala:fig:scheduler_impl}
 \end{figure}
 
 

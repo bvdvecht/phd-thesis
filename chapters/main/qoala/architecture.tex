@@ -1,7 +1,7 @@
 \section{Architecture}
 \label{qoala:sec:architecture}
 
-Based on these design considerations, we propose Qoala (see Fig.~\ref{fig:runtime_overview}), an execution environment for programmable nodes in a quantum internet. 
+Based on these design considerations, we propose Qoala (see Fig.~\ref{qoala:fig:runtime_overview}), an execution environment for programmable nodes in a quantum internet. 
 Provided minimal hardware assumptions are met (Section~\ref{qoala:sec:minimal_hardware_assumptions}), 
 each node implements its own Qoala execution environment, supporting a specific \textit{program structure} (Section~\ref{qoala:sec:program_structure})
 and implementing a specific \textit{runtime environment} (Section~\ref{qoala:sec:runtime_environment}) that is able to \textit{schedule tasks} (Sections~\ref{qoala:sec:tasks}--\ref{qoala:sec:scheduling}).
@@ -10,7 +10,7 @@ Details in Appendices~\ref{qoala:sec:app:program_structure}, \ref{qoala:sec:app:
 \subsection{Minimal hardware assumptions}
 \label{qoala:sec:minimal_hardware_assumptions}
 
-Qoala is based on only a few core assumptions on the processing node (Figure~\ref{fig:minimal_hardware_assumptions}):
+Qoala is based on only a few core assumptions on the processing node (Figure~\ref{qoala:fig:minimal_hardware_assumptions}):
 
 \textit{CPS-QPS distinction}. We assume the node distinguishes between a \textit{classical processing system (CPS)} managing classical computing resources (e.g. CPU, classical memory and networking), and a \textit{quantum processing system (QPS)}, responsible for executing quantum operations (gates, measurements, entanglement generation) on quantum hardware including a quantum memory as in~\cite{dahlberg2022netqasm, pompili2022experimental}.
 Unlike prior work, we assume a shared classical memory is accessible to both the CPS and QPS, enabling communication between the two processing systems, addressing the interactive property of quantum internet programs.
@@ -26,7 +26,7 @@ The scheduler controls both CPS and QPS execution, and may physically be realize
     \centering
     \includegraphics[width=\columnwidth]{figures/qoala/minimal-hardware.png}
     \caption{Minimal hardware assumptions for a single node.}
-    \label{fig:minimal_hardware_assumptions}
+    \label{qoala:fig:minimal_hardware_assumptions}
 \end{figure}
 
 
@@ -43,7 +43,7 @@ Local routines and request routines can be triggered from within host code as fu
 A Qoala program is an \textit{executable} and output of a compiler.
 The format is separate from any high-level language in which a programmer might write code; hence Qoala in theory allows for compatibility with any such language.
 Entry and exit points of a program are in host code.
-Figure~\ref{fig:example_program} shows an example program in text format.
+Figure~\ref{qoala:fig:example_program} shows an example program in text format.
 We contrast Qoala's program format with that of~\cite{dahlberg2022netqasm}, in which there was no way to compile across classical and quantum code segments.
 A Qoala program has \textit{program arguments} that are filled in during program instantiation (Section~\ref{qoala:sec:program_instantiation}).
 
@@ -58,7 +58,7 @@ A Qoala program has \textit{program arguments} that are filled in during program
     Multiple program instances may exist at the same time (both multiple instances of the same or different programs).
     All tasks from all instances are added to a single task graph (Section~\ref{qoala:sec:tasks}) used by the scheduler.
     }
-    \label{fig:runtime_overview}
+    \label{qoala:fig:runtime_overview}
 \end{figure}
 
 
@@ -109,7 +109,7 @@ VQMS information like qubit connectivity and noise characteristics is provided b
 The VQMS enables multitasking since programs have their own runtime context, while a scheduler (Section~\ref{qoala:sec:scheduling}) sees the whole physical memory space and can schedule programs accordingly.
 
 \textit{Remote interaction}. For interaction with programs on remote nodes,
-the runtime provides \textit{classical sockets} and \textit{EPR sockets} based on~\cite{dahlberg2022netqasm}. Host code uses classical sockets for sending and receiving messages; EPR sockets are indicated in request routines (see e.g. Figure~\ref{fig:example_program}).
+the runtime provides \textit{classical sockets} and \textit{EPR sockets} based on~\cite{dahlberg2022netqasm}. Host code uses classical sockets for sending and receiving messages; EPR sockets are indicated in request routines (see e.g. Figure~\ref{qoala:fig:example_program}).
 
 \begin{figure}% [ht]
     \centering
@@ -118,15 +118,15 @@ the runtime provides \textit{classical sockets} and \textit{EPR sockets} based o
         Example Qoala program containing a host section with 4 blocks, a local routine (\texttt{subrt1}),
         and a request routine (\texttt{req1}). Block \texttt{b2} has a relative deadline to \texttt{b0} of $0.1$ times qubit noise parameter $T_2$.
     }
-    \label{fig:example_program}
+    \label{qoala:fig:example_program}
 \end{figure}
 
 \begin{figure*}
     \newcommand{\figheight}{6.5cm}
     \centering
-    \subfloat[\centering \label{fig:task_types}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task-types-table.png}}}%
+    \subfloat[\centering \label{qoala:fig:task_types}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task-types-table.png}}}%
     \hfill
-    \subfloat[\centering \label{fig:task_creation_cutout}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task_creation_cutout.png}}}%
+    \subfloat[\centering \label{qoala:fig:task_creation_cutout}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task_creation_cutout.png}}}%
     \caption{
         (a) Overview of task types.
         (b) Examples of host code and corresponding task graphs.
@@ -135,14 +135,14 @@ the runtime provides \textit{classical sockets} and \textit{EPR sockets} based o
         The graph consists of two separate chains of tasks and the scheduler can choose in which order to execute these chains (possibly interleaved).
         Bottom: a request routine uses the callback entry to immediately add tasks for executing local routine \texttt{cb} after each entangled pair generation.
     }%
-    \label{fig:tasks}
+    \label{qoala:fig:tasks}
 \end{figure*}
 
 \subsection{Tasks}
 \label{qoala:sec:tasks}
 We introduce \textit{tasks} to enable multitasking.
 Each task represents a code segment of a running program with a context of runtime variables.
-Tasks have different types (Figure~\ref{fig:tasks}) based on the code they represent.
+Tasks have different types (Figure~\ref{qoala:fig:tasks}) based on the code they represent.
 By splitting a program into distinct executable tasks, 
 we can utilize the parallel execution on the CPS and QPS (by assigning tasks to the corresponding system),
 and we can interleave execution of multiple programs by filling waiting times of one program by execution of tasks of another.
@@ -170,12 +170,12 @@ Request routine calls are handled similarly (with \texttt{SinglePair} or \texttt
 \texttt{MultiPair} tasks can be more time- and resource efficient since the network stack can handle multiple pair generations at once.
 Callback tasks for local routines acting as entanglement generation callbacks allow quick successive execution.
 For each task, its expected duration is calculated based on the metadata of the corresponding block or routine in the program, together with information from the EHI (see below).
-See Figure~\ref{fig:task_types} for task types and Figure~\ref{fig:task_creation_cutout} for examples of host code and corresponding tasks (details in Appendix~\ref{qoala:sec:app:scheduling_execution}).
+See Figure~\ref{qoala:fig:task_types} for task types and Figure~\ref{qoala:fig:task_creation_cutout} for examples of host code and corresponding tasks (details in Appendix~\ref{qoala:sec:app:scheduling_execution}).
 
 
 \subsection{Program instantiation}
 \label{qoala:sec:program_instantiation}
-A program is part of an application that uses entanglement generation orchestrated by a network controller (Figure~\ref{fig:program_illustration}).
+A program is part of an application that uses entanglement generation orchestrated by a network controller (Figure~\ref{qoala:fig:program_illustration}).
 Therefore, before execution, the program must align with the other programs of its application as well as with the network controller.
 (1) \textit{Capability negotiation and entanglement demand registration}.
 First, all collaborating nodes exchange their EHI and agree on concrete values for deadlines and task duration estimations (using advice pre-computed by the compiler).

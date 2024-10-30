@@ -35,7 +35,7 @@ This lead to certain problems, also discussed in the evaluation of Qoala (\cref{
   \item Compilation slows down execution:
     Since compilation needs to happen at runtime, overall execution time increases.
     This can be especially bad if quantum states must stay alive during this compilation time.
-    This can be seen clearly in \cref{fig:fig3}.
+    This can be seen clearly in \cref{qnodeos:fig:fig3}.
   \item No cross-compilation possible:
     Since code is interpreted on the fly, optimizations taking into account future code cannot be made. See \cref{compiler:lst:hybrid} for a simple example piece of code that cannot be optimized further in NetQASM/QNodeOS.
 \end{itemize}
@@ -219,8 +219,8 @@ This enables the compiler to perform optimizations on the mixed classical-quantu
 
 \paragraph{Networking operations}
 Network operations (i.e. classical communication and entanglement generation) are slow compared to local operations.
-For example, waiting to receive a classical message can take in the order of milliseconds (see \cref{fig:fig2}).
-Also, entanglement generation may take milliseconds (\cref{fig:delcomp-epr-rate}).
+For example, waiting to receive a classical message can take in the order of milliseconds (see \cref{qnodeos:fig:fig2}).
+Also, entanglement generation may take milliseconds (\cref{qnodeos:fig:delcomp-epr-rate}).
 By contrast, individual local quantum operations like gates take only microseconds (\cref{tab:gate_durations}) and local classical operations can be as fast as nanoseconds.
 As can be seen in \cref{tab:exp_durations}, most of the time is spent on network processing.
 
@@ -229,7 +229,7 @@ Because of the comparably long duration of network operations, special attention
 This may mean that the compiler should re-order operations (without changing the behavior of the program) around network operations, such as exemplified in \cref{compiler:lst:reorder-network-ops}.
 
 \paragraph{Non-deterministic durations}
-Not only are network-related operations slow, their duration is also non-deterministic (\cref{fig:delcomp-latencies-variance} and \cref{fig:delcomp-epr-rate}).
+Not only are network-related operations slow, their duration is also non-deterministic (\cref{qnodeos:fig:delcomp-latencies-variance} and \cref{qnodeos:fig:delcomp-epr-rate}).
 Even with optimizations (like re-ordering local operations) to minimize the time that quantum memory must remain alive, an network operation (such as entanglement generation) may take too long --- resulting in a too low quantum memory to produce meaningful results.
 This raises two points:
 (1) the compiler can use Qoala's feature of \emph{deadlines}: by adding (relative) deadlines to (parts of) the code, the compiler can hint to the scheduler to, at runtime, either abort the program or to retry a certain piece of code

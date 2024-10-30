@@ -93,7 +93,7 @@ However, we are free to do step 6 before step 4 and 5, since these single-qubit 
 Let's now consider what impact this decision of measuring $q_s$ before $q_t$ or not has on the quality of execution for a NV-platform.
 
 One of the biggest restrictions on a NV-platform is the topology of the qubits.
-In particular, the NV-platform has a single communication-qubit (electron) surrounded by some number of storage qubits (carbon spins), see for example \cref{fig:topology}.
+In particular, the NV-platform has a single communication-qubit (electron) surrounded by some number of storage qubits (carbon spins), see for example \cref{netqasm:fig:topology}.
 The single communication qubit is not only responsible for any remote entanglement generation but also for any two-qubit gate and is the only qubit that can be directly measured.
 These restrictions require qubit states to be moved back and forth between the communication qubit and the storage qubits in order to free up the communication qubit, to create new entanglement or to measure another qubit.
 Since the operation of moving a qubit state is relatively slow on this platform (up to a millisecond~\cite{Humphreys2018}) and adds noise to the qubits, it is important to try to minimize the number of moves needed.
@@ -111,11 +111,11 @@ Afterwards, $q_t$ can be moved to the communication qubit, which is cleared afte
 The decision of performing step 6 before 4 and 5 is highly dependent on the NV-platform and can only be made by a compiler that is aware about these restrictions.
 The inclusion of unit-modules and qubit types in the \ac{NetQASM}-framework, which are exposed to the compiler at the \ac{CNPU}, allows for these optimization decision and can therefore improve the quality of execution.
 
-For the two scenarios we consider, i.e. performing step 6 before 4 and 5 (\textbf{Unit modules (UM)}) or not (\textbf{No unit-modules (NUM)}), we check the average fidelity of the teleported state as a function of the gate noise (\cref{fig:sweep_gate_noise}), as well as the average fidelity and execution time as a function of gate duration (\cref{fig:sweep_gate_noise}), of the native two-qubit gate of the NV-platform. We see that performing step 6 before 4 and 5 improves both total execution time and average fidelity.
+For the two scenarios we consider, i.e. performing step 6 before 4 and 5 (\textbf{Unit modules (UM)}) or not (\textbf{No unit-modules (NUM)}), we check the average fidelity of the teleported state as a function of the gate noise (\cref{netqasm:fig:sweep_gate_noise}), as well as the average fidelity and execution time as a function of gate duration (\cref{netqasm:fig:sweep_gate_noise}), of the native two-qubit gate of the NV-platform. We see that performing step 6 before 4 and 5 improves both total execution time and average fidelity.
 This can be explained by the fact that using unit modules allowed a compiler to produce \ac{NetQASM} code containing fewer two-qubit gates.
 Therefore, an increase in two-qubit gate noise leads to a lower fidelity.
 Also, an increase in two-qubit gate duration leads to higher execution time difference between the two scenarios.
-Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does not affect the final fidelity in this situation, but the difference between using unit modules versus not using them remains.
+Finally, \cref{netqasm:fig:sweep_gate_noise} shows that the two-qubit gate duration does not affect the final fidelity in this situation, but the difference between using unit modules versus not using them remains.
 
 
 \begin{figure}[t]
@@ -130,7 +130,7 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
         two-qubit gate is set to 0.5 ms. The rest of the parameters used are
         listed in \cref{netqasm:sec:simulation}. Each point is the average over each of
         the six Pauli states as initial state, repeated 100 times.}
-    \label{fig:sweep_gate_noise}
+    \label{netqasm:fig:sweep_gate_noise}
 \end{figure}
 
 \begin{figure}[t]
@@ -147,7 +147,7 @@ Finally, \cref{fig:sweep_gate_noise} shows that the two-qubit gate duration does
         point is the average over each of the six Pauli state as initial state,
         repeated 100 times. In both figures, error bars are smaller than the drawn
         dots.}
-  \label{fig:sweep_gate_time}
+  \label{netqasm:fig:sweep_gate_time}
 \end{figure}
 
 
@@ -161,7 +161,7 @@ Here we evaluate if flavors really impact potential performance, and if so how m
 We show that platform-specific optimization can indeed improve application performance, and that there are such optimizations that are not possible without flavors.
 We see that it has impact mostly on the execution time, but not necessarily on outcome quality.
 
-We consider the blind computation application depicted in \cref{fig:bqc_app}, where both the client and server node implement the NV hardware.
+We consider the blind computation application depicted in \cref{netqasm:fig:bqc_app}, where both the client and server node implement the NV hardware.
 Again we compare two scenarios, in this case:
 \begin{itemize}
   \item \textbf{Vanilla}.
@@ -178,7 +178,7 @@ The SDK automatically compiles the relevant parts of these programs into \ac{Net
 Classical communication (values $\delta_1$, $m_1$ and $\delta_2)$ is done purely between the two simulated \ac{CNPU}s, so these operations are not compiled to \ac{NetQASM} subroutines.
 More details about the simulation can be found in \cref{netqasm:sec:simulation}.
 
-The protocol is a verifiable blind quantum protocol~\cite{fitzsimons2017unconditionally}, which means that the circuit in~\cref{fig:bqc_app} is run multiple times, namely once per round.
+The protocol is a verifiable blind quantum protocol~\cite{fitzsimons2017unconditionally}, which means that the circuit in~\cref{netqasm:fig:bqc_app} is run multiple times, namely once per round.
 Some of these rounds are \textit{trap rounds} in which the client chooses a special set of input values.
 Such a trap round can either succeed or fail, depending on the values returned by the server.
 The fraction of trap rounds that fail is called the error rate.
@@ -186,7 +186,7 @@ The error rate should stay low in order for the computation to be blind.
 
 We simulate the BQC application by running the client's and server's programs in SquidASM.
 We look at the error rate of the trap round as a function of the two-qubit gate noise.
-The result can be seen in~\cref{fig:plot_bqc}.
+The result can be seen in~\cref{netqasm:fig:plot_bqc}.
 It can be seen that using the NV flavor provides a better (lower) error rate than using the vanilla flavor.
 This can be explained by noting that \ac{NetQASM} instructions in the vanilla flavor are mapped ad-hoc to native NV gates by the \ac{QNPU} at runtime, which leads to more two-qubit gates in total.
 
@@ -206,7 +206,7 @@ This can be explained by noting that \ac{NetQASM} instructions in the vanilla fl
       (-1)^{m_1} \cdot (\beta - \theta_2 + p_2 \cdot \pi)$ to the server.
     The qubit state $q$ is the result of this application.
   }
-  \label{fig:bqc_app}
+  \label{netqasm:fig:bqc_app}
 \end{figure}
 
 
@@ -214,16 +214,16 @@ This can be explained by noting that \ac{NetQASM} instructions in the vanilla fl
   \centering
   \includegraphics[scale=0.8]{figures/netqasm/plots/bqc_sweep_gate_noise_trap.png}
   \caption{
-    Average error rate of trap rounds for the circuit of~\cref{fig:bqc_app}.
+    Average error rate of trap rounds for the circuit of~\cref{netqasm:fig:bqc_app}.
     Each point is the average over four combinations of $\theta_1$ and $\theta_2$,
     each used in 500 trap rounds. It can be seen that using the vanilla (platform-independent)
     \ac{NetQASM} flavor results in a worse (higher) error rate on average.}
-  \label{fig:plot_bqc}
+  \label{netqasm:fig:plot_bqc}
 \end{figure}
 
 To gain some more insight into why using the NV flavor provides a lower error rate we also look at the fidelity of the two quantum states on the server before any local gates are applied.
-As can be seen in~\cref{fig:bqc_app}, the client remotely prepares two states on the server by twice creating entanglement and measuring its own half of the EPR pair.
-In~\cref{fig:plot_bqc_fidelity} we see that already during this remote state preparation phase the NV flavor outperforms the vanilla flavor in terms of the fidelity of the prepared states.
+As can be seen in~\cref{netqasm:fig:bqc_app}, the client remotely prepares two states on the server by twice creating entanglement and measuring its own half of the EPR pair.
+In~\cref{netqasm:fig:plot_bqc_fidelity} we see that already during this remote state preparation phase the NV flavor outperforms the vanilla flavor in terms of the fidelity of the prepared states.
 
 \begin{figure}[t]
   \centering
@@ -238,9 +238,9 @@ In~\cref{fig:plot_bqc_fidelity} we see that already during this remote state pre
         prepared state. Since the fidelity of the second prepared state only
         depends on the link entanglement generation, there is no difference
         between using vanilla or NV instructions. The values are from the same
-        simulation experiment as for ~\cref{fig:plot_bqc}. Error bars are
+        simulation experiment as for ~\cref{netqasm:fig:plot_bqc}. Error bars are
         negligible.}
-  \label{fig:plot_bqc_fidelity}
+  \label{netqasm:fig:plot_bqc_fidelity}
 \end{figure}
 
 \subsection{Relation to other results}

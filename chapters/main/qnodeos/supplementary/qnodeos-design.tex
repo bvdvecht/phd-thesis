@@ -9,11 +9,13 @@ We proceed with a more detailed description of the \ac{QNodeOS} architecture and
 \subsubsection{Quantum Network Node System}
 \label{qnodeos:sec:appendix-arch-node_system}
 
-Within a quantum network, one can distinguish between two main types of node: \emph{end nodes}, which are used by the users to execute quantum network applications, and \emph{intermediate nodes}, that perform routines necessary to connect two or more end nodes. We refer the reader with a background in computer science to~\cite{vanMeter_book} for a gentle introduction to quantum networks. 
+Within a quantum network, one can distinguish between two main types of node: \emph{end nodes}, which are used by the users to execute quantum network applications, and \emph{intermediate nodes}, that perform routines necessary to connect two or more end nodes.
+We refer the reader with a background in computer science to~\cite{vanMeter_book} for a gentle introduction to quantum networks. 
 
-We remark that \ac{QNodeOS}---a real-time system for quantum network nodes---is designed to be deployed on end and intermediary nodes, where \ac{QNodeOS} use on intermediary nodes can be restricted to facilitate entanglement generation over the network via a (series) of intermediate nodes. As the focus of this paper is the execution of quantum network application, we focus here on running \ac{QNodeOS} on end nodes.
+We remark that \ac{QNodeOS}---a real-time system for quantum network nodes---is designed to be deployed on end and intermediary nodes, where \ac{QNodeOS} use on intermediary nodes can be restricted to facilitate entanglement generation over the network via a (series) of intermediate nodes.
+As the focus of this thesis is the execution of quantum network application, we focus here on running \ac{QNodeOS} on end nodes.
 
-In our model, as depicted in~\cref{fig:fig2}a, we divide the functions of a node into three high-level components:
+In our model, as depicted in~\cref{qnodeos:fig:fig2}a, we divide the functions of a node into three high-level components:
 
 \begin{itemize}
 \item a \emph{\ac{CNPU}}, on which classical blocks of code are executed. The \emph{CNPU} is required at end nodes, and requires classical computing hardware (including a classical \ac{CPU}), as well as a classical network device to allow the exchange of messages with the \ac{CNPU} of remote nodes. While quantum networking programs can in principle be developed and compiled outside of the \ac{CNPU}), the \emph{CNPU} may also realize a user environment where quantum networking programs (refer to \cref{qnodeos:sec:design:network-application}) are developed and compiled, and where program results are stored; 
@@ -58,7 +60,7 @@ The \ac{CNPU} then registers the program on the \ac{QNPU}. Later, \ac{NetQASM} s
 
 \paragraph{QNPU Processing}
 
-When a program is registered with the \ac{QNPU} by the \ac{CNPU}, the \ac{QNPU} creates a user process to store program data and execution state. The \ac{QNPU} also keeps track of \ac{NetQASM} subroutines belonging to the user process, which may be submitted only later, as well as other run-time data analogous to what a typical process control block contains, useful for the execution of the program. As depicted in~\cref{fig:fig2}a, a subroutine can, in general, be composed of three classes of instructions:
+When a program is registered with the \ac{QNPU} by the \ac{CNPU}, the \ac{QNPU} creates a user process to store program data and execution state. The \ac{QNPU} also keeps track of \ac{NetQASM} subroutines belonging to the user process, which may be submitted only later, as well as other run-time data analogous to what a typical process control block contains, useful for the execution of the program. As depicted in~\cref{qnodeos:fig:fig2}a, a subroutine can, in general, be composed of three classes of instructions:
 
 \begin{itemize}
 \item \emph{Quantum operations}: quantum physical operations, to be performed on the underlying quantum device;
@@ -86,15 +88,15 @@ As we remarked in~\cref{qnodeos:sec:appendix-arch-node_system}, a \ac{QDevice} h
 \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/qnodeos-stack.pdf}
 \end{center}
 \caption[]{\ac{QNPU} stack. The \emph{\ac{QNPU} \acs{API} handler} and \emph{the \ac{QNPU} core} form the central processing layers, and are independent of the underlying quantum physical platform and of the device where \ac{QNodeOS} runs. The \emph{\ac{CNPU} communication handler} translates protocol-specific messages from the \ac{CNPU} into \acs{API} calls. The \emph{\ac{QDevice} driver} (or \ac{QDriver}) abstracts the \ac{QDevice} hardware. The \emph{Platform} layer abstracts the hardware where \ac{QNodeOS} runs, and is accessible to all other layers. Note that three other \ac{API} types are implemented, i.e. \emph{control}, \emph{management}, and \emph{operations}. Control \ac{API} is used for the network schedule, while management and operations \ac{API} are for operational purposes. }
-\label{fig:qnodeos-stack}
+\label{qnodeos:fig:qnodeos-stack}
 \end{figure}
 
-\ac{QNodeOS} is a system consisting of multiple abstraction layers, as depicted in \cref{fig:qnodeos-stack}. It is designed to be platform-independent, i.e., independent of the underlying quantum physical platform (quantum hardware) controlled by \ac{QNodeOS}, where connections to different realizations of \ac{QDevice} are captured by a platform-dependent \ac{QDriver}. The implementation of \ac{QNodeOS} itself is of course dependent on the classical physical platform(s) on which \ac{QNodeOS} is implemented, including the physical interface between the \ac{CNPU} and \ac{QNPU}.
+\ac{QNodeOS} is a system consisting of multiple abstraction layers, as depicted in \cref{qnodeos:fig:qnodeos-stack}. It is designed to be platform-independent, i.e., independent of the underlying quantum physical platform (quantum hardware) controlled by \ac{QNodeOS}, where connections to different realizations of \ac{QDevice} are captured by a platform-dependent \ac{QDriver}. The implementation of \ac{QNodeOS} itself is of course dependent on the classical physical platform(s) on which \ac{QNodeOS} is implemented, including the physical interface between the \ac{CNPU} and \ac{QNPU}.
 
 \subsubsection{QNPU API}
 \label{qnodeos:sec:QNPU-api}
 
-At the center of the stack lie the \emph{the \ac{QNPU} \ac{API} handler} layer and the \emph{the \ac{QNPU} core} layer. The \ac{API} handler is responsible for listening to system calls made to the the \ac{QNPU} \ac{API}, and to relay these calls to the appropriate component inside of the core layer. Such system calls may originate from the \ac{CNPU} via the \emph{CNPU communication handler}, see again~\cref{fig:qnodeos-stack}. 
+At the center of the stack lie the \emph{the \ac{QNPU} \ac{API} handler} layer and the \emph{the \ac{QNPU} core} layer. The \ac{API} handler is responsible for listening to system calls made to the the \ac{QNPU} \ac{API}, and to relay these calls to the appropriate component inside of the core layer. Such system calls may originate from the \ac{CNPU} via the \emph{CNPU communication handler}, see again~\cref{qnodeos:fig:qnodeos-stack}. 
 
 The \ac{QNPU} \ac{API} is the central engine for managing the execution of local quantum operations and entanglement requests, and manages the hardware resources of the \ac{QDevice}. The \ac{QNPU} \ac{API} exposes services to:
 %
@@ -137,7 +139,7 @@ The \ac{QNPU} also defines \emph{kernel processes}, which are similar to user pr
 \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/process-states.pdf}
 \end{center}
 \caption[]{Process state diagram. An \emph{idle} process becomes \emph{ready} when a block for that process is loaded onto the \ac{QNPU} (from the \ac{CNPU}). A ready process becomes \emph{running} when it is scheduled. A running process goes back to idle if all blocks are completed, or transitions to \emph{waiting} if it expects an event to occur before it can proceed. A waiting process becomes ready again when the expected event occurs.}
-\label{fig:process-states}
+\label{qnodeos:fig:process-states}
 \end{figure}
 
 \paragraph{QNPU process states}
@@ -151,7 +153,7 @@ A \ac{QNPU} process can be in any of the following states:
 \item \emph{Waiting}: when it is waiting for some event to occur.
 \end{inlinelist}
 %
-\Cref{fig:process-states} shows the possible process states and the valid state transitions. A process transitions from idle to ready when one block gets added. A ready process transitions to running when the the \ac{QNPU} scheduler assigns it to the processor. A running process transitions to waiting when it has to wait for an event to occur, and transitions from waiting to ready when the event occurs---for instance, a process could be waiting for an \ac{EPR} pair to be generated, and become ready again when the pair is established. Finally, a process goes back to the idle state when all its blocks have been completed.
+\Cref{qnodeos:fig:process-states} shows the possible process states and the valid state transitions. A process transitions from idle to ready when one block gets added. A ready process transitions to running when the the \ac{QNPU} scheduler assigns it to the processor. A running process transitions to waiting when it has to wait for an event to occur, and transitions from waiting to ready when the event occurs---for instance, a process could be waiting for an \ac{EPR} pair to be generated, and become ready again when the pair is established. Finally, a process goes back to the idle state when all its blocks have been completed.
 
 \paragraph{Inter-process communication}
 
@@ -165,12 +167,12 @@ The strict separation between local quantum processing and quantum networking is
 \centering
 \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/process-flow.pdf}
 \caption{Flow of execution between a user process requesting entanglement and the network process responsible for generating entanglement. The user process starts by asynchronously issuing an entanglement request. Once issued, it is free to continue with other local operations or classical processing. Once it reaches a point in its execution where entanglement is required the process enters the waiting state. The network process is scheduled once the appropriate time bin (as determined by the network schedule) starts. Once running, it attempts entanglement generation until entanglement success (or until a set timeout). The entangled qubit is then transferred to the user process. This unblocks the process which consumes the entanglement and releases the qubit. In our experiments, the process always immediately waits after requesting entanglement (no local operations are done in between).}
-\label{fig:process-flow}
+\label{qnodeos:fig:process-flow}
 \end{figure}
 
 \paragraph{Process flow}
 
-\cref{fig:process-flow} illustrates the typical control flow between a user process and the network process. User processes are free to execute any non-networked instructions independently of the network process and other user processes. Once the program reaches a point in its execution where an entangled qubit is required, the process enters the waiting state and is flagged as waiting for entanglement. When the network process is scheduled, it issues network instructions and generates entanglement as requested by the user process. Once an entangled pair is generated by the network process, the qubit is handed over to the waiting user process. When all the entangled pairs that the user process was waiting for are delivered, the user process becomes ready and can start running again.
+\cref{qnodeos:fig:process-flow} illustrates the typical control flow between a user process and the network process. User processes are free to execute any non-networked instructions independently of the network process and other user processes. Once the program reaches a point in its execution where an entangled qubit is required, the process enters the waiting state and is flagged as waiting for entanglement. When the network process is scheduled, it issues network instructions and generates entanglement as requested by the user process. Once an entangled pair is generated by the network process, the qubit is handed over to the waiting user process. When all the entangled pairs that the user process was waiting for are delivered, the user process becomes ready and can start running again.
 
 \subsubsection{Process Scheduling}
 \label{qnodeos:sec:design:scheduling}
@@ -179,14 +181,14 @@ At present, the the \ac{QNPU} scheduler does not give any guarantees on when a p
 
 As already mentioned, \ac{QNodeOS} defines the concept of \emph{user} processes and \emph{kernel} processes, with the \ac{QNetStack} process being the only kernel process at the moment. User processes are released (i.e., they become ready) asynchronously---when a process block is loaded, or when they leave the waiting state---while the \ac{QNetStack} process is released periodically---at the beginning of each time bin of the network schedule (although the period of time bins can vary). Given that generating an \ac{EPR} pair on a link requires that both nodes attempt entanglement simultaneously, the \ac{QNPU} assigns the \ac{QNetStack} process a priority higher than any user process. This ensures that, at the beginning of each time bin of the network schedule, the \emph{priority-based} process scheduler can assign the \ac{QNetStack} process as soon as the processor is available, and thus a node can start attempting entanglement with its neighbor as soon as possible and minimize wasted attempts on the neighbor node.
 
-\Cref{fig:scheduling-impl} exemplifies a snapshot of a hypothetical execution of a user process and the \ac{QNetStack} process. The latter is activated at the beginning of a time-bin assigned to networking, and is scheduled as soon as the processor is available---for instance, at times $0$ and $4$ it is scheduled immediately, while at time $8$ it is scheduled after one time unit, as soon as the running process yields. The user process becomes ready at time $0$---at which point the \ac{QNetStack} process is ready as well and has highest priority, meaning the network process is scheduled; then it is scheduled at time $2$, as soon as the \ac{QNetStack} process completes; then it goes into waiting state at time $3$ because the user process requested entanglement and it waits for the entanglement to be established; finally it becomes ready again at time $7$---and it is scheduled immediately given that no other processes are running.
+\Cref{qnodeos:fig:scheduling-impl} exemplifies a snapshot of a hypothetical execution of a user process and the \ac{QNetStack} process. The latter is activated at the beginning of a time-bin assigned to networking, and is scheduled as soon as the processor is available---for instance, at times $0$ and $4$ it is scheduled immediately, while at time $8$ it is scheduled after one time unit, as soon as the running process yields. The user process becomes ready at time $0$---at which point the \ac{QNetStack} process is ready as well and has highest priority, meaning the network process is scheduled; then it is scheduled at time $2$, as soon as the \ac{QNetStack} process completes; then it goes into waiting state at time $3$ because the user process requested entanglement and it waits for the entanglement to be established; finally it becomes ready again at time $7$---and it is scheduled immediately given that no other processes are running.
 
 \begin{figure}
 \begin{center}
 \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/scheduling-impl.pdf}
 \end{center}
 \caption[]{Snapshot of a hypothetical execution of a user process and the \ac{QNetStack} process. The higher-priority \ac{QNetStack} process is activated at the start of each time bin of the network schedule, and it is assigned to the processor as soon as it is available. The lower-priority user process gives precedence to the \ac{QNetStack} process when they become ready at the same time, but, when it is running on the processor, it is not preempted if the \ac{QNetStack} process becomes ready while the user process is running. Black arrows represents a moment where the process goes into the ready state and the green stop sign (at time $3$) represents a process going into the waiting state.}
-\label{fig:scheduling-impl}
+\label{qnodeos:fig:scheduling-impl}
 \end{figure}
 
 To avoid context switching overhead, potentially leading to degraded fidelity, the \ac{QNPU} scheduler is \emph{cooperative}. That is, once a process is scheduled, it gets to run until it either completes all of its instructions or it blocks waiting for entanglement. Allowing process preemption would need a definition of critical section and could potentially impact the quality of the affected qubit states. Moreover, the lack of a preemption mechanism could potentially result in low-priority user processes hogging the processor at the expense of high-priority entanglement generation attempts. On the other hand, if entanglement instructions always consume the entirety of the time bin, the \ac{QNetStack} process would be immediately assigned the processor each time it relinquishes it, causing low-priority user processes to starve. To at least mitigate the second issue, we made sure that the number of consecutive entanglement attempts performed by the \ac{QDevice} within one single entanglement instruction is always less than how many would fit in a time bin, so as to leave some slack for low-priority user processes to run.
@@ -205,7 +207,7 @@ Given that entanglement generation requires a non-deterministic amount of attemp
 We remark that the node functions internally as a higher timing granularity than a time-bin allocated by the network scheduler, that is, it can execute other operations (such as for example local quantum operations) also within a time-bin allocated by the network schedule, provided entanglement is made early.
 
 Once the node received the network schedule from the controller, the network schedule is used to satisfy all outstanding end-to-end entanglement requests, and is used by \ac{QEGP} to produce the correct \ac{QDevice} instructions at any point in time. Whenever a time bin is assigned to networking to two neighboring nodes, the nodes attempt entanglement generation over their shared link in order to realize the \ac{QEGP} link layer protocol. 
-\Cref{fig:qnetstack-impl} shows internal components and data structures of the \ac{QNetStack} as it is implemented on the \ac{QNPU}. Entanglement requests received by the \ac{EMU} are forwarded by \ac{QNP} to the next hop's \ac{QNPU} system. Entanglement requests and network schedule---the latter installed by a logically centralized control plane---are used by \ac{QEGP} to produce the correct entanglement instructions to populate the \ac{QNetStack} process's block at each activation of the process.
+\Cref{qnodeos:fig:qnetstack-impl} shows internal components and data structures of the \ac{QNetStack} as it is implemented on the \ac{QNPU}. Entanglement requests received by the \ac{EMU} are forwarded by \ac{QNP} to the next hop's \ac{QNPU} system. Entanglement requests and network schedule---the latter installed by a logically centralized control plane---are used by \ac{QEGP} to produce the correct entanglement instructions to populate the \ac{QNetStack} process's block at each activation of the process.
 
 \begin{figure}
 \begin{center}
@@ -213,7 +215,7 @@ Once the node received the network schedule from the controller, the network sch
 \end{center}
 \caption[]{Internal components and data structures of the \acf{QNetStack}. Entanglement requests are received through the \acf{EMU}, while the network schedule is installed by a centralized control plane. 
 \acf{QEGP} maps such requests onto the network schedule to produce the correct entanglement instructions. While not needed on our 2 node implementation, a \ac{DQP} (which is a simplified version of the \ac{DQP} presented in~\cite[Section 5.2.1]{dahlberg_2019_egp}) could forward entanglement requests to the next hop's \acf{QNPU} to realize a network layer protocol such as~\cite{kozlowski_2020_qnp}.}.
-\label{fig:qnetstack-impl}
+\label{qnodeos:fig:qnetstack-impl}
 \end{figure}
 
 \paragraph{ER Socket}
@@ -229,7 +231,7 @@ Upon receiving an entanglement request, the network stacks of the two nodes comm
 
 \subsubsection{Multitasking}
 
-Multi-tasking forms an essential element of our architecture already at the level of scheduling the network process in relation to any user process, to address the challenges inherent in the way entanglement is produced at the physical layer, requiring agreement on a network schedule (see Section~\ref{qnodeos:sec:arch-networking}, and main paper). For this important reason, the \ac{QNPU} is designed to arbitrate between these two processes (see \cref{fig:process-flow}), and to manage the resources being used by each of them. \emph{Multitasking}, hence, is a fundamental requirement for a system managing the hardware of a quantum network node, especially while such hardware has only limited resources available. 
+Multi-tasking forms an essential element of our architecture already at the level of scheduling the network process in relation to any user process, to address the challenges inherent in the way entanglement is produced at the physical layer, requiring agreement on a network schedule (see Section~\ref{qnodeos:sec:arch-networking}, and main paper). For this important reason, the \ac{QNPU} is designed to arbitrate between these two processes (see \cref{qnodeos:fig:process-flow}), and to manage the resources being used by each of them. \emph{Multitasking}, hence, is a fundamental requirement for a system managing the hardware of a quantum network node, especially while such hardware has only limited resources available. 
 
 To further increase the utility of the system, we also allow the multi-tasking of user processes (main paper):
 Like in most operating systems, these tasks, which on the \ac{QNPU} are encapsulated into processes, can sometimes necessitate a resource which is not immediately available---for instance, a free qubit, or a qubit entangled with a remote one. Maximizing the utilization of the quantum device is also one of the goals of \ac{QNodeOS}, whose design allows multiple processes, user and kernel, to be active concurrently, so that whenever one is in a waiting state, another one can potentially be scheduled to use the quantum device.  This design aspect is relevant for quantum networking nodes, as the execution of the local program is often waiting, both for classical messages from remote nodes, as well as the generation of entanglement. 
@@ -254,10 +256,10 @@ Lastly, multitasking is an important feature for systems that are to be shared b
 \item a \emph{\ac{QMMU}}, which keeps a record of allocated qubits.
 \end{inlinelist}
 }
-\label{fig:qnodeos-core}
+\label{qnodeos:fig:qnodeos-core}
 \end{figure*}
 
-We provide here additional details on the components of the \ac{QNPU} architecture and their interfaces. \Cref{fig:qnodeos-core} gives an overview of all the components of the \ac{QNPU}. The \emph{process manager} marshals accesses to all user and kernel processes. The \emph{scheduler} assigns ready processes to the \emph{processor}, which runs quantum instructions through the underlying \ac{QDevice}, processes classical \ac{NetQASM} instructions locally, and registers entanglement requests with the \emph{\ac{EMU}}. The \ac{EMU} maintains a list of \ac{ER} sockets and entanglement requests, forwards the latter to the \emph{quantum network stack}, which, in turn, registers available entangled qubits with the \ac{EMU}. Finally, the \emph{\ac{QMMU}} keeps track of used qubits, and transfers qubit ownership across processes when requested.
+We provide here additional details on the components of the \ac{QNPU} architecture and their interfaces. \Cref{qnodeos:fig:qnodeos-core} gives an overview of all the components of the \ac{QNPU}. The \emph{process manager} marshals accesses to all user and kernel processes. The \emph{scheduler} assigns ready processes to the \emph{processor}, which runs quantum instructions through the underlying \ac{QDevice}, processes classical \ac{NetQASM} instructions locally, and registers entanglement requests with the \emph{\ac{EMU}}. The \ac{EMU} maintains a list of \ac{ER} sockets and entanglement requests, forwards the latter to the \emph{quantum network stack}, which, in turn, registers available entangled qubits with the \ac{EMU}. Finally, the \emph{\ac{QMMU}} keeps track of used qubits, and transfers qubit ownership across processes when requested.
 
 \subsubsection{Process Manager}
 
@@ -268,9 +270,9 @@ The process manager owns \ac{QNPU} processes and marshals accesses to those. Cre
 The process manager exposes interfaces for three services:
 %
 \begin{itemize}
-\item Process management (interface 1 in \cref{fig:qnodeos-core}): to create and remove processes, and to add quantum blocks to them. When the user registers a program, the the \ac{QNPU} \ac{API} Handler uses the process manager to create a \ac{QNPU} user process. The returned process ID can be later used to add a block to that process, or to remove the process once all its blocks are fully processed.
-\item Event notification (interface 2 in \cref{fig:qnodeos-core}): to notify an event occurred inside the \ac{QNPU}, including the addition of a block, the completion of a block, the scheduling of the process, the hitting of a \emph{Waiting} condition (see \cref{fig:process-states}), and the generation of an entangled qubit destined to the process. Some events trigger follow-up actions---for instance, when a process that was waiting for an event becomes ready, it gets added to the queue of ready processes maintained by the scheduler.
-\item Process data access (interface 3 in \cref{fig:qnodeos-core}): to access a process's blocks and its classical memory space, mostly used while running the process (through the processor).
+\item Process management (interface 1 in \cref{qnodeos:fig:qnodeos-core}): to create and remove processes, and to add quantum blocks to them. When the user registers a program, the the \ac{QNPU} \ac{API} Handler uses the process manager to create a \ac{QNPU} user process. The returned process ID can be later used to add a block to that process, or to remove the process once all its blocks are fully processed.
+\item Event notification (interface 2 in \cref{qnodeos:fig:qnodeos-core}): to notify an event occurred inside the \ac{QNPU}, including the addition of a block, the completion of a block, the scheduling of the process, the hitting of a \emph{Waiting} condition (see \cref{qnodeos:fig:process-states}), and the generation of an entangled qubit destined to the process. Some events trigger follow-up actions---for instance, when a process that was waiting for an event becomes ready, it gets added to the queue of ready processes maintained by the scheduler.
+\item Process data access (interface 3 in \cref{qnodeos:fig:qnodeos-core}): to access a process's blocks and its classical memory space, mostly used while running the process (through the processor).
 \end{itemize}
 
 \subsubsection{Scheduler}
@@ -279,7 +281,7 @@ The \ac{QNPU} scheduler registers processes that are ready to be scheduled, and 
 
 \paragraph{Interfaces}
 
-The scheduler only exposes one interface for process state notifications (interface 4 in \cref{fig:qnodeos-core}), used by the process manager to signal when a process transitions to a new state. When a \ac{QNPU} process transitions to the ready state, it is directly added to the scheduler's prioritized ready queue. When a process becomes idle, or is waiting for an event to happen, the scheduler simply registers that the processor has become available.
+The scheduler only exposes one interface for process state notifications (interface 4 in \cref{qnodeos:fig:qnodeos-core}), used by the process manager to signal when a process transitions to a new state. When a \ac{QNPU} process transitions to the ready state, it is directly added to the scheduler's prioritized ready queue. When a process becomes idle, or is waiting for an event to happen, the scheduler simply registers that the processor has become available.
 
 \subsubsection{Processor}
 
@@ -287,7 +289,7 @@ The \ac{QNPU} processor handles the execution of \ac{QNPU} user and kernel proce
 
 \paragraph{Interfaces}
 
-The processor exposes one interface for processor assignment (interface 5 in \cref{fig:qnodeos-core}), used by the \ac{QNPU} scheduler to activate the processor, when it is idling, and assign it to a \ac{QNPU} process.
+The processor exposes one interface for processor assignment (interface 5 in \cref{qnodeos:fig:qnodeos-core}), used by the \ac{QNPU} scheduler to activate the processor, when it is idling, and assign it to a \ac{QNPU} process.
 
 \subsubsection{Entanglement Management Unit}
 
@@ -298,9 +300,9 @@ The \acf{EMU} contains a list of open \emph{\ac{ER} sockets} and a list of \emph
 The \ac{EMU} exposes interfaces for three services:
 %
 \begin{itemize}
-\item \ac{ER} socket registration (interface 6 in \cref{fig:qnodeos-core}): to register and open \ac{ER} sockets belonging to a program, and to set up internal classical network tables and to establish classical network connection.
-\item \ac{ER} registration (interface 7 in \cref{fig:qnodeos-core}): to add entanglement requests to the list of existing ones, to be used when matching produced entangled qubits with a process that requested them.
-\item Entanglement notification (interface 8 in \cref{fig:qnodeos-core}): to register the availability of an entangled qubit, produced by the quantum network stack, and to link it to an existing entanglement request.
+\item \ac{ER} socket registration (interface 6 in \cref{qnodeos:fig:qnodeos-core}): to register and open \ac{ER} sockets belonging to a program, and to set up internal classical network tables and to establish classical network connection.
+\item \ac{ER} registration (interface 7 in \cref{qnodeos:fig:qnodeos-core}): to add entanglement requests to the list of existing ones, to be used when matching produced entangled qubits with a process that requested them.
+\item Entanglement notification (interface 8 in \cref{qnodeos:fig:qnodeos-core}): to register the availability of an entangled qubit, produced by the quantum network stack, and to link it to an existing entanglement request.
 \end{itemize}
 
 \subsubsection{Quantum Network Stack}
@@ -315,8 +317,8 @@ The quantum network stack component has an associated \emph{\ac{QNPU} kernel pro
 The quantum network stack exposes interfaces for two services:
 %
 \begin{itemize}
-\item Entanglement request registration (interface 9 in \cref{fig:qnodeos-core}): to add entanglement requests coming from the \ac{EMU} to the list of existing ones, which are used to fill in the quantum network stack process's block with the correct quantum instructions to execute.
-\item Entanglement request synchronization (interface 10 in \cref{fig:qnodeos-core}): similar to the entanglement request registration interface, but to be used to synchronize (send and receive) requests with \ac{QNodeOS} network peers.
+\item Entanglement request registration (interface 9 in \cref{qnodeos:fig:qnodeos-core}): to add entanglement requests coming from the \ac{EMU} to the list of existing ones, which are used to fill in the quantum network stack process's block with the correct quantum instructions to execute.
+\item Entanglement request synchronization (interface 10 in \cref{qnodeos:fig:qnodeos-core}): similar to the entanglement request registration interface, but to be used to synchronize (send and receive) requests with \ac{QNodeOS} network peers.
 \end{itemize}
 
 \subsubsection{Quantum Memory Management Unit}
@@ -328,9 +330,9 @@ The quantum network stack exposes interfaces for two services:
 The \ac{QMMU} exposes interfaces for three services:
 %
 \begin{itemize}
-\item Qubit allocation and de-allocation (interface 11 in \cref{fig:qnodeos-core}): a running process can ask for one or more qubits, which, if available, are allocated by the \ac{QMMU}, and the physical addresses of those are mapped to the virtual addresses provided by the requesting process.
-\item Virtual address translation (interface 12 in \cref{fig:qnodeos-core}): before sending quantum instructions to the \ac{QDriver}, the processor uses virtual qubit addresses specified in \ac{NetQASM} to retrieve physical addresses from the \ac{QMMU}, and then replaces virtual addresses with physical addresses in the instructions for the \ac{QDriver}.
-\item Qubit ownership transfer (interface 13 in \cref{fig:qnodeos-core}): qubits are only visible to the process that allocates them. However, in some cases, a process may wish to transfer some if its qubits to another one. A notable example is the quantum network process transferring an entangled qubit to the process that will use it.
+\item Qubit allocation and de-allocation (interface 11 in \cref{qnodeos:fig:qnodeos-core}): a running process can ask for one or more qubits, which, if available, are allocated by the \ac{QMMU}, and the physical addresses of those are mapped to the virtual addresses provided by the requesting process.
+\item Virtual address translation (interface 12 in \cref{qnodeos:fig:qnodeos-core}): before sending quantum instructions to the \ac{QDriver}, the processor uses virtual qubit addresses specified in \ac{NetQASM} to retrieve physical addresses from the \ac{QMMU}, and then replaces virtual addresses with physical addresses in the instructions for the \ac{QDriver}.
+\item Qubit ownership transfer (interface 13 in \cref{qnodeos:fig:qnodeos-core}): qubits are only visible to the process that allocates them. However, in some cases, a process may wish to transfer some if its qubits to another one. A notable example is the quantum network process transferring an entangled qubit to the process that will use it.
 \end{itemize}
 
 \subsection{QNPU implementation: scheduler}

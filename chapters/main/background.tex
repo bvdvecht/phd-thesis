@@ -12,6 +12,7 @@
 \section{Quantum networks}
 
 A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
+A global network of quantum networks, envisioned to be realized in the future, may be called a \emph{quantum internet}.
 More specifically, we assume quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels}.
 Classical channels enable classical communication between nodes, while quantum channels are used for \textit{entanglement} generation (\cref{background:sec:entanglement}) between nodes.
 Within a quantum network, one can distinguish between two main types of nodes: First, there are \emph{end nodes}~\cite{wehner_2018_stages}, with which users execute quantum network applications (\cref{background:sec:applications}).
@@ -166,8 +167,8 @@ Quantum computing does not necessarily involve only quantum circuit execution wi
 For example, in \acf{VQE}~\cite{diadamo2021distributed, liu2022layer} and \acf{QAOA}~\cite{farhi2014quantum},
 upon completion of a quantum circuit, the classical results are processed, resulting in a new quantum circuit that is then executed; this process repeats multiple times.
 
-\subsection{Quantum network applications}
-Quantum network applications, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
+\subsection{Quantum network (or internet) applications}
+Quantum network (or internet) applications, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end nodes, as well as local computation.
 The local computation includes arbitrary classical computation as well as local quantum operations (like in quantum computing circuits, see above).
 Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert_1991_e91}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
 In this thesis, we consider quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above. That is, applications that require the use of a quantum processor that can manipulate and store qubits. For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, it would be sufficient to realize a system implementing a quantum network stack and classical processing only.

@@ -117,11 +117,11 @@ The simulation duration is an average over the three simulations per application
 \begin{figure*}
     \centering
 
-    \subfloat[\centering \label{fig:app:qkd_circuit}]{\includegraphics[scale=0.9]{figures/qoala/qkd_circuit.png}}
+    \subfloat[\centering \label{qoala:fig:app:qkd_circuit}]{\includegraphics[scale=0.9]{figures/qoala/qkd_circuit.png}}
     \vspace{1cm}
-    \subfloat[\centering \label{fig:app:teleport_circuit}]{\includegraphics[scale=0.5]{figures/qoala/teleport_circuit.png}}
+    \subfloat[\centering \label{qoala:fig:app:teleport_circuit}]{\includegraphics[scale=0.5]{figures/qoala/teleport_circuit.png}}
     \vspace{1cm}
-    \subfloat[\centering \label{fig:app:pingpong_circuit}]{\includegraphics[scale=0.4]{figures/qoala/pingpong_circuit.png}}
+    \subfloat[\centering \label{qoala:fig:app:pingpong_circuit}]{\includegraphics[scale=0.4]{figures/qoala/pingpong_circuit.png}}
     \caption{
     Circuit for applications A1 (QKD), A3 (Teleport) and A4 (ping-pong) from Section~\ref{qoala:sec:evaluation}.
     Single lines represent qubits. Double lines represent classical values.
@@ -131,15 +131,15 @@ The simulation duration is an average over the three simulations per application
     The sender sends the classical outcomes to the receiver. Based on the outcomes the receiver applies local quantum gates and measurement.
     (c) Ping-pong (A4). The sender teleports a state to the receiver and the receiver immediately teleports it back to the sender. In total, 2 entangled pairs are created.
     }
-    \label{fig:app:circuits_1}
+    \label{qoala:fig:app:circuits_1}
 \end{figure*}
 
 \begin{figure*}
     \centering
 
-    \subfloat[\centering \label{fig:app:vbqc_circuit}]{\includegraphics[scale=0.3]{figures/qoala/vbqc_circuit.png}}
+    \subfloat[\centering \label{qoala:fig:app:vbqc_circuit}]{\includegraphics[scale=0.3]{figures/qoala/vbqc_circuit.png}}
     \vspace{1cm}
-    \subfloat[\centering \label{fig:app:ghz_circuit}]{\includegraphics[scale=0.3]{figures/qoala/ghz_circuit.png}}
+    \subfloat[\centering \label{qoala:fig:app:ghz_circuit}]{\includegraphics[scale=0.3]{figures/qoala/ghz_circuit.png}}
     \vspace{1cm}
 
     \caption{
@@ -156,7 +156,7 @@ The simulation duration is an average over the three simulations per application
     Based on this outcome, Charlie performs local operations and sends a measurement outcome back to Bob.
     At the time of the vertical dashed line, the three nodes share a 3-qubit GHZ state. They all measure and check their correlations.
     }
-    \label{fig:app:circuits_2}
+    \label{qoala:fig:app:circuits_2}
 \end{figure*}
 
 
@@ -173,14 +173,14 @@ Table~\ref{tab:app:applications} provides an overview of the applications.
 \textbf{Quantum Key Distribution (QKD)}. 
 Two programs (on two nodes): Alice and Bob. $N$ EPR are pairs are generated. Each generated pair is immediately measured by both programs.
 This results in both programs having $N$ classical outcome bits.
-See Figure~\ref{fig:app:qkd_circuit} for the circuit.
+See Figure~\ref{qoala:fig:app:qkd_circuit} for the circuit.
 Success per instance is determined by checking that Alice and Bob got the same $N$ outcomes bits.
 For the evaluation, we ran 1000 instances, each creating 1000 EPR pairs.
 
 \textbf{Teleportation}.
 Two programs (on two nodes): Sender and Receiver. The Sender teleports a \textit{state} (which is state is an argument to the Sender program) to the Receiver.
 The Receiver measures in a \textit{basis} (which basis is an argument to the Receiver program) and obtains a single classical outcome bit which is the result of the application.
-See Figure~\ref{fig:app:teleport_circuit} for the circuit.
+See Figure~\ref{qoala:fig:app:teleport_circuit} for the circuit.
 Success per instance is determined by checking that the Receiver got the expected outcome bit (which depends on the combination of state and basis).
 For the evaluation, we ran 1000 instances.
 
@@ -197,7 +197,7 @@ Hence, a single application instance succeeded if the Receiver outcome was 1.
 
 \textbf{Ping-pong}. Teleportation from Sender to Receiver and immediately back to Sender.
 Same as teleportation application, but the Receiver does not measure; the Sender receives the state back by teleportation and measures.
-See Figure~\ref{fig:app:teleport_circuit} for the circuit.
+See Figure~\ref{qoala:fig:app:teleport_circuit} for the circuit.
 State and basis per instance were chosen similarly as for the teleportation application.
 Success now depends on the Sender measurement outcome being 1.
 For the evaluation, we ran 1000 instances.
@@ -206,7 +206,7 @@ For the evaluation, we ran 1000 instances.
 Two programs (on two nodes): Client and Server.
 Two EPR pairs are generated, after which 2 rounds happen. In each round, the client sends a classical message to the server, after which the server performs a measurement on one of its qubits, sending the measurement outcome back.
 The same BQC application was used as in~\cite{dahlberg2022netqasm}, using values $\alpha = \pi/2$ and $\beta = -\pi/2$.
-See Figure~\ref{fig:app:vbqc_circuit} for the circuit.
+See Figure~\ref{qoala:fig:app:vbqc_circuit} for the circuit.
 Success per instance is determined by checking that the Client received the expected classical bit $m_2$.
 For the evaluation, we ran 1000 instances.
 
@@ -215,7 +215,7 @@ Three programs (on three nodes): Alice, Bob, and Charlie.
 Alice creates an EPR pair with Bob, and Bob creates an EPR pair with Charlie.
 Then, local gates and classical messages are sent between the nodes, resulting in a 3-qubit state (one qubit per node) that is an entangled \textit{GHZ state}~\cite{greenberger1989going}.
 At the end, each program measures its own qubit.
-See Figure~\ref{fig:app:ghz_circuit} for the circuit.
+See Figure~\ref{qoala:fig:app:ghz_circuit} for the circuit.
 Success per instance is determined by checking that the all three programs got the same measurement outcome.
 For the evaluation, we ran 1000 instances.
 
@@ -228,7 +228,7 @@ Interleaved: All tasks for all instances were created and added to the task grap
 
 \textbf{Teleportation multitasking scenario.}
 One sender node and one receiver node.
-The teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) was instantiated 100 times.
+The teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{qoala:fig:app:teleport_circuit}) was instantiated 100 times.
 
 Classical node-node communication latency: $10^7$ ns.
 Sender node: 2 qubits.
@@ -239,7 +239,7 @@ For the self-preemption case, the teleportation application was only instantiate
 
 \textbf{BQC multitasking scenario.}
 10 client nodes and one server node.
-The BQC application (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) was instantiated 10 times for each client, for a total for 100 program instances.
+The BQC application (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{qoala:fig:app:vbqc_circuit}) was instantiated 10 times for each client, for a total for 100 program instances.
 
 Classical node-node communication latency: $10^5$ ns.
 Client node: 2 qubits.
@@ -249,7 +249,7 @@ For each number of qubits $Q \in \{2, 5, 10\}$, we ran a simulation using both a
 
 \textbf{QKD-BQC multitasking scenario.}
 One client node and one server node.
-Client and server execute both (a) 50 instances of QKD (A1 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:qkd_circuit}) and (b) 50 instances of BQC (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}).
+Client and server execute both (a) 50 instances of QKD (A1 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{qoala:fig:app:qkd_circuit}) and (b) 50 instances of BQC (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{qoala:fig:app:vbqc_circuit}).
 
 We compared two network schedules.
 Sequential network schedule with repeating pattern $P_{seq}$. $P_{seq}$ consists of time slots $QKD_1$, $QKD_2$, $\dots$, $QKD_{50}$, $BQC_1$, $BQC_2$, $\dots$, $BQC_{50}$.
@@ -364,7 +364,7 @@ A program which prepares a single qubit to the $\ket{-} = 1/\sqrt{2} (\ket{0} + 
 
 \textbf{Scenario.}
 Two nodes: Alice and Bob.
-Alice and Bob execute the teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:teleport_circuit}) $T$ times.
+Alice and Bob execute the teleportation application (A3 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{qoala:fig:app:teleport_circuit}) $T$ times.
 Bob concurrently executes the local program described above $L$ times.
 For each combination of $T \in [1, 15]$ and $L \in [1, 15]$, we ran a simulation $SIM$ 200 times, where in each simulation, all instances and all their tasks are created at the same time and added to the task graphs of the node.
 The success per teleportation instance is calculated as in~\ref{qoala:sec:app:details_6_1}.
@@ -381,7 +381,7 @@ Number of qubits at Alice: $20$.
 
 \subsection{Details for: Performance sensitivity}
 \textbf{Scenario.}
-One server node runs 10 BQC applications (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{fig:app:vbqc_circuit}) concurrently with 10 client nodes (one BQC application per client node).
+One server node runs 10 BQC applications (A2 in Section~\ref{qoala:sec:evaluation}, see also Figure~\ref{qoala:fig:app:vbqc_circuit}) concurrently with 10 client nodes (one BQC application per client node).
 One BQC instance is run for each client.
 This scenario was repeated 100 times for each of the three evaluations (impact of node-node-latencies, impact of internal latencies, impact of time slot length) in order to obtain statistics.
 The success per BQC instance is calculated as in~\ref{qoala:sec:app:details_6_1}.

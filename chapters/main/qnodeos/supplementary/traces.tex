@@ -3,7 +3,7 @@
 
 In our \ac{NV} experiments, the \ac{CNPU}, \ac{QNPU} and \ac{QDevice}, on both client and server nodes, trace (i.e. record the timestamps of) events happening on their system. The events that are traced on the \ac{CNPU} and \ac{QNPU} are listed in~\cref{tab:host_events,tab:qnpu_events}, respectively. The \ac{NV} \ac{QDevice} separately records messages received (physical instructions from the \ac{QNPU}, see~\cref{tab:qdevice-instructions}) and responses sent back to the \ac{QNPU}(see~\cref{tab:qdevice-return-values}).
 
-\Cref{fig:delcomp-trace-example} shows a full-stack trace slice of a single execution of the \ac{DQC} circuit. This particular sequence of events started at offset 60460\,ms from the start of the experiment. The following events (among others) can be seen:
+\Cref{qnodeos:fig:delcomp-trace-example} shows a full-stack trace slice of a single execution of the \ac{DQC} circuit. This particular sequence of events started at offset 60460\,ms from the start of the experiment. The following events (among others) can be seen:
 %
 \begin{itemize}
     \item At $\approx$\,60470\,ms: client \ac{CNPU} sends subroutine C1 to the \ac{QNPU}; it is received slightly after on the \ac{QNPU} (\texttt{PROCMGR\_SUBROUTINE\_ADDED\_P0}).
@@ -71,5 +71,5 @@ In our \ac{NV} experiments, the \ac{CNPU}, \ac{QNPU} and \ac{QDevice}, on both c
 \centering
 \includegraphics[width=0.8\linewidth]{figures/qnodeos/supplementary/plots/full_slice.png}
 \caption{Full-stack event trace for one particular execution of the \ac{DQC} circuit. Between timestamps 60490 and 60550 are more entanglement attempts which are cut out for the sake of clarity.}
-\label{fig:delcomp-trace-example}
+\label{qnodeos:fig:delcomp-trace-example}
 \end{figure*}

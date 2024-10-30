@@ -9,7 +9,7 @@
 \textit{Quantum nodes}.
 A quantum internet connects quantum nodes on which quantum programs may be 
 executed.
-%(Figure~\ref{fig:qoala_location}). 
+%(Figure~\ref{qoala:fig:qoala_location}). 
 In their most general form, such nodes
 are \textit{processing nodes} that have a quantum memory to store quantum bits (qubits) on which quantum operations (qubit initialization, quantum gates and measurements) can be performed. Pairs of nodes can establish \textit{entanglement} between them over a quantum network. Entanglement is a special property of two qubits (an \emph{entangled pair}), where one qubit is stored in the memory of each node. Nodes can also exchange classical messages (e.g. via dedicated classical links or the internet), where no guarantees are assumed on their message delivery times. 
 
@@ -17,7 +17,7 @@ are \textit{processing nodes} that have a quantum memory to store quantum bits (
 A program is a series of instructions to be executed by a node.
 Instructions can be categorized into four types: local classical processing, classical message-passing, quantum local processing (quantum operations), and remote entanglement generation.
 A program can keep classical variables in a classical memory, and quantum variables (qubits) in the node's quantum memory during the execution.
-Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{fig:program_illustration}), e.g. QKD (two programs, one per node),
+Multiple programs, each running on their own node, together form an \textit{application} (see~\ref{qoala:fig:program_illustration}), e.g. QKD (two programs, one per node),
 or secret sharing~\cite{hillery1999quantum} (a program each on many nodes).
 Programs may involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
 
@@ -25,7 +25,7 @@ Programs may involve asynchronous operations (e.g. a server awaiting entanglemen
 A quantum network stack has been proposed~\cite{dahlberg2019link} and implemented \cite{pompili2022experimental} that turns entanglement generation into a robust service independent of the quantum hardware platform.
 Important for the design of an architecture for the execution of quantum internet applications is that in this stack, the nodes will establish a network schedule of time slots in which they will trigger entanglement generation (due to need to synchronize entanglement generation at the physical layer~\cite{dahlberg2019link} at high-precision (ns)).
 This means that once entanglement has been requested from the network, the nodes can use only the slots in the network schedule to produce entanglement between them, imposing constraints on the ability to schedule applications. What's more, in present day systems~\cite{pompili2021realization, krutyanskiy2023entanglement} limitations in the physical devices prohibit the execution of local operations while engaging in network operations (entanglement generation), creating further dependencies between the local quantum execution and entanglement generation. 
-As the specifics of network scheduling~\cite{network-scheduling, skrzypczyk2021architecture} are not within scope of this paper,
+As the specifics of network scheduling~\cite{network-scheduling, skrzypczyk2021architecture} are not within scope of this thesis,
 we assume the existence of a \textit{network controller} that takes application demand for entanglement and issues a network schedule to the nodes. 
 A schedule consists of sequential time slots, each with a start time and duration, when the node will trigger entanglement generation.
 Nodes are not forced to attempt entanglement in corresponding time slots, and can instead choose to do local processing instead.
@@ -36,7 +36,7 @@ Nodes are not forced to attempt entanglement in corresponding time slots, and ca
     %\caption{
         %Each node in the quantum internet has its own instance of a Qoala runtime environment, which uses its classical (CPU) and quantum processing (QPU) capabilities, as well as the network stack.
     %}
-    %\label{fig:qoala_location}
+    %\label{qoala:fig:qoala_location}
 %\end{figure}
 
 \textit{Performance metrics and noise}. Quantum internet applications have classical outcomes that are typically probabilistic in nature:

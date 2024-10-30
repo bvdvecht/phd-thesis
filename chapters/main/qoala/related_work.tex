@@ -5,7 +5,7 @@ Networks of quantum processors have been realized using different quantum hardwa
 A first operating system QNodeOS~\cite{carlothesis} including a network stack~\cite{pompili2022experimental} has recently been designed and implemented on real quantum network nodes based on NV centers in diamond.
 QNodeOS makes use of the NetQASM execution framework~\cite{dahlberg2022netqasm}, where a classical \textit{host} dispatches NetQASM routines for execution by QNodeOS. 
 Our work builds on top of ideas of QNodeOS and NetQASM, but addresses critical challenges that were not handled by these previous systems, including the ability to schedule hybrid programs and to optimize over the whole program code.
-This meant, e.g., that QNodeOS was unable to have any scheduling control over the joint classical-quantum execution, which could lead to a failure in executing programs successfully (see Figure~\ref{fig:qoala_vs_qnos} for a comparison).
+This meant, e.g., that QNodeOS was unable to have any scheduling control over the joint classical-quantum execution, which could lead to a failure in executing programs successfully (see Figure~\ref{qoala:fig:qoala_vs_qnos} for a comparison).
 Building on the only such systems that have seen real world implementation on quantum hardware, opens the door for a later implementation of Qoala on quantum hardware by implementing an improved low-level classical control hardware architecture (Section~\ref{qoala:sec:architecture}).
 
 \begin{figure}[ht]
@@ -14,7 +14,7 @@ Building on the only such systems that have seen real world implementation on qu
     \caption{
         QNodeOS (\ref{chp:qnodeos}) vs. Qoala capabilities.
     }
-    \label{fig:qoala_vs_qnos}
+    \label{qoala:fig:qoala_vs_qnos}
 \end{figure}
 
 Research has been done on related topics, such as distributed quantum computing, or hybrid (non-interactive) quantum computing. Hybrid classical-quantum programs have been extensively studied in quantum computing, e.g. in the context of \textit{variational quantum eigensolvers (VQE)}~\cite{diadamo2021distributed, liu2022layer} or \textit{quantum approximate optimization algorithms (QAOA)}~\cite{farhi2014quantum}. However, they differ in two important aspects: although they are hybrid, they are not \textit{interactive} during the quantum execution:

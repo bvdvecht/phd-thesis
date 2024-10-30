@@ -21,7 +21,7 @@ Based on the above additional information, a program instance can be created whi
 \item \textbf{Timing Information}: Deadlines for individual tasks. Computed using both the program's timing hints and information from the EHI.
 \end{itemize}
 
-Figure~\ref{fig:app:instantiation} provides a schematic example of program instantiation.
+Figure~\ref{qoala:fig:app:instantiation} provides a schematic example of program instantiation.
 
 \begin{figure}[ht]
     \centering
@@ -29,7 +29,7 @@ Figure~\ref{fig:app:instantiation} provides a schematic example of program insta
     \caption{Schematic example of program instantiation.
     A program containing global arguments ($N$) is instantiated using a concrete value for the arguments ($N = 10$) and the EHI (containing values for the expect duration of a QL block, the expected duration of a CC block, and the qubit noise parameter expressed as the \textit{decoherence rate}). This results in a program instance for which the expected durations have concrete values.
     }
-    \label{fig:app:instantiation}
+    \label{qoala:fig:app:instantiation}
 \end{figure}
 
 \subsection{Program versus program instance}
@@ -54,7 +54,7 @@ Note that this design leaves open how the shared memory can be implemented: eith
 
 
 \subsection{Arrays}
-The shared memory is logically divided into \textit{array elements} that can be allocated only by the CPS (Figure~\ref{fig:app:arrays}).
+The shared memory is logically divided into \textit{array elements} that can be allocated only by the CPS (Figure~\ref{qoala:fig:app:arrays}).
 Each element can hold a single 32-bit signed integer.
 The CPS can allocate shared memory space by specifying a \textit{size}, resulting in an allocated array.
 An array is an ordered list of array elements. 
@@ -69,7 +69,7 @@ An array may be named; it is written as \texttt{@arrayname}. An element in an ar
 Arrays are used to share data between the CPS and the QPS.
 They are used for executing both LRs and RRs.
 
-The shared memory is logically divided into 5 \textit{regions} (Figure~\ref{fig:app:shared_memory}).
+The shared memory is logically divided into 5 \textit{regions} (Figure~\ref{qoala:fig:app:shared_memory}).
 Each of the regions contains array elements, and in each region, arrays can be allocated.
 The regions are only a logical division, where each arrays in a certain region are only used to hold data for a specific use-case:
 
@@ -91,7 +91,7 @@ The regions are only a logical division, where each arrays in a certain region a
     Arrays are identified using the \texttt[@<name>] syntax.
     Particular array elements may be accessed using the \texttt{[index]} syntax.
     }
-    \label{fig:app:arrays}
+    \label{qoala:fig:app:arrays}
 \end{figure}
 
 
@@ -105,7 +105,7 @@ The regions are only a logical division, where each arrays in a certain region a
     The QPS reads request routine arguments from \texttt{RR\_in} and write results to \texttt{RR\_out}.
     Callbacks for request routines use the separate \texttt{CR\_in} section to use request routine results as arguments of the callback local routine.
     }
-    \label{fig:app:shared_memory}
+    \label{qoala:fig:app:shared_memory}
 \end{figure}
 
 
@@ -168,7 +168,7 @@ its decoherence rate per second.
 
 A UM can be seen as a subset of the full EHI of a node, specifically containing a subset of all qubits available in the node.
 
-Qubits in the Unit Module are called \textit{virtual qubits}. They are identified by their \textit{virtual IDs} and are mapped to physical qubits (Figure~\ref{fig:app:unit_module}).
+Qubits in the Unit Module are called \textit{virtual qubits}. They are identified by their \textit{virtual IDs} and are mapped to physical qubits (Figure~\ref{qoala:fig:app:unit_module}).
 
 
 
@@ -184,7 +184,7 @@ This involves finding currently unused physical qubits and mapping new virtual q
     \centering
     \includegraphics[scale=0.4]{figures/qoala/unit_module.png}
     \caption{Example of a physical quantum memory available in a node (four qubits) and two allocated unit modules. The colors of the qubits represent the physical locations they map to. Note that the top-left qubit of Unit Module 2 is not currently mapped and that it also cannot be mapped. Therefore, tasks that require program instance 2 to use a third qubit cannot be executed at this time.}
-    \label{fig:app:unit_module}
+    \label{qoala:fig:app:unit_module}
 \end{figure}
 
 

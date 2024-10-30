@@ -3,15 +3,15 @@
 
 \subsection{Procedure}
 
-We execute the application in a tomography way to establish \ac{QNodeOS} the quantum performance metric (\cref{fig:fig3}b, where we use $P_c$ to refer to the client program, and $P_s$ to the server program): The client \ac{CNPU} initiates $P_c$ with fixed $(\alpha, \theta)$. This results in a single \ac{CNPU} process, a single \ac{QNPU} process, and opening of an \ac{ER} socket (see \cref{qnodeos:sec:design_er_socket}) with the server node. At the same time, the server \ac{CNPU} initiates $P_s$ resulting in single \ac{CNPU} process, a single \ac{QNPU} process, and opening of an \ac{ER} socket with the client node. The client and the server programs execute the subroutines in \cref{fig:fig3}c, looping 1200 times: both immediately start the second iteration once the first is completed. After the 1200th iteration, both client and server stop their respective \ac{CNPU} and \ac{QNPU} processes. Source code including compiled NetQASM subroutines is available in \cref{qnodeos:sec:app_source}. We repeat 6 times for $(\alpha, \theta) \in \{\pi/2, \pi\} \times \{\pi/4, \pi/2, \pi\}$ for a total of 7200 executions of the circuit depicted in \cref{fig:fig3}a. We expect $\ket{\psi}$ to be either $\ket{-Y}$ (for $\alpha = \pi/2$) or $\ket{-Z}$ (for $\alpha = \pi$). To estimate the resulting $\ket{\psi}$ per $(\alpha, \theta)$, the contents of S2 (containing the server qubit measurement) in the server loop is was varied such that we obtained 600 measurement outcomes in basis $\ket{+Y}$ ($\ket{+Z}$) and 600 measurement outcomes in the corresponding orthogonal basis $\ket{-Y}$ ($\ket{-Z}$) for $\alpha = \pi/2$ ($\pi$).
+We execute the application in a tomography way to establish \ac{QNodeOS} the quantum performance metric (\cref{qnodeos:fig:fig3}b, where we use $P_c$ to refer to the client program, and $P_s$ to the server program): The client \ac{CNPU} initiates $P_c$ with fixed $(\alpha, \theta)$. This results in a single \ac{CNPU} process, a single \ac{QNPU} process, and opening of an \ac{ER} socket (see \cref{qnodeos:sec:design_er_socket}) with the server node. At the same time, the server \ac{CNPU} initiates $P_s$ resulting in single \ac{CNPU} process, a single \ac{QNPU} process, and opening of an \ac{ER} socket with the client node. The client and the server programs execute the subroutines in \cref{qnodeos:fig:fig3}c, looping 1200 times: both immediately start the second iteration once the first is completed. After the 1200th iteration, both client and server stop their respective \ac{CNPU} and \ac{QNPU} processes. Source code including compiled NetQASM subroutines is available in \cref{qnodeos:sec:app_source}. We repeat 6 times for $(\alpha, \theta) \in \{\pi/2, \pi\} \times \{\pi/4, \pi/2, \pi\}$ for a total of 7200 executions of the circuit depicted in \cref{qnodeos:fig:fig3}a. We expect $\ket{\psi}$ to be either $\ket{-Y}$ (for $\alpha = \pi/2$) or $\ket{-Z}$ (for $\alpha = \pi$). To estimate the resulting $\ket{\psi}$ per $(\alpha, \theta)$, the contents of S2 (containing the server qubit measurement) in the server loop is was varied such that we obtained 600 measurement outcomes in basis $\ket{+Y}$ ($\ket{+Z}$) and 600 measurement outcomes in the corresponding orthogonal basis $\ket{-Y}$ ($\ket{-Z}$) for $\alpha = \pi/2$ ($\pi$).
 
 Since our experiments are conducted on two \ac{NV} nodes that are directly connected, we install a constant network schedule with time-bins of 10\,ms in which all time-bins are assigned to networking. This allows us to assess the performance of executing quantum network applications without introducing a dependence on changing network schedules. This means the network process is made ready at the start of each such time-bin, although may not instruct the \ac{QDevice} to make entanglement if no requests for entanglement have been made.
 
 \subsection{Definitions}
 
-The result of a single \ac{DQC} circuit execution (\cref{fig:fig3}a) is a single-qubit state $\rho_{\text{DQC}}$ on the server. The success of running \ac{DQC} can be expressed as the fidelity of $\rho_{\text{DQC}}$ compared to the expected state (in case of no noise) $\ket{\psi}$ (\cref{fig:fig3}a). In the following we will call this fidelity the \ac{DQC} fidelity, or $F_{\text{DQC}}$.
+The result of a single \ac{DQC} circuit execution (\cref{qnodeos:fig:fig3}a) is a single-qubit state $\rho_{\text{DQC}}$ on the server. The success of running \ac{DQC} can be expressed as the fidelity of $\rho_{\text{DQC}}$ compared to the expected state (in case of no noise) $\ket{\psi}$ (\cref{qnodeos:fig:fig3}a). In the following we will call this fidelity the \ac{DQC} fidelity, or $F_{\text{DQC}}$.
 
-The value of $F_{\text{DQC}}$ is affected the most by (1) the fidelity $F_{\text{EPR}}$ of the entangled pair created between the client and server, and (2) the \textit{qubit memory time} $t_{\text{mem}}$, which is the time that the server qubit must remain in memory (from entanglement success until measurement). The latter depends on the time at which the client sends a message to the server (\cref{fig:fig3}). We refer to the two-qubit maximally entangled Bell states as $\ket{\Phi^+} = \left(\ket{00} + \ket{11}\right)$, and $\ket{\Psi^{\pm}} = \left(\ket{01} \pm \ket{10}\right)$, where $\Phi^+ = \proj{\Phi^+}$ and $\Psi^{\pm} = \proj{\Psi^{\pm}}$.
+The value of $F_{\text{DQC}}$ is affected the most by (1) the fidelity $F_{\text{EPR}}$ of the entangled pair created between the client and server, and (2) the \textit{qubit memory time} $t_{\text{mem}}$, which is the time that the server qubit must remain in memory (from entanglement success until measurement). The latter depends on the time at which the client sends a message to the server (\cref{qnodeos:fig:fig3}). We refer to the two-qubit maximally entangled Bell states as $\ket{\Phi^+} = \left(\ket{00} + \ket{11}\right)$, and $\ket{\Psi^{\pm}} = \left(\ket{01} \pm \ket{10}\right)$, where $\Phi^+ = \proj{\Phi^+}$ and $\Psi^{\pm} = \proj{\Psi^{\pm}}$.
 
 \subsection{Post-Selection Based on Latency}
 \label{qnodeos:sec:post-selection-latency}
@@ -48,26 +48,26 @@ Based on the parameters of the setup when the \ac{DQC} experiment was performed,
 %
 which has fidelity 0.729 to the perfect $\Psi^+$ state. The setup can also produce $\Psi^-$ states but for simplicity we use only the $\Psi^+$ case here. 
 
-The simulation computes an estimate of $F_{\text{DQC}}$ for a given server qubit memory time $t_{\text{mem}}$. Since the desired minimum value for $F_{\text{DQC}}$ was 0.667, the latency threshold $t_{\max}$ was set to 8.95\,ms (\cref{fig:delcomp-fidelity-idle-time}).
+The simulation computes an estimate of $F_{\text{DQC}}$ for a given server qubit memory time $t_{\text{mem}}$. Since the desired minimum value for $F_{\text{DQC}}$ was 0.667, the latency threshold $t_{\max}$ was set to 8.95\,ms (\cref{qnodeos:fig:delcomp-fidelity-idle-time}).
 
 
 \begin{figure*}[htbp]
     \centering
-    \subfloat[\centering \label{fig:delcomp-fidelity-idle-time}]{{
+    \subfloat[\centering \label{qnodeos:fig:delcomp-fidelity-idle-time}]{{
         \includegraphics[width=0.48\linewidth]{figures/qnodeos/supplementary/plots/fidelity_vs_idle_time.png}}}%
     \hfill
-    \subfloat[\centering \label{fig:delcomp-fidelity-alpha-colormap}]{{
+    \subfloat[\centering \label{qnodeos:fig:delcomp-fidelity-alpha-colormap}]{{
         \includegraphics[width=0.48\linewidth]{figures/qnodeos/supplementary/plots/fidelity_eta_colormap.png}}}%
     \caption{
         (a) Expected values (based on simulation, \cref{qnodeos:sec:dqc-simulation}) of \ac{DQC} fidelity $F_{\text{DQC}}$ for different duration values that the server qubit must remain in memory ($t_{\text{mem}}$). The maximum allowed qubit memory time $t_{\max}$ is chosen such that application iterations that are expected to result in too low $F_{\text{DQC}}$ ($<0.667$) are filtered out.
-        (b) Expected values (based on simulation) of \ac{DQC} fidelity $F_{\text{DQC}}$ for different values of the bright state population ($\eta$) in the single click protocol, and for different duration values that the server qubit must remain in memory ($t_{\text{mem}}$). The red line indicates the threshold of 0.667 for the target fidelity. The white box represents the experimentally obtained results (we fixed $\eta = 0.07$ and observed $t_{\text{mem}} ~4.8(8)$\,ms, see \cref{fig:fig3}d).
+        (b) Expected values (based on simulation) of \ac{DQC} fidelity $F_{\text{DQC}}$ for different values of the bright state population ($\eta$) in the single click protocol, and for different duration values that the server qubit must remain in memory ($t_{\text{mem}}$). The red line indicates the threshold of 0.667 for the target fidelity. The white box represents the experimentally obtained results (we fixed $\eta = 0.07$ and observed $t_{\text{mem}} ~4.8(8)$\,ms, see \cref{qnodeos:fig:fig3}d).
     }
-    \label{fig:delcomp-simulation}
+    \label{qnodeos:fig:delcomp-simulation}
 \end{figure*}
 
 \subsection{Sweep of Qubit Memory Time and Bright State Population}
 
-As explained in \cref{qnodeos:sec:NVentanglement}, entanglement is created using the single-photon protocol using bright state population parameter $\eta$.\footnote{In most literature, the variable $\alpha$ is used for this parameter; here we use $\eta$ to avoid confusion with the $\alpha$ parameter of the \ac{DQC} application.} Using the simulation, we can estimate how $F_{\text{DQC}}$ would change for different values of $\eta$ and $t_{\text{mem}}$. \cref{fig:delcomp-fidelity-alpha-colormap} shows the estimated $F_{\text{DQC}}$ for different values of $\eta$ and $t_{\text{mem}}$. It indicates that for the particular setup used, increasing $\eta$ has little effect, while reducing qubit memory time does. For the \ac{DQC} experiment $\eta = 0.07$ was used.
+As explained in \cref{qnodeos:sec:NVentanglement}, entanglement is created using the single-photon protocol using bright state population parameter $\eta$.\footnote{In most literature, the variable $\alpha$ is used for this parameter; here we use $\eta$ to avoid confusion with the $\alpha$ parameter of the \ac{DQC} application.} Using the simulation, we can estimate how $F_{\text{DQC}}$ would change for different values of $\eta$ and $t_{\text{mem}}$. \cref{qnodeos:fig:delcomp-fidelity-alpha-colormap} shows the estimated $F_{\text{DQC}}$ for different values of $\eta$ and $t_{\text{mem}}$. It indicates that for the particular setup used, increasing $\eta$ has little effect, while reducing qubit memory time does. For the \ac{DQC} experiment $\eta = 0.07$ was used.
 
 \subsection{Processing Time and Latencies}
 \label{qnodeos:sec:processing_time_latencies}
@@ -77,13 +77,13 @@ Here we provide a detailed breakdown of the duration of execution phases of the 
 \subsubsection{Server qubit memory time}
 \label{qnodeos:sec:server-qubit-memory-time}
 
-\Cref{fig:fig3}c shows the duration that the server qubit must remain in memory $t_{\text{mem}}$ while waiting, averaged over all \ac{DQC} circuit iterations that passed the latency filter. \Cref{fig:fig3}d shows the breakdown of $t_{\text{mem}}$ into individual segments of processing on both client and server. In \cref{fig:delcomp-latencies-variance} we show the average duration and the variance of each of these segments. The largest time is spent on preparing S2, which involves running Python code on the \ac{CNPU} and converting this (using Python) into a \ac{NetQASM} subroutine. Caching of the preparation of the \ac{NetQASM} subroutine could significantly speed up this process. In the future, further improvements could include an optimized ahead-of-time compilation step. The large variance is due to the fact that on the \ac{CNPU}, other (background) processes run simultaneously with the \ac{DQC} application process, and there is no precise control over the scheduling of these processes.
+\Cref{qnodeos:fig:fig3}c shows the duration that the server qubit must remain in memory $t_{\text{mem}}$ while waiting, averaged over all \ac{DQC} circuit iterations that passed the latency filter. \Cref{qnodeos:fig:fig3}d shows the breakdown of $t_{\text{mem}}$ into individual segments of processing on both client and server. In \cref{qnodeos:fig:delcomp-latencies-variance} we show the average duration and the variance of each of these segments. The largest time is spent on preparing S2, which involves running Python code on the \ac{CNPU} and converting this (using Python) into a \ac{NetQASM} subroutine. Caching of the preparation of the \ac{NetQASM} subroutine could significantly speed up this process. In the future, further improvements could include an optimized ahead-of-time compilation step. The large variance is due to the fact that on the \ac{CNPU}, other (background) processes run simultaneously with the \ac{DQC} application process, and there is no precise control over the scheduling of these processes.
 
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=0.8\linewidth]{figures/qnodeos/supplementary/plots/latencies_variance.png}
 \caption{Average latency (duration) of each of the processes happening while the server qubit remains in memory in the \ac{DQC} application. The \ac{QNPU} to \ac{CNPU} latency and \ac{CNPU} to \ac{QNPU} latency are estimated as explained in \cref{qnodeos:sec:cnpu-qnpu-latency-estimation}, and fixed to 0.305\,ms (server) and 0.197\,ms (client). The other latencies are the mean and variance of the corresponding processes averaged over all \ac{DQC} circuit iterations that passed the latency filter.}
-\label{fig:delcomp-latencies-variance}
+\label{qnodeos:fig:delcomp-latencies-variance}
 \end{figure*}
 
 \subsubsection{Tracing}
@@ -110,7 +110,7 @@ The \ac{CNPU} is not a real-time system (instead, it runs on a general purpose L
 \subsubsection{CNPU-QNPU communication latency}
 \label{qnodeos:sec:cnpu-qnpu-latency-estimation}
 
-The latency of communication between the \ac{CNPU} and \ac{QNPU} can be calculated by looking at the time between \ac{CNPU} events and \ac{QNPU} events. However, since the \ac{CNPU} timestamps are fluctuating compared to the \ac{QNPU} timestamps, we cannot use a direct comparison between \ac{CNPU} and QNPU timestamps. Instead, we look at time differences on the \ac{CNPU} and compare them to time differences on the QNPU, given that we know the order in which events occur during the DQC application execution. \cref{fig:cnpu_qnpu_latencies} shows a schematic overview of events happening on the \ac{CNPU} and the \ac{QNPU} during a single execution of the \ac{DQC} circuit. By comparing, e.g., (1) the time difference on the \ac{CNPU} between sending subroutine S1 and receiving its result with (2) the time difference on the \ac{QNPU} between receiving subroutine S1 and finishing it, we can estimate the total latency of sending S1 from \ac{CNPU} to \ac{QNPU} and receiving its result. Using this technique, we can estimate the latencies for each communication between \ac{CNPU} and \ac{QNPU}, as listed in \cref{tab:delta_diffs}. Again, since the \ac{CNPU} timestamps fluctuate compared to the \ac{QNPU} timestamps, the derived latencies fluctuate and can even be negative. However, for all derived latencies, we found that a constant function best fit the data. This verifies that the actual latency is constant as expected, and that the variance is due to the inaccuracy of \ac{CNPU} timestamps.
+The latency of communication between the \ac{CNPU} and \ac{QNPU} can be calculated by looking at the time between \ac{CNPU} events and \ac{QNPU} events. However, since the \ac{CNPU} timestamps are fluctuating compared to the \ac{QNPU} timestamps, we cannot use a direct comparison between \ac{CNPU} and QNPU timestamps. Instead, we look at time differences on the \ac{CNPU} and compare them to time differences on the QNPU, given that we know the order in which events occur during the DQC application execution. \cref{qnodeos:fig:cnpu_qnpu_latencies} shows a schematic overview of events happening on the \ac{CNPU} and the \ac{QNPU} during a single execution of the \ac{DQC} circuit. By comparing, e.g., (1) the time difference on the \ac{CNPU} between sending subroutine S1 and receiving its result with (2) the time difference on the \ac{QNPU} between receiving subroutine S1 and finishing it, we can estimate the total latency of sending S1 from \ac{CNPU} to \ac{QNPU} and receiving its result. Using this technique, we can estimate the latencies for each communication between \ac{CNPU} and \ac{QNPU}, as listed in \cref{tab:delta_diffs}. Again, since the \ac{CNPU} timestamps fluctuate compared to the \ac{QNPU} timestamps, the derived latencies fluctuate and can even be negative. However, for all derived latencies, we found that a constant function best fit the data. This verifies that the actual latency is constant as expected, and that the variance is due to the inaccuracy of \ac{CNPU} timestamps.
 
 \begin{table*}
     \centering
@@ -124,7 +124,7 @@ The latency of communication between the \ac{CNPU} and \ac{QNPU} can be calculat
     $\Delta_{cC1} - \Delta_{qC1}$   & Send C1 + receive C1 result  & $0.394$ \\
     \hline
     \end{tabular}
-    \caption{Derived values for \ac{CNPU}-\ac{QNPU} communication latencies. The $\Delta$ variables are observed timestamp differences on the \ac{CNPU} or \ac{QNPU}, per execution of the \ac{DQC} circuit, as shown in \cref{fig:cnpu_qnpu_latencies}. Subtracting pairs of variables from each other produces sums of two \ac{CNPU}-\ac{QNPU} communication latencies. These sums of latencies highly fluctuate per execution of the \ac{DQC} circuit, due to the inaccuracy of the \ac{CNPU} timestamps. However, the data fits a constant value, which is shown in the table and used in further analysis.}
+    \caption{Derived values for \ac{CNPU}-\ac{QNPU} communication latencies. The $\Delta$ variables are observed timestamp differences on the \ac{CNPU} or \ac{QNPU}, per execution of the \ac{DQC} circuit, as shown in \cref{qnodeos:fig:cnpu_qnpu_latencies}. Subtracting pairs of variables from each other produces sums of two \ac{CNPU}-\ac{QNPU} communication latencies. These sums of latencies highly fluctuate per execution of the \ac{DQC} circuit, due to the inaccuracy of the \ac{CNPU} timestamps. However, the data fits a constant value, which is shown in the table and used in further analysis.}
     \label{tab:delta_diffs}
 \end{table*}
 
@@ -137,15 +137,15 @@ Using the result from \cref{tab:delta_diffs}, we can compute bounds on the four 
     \item Receiving S2 result on \ac{CNPU} from QNPU: $<$ 0.242\,ms.
 \end{itemize}
 
-In the latency breakdown of the server qubit memory time (see \cref{qnodeos:sec:server-qubit-memory-time}) we are only interested in the latencies that happen during the time that the server qubit is in memory. For the server these are the latencies for receiving the S1 result and sending S2. The sum of these two latencies is $\Delta_{qS12} - \Delta_{cS12} = 0.609$\,ms (see \cref{tab:delta_diffs}). For simplicity, we say that both latencies constitute half of this time, as mentioned in the caption of \cref{fig:delcomp-latencies-variance}. Similarly, for the client we are only interested in the latency of receiving the C1 result. For simplicity we take this latency to be the same as that of sending C1, i.e. we use half of $\Delta_{cC1} - \Delta_{qC1}$.
+In the latency breakdown of the server qubit memory time (see \cref{qnodeos:sec:server-qubit-memory-time}) we are only interested in the latencies that happen during the time that the server qubit is in memory. For the server these are the latencies for receiving the S1 result and sending S2. The sum of these two latencies is $\Delta_{qS12} - \Delta_{cS12} = 0.609$\,ms (see \cref{tab:delta_diffs}). For simplicity, we say that both latencies constitute half of this time, as mentioned in the caption of \cref{qnodeos:fig:delcomp-latencies-variance}. Similarly, for the client we are only interested in the latency of receiving the C1 result. For simplicity we take this latency to be the same as that of sending C1, i.e. we use half of $\Delta_{cC1} - \Delta_{qC1}$.
 
 \begin{figure*}[htbp]
     \centering
-    \subfloat[\centering \label{fig:subfig3}]{{\includegraphics[width=0.61\linewidth]{figures/qnodeos/supplementary/host_qnpu_latency_server.pdf}}}%
+    \subfloat[\centering \label{qnodeos:fig:subfig3}]{{\includegraphics[width=0.61\linewidth]{figures/qnodeos/supplementary/host_qnpu_latency_server.pdf}}}%
     \hfill
-    \subfloat[\centering \label{fig:subfig4}]{{\includegraphics[width=0.35\linewidth]{figures/qnodeos/supplementary/host_qnpu_latency_client.pdf}}}%
+    \subfloat[\centering \label{qnodeos:fig:subfig4}]{{\includegraphics[width=0.35\linewidth]{figures/qnodeos/supplementary/host_qnpu_latency_client.pdf}}}%
     \caption{Schematic of events happening on the \ac{CNPU} and \ac{QNPU} during a single execution of \ac{DQC} on the server (a) and the client (b). Time flows to the right. The $\Delta$ variables are the time differences between events, and are used to estimate \ac{CNPU}-\ac{QNPU} communication latencies ($a\rightarrow b$, $c\rightarrow d$, $e\rightarrow f$, $g\rightarrow h$ on the server and $a\rightarrow b$, $c\rightarrow d$ on the client).}
-    \label{fig:cnpu_qnpu_latencies}%
+    \label{qnodeos:fig:cnpu_qnpu_latencies}%
 \end{figure*}
 
 \subsubsection{Entanglement generation}
@@ -154,13 +154,13 @@ An overview of all values discussed in this section is given in \cref{tab:entang
 
 \ac{EPR} generation happens by attempting entanglement repeatedly until success. The \ac{QNPU} sends an \texttt{ENT} physical instruction (\cref{tab:qdevice-instructions}) to the \ac{QDevice}, which starts a batch of physical attempts. Each attempt takes 3.95\,$\mu$s and a batch contains 500 attempts. If a batch fails (no success after 500 attempts), the \ac{QNPU} sends another \texttt{ENT} instruction. \cref{tab:entanglement_stats} lists the average success probability per attempt and per batch that we found in the \ac{DQC} experiments. As explained in \cref{qnodeos:sec:NVentanglement}, the \ac{NV} \ac{QDevice} creates either a $\Psi^+$ or a $\Psi^-$ state. \Cref{tab:entanglement_stats} shows statistics on how often each of these states was created during our experiments.
 
-\cref{fig:delcomp-epr-rate} shows the distribution of time it takes to generate an \ac{EPR} pair in the \ac{DQC} experiment, where the average duration of such is 439\,ms. This is the duration between starting the network process and finishing it, which includes entanglement attempts until success on the \ac{QDevice} and subsequent Bell state corrections to $\Phi^+$ (see \cref{qnodeos:sec:qdevice-nv}). This duration corresponds to a fitted rate of 2.28(3) created \ac{EPR} pairs per second. If only the \ac{QDevice} entanglement generation is considered (i.e. without Bell state corrections and without \ac{QNPU} processing overhead), this rate is 2.37(2) \ac{EPR} pairs per second.
+\cref{qnodeos:fig:delcomp-epr-rate} shows the distribution of time it takes to generate an \ac{EPR} pair in the \ac{DQC} experiment, where the average duration of such is 439\,ms. This is the duration between starting the network process and finishing it, which includes entanglement attempts until success on the \ac{QDevice} and subsequent Bell state corrections to $\Phi^+$ (see \cref{qnodeos:sec:qdevice-nv}). This duration corresponds to a fitted rate of 2.28(3) created \ac{EPR} pairs per second. If only the \ac{QDevice} entanglement generation is considered (i.e. without Bell state corrections and without \ac{QNPU} processing overhead), this rate is 2.37(2) \ac{EPR} pairs per second.
 
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/plots/EPR_rate.png}
 \caption{Histogram of \ac{EPR} generation durations (time from first attempt until success) based on all \ac{EPR} generations in the \ac{DQC} experiment (using only latency-filtered data points, see \cref{qnodeos:sec:post-selection-latency}). The histogram shows which fraction of all durations were in a particular duration window (window width: 25\,ms). Expected \ac{EPR} generation duration follows an exponential decay, with a rate parameter of 2.28(3) successes (\ac{EPR} pairs) per second.}
-\label{fig:delcomp-epr-rate}
+\label{qnodeos:fig:delcomp-epr-rate}
 \end{figure}
 
 \begin{table*}[htpb]
@@ -234,7 +234,7 @@ As part of the \ac{DQC} execution, the \ac{QNPU} sends physical instructions to 
 
 In this section we focus on the execution of the network process in the \ac{QNPU} as observed in the execution of \ac{DQC}. The \ac{ER} sockets~\ref{qnodeos:sec:design_er_socket} are designed to facilitate the generation of entanglement belonging to a pair of user processes between two different \acp{QNPU}. In particular, the \ac{ER} socket allows the \ac{QNPU} to proceed with entanglement generation, while only one node may not have issued a request for entanglement yet. 
 
-During execution of the \ac{DQC} application, the client \ac{QNPU} has a single user process $P_c$ for its \ac{DQC} program and the server \ac{QNPU} has a single user process $P_s$ for its \ac{DQC} program. Both user processes realize the repeated execution of subroutines that jointly realize the \ac{DQC} circuit (\cref{fig:fig3}a).
+During execution of the \ac{DQC} application, the client \ac{QNPU} has a single user process $P_c$ for its \ac{DQC} program and the server \ac{QNPU} has a single user process $P_s$ for its \ac{DQC} program. Both user processes realize the repeated execution of subroutines that jointly realize the \ac{DQC} circuit (\cref{qnodeos:fig:fig3}a).
 
 In each single repetition of the \ac{DQC} circuit, $P_s$ executes first S1 and then S2, and $P_c$ executes C1. $P_s$ (in S1) and $P_c$ (in C1) execute a \ac{NetQASM} instruction for creating an entangled pair, which results in an entanglement request that is submitted to the network stack. Then, $P_c$ and $P_s$ go into the waiting state (see \cref{qnodeos:sec:design:processes}) until the entangled pair is delivered by the network process.
 

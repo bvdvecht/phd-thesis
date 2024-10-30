@@ -8,7 +8,7 @@ A Qoala program is represented in human-readable text format.
 This allows one to directly write Qoala programs, although our vision is that programmers write their code in a higher-level language, and that a compiler translates this into a Qoala program.
 
 In the main text, some parts of example programs were omitted for brevity.
-In Figure~\ref{fig:app:example_full_program} we show an example of a full Qoala program.
+In Figure~\ref{qoala:fig:app:example_full_program} we show an example of a full Qoala program.
 
 A Qoala program encompasses both classical and quantum code.
 These different code segments are put into different sections in the program.
@@ -50,7 +50,7 @@ Program metadata contains:
     This program acts as a `receiver' for entanglement generation (\texttt{role} attribute), which breaks symmetry in the entanglement generation process (the remote Alice program will have \texttt{role: sender}). Symmetry breaking is needed for the network stack to organize the entanglement generation.
     No callbacks are used, and all qubits (in this case: one) are stored in virtual qubit 0.
     }
-    \label{fig:app:example_full_program}
+    \label{qoala:fig:app:example_full_program}
 \end{figure*}
 
 \subsection{Host section}
@@ -145,11 +145,11 @@ Example:
     \centering
     \includegraphics[scale=0.35]{figures/qoala/qh_table.png}
     \caption{Overview of all host code (QoalaHost) instructions, their syntax and their semantics.}
-    \label{fig:app:qh_table}
+    \label{qoala:fig:app:qh_table}
 \end{figure*}
 
 \subsubsection{QH instructions}
-A full list of QoalaHost instructions is given in Table~\ref{fig:app:qh_table}.
+A full list of QoalaHost instructions is given in Table~\ref{qoala:fig:app:qh_table}.
 
 
 \subsection{NetQASM section}
@@ -165,7 +165,7 @@ This is an updated format compared to NetQASM 1.0 as presented in~\cite{dahlberg
     \includegraphics[scale=0.4]{figures/qoala/netqasm_table.png}
     \caption{Overview of all NetQASM classical instructions, their syntax and their semantics.
     Quantum instructions depend on the particular flavour~\cite{dahlberg2022netqasm} that is being used.}
-    \label{fig:app:netqasm_table}
+    \label{qoala:fig:app:netqasm_table}
 \end{figure*}
 
 
@@ -214,7 +214,7 @@ instr_name  op0 op1 ... opn
 
 where the number of operands can be 0 or more (no limit).
 
-A list of all NetQASM 2.0 instructions can be found in Table~\ref{fig:app:netqasm_table}.
+A list of all NetQASM 2.0 instructions can be found in Table~\ref{qoala:fig:app:netqasm_table}.
 
 These instructions can be classified as:
 \begin{itemize}
