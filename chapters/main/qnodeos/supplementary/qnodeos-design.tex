@@ -9,11 +9,8 @@ We proceed with a more detailed description of the \ac{QNodeOS} architecture and
 \subsubsection{Quantum Network Node System}
 \label{qnodeos:sec:appendix-arch-node_system}
 
-Within a quantum network, one can distinguish between two main types of node: \emph{end nodes}, which are used by the users to execute quantum network applications, and \emph{intermediate nodes}, that perform routines necessary to connect two or more end nodes.
-We refer the reader with a background in computer science to~\cite{vanMeter_book} for a gentle introduction to quantum networks. 
-
-We remark that \ac{QNodeOS}---a real-time system for quantum network nodes---is designed to be deployed on end and intermediary nodes, where \ac{QNodeOS} use on intermediary nodes can be restricted to facilitate entanglement generation over the network via a (series) of intermediate nodes.
-As the focus of this thesis is the execution of quantum network application, we focus here on running \ac{QNodeOS} on end nodes.
+We remark that \ac{QNodeOS}---a real-time system for quantum network nodes---is designed to be deployed on end and intermediary nodes (\cref{qnodeos:sec:quantum-networks}), where \ac{QNodeOS} use on intermediary nodes can be restricted to facilitate entanglement generation over the network via a (series) of intermediate nodes.
+As the focus of this paper is the execution of quantum network application, we focus here on running \ac{QNodeOS} on end nodes.
 
 In our model, as depicted in~\cref{qnodeos:fig:fig2}a, we divide the functions of a node into three high-level components:
 
@@ -103,7 +100,7 @@ The \ac{QNPU} \ac{API} is the central engine for managing the execution of local
 \begin{itemize}
 \item \emph{Register and deregister a program on the \ac{QNPU}}; This is part of the \ac{NetQASM} interface (see~\cref{qnodeos:sec:design:network-application}).
 \item \emph{Add a quantum block (subroutine) for a user process}; This is again part of the \ac{NetQASM} interface.
-\item \emph{Open an \ac{ER} socket with a remote node}.
+\item \emph{Open an \ac{ER} socket with a remote node} (\ac{NetQASM} interface).
 \item \emph{Control to configure the quantum network stack}, i.e., to configure the network schedule; This is used for the interaction with a network controller that sets network-wide entanglement schedules, as presented in Ref.~\cite{skrzypczyk_2021_arch}.
 \item \emph{Perform management and operations functions.}
 \end{itemize}
