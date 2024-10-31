@@ -113,7 +113,7 @@ A well-known compiler that uses this model is LLVM~\cite{lattner_llvm_2004} whic
 
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{figures/compiler/frontend-backend.pdf}
+    \includegraphics[width=1.0\textwidth]{figures/compiler/frontend-backend.pdf}
     \caption{Schematic of high-level steps in compilers that use \acf{IR}s. A source language-specific front-end compiler translates the source code into the \ac{IR}. There may be different front-end compilers for different source code languages, all translating to the same \ac{IR}. A machine code-specific back-end compiler translates the \ac{IR} to machine code. There may be different back-end compilers for different machine code types (i.e. targets). Optimizations may be applied on the \ac{IR}, or during front-end and/or back-end translation. This model allows flexibility: making a new source code language compatible only requires developing a new front-end compiler; making a new machine target compatible only requires a new back-end compiler. Furthermore, optimizations on the \ac{IR} code do not need to know about source code language nor target machine code.}
     \label{compiler:fig:frontend-backend}
 \end{figure}
@@ -276,7 +276,7 @@ We list recommendations for an architecture of a Qoala program compiler, based o
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/compiler/overall-design.pdf}
+    \includegraphics[width=1.0\textwidth]{figures/compiler/overall-design.pdf}
     \caption{Schematic of a high-level architecture for a Qoala program compiler.
     Overall, the same structure is used as in \cref{compiler:fig:frontend-backend}, but now with two \ac{IR}s.
     Source code (in any high-level language) is first translated into a high-level \ac{IR} called QoalaHIR. In this \ac{IR}, classical and quantum code can be mixed arbitrarily, allowing optimizations to be applied on the whole hybrid code.
