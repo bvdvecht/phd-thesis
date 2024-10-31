@@ -24,7 +24,7 @@ The scheduler controls both CPS and QPS execution, and may physically be realize
  \textit{Network stack}. A quantum network stack including a network layer~\cite{dahlberg2019link} is implemented on the node with which Qoala can interface. This stack can receive and fulfill requests for remote entanglement generation.
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/minimal-hardware.png}
+    \includegraphics[width=0.7\textwidth]{figures/qoala/minimal-hardware.pdf}
     \caption{Minimal hardware assumptions for a single node.}
     \label{qoala:fig:minimal_hardware_assumptions}
 \end{figure}
@@ -48,9 +48,9 @@ We contrast Qoala's program format with that of~\cite{dahlberg2022netqasm}, in w
 A Qoala program has \textit{program arguments} that are filled in during program instantiation (\cref{qoala:sec:program_instantiation}).
 
 
-\begin{figure}%[ht]
+\begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/runtime_overview.png}
+    \includegraphics[width=0.7\textwidth]{figures/qoala/runtime_overview.pdf}
     \caption{High-level overview Qoala: An SDK allows program code in a high-level language (e.g. Python).
     A compiler translates this code into a Qoala program (specific compiler not in scope of this work).
     To run, a program is instantiated with concrete values for program arguments.
@@ -111,9 +111,9 @@ The VQMS enables multitasking since programs have their own runtime context, whi
 \textit{Remote interaction}. For interaction with programs on remote nodes,
 the runtime provides \textit{classical sockets} and \textit{EPR sockets} based on~\cite{dahlberg2022netqasm}. Host code uses classical sockets for sending and receiving messages; EPR sockets are indicated in request routines (see e.g. \cref{qoala:fig:example_program}).
 
-\begin{figure}% [ht]
+\begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/example_program.png}
+    \includegraphics[width=0.6\textwidth]{figures/qoala/example_program.pdf}
     \caption{
         Example Qoala program containing a host section with 4 blocks, a local routine (\texttt{subrt1}),
         and a request routine (\texttt{req1}). Block \texttt{b2} has a relative deadline to \texttt{b0} of $0.1$ times qubit noise parameter $T_2$.
@@ -124,9 +124,9 @@ the runtime provides \textit{classical sockets} and \textit{EPR sockets} based o
 \begin{figure*}
     \newcommand{\figheight}{6.5cm}
     \centering
-    \subfloat[\centering \label{qoala:fig:task_types}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task-types-table.png}}}%
+    \subfloat[\centering \label{qoala:fig:task_types}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task-types-table.pdf}}}%
     \hfill
-    \subfloat[\centering \label{qoala:fig:task_creation_cutout}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task_creation_cutout.png}}}%
+    \subfloat[\centering \label{qoala:fig:task_creation_cutout}]{{\includegraphics[height=\figheight, keepaspectratio]{figures/qoala/task_creation_cutout.pdf}}}%
     \caption{
         (a) Overview of task types.
         (b) Examples of host code and corresponding task graphs.

@@ -1,7 +1,15 @@
 \section{Simulator implementation}
 \label{qoala:sec:app:simulator}
 
-\subsection{Package overview}
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/qoala/simulator_sequence.pdf}
+    \caption{High-level overview of sequence of steps performed in order to simulate a network running programs on nodes implemented Qoala.
+    }
+    \label{qoala:fig:app:simulator_sequence}
+\end{figure*}
+
+\paragraph{Package overview}
 The simulator has been implemented as a Python package and is available at~\cite{qoala2023simulator}.
 It is divided into three subpackages: (1) \texttt{lang}, defining the format of Qoala programs and of the EHI, (2) \texttt{runtime} defining common types for the runtime system, and (3) \texttt{sim} containing Netsquid objects that implement the Qoala runtime.
 
@@ -9,7 +17,7 @@ The division into subpackages is made in such a way that only \texttt{sim} depen
 The \texttt{lang} can be used standalone in a compiler, without having the compiler to depend on the runtime implementation, whether that is in simulation or on real hardware.
 
 
-\subsection{Netsquid: Protocols, Components, and Listeners}
+\paragraph{Netsquid: Protocols, Components, and Listeners}
 The Qoala simulator make heavy use of Netsquid's \textit{Protocol} class,
 which can be used to model concurrent software systems. 
 Each protocol defines its own run function, and the Netsquid simulator
@@ -24,7 +32,7 @@ The Netsquid \textit{Component} holds static information about the subsystem, an
 
 Listener objects are a feature of the Qoala simulator that are protocols with the sole purpose to wait for any incoming messages on a port and then notifying the corresponding protocol of them.
 
-\subsection{Interfaces and configuration}
+\paragraph{Interfaces and configuration}
 The Qoala simulator allows for a lot of configuration.
 The Low-level Hardware Interface (LHI) defines a format for defining physical quantum instructions, durations, and noise models.
 Default values are provided for NV-centers and Trapped Ion, but custom hardware models can easily be added.
@@ -47,31 +55,24 @@ The QPS is expected to provide an implementation of the NTF, such that it can tr
 The Exposed Hardware Interface (EHI) is described in \cref{qoala:sec:architecture}.
 The simulator provides automated tools for translating a combination of an LHI instance and a NTF into an EHI.
 
-\subsection{Simulator Architecture}
+\paragraph{Simulator Architecture}
 The simulator defines various component and protocol classes representing the concepts defined in \cref{qoala:sec:architecture}. These classes can be instantiated in a custom way, and can hence be seen as building blocks. The simulator provides a default way of using these blocks (namely, in the way explained in the Qoala architecture), but it is possible to use these blocks in another way to investigate different architectures.
 In \cref{qoala:fig:app:simulator} a schematic overview of the most important classes and their roles is given, and in \cref{qoala:fig:app:simulator_sequence} an overview is provided of the general sequence of actions involved when simulating the execution of one or more applications on a quantum network.
 
 
-\begin{figure*}[hp]
+\begin{sidewaysfigure*}[t]
     \centering
-    \includegraphics[width=\textwidth]{figures/qoala/simulator.png}
+    \includegraphics[width=0.9\textwidth]{figures/qoala/simulator.pdf}
     \caption{High-level overview of the simulator architecture. Each box represents a component.
     A single network component can contain multiple nodes (two are shown, but there can be more).
     Each node contains a node scheduler, CPS scheduler and QPS scheduler, implementing the algorithms as described in \cref{qoala:sec:app:scheduling_execution}.
     A single entanglement distributor object creates entangled pairs and puts the qubits directly in the quantum memory of the nodes, in the QDevice.
     }
     \label{qoala:fig:app:simulator}
-\end{figure*}
+\end{sidewaysfigure*}
 
 In our simulator, the network controller (\cref{qoala:sec:app:entanglement_distribution})
 is implemented as a single centralized entity called EntDist (\cref{qoala:fig:app:simulator}).
 
-\begin{figure*}[hp]
-    \centering
-    \includegraphics[width=\textwidth]{figures/qoala/simulator_sequence.png}
-    \caption{High-level overview of sequence of steps performed in order to simulate a network running programs on nodes implemented Qoala.
-    }
-    \label{qoala:fig:app:simulator_sequence}
-\end{figure*}
 
 

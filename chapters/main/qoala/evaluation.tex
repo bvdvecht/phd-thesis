@@ -20,9 +20,9 @@ To demonstrate the hardware independent performance of Qoala, all simulations ar
 and two models based on data validated on real hardware (NV centers~\cite{bradley2019ten, hermans2022qubit} and trapped ions~\cite{krutyanskiy2023entanglement}). 
 We observe successful execution (desired deterministic outcome when setting noise parameters (\cref{qoala:sec:background_context}) to 0, and expected non-deterministic outcome distributions with realistic noise parameters) for all types of applications (details in \cref{qoala:sec:app:evaluation}).
 
-\begin{figure}% [ht]
+\begin{figure}
     \centering
-    \includegraphics[width=1.0\columnwidth]{figures/qoala/teleport-self-preemption.png}
+    \includegraphics[width=0.7\textwidth]{figures/qoala/teleport-self-preemption.png}
     \caption{Self-preemption of a teleportation program.
     For certain durations of the time slot length (as fraction of node-node communication latency, x-axis), the makespan is considerably higher (spikes in the plot).
     Reason: a classical message arrives for some teleportation instance $i$,
@@ -34,6 +34,7 @@ We observe successful execution (desired deterministic outcome when setting nois
 \end{figure}
 
 \subsection{Demonstrating Qoala's multitasking potential}
+\label{qoala:sec:demo_multitasking_potential}
 Next, we demonstrate that Qoala can execute multiple instances of (different) programs concurrently by interleaving. We examine (1) makespan decrease (\cref{qoala:sec:background_context}) when interleaving the instances compared to sequential execution, % (scheduling all instances in sequence).
 (2) whether makespan depends on the network schedule.
 
@@ -48,9 +49,9 @@ The network schedule affects the makespan decrease: doubling the time slot lengt
 We then execute instances of different applications and again examine the effect of the network schedule on the makespan decrease: 50 QKD (A1 in \cref{qoala:sec:demonstrating_architecture_effectiveness}) and 50 BQC (A2) instances give a makespan decrease of $9.5\%$ (fixed schedule which first has time slots for QKD and then for BQC) and $39\%$ (schedule with time slots alternating between QKD and BQC).
 We observe that multitasking can lead to improved (lower) makespan and that the network schedule can have considerable impact on the makespan.
 
-\begin{figure}% [ht]
+\begin{figure}
     \centering
-    \includegraphics[width=1.0\columnwidth]{figures/qoala/tradeoffs_cq.png}
+    \includegraphics[width=0.7\textwidth]{figures/qoala/tradeoffs_cq.png}
     \caption{Execution of interactive quantum program in the presence of a `busy' CPS program (tasks with duration $f \cdot CC$ for fraction $f$ of the classical node-to-node latency $CC$, x-axis).
     \textbf{Comparison of schedulers:}
     $Baseline$ (no scheduling nor interleaving),
@@ -111,6 +112,7 @@ Whenever the receiver node must wait for classical messages to come in for A3, i
 We find that success probability of both types of programs decreases in the presence of another program.
 
 \subsection{Performance sensitivity}
+\label{qoala:sec:performance_sensitivity}
 Finally, we investigate the influence of classical message-passing latencies, internal latencies, and network schedule contents on application success probability of BQC (A2, 100 instances).
 We find that the duration of sending classical messages between nodes has a large impact on the success probability:
 node-node latencies [$0.01$, $0.1$, $1$] times the qubit coherence time lead to success probabilities [$0.89(2)$, $0.83(2)$, $0.54(4)$], respectively.

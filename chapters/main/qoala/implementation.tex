@@ -33,9 +33,9 @@ Write conflicts on the processor task graphs are avoided since tasks can only be
 The processor schedulers support both a first-come-first-serve (FCFS) and an earliest-deadline-first (EDF)~\cite{silberschatz2006operating} scheduling mechanism.
 In our evaluation (\cref{qoala:sec:evaluation}), deadlines are used as \textit{soft deadlines}, i.e. there is no guarantee about meeting deadlines.
 
-\begin{figure}% [ht]
+\begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/scheduler_components.png}
+    \includegraphics[width=0.7\textwidth]{figures/qoala/scheduler_components.pdf}
     \caption{Overview of our hierarchical scheduler implementation.
     The node scheduler maintains a graph of all tasks. The CPS and QPS maintain partial graphs with only tasks they can execute themselves. Partial graphs are updated by the node scheduler. 
     The CPS scheduler has access to a buffer with classical messages from other nodes, activating \texttt{HostEvent} tasks. The QPS scheduler has access to the network schedule, determining allowed start times of \texttt{Pair} tasks.}

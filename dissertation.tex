@@ -58,6 +58,9 @@
 
 \usepackage[shortcuts]{extdash}
 
+% For sideways figures
+\usepackage{rotating}
+
 % Bibliography managed using BibLaTeX.
 \usepackage[
     giveninits=true,     % only given name initials and not the full given name
@@ -276,6 +279,45 @@
 \lstnewenvironment{pycode}{\lstset{style=mystyle,language=Python}}{}
 \newcommand{\nq}[1]{\lstinline[style=inlinestyle,language=C++]{#1}}
 \newcommand{\py}[1]{\lstinline[language=Python]{#1}}
+
+\lstdefinelanguage{qoala}
+{
+    morekeywords=[1]{
+        add, add, sub, addm, subm,
+        jmp, bez, bnz, beq, bne, blt, bge,
+        set, store, load
+        meas,
+        create_epr, recv_epr,
+        init, meas, h, rot_x, rot_y, rot_z, cnot, cphase, cx_dir, cy_dir,
+        APPID, NETQASM,
+        run_request, run_routine, return_result, assign
+    },
+    morekeywords=[2]{
+        META_START, META_END,
+        SUBROUTINE,
+        NETQASM_START, NETQASM_END,
+        REQUEST
+    },
+    % morekeywords=[3]{
+    %     parameters, name, csockets, epr_sockets,
+    %     params, returns, uses, keeps, request,
+    %     callback_type, callback, return_vars, remote_id, epr_socket_id, num_pairs, virt_ids, timeout, fidelity, typ, role
+    % }
+    keywordstyle=[1]\color{blue},
+    keywordstyle=[2]\color{purple},
+    % keywordstyle=[3]\color{blue},
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morecomment=[s][\color{blue}]{\#\ }{\ },
+    % morecomment=[s][\color{yellow}]{LOOP}{:},
+    morestring=[b]",
+    escapeinside={(*@}{@*)},
+}
+
+\lstnewenvironment{qoalacode}{\lstset{style=mystyle,language=qoala}}{}
+
+
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO #1}}
 \newcommand{\steph}[1]{\textcolor{red}{STEPHANIE: #1}}

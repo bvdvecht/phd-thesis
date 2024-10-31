@@ -1,18 +1,6 @@
 \section{Introduction}
 \label{qoala:sec:introduction}
 
-\begin{figure}% [ht]
-    \centering
-    \includegraphics[scale=0.35]{figures/qoala/program_illustration.png}
-    \caption{Example application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
-        (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by  network controller).
-        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit)
-        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time)
-        (5) Execution of a quantum circuit on qubit B at Node 2 depending on the classical bit. The quality of qubit B has degraded during the time elapsed since (1). 
-        (6) Node 2 measures qubit B and outputs the classical result.
-    }
-    \label{qoala:fig:program_illustration}
-\end{figure}
 
 
 Advances in quantum computing and quantum communication technologies are paving the way for a \textit{quantum internet}~\cite{wehner2018quantum, kimble2008quantum}, where quantum applications are executed across multiple network nodes.
@@ -37,6 +25,19 @@ on the one hand, entanglement generation requires a very precise network schedul
 
 \subsection{Main contributions}
 We propose the first architecture, Qoala, that addresses these challenges. Qoala is an execution environment tailored to programmable quantum internet nodes, accommodating the \textbf{hybrid, interactive, networked, and asynchronous nature} of quantum internet applications. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/qoala/program_illustration.pdf}
+    \caption{Example application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
+        (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by  network controller).
+        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit)
+        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time)
+        (5) Execution of a quantum circuit on qubit B at Node 2 depending on the classical bit. The quality of qubit B has degraded during the time elapsed since (1). 
+        (6) Node 2 measures qubit B and outputs the classical result.
+    }
+    \label{qoala:fig:program_illustration}
+\end{figure}
 
 \textbf{Unified program format for hybrid-classical quantum programs:}
 Qoala defines a unified program format for executables, encompassing classical and quantum (networked and local) code, and defining basic blocks.

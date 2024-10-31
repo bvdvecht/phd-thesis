@@ -1,6 +1,7 @@
 \section{Runtime environment}
 \label{qoala:sec:app:runtime_environment}
 In this section we provide more information about the runtime environment described in \cref{qoala:sec:runtime_environment}.
+\cref{qoala:fig:app:runtime_detailed} provides an overview of the runtime architecture.
 
 \subsection{Program instantiation}
 A program instance is a Qoala program with additional runtime- and context-specific information that is supplied when preparing execution of the program.
@@ -23,9 +24,9 @@ Based on the above additional information, a program instance can be created whi
 
 \cref{qoala:fig:app:instantiation} provides a schematic example of program instantiation.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/instantiation.png}
+    \includegraphics[width=0.6\textwidth]{figures/qoala/instantiation.pdf}
     \caption{Schematic example of program instantiation.
     A program containing global arguments ($N$) is instantiated using a concrete value for the arguments ($N = 10$) and the EHI (containing values for the expect duration of a QL block, the expected duration of a CC block, and the qubit noise parameter expressed as the \textit{decoherence rate}). This results in a program instance for which the expected durations have concrete values.
     }
@@ -40,6 +41,11 @@ For instance, the client ID now has the explicit value of 3, since the remote cl
 Often many program instances may be created for a single program.
 For example, if 1000 runs of the BQC program are desired, 1000 program instances are created based on the single Qoala program.
 
+\paragraph{Batches}
+A program may be submitted for execution in a batch.
+
+A batch $B$ consists of a program $P$, the number of execution $N$ and inputs for each execution. Based on this, $N$ program instances are created.
+
 
 \subsection{Shared Memory}
 \label{qoala:sec:app:shared_memory}
@@ -53,7 +59,7 @@ No region can be written to by both CPS and QPS.
 Note that this design leaves open how the shared memory can be implemented: either as real physical shared memory, or as a message passing protocol.
 
 
-\subsection{Arrays}
+\paragraph{Arrays}
 The shared memory is logically divided into \textit{array elements} that can be allocated only by the CPS (\cref{qoala:fig:app:arrays}).
 Each element can hold a single 32-bit signed integer.
 The CPS can allocate shared memory space by specifying a \textit{size}, resulting in an allocated array.
@@ -82,9 +88,9 @@ The regions are only a logical division, where each arrays in a certain region a
 \end{itemize}
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/arrays.png}
+    \includegraphics[width=0.6\textwidth]{figures/qoala/arrays.pdf}
     \caption{Schematic overview of shared memory, which is organized as \textit{arrays}.
     Arrays are allocated by the CPS with a certain size (the number of \textit{array elements}).
     Each array element holds a single classical value.
@@ -95,9 +101,9 @@ The regions are only a logical division, where each arrays in a certain region a
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/qoala/shared_memory.png}
+    \includegraphics[width=0.6\textwidth]{figures/qoala/shared_memory.pdf}
     \caption{Shared memory regions.
     The CPS writes local routine arguments to the \texttt{LR\_in} section and request routine arguments to the \texttt{RR\_in} section.
     The CPS reads local routine results from the \texttt{LR\_out} section and request routine results from the \texttt{RR\_out} section.
@@ -109,7 +115,7 @@ The regions are only a logical division, where each arrays in a certain region a
 \end{figure}
 
 
-\subsection{Arrays for local routines}
+\paragraph{Arrays for local routines}
 Before an local routine (LR) can be executed, two arrays must be allocated by the CPS:
 \begin{itemize}
 \item An array in the \texttt{LR\_in} region. Its size needs to match the number of arguments for the LR.
@@ -122,7 +128,7 @@ The array in the \texttt{LR\_out} region can be accessed by the NetQASM code in 
 Note that each program instance allocates (at runtime) its own arrays. Each individual LR in each individual program instance has access to two arrays called \texttt{@input}  and \texttt{@output}, but in practice there can hence be multiple "input" and "output" arrays, each occupying a different part of the global Shared Memory.
 
 
-\subsection{Arrays for request routines}
+\paragraph{Arrays for request routines}
 Before a request routine (RR) can be executed, multiple arrays must be allocated by the CPS:
 \begin{itemize}
 \item An array in the \texttt{RR\_in} region. 
@@ -148,7 +154,7 @@ The VQMS for each program instance is created when instantiating the program.
 This can be seen as virtual memory allocation for the program.
 At runtime, the VQMS of each running program instance is mapped to the PQMS.
 
-\subsection{Unit Modules}
+\paragraph{Unit Modules}
 A Unit Module (UM) describes the topology of a VQMS as well as its noise characteristics.
 That is, a UM contains:
 \begin{itemize}
@@ -172,7 +178,7 @@ Qubits in the Unit Module are called \textit{virtual qubits}. They are identifie
 
 
 
-\subsection{Memory manager}
+\paragraph{Memory manager}
 Quantum memory allocation and freeing is handled by a memory manager, which lives in the QPS.
 The memory manager keeps track of the unit modules of all program instances, and maps virtual qubits to physical qubits. 
 
@@ -180,9 +186,9 @@ Before starting a local routine or request routine, the memory manager allocates
 For example, if a local routine for program instance $P$ defines in its metadata (see \cref{qoala:sec:app:program_structure}) that it uses virtual qubits 0 and 1, the memory manager allocates virtual qubits 0 and 1 (if not already allocated).
 This involves finding currently unused physical qubits and mapping new virtual qubit to these free physical qubits.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
-    \includegraphics[scale=0.4]{figures/qoala/unit_module.png}
+    \includegraphics[width=0.6\textwidth]{figures/qoala/unit_module.pdf}
     \caption{Example of a physical quantum memory available in a node (four qubits) and two allocated unit modules. The colors of the qubits represent the physical locations they map to. Note that the top-left qubit of Unit Module 2 is not currently mapped and that it also cannot be mapped. Therefore, tasks that require program instance 2 to use a third qubit cannot be executed at this time.}
     \label{qoala:fig:app:unit_module}
 \end{figure}
@@ -198,7 +204,7 @@ All information that is exposed falls under the Exposed Hardware Interface (EHI)
 The EHI can be divided into \textit{node info} and \textit{network info}.
 
 
-\subsection{EHI Node Info}
+\paragraph{EHI Node Info}
 The EHI node info consists of:
 
 \begin{itemize}
@@ -220,7 +226,7 @@ Covers
 (2) duration of executing a classical NetQASM instruction (Note that the duration of quantum operations is covered by the Gate Info).
 \end{itemize}
 
-\subsection{EHI Network Info}
+\paragraph{EHI Network Info}
 The EHI network info consists of \textbf{Link Info} for each link in the network, with
 (1) the expected duration of generating an entangled pair on this link, and
 (2) the expected fidelity of generating an entangled pair on this link.
@@ -237,4 +243,10 @@ An EPR socket represents an endpoint of a quantum connection.
 Through the EPR socket, a program can ask for entanglement with a remote node.
 
 
+\begin{sidewaysfigure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/qoala/runtime_detailed.pdf}
+    \caption{Detailed Qoala runtime overview.}
+    \label{qoala:fig:app:runtime_detailed}
+\end{sidewaysfigure}
 
