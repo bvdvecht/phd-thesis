@@ -21,7 +21,8 @@ Programs also need to perform classical operations, such as message passing (\te
 
 Realizing the execution of quantum internet applications presents unique challenges (see \cref{qoala:sec:design_considerations}): 
 First, a program for a quantum internet application is not merely a hybrid of classical and quantum code segments; these segments are also highly \textit{interactive}: classical and quantum code may run concurrently, communicating and influencing each other.
-E.g., a quantum circuit may "pause" halfway, keeping quantum states in memory, and wait for a value from a classical segment (e.g. a classical message from a remote node) before continuing.
+E.g., a quantum circuit (a series of quantum gates) may "pause" halfway, keeping quantum states in memory, and wait for a value from a classical segment (e.g. a classical message from a remote node) before continuing.
+This interactivity makes arbitrary quantum network applications more complex than simple prepare-and-measure quantum network protocols that do not require this interactivity, such as QKD.
 Quantum memories have limited lifetimes, meaning qubits are subject to decoherence, degrading their quality over time. This introduces the need 
 control the joint schedule of the classical and quantum segments of the program to reach desired levels of application performance.
 
@@ -49,6 +50,7 @@ We propose the first architecture, Qoala, that addresses these challenges. Qoala
 
 \textbf{Unified program format for hybrid-classical quantum programs:}
 Qoala defines a unified program format for executables, encompassing classical and quantum (networked and local) code, and defining basic blocks.
+This format is suitable for arbitrary quantum network programs up to the most advanced stage~\cite{wehner2018quantum}.
 This paves the way for a joint optimization of the classical and quantum code by a compiler.
 % The program format is also made such that it can be the output of a compiler, making use of basic blocks.
 
@@ -70,6 +72,11 @@ Using the implementation we demonstrate the effectiveness and feasibility of our
 We continue to examine tradeoffs in the classical and quantum performance metrics of using different types of scheduling approaches. 
 We examine Qoala's improvement over NetQASM~\cite{dahlberg2022netqasm} in enabling hybrid classical-quantum compilation possibilities. 
 Finally, we study trends in application performance when varying the amount of concurrency, and examine the impact of a network schedule for entanglement generation on the performance of Qoala.
+
+We stress that Qoala is not just a simulator.
+Qoala is an architecture for executing quantum network programs, and is not tied to specific implementations.
+The simulator implementation of the architecture validates the design and opens possibilities for further research.
+However, Qoala is also planned to be implemented as (part of) an operating system running on real (quantum) hardware.
 
 We highlight the role of Qoala in opening the door for computer science research. We make our simulator available as open source~\cite{qoala2023simulator}, paving the way for computer scientists to conduct further research, e.g., into the design of compilers, or schedulers that can readily be tested using the simulator. 
 

@@ -10,7 +10,7 @@ Details in \cref{qoala:sec:app:program_structure,qoala:sec:app:runtime_environme
 \subsection{Minimal hardware assumptions}
 \label{qoala:sec:minimal_hardware_assumptions}
 
-Qoala is based on only a few core assumptions on the processing node (\cref{qoala:fig:minimal_hardware_assumptions}):
+Qoala is based on only a few core assumptions on the processing node (consideration EC3, \cref{qoala:fig:minimal_hardware_assumptions}):
 
 \textit{CPS-QPS distinction}. We assume the node distinguishes between a \textit{classical processing system (CPS)} managing classical computing resources (e.g. CPU, classical memory and networking), and a \textit{quantum processing system (QPS)}, responsible for executing quantum operations (gates, measurements, entanglement generation) on quantum hardware including a quantum memory as in~\cite{dahlberg2022netqasm, pompili2022experimental}.
 Unlike prior work, we assume a shared classical memory is accessible to both the CPS and QPS, enabling communication between the two processing systems, addressing the interactive property of quantum internet programs.
@@ -33,15 +33,15 @@ The scheduler controls both CPS and QPS execution, and may physically be realize
 
 \subsection{Program structure}
 \label{qoala:sec:program_structure}
-Qoala defines a hybrid format for programs, addressing considerations in \cref{qoala:sec:design_considerations}.
+Qoala defines a hybrid format for programs, mapping naturally to their hybrid nature (consideration FC1 in \cref{qoala:sec:design_considerations}).
 A Qoala program is a combination of quantum and classical instructions, 
 organized into three main sections: \textit{host code} (containing classical instructions), \textit{local routines} (containing local quantum instructions), 
 and \textit{request routines} (for remote entanglement generation).
 This hybrid format allows a compiler to optimize the whole program, including critical code paths with dependencies between classical and quantum segments.
-Local routines and request routines can be triggered from within host code as function calls, addressing the interactivity between them.
+Local routines and request routines can be triggered from within host code as function calls, addressing the interactivity between them (consideration FC2).
 
 A Qoala program is an \textit{executable} and output of a compiler.
-The format is separate from any high-level language in which a programmer might write code; hence Qoala in theory allows for compatibility with any such language.
+The format is separate from any high-level language in which a programmer might write code; hence Qoala in theory allows for compatibility with any such language (consideration EC1).
 Entry and exit points of a program are in host code.
 \cref{qoala:fig:example_program} shows an example program in text format.
 We contrast Qoala's program format with that of~\cite{dahlberg2022netqasm}, in which there was no way to compile across classical and quantum code segments.
@@ -70,7 +70,7 @@ For example, in a program that is part of a QKD application, classical post-proc
 Host code is structured as a sequence of \textit{blocks}, each holding a list of instructions.
 Blocks dictate control-flow by ending with a (conditional) jump instruction (default: next block in the sequence).
 This block division not only facilitates task creation and scheduling (see \cref{qoala:sec:tasks}) but also streamlines compiler integration (which may use blocks in its intermediate representation).
-Blocks can contain metadata about their expected \textit{duration}, (relative) deadlines, and they may be inside \textit{critical sections}, encompassing a sequence of blocks with a maximally allowed execution duration. This metadata is propagated to corresponding tasks and used by the scheduler in order to mitigate quantum decoherence due to limit qubit lifetime.
+Blocks can contain metadata about their expected \textit{duration}, (relative) deadlines, and they may be inside \textit{critical sections}, encompassing a sequence of blocks with a maximally allowed execution duration. This metadata is propagated to corresponding tasks and used by the scheduler in order to mitigate quantum decoherence due to limit qubit lifetime (consideration TC1).
 Asynchronous execution is possible by `submitting' multiple routines for execution, and waiting for all of them to finish. At runtime, the scheduler can decide in which order to execute the routines.
 
 
@@ -140,7 +140,7 @@ the runtime provides \textit{classical sockets} and \textit{EPR sockets} based o
 
 \subsection{Tasks}
 \label{qoala:sec:tasks}
-We introduce \textit{tasks} to enable multitasking.
+We introduce \textit{tasks} to enable multitasking (consideration FC3).
 Each task represents a code segment of a running program with a context of runtime variables.
 Tasks have different types (\cref{qoala:fig:tasks}) based on the code they represent.
 By splitting a program into distinct executable tasks, 
@@ -150,7 +150,7 @@ Code segments indicated to run asynchronously (\cref{qoala:sec:program_structure
 %, simplifying the interface between the developer's intent (`run these segments in any order') and the runtime system (choosing an efficient execution order).
 Further, tasks enable interleaving of local operations and quantum network (entanglement generation) operations.
 A scheduler can choose when to execute entanglement tasks (with strict timing requirements from the network schedule)
-and when to execute local tasks (less strict requirements).
+and when to execute local tasks (less strict requirements), addressing consideration TC2.
 
 \textit{Task graph}.
 Tasks are organized in a \textit{task graph}, a directed acyclic graph (DAG) where each node represents a single task.
@@ -205,4 +205,4 @@ For instance, the arrival of a message from a remote node might activate a \text
 if the CPS was executing another lower priority task, it may be pre-empted and resumed at a later time.
 Since quantum tasks cannot in general be rolled back or resumed (e.g. measurements are destructive and cannot be undone), Qoala does not allow the pre-emption of QPS tasks.
 Although we define a scheduling problem, and a framework for designing and implementing scheduling algorithms,
-we on purpose do not prescribe an explicit implementation and leave the question of an optimal scheduling approach open for further research (\cref{qoala:sec:conclusion}).
+we on purpose do not prescribe an explicit implementation and leave the question of an optimal scheduling approach open for further research (consideration EC2, see also \cref{qoala:sec:conclusion}).

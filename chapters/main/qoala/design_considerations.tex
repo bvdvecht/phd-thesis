@@ -4,7 +4,7 @@
 \subsection{Background and context}
 \label{qoala:sec:background_context}
 
-\todo{Add something like ``we revisit'' since this is already in intro/background chapters}
+We first revisit some of the relevant background and context (see also \cref{chp:background}).
 
 \textit{Quantum nodes}.
 A quantum internet connects quantum nodes on which quantum programs may be 
@@ -38,32 +38,32 @@ when performing operations (such as gates, measurements, or entanglement generat
 
 In many quantum internet applications (e.g. BQC), a single execution of the application can result in failure or success (e.g. a BQC client receives correct measurement results from the server program~\cite{leichtle2021verifying}). Applications are often executed many times, where outcome statistics are computed in order to validate successful execution (e.g. by majority of outcomes).
 We consider two metrics:
-a \emph{quantum metric} -  the \textit{success probability} of executing a single instance of the application (on average), and a \emph{classical metric} -  the \textit{makespan}, i.e. the average execution time of an application instance.
+a \emph{quantum metric} --- the \textit{success probability} of executing a single instance of the application (on average), and a \emph{classical metric} --- the \textit{makespan}, i.e. the average execution time of an application instance.
 
 \subsection{Considerations}
 Considerations can be categorized into three main groups: fundamental, technological, and enabling.
 
 \noindent\textit{\textbf{Fundamental Considerations}}
-(1) \textit{Hybrid nature of applications}: Quantum internet applications inherently consist of both classical and quantum segments, as well as local and networking operations. The execution environment must account for this hybrid nature, and the program structure should accommodate all types of operations.
-(2) \textit{Interactive nature of applications}: Quantum internet applications require classical communication between nodes. This communication may take place in between classical and quantum segments of a single program. 
+(1) \textit{Hybrid nature of applications (FC1)}: Quantum internet applications inherently consist of both classical and quantum segments, as well as local and networking operations. The execution environment must account for this hybrid nature, and the program structure should accommodate all types of operations.
+(2) \textit{Interactive nature of applications (FC2)}: Quantum internet applications require classical communication between nodes. This communication may take place in between classical and quantum segments of a single program. 
 This implies the need for application-level interfaces between programs on different nodes, and for interfaces between classical and quantum code segments on a single node.
-(3) \textit{Multitasking}: Programs may spend a significant amount of time waiting for messages from a remote node (ms), motivating multitasking to make optimal use of the classical and quantum computing resources at each node.  This requires scheduling of time and resources.
+(3) \textit{Multitasking (FC3)}: Programs may spend a significant amount of time waiting for messages from a remote node (ms), motivating multitasking to make optimal use of the classical and quantum computing resources at each node.  This requires scheduling of time and resources.
 
 \noindent\textit{\textbf{Technological Considerations}}
-(1) \textit{Limited qubit lifetime}:
+(1) \textit{Limited qubit lifetime (TC1)}:
 Quantum memory quality degrades over time, presenting a significant challenge for the execution environment,
 especially in near-term hardware (ms to s memory lifetimes~\cite{ruf2021quantum, pompili2021realization, krutyanskiy2023telecom}).
 As such, there are natural deadlines to application execution after which a desired performance (success probability) can no longer be reached.
 We thus desire that a program specification allows indication of memory quality constraints (deadlines), which the runtime environment can act upon (e.g. by appropriate scheduling or restarting).
-(2) \textit{Integration of processing and networking}: We assume that near-term nodes only have a single quantum processor, which needs to perform both local quantum gates as well as remote entanglement generation.
+(2) \textit{Integration of processing and networking (TC2)}: We assume that near-term nodes only have a single quantum processor, which needs to perform both local quantum gates as well as remote entanglement generation.
 That is, while performing local operations the processor is blocked from networking operations and vice versa, as is the case for all current implementations~\cite{pompili2021realization, krutyanskiy2023entanglement} but may be mitigated partially using future proposals~\cite{vardoyan2022quantum}. 
 The node must hence allocate time for local computation while at the same time adhering to the network schedule which constrains timing of the entanglement operations.
 
 \noindent\textit{\textbf{Enabling Considerations}}
-(1) \textit{Different compilation strategies and programming languages}: The execution environment should support various compilation strategies and accessible programming languages. 
+(1) \textit{Different compilation strategies and programming languages (EC1)}: The execution environment should support various compilation strategies and accessible programming languages. 
 In order to enable compilation, we furthermore want a representation of the program that can be integrated with existing compiler frameworks.
-(2) \textit{Different scheduling strategies}: Since we expect that scheduling plays a vital role in optimizing application performance, the execution environment should enable scheduling, and support different scheduling algorithms and policies, 
+(2) \textit{Different scheduling strategies (EC2)}: Since we expect that scheduling plays a vital role in optimizing application performance, the execution environment should enable scheduling, and support different scheduling algorithms and policies, 
 allowing for their comparison and evaluation.
-(3) \textit{Different (control) hardware implementations}: The architecture should make minimal assumptions on the classical control hardware, and be independent on the choice of quantum hardware platform~\cite{carlothesis},
+(3) \textit{Different (control) hardware implementations (EC3)}: The architecture should make minimal assumptions on the classical control hardware, and be independent on the choice of quantum hardware platform~\cite{carlothesis},
 allowing for integration with multiple (future) technologies such as NV centers~\cite{pompili2022experimental} or trapped ions~\cite{drmota2023robust}.
 

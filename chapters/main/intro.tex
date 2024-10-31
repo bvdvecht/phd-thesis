@@ -132,8 +132,8 @@ We work towards this goal by addressing the following research questions:
 
 \section{Thesis Outline}
 With this thesis, we achieve the goal of enabling programming and execution of quantum network applications.
-
-We do this by presenting new architectures, tools, and paradigms.
+We do this by presenting new tools and system and software architectures.
+\cref{intro:fig:chapters_overview} visualizes how these fit together.
 
 In \cref{chp:background}, we first provide more background information about quantum internet applications.
 It introduces concepts and terminology that are used in the following chapters.
@@ -142,7 +142,7 @@ In \cref{chp:netqasm}, we present NetQASM: the first programming representation 
 This representation includes a new low-level instruction set architecture tailored to quantum network applications,
 but it also contains a high-level software development kit, enabling developers to express their application logic.
 We purposefully make NetQASM hardware-independent and extendible.
-We also introduce a first model for execution of applications programmed using NetQASM (Q2).
+We also introduce a first model for execution of applications programmed using NetQASM, addressing Q2.
 We evaluate our design choices in simulation.
 
 In \cref{chp:qnodeos} we fully focus on the question of application execution (Q2).
@@ -154,10 +154,9 @@ We report on the performance of our architecture by looking at application throu
 
 Based on what we learned from our QNodeOS implementation and evaluation, we propose an improved architecture --- Qoala --- for executing applications on quantum network nodes in \cref{chp:qoala}.
 Qoala that addresses the compilation and scheduling challenges found in QNodeOS, by allowing hybrid classical-quantum compilation and scheduling.
-We show how this architecture enables strategies to achieve better application performance (Q3).
+We show how this architecture enables strategies to achieve better application performance, addressing Q3.
 
 In \cref{chp:compiler} we discuss in more detail how Qoala can be used for improved compilation strategies.
-
 Finally, in \cref{chp:conclusion} we conclude and reflect upon future directions.
 
 
