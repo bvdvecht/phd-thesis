@@ -45,12 +45,12 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
     Gate                      & Durations (ns) & Explanation                                                \\
     \hline\hline
     \texttt{electron\_init}        & 2e3            & Initialize a comm. qubit (electron) to $|0\rangle$ \\
-    \texttt{electron\_rot}         & 5              & single-qubit rotation on comm. qubit (electron)    \\
+    \texttt{electron\_rot}         & 5              & \makecell{Single-qubit rotation on communication \\ qubit (electron)}    \\
     \texttt{measure}              & 3.7e3          & Measure communication qubit (electron)                     \\
     \texttt{carbon\_init}          & 3.1e5          & Initialize a storage qubit (carbon) to $|0\rangle$         \\
     \texttt{carbon\_xy\_rot}        & $t$            & $X$/$Y$-rotation on storage qubit (carbon)                 \\
     \texttt{carbon\_z\_rot}         & 5              & $Z$-rotation on storage qubit (carbon)                     \\
-    \texttt{ec\_controlled\_dir\_xy} & $t$            & Native two-qubit gates, (\cref{eq:crot_x,eq:crot_y})     \\
+    \texttt{ec\_controlled\_dir\_xy} & $t$            & \makecell{Native two-qubit gates \\ (\cref{eq:crot_x,eq:crot_y})}     \\
     \hline
   \end{tabular}
   \caption{
@@ -69,15 +69,15 @@ the value specific in \cref{tab:noise}. Decoherence noise is specific as $T_1$
     \texttt{electron\_T1}          & 1 hour       & $T_1$ of communication qubit (electron)                     \\
     \texttt{electron\_T2}          & 1.46 seconds & $T_2$ of communication qubit (electron)                     \\
     \texttt{electron\_init}        & 0.99)        & Fidelity to initialize comm. qubit (electron)       \\
-    \texttt{electron\_rot}         & 1.0          & Fidelity for $Z$-rotation on comm. qubit (electron) \\
+    \texttt{electron\_rot}         & 1.0          & \makecell{Fidelity for $Z$-rotation on \\ communication qubit (electron)} \\
     \texttt{carbon\_T1}            & 10 hours     & $T_1$ of storage qubit (carbon)                             \\
     \texttt{carbon\_T2}            & 1 second     & $T_2$ of storage qubit (carbon)                             \\
     \texttt{carbon\_init}          & 0.997        & Fidelity to initialize storage qubit (carbon)               \\
-    \texttt{carbon\_z\_rot}         & 0.999        & Fidelity for $Z$-rotation on storage qubit (carbon)         \\
-    \texttt{carbon\_xy\_rot}        & $f$          & Fidelity for $X$/$Y$-rotation on storage qubit (carbon)     \\
+    \texttt{carbon\_z\_rot}         & 0.999        & \makecell{Fidelity for $Z$-rotation on \\ storage qubit (carbon)}         \\
+    \texttt{carbon\_xy\_rot}        & $f$          & \makecell{Fidelity for $X$/$Y$-rotation on \\ storage qubit (carbon)}     \\
     \texttt{ec\_controlled\_dir\_xy} & $f$          & Fidelity for native two-qubit gate                          \\
-    \texttt{prob\_error\_meas\_0}    & 0.05         & Probability of flipped measurement outcome for $|0\rangle$  \\
-    \texttt{prob\_error\_meas\_1}    & 0.005        & Probability of flipped measurement outcome for $|1\rangle$  \\
+    \texttt{prob\_error\_meas\_0}    & 0.05         & \makecell{Probability of flipped measurement \\ outcome for $|0\rangle$}  \\
+    \texttt{prob\_error\_meas\_1}    & 0.005        & \makecell{Probability of flipped measurement \\ outcome for $|1\rangle$}  \\
     \texttt{link\_fidelity}        & 0.9          & Fidelity of generated entangled pair.                       \\
     \hline
   \end{tabular}

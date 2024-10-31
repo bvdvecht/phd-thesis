@@ -12,6 +12,21 @@ The simulator internally uses NetSquid~\cite{netsquid}, which was made specifica
 SquidASM executes programs written using the SDK (\cref{netqasm:sec:python-sdk}), including sending \ac{NetQASM} subroutines to the (simulated) \ac{QNPU}.
 The code and data that were used to produce the results in this section can be found at~\cite{git_netqasm_paper_data}.
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/netqasm/plots/paper_teleport_sweep_gate_noise.png}
+    \caption{
+        Average fidelity between the original state at the sender and
+        the final state at the server, as a function of the depolarizing noise
+        of the native two-qubit gate of the NV-platform, both for the case of
+        performing step 6 after (\textbf{No unit modules}) and before
+        (\textbf{Unit modules}) step 4 and 5. Execution time of the native
+        two-qubit gate is set to 0.5 ms. The rest of the parameters used are
+        listed in \cref{netqasm:sec:simulation}. Each point is the average over each of
+        the six Pauli states as initial state, repeated 100 times.}
+    \label{netqasm:fig:sweep_gate_noise}
+\end{figure}
+
 We evaluate the performance of \ac{NetQASM} by looking at the runtime quality of two applications, both consisting of two programs (one per node).
 The first is a teleportation of a single qubit from a sender node to a receiver node.
 We define the quality as the fidelity between the original qubit state at the sender and the final qubit state at the receiver.
@@ -86,6 +101,23 @@ Let's first go through the steps of the teleportation application:\newline
         \end{enumerate}
 \end{description}
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/netqasm/plots/paper_teleport_sweep_gate_time.png}
+    \caption{
+        Average fidelity of the teleported state (left y-axis, solid lines) and total
+        execution time of the teleportation application (right y-axis, dashed
+        lines) as a function of the execution time of the native two-qubit gate
+        of the NV-platform, both for the case of performing step 6 after
+        (\textbf{No unit modules}) and before (\textbf{Unit modules}) step 4 and
+        5. Dephasing parameter of the native two-qubit gate is set to 0.02. The
+        rest of the parameters used are listed in \cref{netqasm:sec:simulation}. Each
+        point is the average over each of the six Pauli state as initial state,
+        repeated 100 times. In both figures, error bars are smaller than the drawn
+        dots.}
+  \label{netqasm:fig:sweep_gate_time}
+\end{figure}
+
 We will now consider the order of the steps of the \textit{sender}.
 Firstly, we assume that the qubit to be teleported, $q_t$, is always created before the entanglement.
 We motivate this assumption below. For this reason, steps 1--3 and 7 are fixed and cannot change.
@@ -118,37 +150,7 @@ Also, an increase in two-qubit gate duration leads to higher execution time diff
 Finally, \cref{netqasm:fig:sweep_gate_noise} shows that the two-qubit gate duration does not affect the final fidelity in this situation, but the difference between using unit modules versus not using them remains.
 
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[scale=0.8]{figures/netqasm/plots/paper_teleport_sweep_gate_noise.png}
-    \caption{
-        Average fidelity between the original state at the sender and
-        the final state at the server, as a function of the depolarizing noise
-        of the native two-qubit gate of the NV-platform, both for the case of
-        performing step 6 after (\textbf{No unit modules}) and before
-        (\textbf{Unit modules}) step 4 and 5. Execution time of the native
-        two-qubit gate is set to 0.5 ms. The rest of the parameters used are
-        listed in \cref{netqasm:sec:simulation}. Each point is the average over each of
-        the six Pauli states as initial state, repeated 100 times.}
-    \label{netqasm:fig:sweep_gate_noise}
-\end{figure}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[scale=0.8]{figures/netqasm/plots/paper_teleport_sweep_gate_time.png}
-    \caption{
-        Average fidelity of the teleported state (left y-axis, solid lines) and total
-        execution time of the teleportation application (right y-axis, dashed
-        lines) as a function of the execution time of the native two-qubit gate
-        of the NV-platform, both for the case of performing step 6 after
-        (\textbf{No unit modules}) and before (\textbf{Unit modules}) step 4 and
-        5. Dephasing parameter of the native two-qubit gate is set to 0.02. The
-        rest of the parameters used are listed in \cref{netqasm:sec:simulation}. Each
-        point is the average over each of the six Pauli state as initial state,
-        repeated 100 times. In both figures, error bars are smaller than the drawn
-        dots.}
-  \label{netqasm:fig:sweep_gate_time}
-\end{figure}
 
 
 
@@ -193,7 +195,7 @@ This can be explained by noting that \ac{NetQASM} instructions in the vanilla fl
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.6\linewidth]{figures/netqasm/bqc_app.png}
+  \includegraphics[width=0.9\textwidth]{figures/netqasm/bqc_app.png}
   \caption{Circuit representation of the simulated BQC application. The client
     remotely prepares two qubits on the server, by twice creating an
     entangled pair with the server followed by a local measurement. The
@@ -212,7 +214,7 @@ This can be explained by noting that \ac{NetQASM} instructions in the vanilla fl
 
 \begin{figure}[t]
   \centering
-  \includegraphics[scale=0.8]{figures/netqasm/plots/bqc_sweep_gate_noise_trap.png}
+  \includegraphics[width=0.7\textwidth]{figures/netqasm/plots/bqc_sweep_gate_noise_trap.png}
   \caption{
     Average error rate of trap rounds for the circuit of~\cref{netqasm:fig:bqc_app}.
     Each point is the average over four combinations of $\theta_1$ and $\theta_2$,
@@ -227,7 +229,7 @@ In~\cref{netqasm:fig:plot_bqc_fidelity} we see that already during this remote s
 
 \begin{figure}[t]
   \centering
-  \includegraphics[scale=0.8]{figures/netqasm/plots/bqc_sweep_gate_noise_epr_fidelity.png}
+  \includegraphics[width=0.7\textwidth]{figures/netqasm/plots/bqc_sweep_gate_noise_epr_fidelity.png}
   \caption{ Fidelity of the two remotely prepared states on the server in
         the BQC application. To remotely prepare a state, the client and server
         first create an EPR pair, and the client then measures its half in a

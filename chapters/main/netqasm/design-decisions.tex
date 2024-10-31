@@ -51,7 +51,7 @@ The \ac{QNPU} may directly write to the shared memory, for example when entangle
 
 \begin{figure}[t]
       \centering
-      \includegraphics[width=0.8\linewidth]{figures/netqasm/classical-quantum-interaction.pdf}
+      \includegraphics[width=0.8\textwidth]{figures/netqasm/classical-quantum-interaction.pdf}
       \caption{Program interaction between the \ac{CNPU} and a quantum device in
             both the case of \emph{hybrid-quantum computing} (a)
             and quantum networks (b). In the case of hybrid-quantum
@@ -113,7 +113,7 @@ Since application A uses the unit module and does not know about the physical me
 
 \begin{figure}[t]
       \centering
-      \includegraphics[width=0.6\linewidth]{figures/netqasm/unit-module.pdf}
+      \includegraphics[width=0.6\textwidth]{figures/netqasm/unit-module.pdf}
       \caption{Example of a unit-module topology on a platform using
             nitrogen-vacancy centers in diamond. A unit-module is a
             hypergraph~\cite{berge1984hypergraphs}, with associated information
@@ -181,7 +181,10 @@ Based on this, the \ac{QNPU} can use the corresponding connection in the network
 
 \begin{figure}[t]
       \centering
-      \includegraphics[width=0.6\linewidth]{figures/netqasm/nqasm_code_example}
+      % \includegraphics[width=0.6\textwidth]{figures/netqasm/nqasm_code_example}
+      \begin{minipage}{\textwidth}
+            \lstinputlisting[language=netqasm, caption={}]{chapters/main/netqasm/nqasm_code_example.nqasm}
+      \end{minipage}
       \caption{Example of NetQASM code for generating a single entangled pair with another node followed by a measurement.
             See the Appendix for more details of the instructions.}
       \label{netqasm:fig:nqasm_code_example}
