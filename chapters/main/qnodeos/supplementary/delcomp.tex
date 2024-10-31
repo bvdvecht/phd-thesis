@@ -51,13 +51,13 @@ which has fidelity 0.729 to the perfect $\Psi^+$ state. The setup can also produ
 The simulation computes an estimate of $F_{\text{DQC}}$ for a given server qubit memory time $t_{\text{mem}}$. Since the desired minimum value for $F_{\text{DQC}}$ was 0.667, the latency threshold $t_{\max}$ was set to 8.95\,ms (\cref{qnodeos:fig:delcomp-fidelity-idle-time}).
 
 
-\begin{figure*}[htbp]
+\begin{figure*}[p]
     \centering
     \subfloat[\centering \label{qnodeos:fig:delcomp-fidelity-idle-time}]{{
-        \includegraphics[width=0.48\linewidth]{figures/qnodeos/supplementary/plots/fidelity_vs_idle_time.png}}}%
+        \includegraphics[width=0.7\textwidth]{figures/qnodeos/supplementary/plots/fidelity_vs_idle_time.png}}}%
     \hfill
     \subfloat[\centering \label{qnodeos:fig:delcomp-fidelity-alpha-colormap}]{{
-        \includegraphics[width=0.48\linewidth]{figures/qnodeos/supplementary/plots/fidelity_eta_colormap.png}}}%
+        \includegraphics[width=0.7\textwidth]{figures/qnodeos/supplementary/plots/fidelity_eta_colormap.png}}}%
     \caption{
         (a) Expected values (based on simulation, \cref{qnodeos:sec:dqc-simulation}) of \ac{DQC} fidelity $F_{\text{DQC}}$ for different duration values that the server qubit must remain in memory ($t_{\text{mem}}$). The maximum allowed qubit memory time $t_{\max}$ is chosen such that application iterations that are expected to result in too low $F_{\text{DQC}}$ ($<0.667$) are filtered out.
         (b) Expected values (based on simulation) of \ac{DQC} fidelity $F_{\text{DQC}}$ for different values of the bright state population ($\eta$) in the single click protocol, and for different duration values that the server qubit must remain in memory ($t_{\text{mem}}$). The red line indicates the threshold of 0.667 for the target fidelity. The white box represents the experimentally obtained results (we fixed $\eta = 0.07$ and observed $t_{\text{mem}} ~4.8(8)$\,ms, see \cref{qnodeos:fig:fig3}d).
@@ -79,9 +79,9 @@ Here we provide a detailed breakdown of the duration of execution phases of the 
 
 \Cref{qnodeos:fig:fig3}c shows the duration that the server qubit must remain in memory $t_{\text{mem}}$ while waiting, averaged over all \ac{DQC} circuit iterations that passed the latency filter. \Cref{qnodeos:fig:fig3}d shows the breakdown of $t_{\text{mem}}$ into individual segments of processing on both client and server. In \cref{qnodeos:fig:delcomp-latencies-variance} we show the average duration and the variance of each of these segments. The largest time is spent on preparing S2, which involves running Python code on the \ac{CNPU} and converting this (using Python) into a \ac{NetQASM} subroutine. Caching of the preparation of the \ac{NetQASM} subroutine could significantly speed up this process. In the future, further improvements could include an optimized ahead-of-time compilation step. The large variance is due to the fact that on the \ac{CNPU}, other (background) processes run simultaneously with the \ac{DQC} application process, and there is no precise control over the scheduling of these processes.
 
-\begin{figure*}[htbp]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.8\linewidth]{figures/qnodeos/supplementary/plots/latencies_variance.png}
+\includegraphics[width=0.8\textwidth]{figures/qnodeos/supplementary/plots/latencies_variance.png}
 \caption{Average latency (duration) of each of the processes happening while the server qubit remains in memory in the \ac{DQC} application. The \ac{QNPU} to \ac{CNPU} latency and \ac{CNPU} to \ac{QNPU} latency are estimated as explained in \cref{qnodeos:sec:cnpu-qnpu-latency-estimation}, and fixed to 0.305\,ms (server) and 0.197\,ms (client). The other latencies are the mean and variance of the corresponding processes averaged over all \ac{DQC} circuit iterations that passed the latency filter.}
 \label{qnodeos:fig:delcomp-latencies-variance}
 \end{figure*}
@@ -139,11 +139,11 @@ Using the result from \cref{tab:delta_diffs}, we can compute bounds on the four 
 
 In the latency breakdown of the server qubit memory time (see \cref{qnodeos:sec:server-qubit-memory-time}) we are only interested in the latencies that happen during the time that the server qubit is in memory. For the server these are the latencies for receiving the S1 result and sending S2. The sum of these two latencies is $\Delta_{qS12} - \Delta_{cS12} = 0.609$\,ms (see \cref{tab:delta_diffs}). For simplicity, we say that both latencies constitute half of this time, as mentioned in the caption of \cref{qnodeos:fig:delcomp-latencies-variance}. Similarly, for the client we are only interested in the latency of receiving the C1 result. For simplicity we take this latency to be the same as that of sending C1, i.e. we use half of $\Delta_{cC1} - \Delta_{qC1}$.
 
-\begin{figure*}[htbp]
+\begin{figure*}[t]
     \centering
-    \subfloat[\centering \label{qnodeos:fig:subfig3}]{{\includegraphics[width=0.61\linewidth]{figures/qnodeos/supplementary/host_qnpu_latency_server.pdf}}}%
+    \subfloat[\centering \label{qnodeos:fig:subfig3}]{{\includegraphics[width=0.61\textwidth]{figures/qnodeos/supplementary/host_qnpu_latency_server.pdf}}}%
     \hfill
-    \subfloat[\centering \label{qnodeos:fig:subfig4}]{{\includegraphics[width=0.35\linewidth]{figures/qnodeos/supplementary/host_qnpu_latency_client.pdf}}}%
+    \subfloat[\centering \label{qnodeos:fig:subfig4}]{{\includegraphics[width=0.35\textwidth]{figures/qnodeos/supplementary/host_qnpu_latency_client.pdf}}}%
     \caption{Schematic of events happening on the \ac{CNPU} and \ac{QNPU} during a single execution of \ac{DQC} on the server (a) and the client (b). Time flows to the right. The $\Delta$ variables are the time differences between events, and are used to estimate \ac{CNPU}-\ac{QNPU} communication latencies ($a\rightarrow b$, $c\rightarrow d$, $e\rightarrow f$, $g\rightarrow h$ on the server and $a\rightarrow b$, $c\rightarrow d$ on the client).}
     \label{qnodeos:fig:cnpu_qnpu_latencies}%
 \end{figure*}
@@ -156,14 +156,14 @@ An overview of all values discussed in this section is given in \cref{tab:entang
 
 \cref{qnodeos:fig:delcomp-epr-rate} shows the distribution of time it takes to generate an \ac{EPR} pair in the \ac{DQC} experiment, where the average duration of such is 439\,ms. This is the duration between starting the network process and finishing it, which includes entanglement attempts until success on the \ac{QDevice} and subsequent Bell state corrections to $\Phi^+$ (see \cref{qnodeos:sec:qdevice-nv}). This duration corresponds to a fitted rate of 2.28(3) created \ac{EPR} pairs per second. If only the \ac{QDevice} entanglement generation is considered (i.e. without Bell state corrections and without \ac{QNPU} processing overhead), this rate is 2.37(2) \ac{EPR} pairs per second.
 
-\begin{figure}
+\begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/plots/EPR_rate.png}
+\includegraphics[width=\textwidth]{figures/qnodeos/supplementary/plots/EPR_rate.png}
 \caption{Histogram of \ac{EPR} generation durations (time from first attempt until success) based on all \ac{EPR} generations in the \ac{DQC} experiment (using only latency-filtered data points, see \cref{qnodeos:sec:post-selection-latency}). The histogram shows which fraction of all durations were in a particular duration window (window width: 25\,ms). Expected \ac{EPR} generation duration follows an exponential decay, with a rate parameter of 2.28(3) successes (\ac{EPR} pairs) per second.}
 \label{qnodeos:fig:delcomp-epr-rate}
 \end{figure}
 
-\begin{table*}[htpb]
+\begin{table*}[t]
     \centering
     \begin{tabular}{|r|l|}
     \hline
@@ -193,7 +193,7 @@ An overview of all values discussed in this section is given in \cref{tab:entang
 
 As part of the \ac{DQC} execution, the \ac{QNPU} sends physical instructions to the \ac{NV} \ac{QDevice} for executing local quantum gates. In \cref{tab:gate_durations} we report on the observed durations of these gates from the perspective of the \ac{QNPU}: these durations are from the time the physical instruction is sent to the \ac{QDevice} until the corresponding result is received from the \ac{QDevice}. We note that these durations are longer than these gates would take if they were executed directly on the \ac{QDevice} (without \ac{QNodeOS}, see \cref{tab:mw_pulse}) because of two reasons: (1) the limited granularity with which the \ac{QNPU} and \ac{QDevice} communicate (rounds of 10\,$\mu$s) and (2) the fact the \ac{QDevice} interleaves \ac{DD} sequences in between sequences for the physical instruction itself, as explained in \cref{qnodeos:sec:methods}.
 
-\begin{table*}
+\begin{table*}[t]
     \centering
     \begin{tabular}{|c|c|c|}
     \hline
@@ -215,7 +215,7 @@ As part of the \ac{DQC} execution, the \ac{QNPU} sends physical instructions to 
 
 \cref{tab:exp_durations} lists statistics about the overall \ac{DQC} experiment (all 7200 \ac{DQC} circuit executions combined). We confirm our hypothesis that the overwhelming fraction of time is spent on the network process, namely generating \ac{EPR} pairs. We also see that as expected, the server spends more time on user processes than the client does, since it does more local gates than the client (namely, the gates in subroutine S2).
 
-\begin{table*}[htpb]
+\begin{table*}[t]
     \centering
     \begin{tabular}{|r|c|c|}
     \hline
@@ -256,7 +256,7 @@ We examine the start of the network process in relation to the start of a time b
 
 The network process is only activated at the beginning of a time bin. In our experiment, a time bin starts every 10\,ms and lasts 10\,ms. In most cases when the network process is activated, this activation happens very quickly after the time bin start (within 100\,$\mu$s, as some \ac{QNPU} software processing is needed). For the client \ac{QNPU}, the network process never starts more than 100\,$\mu$s after a time bin start. For the server, in 13 out of 7200 \ac{DQC} circuit executions, the network process starts more than 100\,$\mu$s after a time bin starts, since in these cases there was still a user process running. In \cref{tab:network_process_stats}, an overview of all network process statistics is given.
 
-\begin{table*}
+\begin{table*}[t]
     \centering
     \begin{tabular}{|l|l|}
     \hline

@@ -11,9 +11,9 @@ A similar development is underway in quantum computing, where the availability o
 
 In realizing the first such system architecture we overcome all challenges below, including both fundamental challenges that are inherent to quantum network applications at any scale, as well as technological challenges that arise from the current state of the art of quantum network hardware.
 
-\begin{figure}
+\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/qnodeos/main/fig1/fig1.png}
+\includegraphics[width=0.7\textwidth]{figures/qnodeos/main/fig1/fig1.png}
 \caption{\textbf{Application Paradigm.}
 A quantum networking application consists of multiple programs, each running on one of the end nodes~\cite{dahlberg_2022_netqasm}.
 An end node is a device in a quantum network that executes user applications.
@@ -72,9 +72,9 @@ For example, a client program may need to wait for a server to finish processing
 It is hence a fundamental challenge how we can increase the utility of the system by performing multitasking~\cite{mccullough_design_1965-1,dennis_segmentation_1965}, that is, allowing the concurrent execution of several programs at once to make use of idle times.
 Consequently, there is a need for managing state and resources for multiple independent programs, including processes, quantum memory management, and entanglement requests. 
 
-\begin{figure*}[htb]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/qnodeos/main/fig2/fig2.png}
+\includegraphics[width=1.0\textwidth]{figures/qnodeos/main/fig2/fig2.png}
 \caption{\textbf{QNodeOS architecture.}
 \textbf{(a)}
 QNodeOS consists of a Classical Network Processing Unit (CNPU) and a Quantum Network Processing Unit (QNPU, classical system).
@@ -132,9 +132,9 @@ This allows flexibility in translating a virtual qubit address to: (1) a differe
 Entanglement generation between different pairs of processes at remote nodes are distinguished by Entanglement Request (ER) sockets, inspired by classical sockets~\cite{chesson_network_1975-1,leach_architecture_1983}, which are established once a user process requests entanglement from the network process.
 In our implementation, processes of the same priority are scheduled first-come-first-served~\cite{peterson_operating_1985}, where the total schedule of the program in our implementation is dependent both on the schedule on the CNPU as well as the QNPU (\cref{qnodeos:sec:methods}).
 
-\begin{figure*}[htbp]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.89\linewidth]{figures/qnodeos/main/fig3/fig3.png}
+\includegraphics[width=1.0\textwidth]{figures/qnodeos/main/fig3/fig3.png}
 \caption{\textbf{Delegated computation between two NV center nodes using QNodeOS.} 
 \textbf{(a)} Delegated Quantum Computation (DQC) circuit (effective computation: single-qubit rotation $R_Z (\alpha)$, \cref{qnodeos:sec:methods}). The DQC application consists of $k$ repetitions of this circuit (varying measurement bases for tomography on $\ket{\psi}$) realized by two programs: the DQC-client program (client node, repeating the sequence ``quantum block (C1, orange) – classical block (computing $\delta$)'' $k$ times), and the DQC-server program (server node, repeating ``quantum block (S1, blue) - classical block (receiving $\delta$) – quantum block (S2, purple)'' $k$ times). Client and server produce an entangled pair $\ket{\Phi^+} = (\ket{00} + \ket{11}) / \sqrt{2}$ (S1 and first part of C1). The client performs local gates and a measurement (``destroying'' qubit), resulting in outcome bit $m_c$ (rest of C1). Client computes $\delta$ as function of $m_c$ and DQC parameters $\alpha \in [0,2\pi)$ and $\theta \in [0, 2\pi)$, and sends $\delta$ to server (classical message). Meanwhile the server keeps its qubit coherent (alive). Upon receiving $\delta$, the server applies gates depending on $\delta$, resulting in single-qubit state $\ket{\psi}$ (S2) depending only on $\alpha$ and $\theta$.
 \textbf{(b)} Experimental results of executing DQC for 6 different sets of $(\alpha, \theta)$ parameters ($k=1200$, i.e. 7200 executions of the circuit of \cref{qnodeos:fig:fig3}a). The fidelity of the resulting server state to the target state $\ket{\psi}$ is estimated using single-qubit tomography (1200 measurement results per data point), and corrected for known tomography errors (SSRO, blue), and post-selected for Charge-Resonance (CR) check validation (purple), and post-selected for latencies (orange) (\cref{qnodeos:sec:methods}).
@@ -172,9 +172,9 @@ When multitasking 1 DQC and 1 LGT program, we observe 1 or 2 subroutines in betw
 We observe cases where both server and client QDevice remain idle, which could be improved in part by smarter CNPU-QNPU scheduling algorithms: (1) both the client and server wait until the start of the next network schedule time-bin (time-bin length 10 ms) (2) the client QNPU finishes a subroutine for user process P, but must wait until the CNPU sends the next subroutine for P (up to 150 ms for 1 DQC and 1 LGT program, but less (up to only 8 ms) when more applications are running, since there are more CNPU processes independently submitting subroutines), (3) the client is ready to perform entanglement generation for DQC, but the next time-bin starts only at some future time $t$, preventing activation of the network process.
 The scheduler activates a user process which runs a LGT circuit, which completes at some time $>t$, delaying the start of the DQC network process, even though the server node was ready at $t$.
 
-\begin{figure*}[htbp]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.95\linewidth]{figures/qnodeos/main/fig4/fig4.png}
+\includegraphics[width=1.0\textwidth]{figures/qnodeos/main/fig4/fig4.png}
 \caption{\textbf{Multitasking experiment on two NV centers with QNodeOS}.
 \textbf{(a)} Local Gate Tomography (LGT) Circuit. A single NetQASM subroutine (L1) executes the following 6 times for different bases $B \in \{\pm X, \pm Y, \pm Z\}$: initialize qubit to $\ket{0}$, rotate around fixed axis $D \in \{X,Y\}$ by angle $\ket{\phi}$, measure in $B$. The LGT application consists of a single LGT program, which submits subroutine L1 for execution to the QNPU (fixed $D$ and $\phi$) $k$ times in succession.
 \textbf{(b)} Example sequence diagram illustrating concurrent execution (multitasking) of the DQC application (\cref{qnodeos:fig:fig3}) and the LGT program on the client: time slice in which two DQC circuit repetitions (\cref{qnodeos:fig:fig3}a) are realized (2 subroutines on the client (orange), 4 on the server (blue and purple)), and three LGT circuit repetitions (3 subroutines, green). The client QNPU receives subroutines for both the DQC program and the LGT program, which the QNPU scheduler can interleave: While the server executes S2 (purple), the client cannot yet execute the next S1 (orange) since it involves joint entanglement generation. In this idle time, the client can execute a number of LGT subroutines (number can vary).
@@ -193,9 +193,9 @@ Our architecture could also be used to distribute a quantum computing program ov
 Our work provides a framework for a new domain of computer science research into programming quantum network applications on quantum processors including: novel real-time~\cite{ramamritham_scheduling_1994} scheduling algorithms for classical-quantum processes, compile methods for quantum network applications~\cite{dahlberg_2022_netqasm}, or novel programming language concepts including entanglement to make software development even easier, thus advancing the vision to make quantum network technology broadly available.
 
 
-\begin{figure}[htb]
+\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/qnodeos/main/fig5/fig5.png}
+\includegraphics[width=0.6\textwidth]{figures/qnodeos/main/fig5/fig5.png}
 \caption{\textbf{Trapped-ion QDevice implementation.} Schematic of our implementation of QNodeOS on a single-node setup in which the QDevice contains a single trapped-ion qubit. The QNPU QDriver is implemented on a field-programmable gate array (FPGA) that connects to its QDevice via a serial peripheral interface (SPI) (\cref{qnodeos:sec:methods}). The setup consists of an emulator that translates between SPI messages and TTL signals, experimental control hardware that includes an FPGA and direct digital synthesis (DDS) modules, a trapped-ion qubit~\cite{teller2023integrating} under ultra-high vacuum (\cref{qnodeos:fig:fig1}), and a photomultiplier tube (PMT) that registers atomic fluorescence.}
 \label{qnodeos:fig:fig5}
 \end{figure}

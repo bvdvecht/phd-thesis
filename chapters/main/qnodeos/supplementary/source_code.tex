@@ -1,7 +1,7 @@
 \section{Application source code}
 \label{qnodeos:sec:app_source}
 
-\begin{figure*}[htbp]
+\begin{figure*}[!htbp]
   \centering
   \begin{minipage}{\textwidth}
     \lstinputlisting[language=Python, caption={}]{chapters/main/qnodeos/source/delcomp_server.py}
@@ -45,14 +45,16 @@
 
 \clearpage
 
-\begin{figure*}[htbp]
-  \centering
-  \begin{minipage}{\textwidth}
-    \lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={}]{chapters/main/qnodeos/source/dqc_S1.nqasm}
-  \end{minipage}
-  \caption{\ac{NetQASM} subroutine S1 of the \ac{DQC} application. Compiled by the \ac{DQC} server program code listed in~\cref{src:dqc_server}.}
-  \label{src:netqasm_dqc_s1}
-\end{figure*}
+% \begin{figure*}[p]
+%   \centering
+\lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={\ac{NetQASM} subroutine S1 of the \ac{DQC} application. Compiled by the \ac{DQC} server program code listed in~\cref{src:dqc_server}.}, label={src:netqasm_dqc_s1}]{chapters/main/qnodeos/source/dqc_S1.nqasm}
+
+  % \begin{minipage}{\textwidth}
+  %   \lstinputlisting[basicstyle=\small\ttfamily, language=netqasm, caption={}]{chapters/main/qnodeos/source/dqc_S1.nqasm}
+  % \end{minipage}
+  % \caption{\ac{NetQASM} subroutine S1 of the \ac{DQC} application. Compiled by the \ac{DQC} server program code listed in~\cref{src:dqc_server}.}
+  % \label{src:netqasm_dqc_s1}
+% \end{figure*}
 
 \clearpage
 

@@ -82,7 +82,7 @@ As we remarked in~\cref{qnodeos:sec:appendix-arch-node_system}, a \ac{QDevice} h
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/qnodeos-stack.pdf}
+\includegraphics[width=0.6\textwidth]{figures/qnodeos/supplementary/qnodeos-stack.pdf}
 \end{center}
 \caption[]{\ac{QNPU} stack. The \emph{\ac{QNPU} \acs{API} handler} and \emph{the \ac{QNPU} core} form the central processing layers, and are independent of the underlying quantum physical platform and of the device where \ac{QNodeOS} runs. The \emph{\ac{CNPU} communication handler} translates protocol-specific messages from the \ac{CNPU} into \acs{API} calls. The \emph{\ac{QDevice} driver} (or \ac{QDriver}) abstracts the \ac{QDevice} hardware. The \emph{Platform} layer abstracts the hardware where \ac{QNodeOS} runs, and is accessible to all other layers. Note that three other \ac{API} types are implemented, i.e. \emph{control}, \emph{management}, and \emph{operations}. Control \ac{API} is used for the network schedule, while management and operations \ac{API} are for operational purposes. }
 \label{qnodeos:fig:qnodeos-stack}
@@ -133,7 +133,7 @@ The \ac{QNPU} also defines \emph{kernel processes}, which are similar to user pr
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/process-states.pdf}
+\includegraphics[width=0.6\textwidth]{figures/qnodeos/supplementary/process-states.pdf}
 \end{center}
 \caption[]{Process state diagram. An \emph{idle} process becomes \emph{ready} when a block for that process is loaded onto the \ac{QNPU} (from the \ac{CNPU}). A ready process becomes \emph{running} when it is scheduled. A running process goes back to idle if all blocks are completed, or transitions to \emph{waiting} if it expects an event to occur before it can proceed. A waiting process becomes ready again when the expected event occurs.}
 \label{qnodeos:fig:process-states}
@@ -162,7 +162,7 @@ The strict separation between local quantum processing and quantum networking is
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/process-flow.pdf}
+\includegraphics[width=0.6\textwidth]{figures/qnodeos/supplementary/process-flow.pdf}
 \caption{Flow of execution between a user process requesting entanglement and the network process responsible for generating entanglement. The user process starts by asynchronously issuing an entanglement request. Once issued, it is free to continue with other local operations or classical processing. Once it reaches a point in its execution where entanglement is required the process enters the waiting state. The network process is scheduled once the appropriate time bin (as determined by the network schedule) starts. Once running, it attempts entanglement generation until entanglement success (or until a set timeout). The entangled qubit is then transferred to the user process. This unblocks the process which consumes the entanglement and releases the qubit. In our experiments, the process always immediately waits after requesting entanglement (no local operations are done in between).}
 \label{qnodeos:fig:process-flow}
 \end{figure}
@@ -182,7 +182,7 @@ As already mentioned, \ac{QNodeOS} defines the concept of \emph{user} processes 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/scheduling-impl.pdf}
+\includegraphics[width=0.7\textwidth]{figures/qnodeos/supplementary/scheduling-impl.pdf}
 \end{center}
 \caption[]{Snapshot of a hypothetical execution of a user process and the \ac{QNetStack} process. The higher-priority \ac{QNetStack} process is activated at the start of each time bin of the network schedule, and it is assigned to the processor as soon as it is available. The lower-priority user process gives precedence to the \ac{QNetStack} process when they become ready at the same time, but, when it is running on the processor, it is not preempted if the \ac{QNetStack} process becomes ready while the user process is running. Black arrows represents a moment where the process goes into the ready state and the green stop sign (at time $3$) represents a process going into the waiting state.}
 \label{qnodeos:fig:scheduling-impl}
@@ -208,7 +208,7 @@ Once the node received the network schedule from the controller, the network sch
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/qnetstack-impl.pdf}
+\includegraphics[width=0.6\textwidth]{figures/qnodeos/supplementary/qnetstack-impl.pdf}
 \end{center}
 \caption[]{Internal components and data structures of the \acf{QNetStack}. Entanglement requests are received through the \acf{EMU}, while the network schedule is installed by a centralized control plane. 
 \acf{QEGP} maps such requests onto the network schedule to produce the correct entanglement instructions. While not needed on our 2 node implementation, a \ac{DQP} (which is a simplified version of the \ac{DQP} presented in~\cite[Section 5.2.1]{dahlberg_2019_egp}) could forward entanglement requests to the next hop's \acf{QNPU} to realize a network layer protocol such as~\cite{kozlowski_2020_qnp}.}.
@@ -241,7 +241,7 @@ Lastly, multitasking is an important feature for systems that are to be shared b
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=\linewidth]{figures/qnodeos/supplementary/qnodeos-core.pdf}
+\includegraphics[width=1.0\textwidth]{figures/qnodeos/supplementary/qnodeos-core.pdf}
 \end{center}
 \caption[]{\acf{QNPU} core components and internal interfaces. The core layer includes:
 \begin{inlinelist}
@@ -548,7 +548,7 @@ The \texttt{NOP} instruction does not result in any operation on the \ac{QDevice
 \subsubsection{Return values}
 \Cref{tab:qdevice-return-values} lists the possible return values that the QDevice sends back to QNodeOS as a response to a physical instruction.
 
-\begin{table*}[htpb]
+\begin{sidewaystable*}[t]
     \centering
     \begin{tabularx}{\textwidth}{|l|l|X|}
     \hline
@@ -564,4 +564,4 @@ The \texttt{NOP} instruction does not result in any operation on the \ac{QDevice
     \end{tabularx}
     \caption{*Measurements are always in the Z basis, where outcome 0 corresponds to $\ket{0}$ and outcome 1 to $\ket{1}$. $^\dagger$ Possible states depend on the implementation. For NV these are \texttt{PSI\_PLUS} and \texttt{PSI\_MINUS}, see~\cref{qnodeos:sec:qdevice-nv}.}
     \label{tab:qdevice-return-values}
-\end{table*}
+\end{sidewaystable*}

@@ -21,7 +21,7 @@ In our \ac{NV} experiments, the \ac{CNPU}, \ac{QNPU} and \ac{QDevice}, on both c
 
 \clearpage
 
-\begin{table*}[htpb]
+\begin{table}[t]
     \centering
     \begin{tabular}{|c|l|}
     \hline
@@ -36,9 +36,9 @@ In our \ac{NV} experiments, the \ac{CNPU}, \ac{QNPU} and \ac{QDevice}, on both c
     \end{tabular}
     \caption{\ac{CNPU} events that are traced (recorded with their timestamps) during application execution.}
     \label{tab:host_events}
-\end{table*}
+\end{table}
 
-\begin{table*}[htpb]
+\begin{table}
     \centering
     \begin{tabular}{|c|l|}
     \hline
@@ -48,15 +48,15 @@ In our \ac{NV} experiments, the \ac{CNPU}, \ac{QNPU} and \ac{QDevice}, on both c
     \texttt{SCHEDULER\_SCHEDULE\_USER\_PROCESS} & A user process goes to the Running state \\
     \texttt{SCHEDULER\_ARRIVE\_NET\_PROCESS} & Network process goes to the Ready state \\
     \texttt{SCHEDULER\_SCHEDULE\_NET\_PROCESS} & Network process goes to the Running state \\
-    \texttt{PROCMGR\_SUBROUTINE\_ADDED\_P<i>} & New subroutine received from \ac{CNPU} for process <i> \\
+    \texttt{PROCMGR\_SUBROUTINE\_ADDED\_P<i>} & \makecell[l]{New subroutine received from \ac{CNPU} for \\ process <i>} \\
     \texttt{PROCMGR\_SUBROUTINE\_DONE\_P<i>} & A subroutine for process <i> finished execution \\
-    \texttt{PROCESSOR\_START\_USER\_PROCESS} & Processor starts or resumes executing a user process \\
-    \texttt{PROCESSOR\_WAIT\_USER\_PROCESS} & Processor suspends a user process and puts it in the Waiting state \\
+    \texttt{PROCESSOR\_START\_USER\_PROCESS} & \makecell[l]{Processor starts or resumes executing a user \\ process} \\
+    \texttt{PROCESSOR\_WAIT\_USER\_PROCESS} & \makecell[l]{Processor suspends a user process and puts it \\ in the Waiting state} \\
     \texttt{PROCESSOR\_FINISH\_USER\_PROCESS} & Processor stops executing a user process \\
-    \texttt{PROCESSOR\_START\_NET\_PROCESS} & Processor starts or resumes executing the network process \\
+    \texttt{PROCESSOR\_START\_NET\_PROCESS} & \makecell[l]{Processor starts or resumes executing the \\ network process} \\
     \texttt{PROCESSOR\_FINISH\_NET\_PROCESS} & Processor stops executing the network process \\
-    \texttt{QDEVICE\_PRODUCE\_<cmd>\_CMD} & Processor prepares <cmd> command for the \ac{QDevice} \\
-    \texttt{QDEVICE\_CONSUME\_CMD} & \ac{QDevice} reads the next command from the \ac{QNPU} \\
+    \texttt{QDEVICE\_PRODUCE\_<cmd>\_CMD} & \makecell[l]{Processor prepares <cmd> command for the \\ \ac{QDevice}} \\
+    \texttt{QDEVICE\_CONSUME\_CMD} & \makecell[l]{\ac{QDevice} reads the next command from the \\ \ac{QNPU}} \\
     \texttt{QDEVICE\_PRODUCE\_OUTCOME} & \ac{QDevice} sends result to the \ac{QNPU} \\
     \texttt{PROCESSOR\_CONSUME\_OUTCOME} & Processor reads \ac{QDevice} result \\
     \texttt{QNETWORK\_ENT\_PULL} & Network stack pulls instruction from the EGP \\
@@ -65,11 +65,11 @@ In our \ac{NV} experiments, the \ac{CNPU}, \ac{QNPU} and \ac{QDevice}, on both c
     \end{tabular}
     \caption{\ac{QNPU} events that are traced (recorded with their timestamps) during application execution. <i> can be any number from 0 to 9 (`subroutine added` and `subroutine done` events are not traced for processes with ID 10 or larger). <cmd> can be any physical instruction.}
     \label{tab:qnpu_events}
-\end{table*}
+\end{table}
 
 \begin{figure*}
 \centering
-\includegraphics[width=0.8\linewidth]{figures/qnodeos/supplementary/plots/full_slice.png}
+\includegraphics[width=1.0\textwidth]{figures/qnodeos/supplementary/plots/full_slice.png}
 \caption{Full-stack event trace for one particular execution of the \ac{DQC} circuit. Between timestamps 60490 and 60550 are more entanglement attempts which are cut out for the sake of clarity.}
 \label{qnodeos:fig:delcomp-trace-example}
 \end{figure*}

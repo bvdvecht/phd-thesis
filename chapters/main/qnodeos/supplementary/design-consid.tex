@@ -25,9 +25,9 @@ A quantum processor end nodes possesses quantum memory in the form of qubits, an
 
 Entanglement is a phenomenon in quantum physics where two or more particles are correlated in a way that is not possible classically. In a quantum network, such entangled particles may be established across separate nodes, realizing a quantum connection between those nodes. Entanglement can be used by quantum network applications as a resource in order to realize applications~\cite{wehner_2018_stages} that are impossible with classical networks, including applications such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
 
-\begin{figure*}[h]
+\begin{figure}[tp]
     \centering
-    \includegraphics[width=\linewidth]{figures/qnodeos/supplementary/network_nodes.pdf}
+    \includegraphics[width=0.9\textwidth]{figures/qnodeos/supplementary/network_nodes.pdf}
     \caption{
         \textbf{Schematic overview of a quantum network.}
         A quantum network consists of nodes (yellow and grey circles) that are connected by classical and quantum communication channels (grey lines). Each node implements a physical layer (green boxes and lines) that enables entanglement generation with neighboring nodes. The physical layer is the domain of the QDevice. Each node also implements a network stack, including a network layer (red boxes and lines, which may be subdivided into a separate link layer and a network layer~\cite{dahlberg_2019_egp, kozlowski_2019_towards}). This layer realizes long-distance entanglement creation between nodes and may include protocols such as entanglement swapping and distillation. As QNodeOS implements a network stack, it could also be deployed on intermediate nodes in a network, where e.g. entanglement distillation could be added to the protocol realizing the network layer service implemented by QNodeOS.  \newline
@@ -36,7 +36,7 @@ Entanglement is a phenomenon in quantum physics where two or more particles are 
         %We remark that in 1D repeater chains one may keep entanglement generation at the physical layer: 
         %$In~\cite{dahlberg_2019_egp} the notion of automated nodes is defined, which is a situation common in a 1D repeater chain, which continously produces entanglement which can simply be switched on and off by higher layers in the network stack. In such a situation, one may choose to treat the entire chain as one link, abstracted by a link layer protocol~\cite{dahlberg_2019_egp} running between the nodes at the end of the 1D chain sesgments in the network. In this case, only the nodes on the end of the 1D chain segments run actual link and network layer protocols, and the control of the chain is kept at the physical layer, in our case the QDevice, for efficiency (for example, implemented in FPGA).L
     \label{qnodeos:fig:network_nodes}
-\end{figure*}
+\end{figure}
 
 \subsection{Application Paradigm}
 \label{qnodeos:sec:design-consid:challenges:application}
