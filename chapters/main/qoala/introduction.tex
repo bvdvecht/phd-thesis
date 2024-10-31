@@ -7,10 +7,17 @@ Advances in quantum computing and quantum communication technologies are paving 
 Examples of such applications include quantum key distribution (QKD)~\cite{bennett2014quantum, ekert1991quantum} and blind quantum computation (BQC) \cite{broadbent2009universal, arrighi2006blind} from a client to a quantum cloud server.
 A multi-node quantum internet application is partitioned into separate single-node \textit{programs} (e.g. a client program and a server program in BQC) that run concurrently on different network nodes. To support security sensitive applications, each program performs local classical and quantum computations on its own private node, and programs interact with each other only via classical message passing and entanglement generation. This is in sharp contrast to distributed quantum computing (see e.g.~\cite{cacciapuoti2019quantum}), where all nodes can be accessed and controlled by a single program. 
 
-The single-node programs that constitute a quantum internet application are hybrid in nature (see \cref{qoala:fig:program_illustration}):
-First, they contain quantum operations, such as local quantum gates and measurements (e.g. to perform a server computation in BQC), and entanglement generation (e.g. to produce key in QKD). Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
-All quantum operations are executed on quantum processors that can store, manipulate and measure quantum information, where small networks including such processors have been realized using different quantum hardware platforms including, for example,  Nitrogen-Vacancy (NV) centers in diamond~\cite{pompili2021realization}, and Ion Traps~\cite{krutyanskiy2023entanglement}.
-Second, programs need to perform classical operations, such as message passing (e.g., a BQC client program sending desired measurement bases to the BQC server), and local classical processing (e.g., post-processing measurement outcomes in QKD).
+% The single-node programs that constitute a quantum internet application are hybrid in nature (see \cref{qoala:fig:program_illustration}):
+% First, they contain quantum operations, such as local quantum gates and measurements (e.g. to perform a server computation in BQC), and entanglement generation (e.g. to produce key in QKD). Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
+% All quantum operations are executed on quantum processors that can store, manipulate and measure quantum information, where small networks including such processors have been realized using different quantum hardware platforms including, for example,  Nitrogen-Vacancy (NV) centers in diamond~\cite{pompili2021realization}, and Ion Traps~\cite{krutyanskiy2023entanglement}.
+% Second, programs need to perform classical operations, such as message passing (e.g., a BQC client program sending desired measurement bases to the BQC server), and local classical processing (e.g., post-processing measurement outcomes in QKD).
+
+The single-node programs that constitute a quantum internet application are hybrid in nature (see \cref{fig:program_illustration}):
+they can contain both classical and quantum operations, and these operations can be both local (executed fully on the node itself) or networked (interacting with another node in the network).
+Quantum operations include quantum gates and measurements, e.g. to perform a server computation in BQC, (\textit{local quantum}), and entanglement generation, e.g. to produce classical bits for a secret key in QKD (\textit{networked quantum}).
+Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
+All quantum operations are executed on quantum processors that can store, manipulate and measure quantum information, where small networks including such processors have been realized using different quantum hardware platforms including, for example,  nitrogen-vacancy (NV) centers in diamond~\cite{pompili2021realization}, and trapped ions~\cite{krutyanskiy2023entanglement}.
+Programs also need to perform classical operations, such as message passing (\textit{networked classical}, e.g. a BQC client program sending desired measurement bases to the BQC server), and local classical processing (\textit{local classical}, e.g. post-processing measurement outcomes in QKD).
 
 Realizing the execution of quantum internet applications presents unique challenges (see \cref{qoala:sec:design_considerations}): 
 First, a program for a quantum internet application is not merely a hybrid of classical and quantum code segments; these segments are also highly \textit{interactive}: classical and quantum code may run concurrently, communicating and influencing each other.
@@ -31,8 +38,9 @@ We propose the first architecture, Qoala, that addresses these challenges. Qoala
     \includegraphics[width=0.8\textwidth]{figures/qoala/program_illustration.pdf}
     \caption{Example application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
         (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by  network controller).
-        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit)
-        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time)
+        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit).
+        (3) Outcome bit is stored in classical memory.
+        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time).
         (5) Execution of a quantum circuit on qubit B at Node 2 depending on the classical bit. The quality of qubit B has degraded during the time elapsed since (1). 
         (6) Node 2 measures qubit B and outputs the classical result.
     }

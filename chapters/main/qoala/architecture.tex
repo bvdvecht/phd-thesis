@@ -98,12 +98,12 @@ Each node provides their own EHI which is used in capability negotiation (see be
 
 \textit{Shared memory}.
 To address the classical-quantum interactivity in programs, the CPS and QPS share data with each other via \textit{shared classical memory}.
-Write conflicts are avoided by explicit read/write rules for shared memory regions.
+Write conflicts are avoided by explicit read/write rules for shared memory regions (\cref{qoala:sec:app:shared_memory}).
 Our conceptual model of a shared memory leaves open different implementation choices, including a physical shared memory or a message-passing protocol.
 Calls in host code to local or request routines use the shared memory to communicate routine arguments and results.
 
 \textit{Quantum memory}.
-Quantum memory is organized into a \textit{virtual quantum memory space (VQMS)} for each program instance (see \cref{qoala:sec:program_instantiation} for instantiation), represented as Unit Modules~\cite{dahlberg2022netqasm}.
+Quantum memory is organized into a \textit{virtual quantum memory space (VQMS)} for each program instance (see \cref{qoala:sec:program_instantiation} for instantiation), represented as Unit Modules (specifying the qubit topology~\cite{dahlberg2022netqasm}).
 Qoala maps each VQMS to the physical qubits available in the QPS.
 VQMS information like qubit connectivity and noise characteristics is provided by the EHI, which a compiler can use to optimize a program.
 The VQMS enables multitasking since programs have their own runtime context, while a scheduler (\cref{qoala:sec:scheduling}) sees the whole physical memory space and can schedule programs accordingly.
@@ -197,8 +197,7 @@ Based on the control flow of the program that this task was for, new tasks may b
 These tasks are then added to the task graph.
 If a task failed (for example, entanglement generation did not succeed for a \texttt{SinglePair} task), it either (a) remains in the task graph and may be scheduled again at a later time,
 or (b) the whole program instance is aborted, depending on the scheduler implementation.
-For \textit{predictable programs} (where control-flow and hence all corresponding tasks are known beforehand), their entire task graph may be created ahead of execution
-and (no need to add new tasks at runtime).
+For \textit{predictable programs} (where control-flow and hence all corresponding tasks are known beforehand), their entire task graph may be created ahead of execution (no need to add new tasks at runtime).
 Tasks for entanglement generation (like \texttt{SinglePair}) additionally contain information about when they are allowed to start according to the network schedule,
 allowing the scheduler to make sure that the network schedule is respected.
 The scheduler allows pre-emption of CPS tasks.
