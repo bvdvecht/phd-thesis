@@ -59,7 +59,7 @@ Importantly, this service should not require the application layer to have any k
 
 As mentioned above, end nodes in a quantum network possess a quantum processor acting on quantum memory.
 Quantum memory consists of individual quantum bits (\emph{qubits}), each of which can have a quantum state, such as $\ket{0}, \ket{1}$ or $\ket{+}$ (see~\cite{nielsen_chuang_2002} for a an extensive introduction to qubits and quantum states).
-The quantum network can deliver entangled pairs to end nodes, such that end nodes can obtain qubits in their quantum memory that are entangled with qubits in the quantum memory of other end nodes.
+The quantum network can deliver entangled pairs (\cref{background:sec:entanglement}) to end nodes, such that end nodes can obtain qubits in their quantum memory that are entangled with qubits in the quantum memory of other end nodes.
 An end node also possesses a classical processor and a classical memory.
 Furthermore, an end node can send and receive classical messages to and from other end nodes in the network.
 These abilities (classical and quantum processing, as well as classical and quantum communication, the latter being entanglement generation) are all required for the execution of quantum network applications (\cref{background:sec:applications}).
@@ -106,17 +106,16 @@ This means neighboring quantum network nodes need to perform a network operation
 Such time slots are generally aggregated into larger time bins, corresponding to making batches of attempts in time slots synchronized at the physical layer.
 We refer to e.g.~\cite{pompili_2022_experimental} for background information on the physical layer of entanglement generation in quantum networks, and the readers with a background in computer science to e.g.~\cite{dahlberg_2019_egp} for a detailed explanation of scheduling of entanglement generation in quantum networks.
 
-In short, network operations in quantum networks need to be executed by the node at very specific time bins.
-These time bins cannot be determined by the quantum node itself.
-Instead selection of time bins for a specific quantum operation require agreement with the neighboring node~\cite{dahlberg_2019_egp} (and more generally with the quantum network when the end-to-end entanglement is made via intermediate network nodes, \cref{background:fig:network_model}) by means of a network schedule, e.g. determined by a (logically) centralized controller, see Ref.~\cite{skrzypczyk_2021_arch}.
+The time bins cannot be determined by the quantum node itself.
+Instead, selection of time bins for a specific quantum operation requires agreement with the neighboring node~\cite{dahlberg_2019_egp} (and more generally with the quantum network when the end-to-end entanglement is made via intermediate network nodes, \cref{background:fig:network_model}) by means of a network schedule, e.g. determined by a (logically) centralized controller, see~\cite{skrzypczyk_2021_arch}.
 
-\paragraph{Quantum network stack}
-A quantum network stack has been proposed~\cite{dahlberg2019link} and implemented~\cite{pompili2022experimental} that turns entanglement generation into a robust service independent of the quantum hardware platform.
-Important for the design of an architecture for the execution of quantum network applications is that in this stack, the nodes will establish a network schedule of time slots in which they will trigger entanglement generation (due to need to synchronize entanglement generation as mentioned above).
-This means that once entanglement has been requested from the network, the nodes can use only the slots in the network schedule to produce entanglement between them, imposing constraints on the ability to schedule applications. What's more, in present day systems~\cite{pompili2021realization, krutyanskiy2023entanglement} limitations in the physical devices prohibit the execution of local operations while engaging in network operations (entanglement generation), creating further dependencies between the local quantum execution and entanglement generation. 
-As the specifics of network scheduling~\cite{network-scheduling, skrzypczyk2021architecture} are not within scope of this thesis, we assume the existence of a \textit{network controller} that takes application demand for entanglement and issues a network schedule to the nodes. 
-A schedule consists of sequential time slots, each with a start time and duration, when the node will trigger entanglement generation.
-Nodes are not forced to attempt entanglement in corresponding time slots, and can instead choose to do local processing instead.
+% \paragraph{Quantum network stack}
+% A quantum network stack has been proposed~\cite{dahlberg2019link} and implemented~\cite{pompili2022experimental} that turns entanglement generation into a robust service independent of the quantum hardware platform.
+% Important for the design of an architecture for the execution of quantum network applications is that in this stack, the nodes will establish a network schedule of time slots in which they will trigger entanglement generation (due to need to synchronize entanglement generation as mentioned above).
+% This means that once entanglement has been requested from the network, the nodes can use only the slots in the network schedule to produce entanglement between them, imposing constraints on the ability to schedule applications. What's more, in present day systems~\cite{pompili2021realization, krutyanskiy2023entanglement} limitations in the physical devices prohibit the execution of local operations while engaging in network operations (entanglement generation), creating further dependencies between the local quantum execution and entanglement generation. 
+% As the specifics of network scheduling~\cite{network-scheduling, skrzypczyk2021architecture} are not within scope of this thesis, we assume the existence of a \textit{network controller} that takes application demand for entanglement and issues a network schedule to the nodes. 
+% A schedule consists of sequential time slots, each with a start time and duration, when the node will trigger entanglement generation.
+% Nodes are not forced to attempt entanglement in corresponding time slots, and can instead choose to do local processing instead.
 
 
 
@@ -129,8 +128,7 @@ In this section we discuss what (quantum network) applications and programs are,
 \subsection{Quantum computing}
 First, let us briefly discuss quantum \emph{computing} (rather than networking).
 A quantum computing program runs on a single quantum processor, which may be an individual node in a quantum network, but may also just be a standalone quantum computer.
-A quantum computing program consists of performing operations on qubits.
-A quantum program for local (non-network) quantum computing is typically represented as a \emph{quantum circuit}.
+Such a local (non-network) program consists of performing operations on qubits, and is typically represented as a \emph{quantum circuit}.
 A circuit describes the program's quantum memory --- as individual qubits --- and the gates that are applied on these qubits.
 When visualized, like in \cref{background:fig:local_circuit}, qubits are represented by horizontal lines and operations by boxes on those lines.
 Such circuits must be read from left to right: gates on the left are applied first, then the ones to the right and so on.
@@ -153,9 +151,11 @@ Such circuits must be read from left to right: gates on the left are applied fir
 \end{figure}
 
 Operations include quantum \emph{gates} (such as rotation gates or the Hadamard gate), initialization, and measurement (readout).
-Quantum gates may be on a single qubit, or on multiple qubits.
+Quantum gates may be applied on a single qubit, or on multiple qubits.
 For example, the CNOT gate used in the example of \cref{background:fig:local_circuit} is a 2-qubit gate.
 The code, or the `recipe' of quantum programs is hence classical, while the information and memory that the program manipulates is quantum.
+Program developers may describe their programs as circuits, but often also write them as program code (\cref{background:fig:local_circuit}), using existing languages like Python (e.g.~\cite{steiger_projectq_2018}) or using custom quantum languages (such as e.g.~\cref{svore_q_2018}).
+We refer to \cref{netqasm:sec:related,compiler:sec:compilers-qc} for more examples of programming languages and frameworks.
 Besides quantum operations, there may be limited classical control, such as a gate being executed depending on a measurement outcome.
 Typically, a quantum circuit is executed in one go, on a very small timescale.
 Quantum memory used for quantum computing~\cite{de_leon_materials_2021} often only stays coherent (alive and useful) for microseconds.
@@ -199,10 +199,9 @@ Throughout this thesis, we will use the following terminology.
 \emph{Programs} refer to the code that is run on individual quantum network nodes.
 Applications are realized by the joint execution of programs on their respective nodes.
 
-A multi-node quantum network application is hence partitioned into separate single-node programs that run concurrently on different network end nodes (e.g. in BQC: a client program on a client node and a server program on a server node, or in secret sharing~\cite{hillery1999quantum}: a program each on many nodes).
-Each of these programs runs independently, and may also be independently programmed (and compiled).
+A multi-node quantum network application is hence partitioned into separate single-node programs that run concurrently on different network end nodes (e.g. in BQC: a client program on a client node and a server program on a server node, or in secret sharing~\cite{hillery1999quantum}: a program each on $N$ nodes).
+Each of these programs runs independently, and may also be independently programmed (and compiled), as shown in \cref{background:fig:2node_circuit}.
 This highlights the difference with distributed quantum computing (see e.g.~\cite{cacciapuoti2019quantum}), where all nodes can be accessed and controlled by a single program. 
-
 
 
 \paragraph{Program ingredients}
@@ -227,6 +226,8 @@ Second, programs need to perform classical operations, such as message passing (
 % A program can keep classical variables in a classical memory, and quantum variables (qubits) in the node's quantum memory during the execution.
 Programs may also involve asynchronous operations (e.g. a server awaiting entanglement with multiple clients).
 
+Quantum network applications may be represented as circuits (such as in \cref{background:fig:2node_circuit}), although this may be less feasible for more complex applications if classical processing is more elaborate.
+
 
 \paragraph{Interactivity}
 Classical blocks of code may depend on quantum ones via classical variables generated during the quantum execution (such as measurement results, notification of entanglement generation, and information on the state of the quantum system such as the availability of qubits).
@@ -234,12 +235,12 @@ Similarly, quantum blocks may depend on variables set by the classical blocks (s
 Finally, quantum blocks may themselves depend on other quantum blocks via qubits in the quantum memory. 
 
 
-\paragraph{Independence of programs}
-Quantum network applications may be programmed by a single actor.
-For example, a developer may program a QKD application in the form of a two programs, and distribute these two programs to two end nodes in the network.
-Alternatively, a single-node quantum network program may be developed separately from other programs, possibly not knowing how these other programs are implemented.
-For example, a BQC service provider could have already implemented the server-side program of a specific BQC protocol.
-A client may then write the client-side of this protocol, without having control over the server-side implementation.
+% \paragraph{Independence of programs}
+% Quantum network applications may be programmed by a single actor.
+% For example, a developer may program a QKD application in the form of a two programs, and distribute these two programs to two end nodes in the network.
+% Alternatively, a single-node quantum network program may be developed separately from other programs, possibly not knowing how these other programs are implemented.
+% For example, a BQC service provider could have already implemented the server-side program of a specific BQC protocol.
+% A client may then write the client-side of this protocol, without having control over the server-side implementation.
 
 
 
@@ -259,13 +260,13 @@ For an application, we consider \textit{makespan} as a classical metric and \tex
 Makespan is the time it takes to execute (all repetitions of) the application.
 The success probability is the one mentioned above.
 It is typically related to quantum fidelity $F \in [0, 1]$, which is a measure of closeness of a quantum state to some ideal quantum state.
-Noisy quantum systems produce non-perfect quantum states ($F < 1$) which decrease application success probability.
+Since present-day quantum systems are \emph{noisy} (see above), quantum memory is non-perfect ($F < 1$) which negatively affects application success probability.
 For quantum network nodes, we consider common classical metrics~\cite{stankiewicz_commag}: utility (fraction of time that a node is doing useful things), throughput (amount of application executions per time unit) and latency (which may be between internal components of a node, or between nodes).
 
 
 \paragraph{Multitasking}
 Due to the nature of quantum network programs, execution may have to \textit{wait} for some time. For example, the program needs to wait until another node sends a classical message, or until remote entanglement has been established.
-Therefore, it makes sense to run multiple (independent) quantum network programs on a node at the same time (interleaved), so that processor idle times can be filled by execution of other programs. This is something that typically does not happen on local quantum computers, and therefore introduces new challenges.
+Therefore, it makes sense to run multiple (independent) quantum network programs on a node at the same time (interleaved), so that processor idle times can be filled by execution of other programs. This is something that typically does not happen on local quantum computers, and therefore introduces new challenges, explained in more detail in the following chapters.
 
 
 \begin{xstretch}

@@ -137,6 +137,9 @@
 \renewcommand*{\glsgroupskip}{\medskip}
 \renewcommand*{\glsnamefont}[1]{\textbf{#1}}
 
+% Use "Listing" instead of "Example" when referring to code listings.
+\renewcommand{\lstlistingname}{Listing}
+
 % Show section numbers next to PDF outline bookmarks.
 \hypersetup{bookmarksnumbered=true}
 
@@ -420,7 +423,7 @@
 \graphicspath{{figures/}{chapters/main/qnodeos/main/}}
 \include{chapters/meta/summary}
 \include{chapters/meta/samenvatting}
-% \include{chapters/meta/acks}
+\include{chapters/meta/acks}
 \include{chapters/meta/cv}
 \include{chapters/meta/publications}
 
@@ -435,11 +438,11 @@
 % \fullchaptersfalse
 \fullchapterstrue
 
-% \include{chapters/main/intro}
-% \include{chapters/main/background}
-% \include{chapters/main/netqasm}
-% \include{chapters/main/qnodeos}
-% \include{chapters/main/qoala}
+\include{chapters/main/intro}
+\include{chapters/main/background}
+\include{chapters/main/netqasm}
+\include{chapters/main/qnodeos}
+\include{chapters/main/qoala}
 \include{chapters/main/compiler}
 \include{chapters/main/conclusion}
 
@@ -447,6 +450,7 @@
 \appendix
 
 \include{chapters/main/netqasm/appendix}
+\include{chapters/main/qnodeos/supplementary/source_code}
 
 % Turn off thumb indices for unnumbered chapters.
 \thumbfalse

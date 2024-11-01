@@ -20,7 +20,7 @@ The QDevice handles an entanglement instruction by performing (a batch of) entan
 
 QNodeOS consists of two layers: CNPU and QNPU (\cref{qnodeos:fig:fig2}a, \cref{qnodeos:sec:architecture}, \cref{qnodeos:sec:design}).
 Processes on the QNPU are managed by the Process Manager, and executed by the local processor.
-Executing a user process means executing NetQASM~\cite{dahlberg_2022_netqasm} subroutines (quantum blocks) or that process, which involves running classical instructions (including flow control logic) on the QNPU's local processor, sending entanglement requests to the network stack, and handling local quantum operations by sending physical instructions to the QDriver (\cref{qnodeos:fig:fig2}a).
+Executing a user process means executing NetQASM (see~\cite{dahlberg_2022_netqasm} and \cref{chp:netqasm}) subroutines (quantum blocks) for that process, which involves running classical instructions (including flow control logic) on the QNPU's local processor, sending entanglement requests to the network stack, and handling local quantum operations by sending physical instructions to the QDriver (\cref{qnodeos:fig:fig2}a).
 Executing the network process means asking the network stack which request (if any) to handle and sending the appropriate (entanglement generation) instructions to the QDevice. 
 
 A QNPU process can be in the following states (see \cref{qnodeos:fig:process-states} for state diagram): idle, ready, running and waiting.

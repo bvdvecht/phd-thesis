@@ -12,7 +12,7 @@ A multi-node quantum internet application is partitioned into separate single-no
 % All quantum operations are executed on quantum processors that can store, manipulate and measure quantum information, where small networks including such processors have been realized using different quantum hardware platforms including, for example,  Nitrogen-Vacancy (NV) centers in diamond~\cite{pompili2021realization}, and Ion Traps~\cite{krutyanskiy2023entanglement}.
 % Second, programs need to perform classical operations, such as message passing (e.g., a BQC client program sending desired measurement bases to the BQC server), and local classical processing (e.g., post-processing measurement outcomes in QKD).
 
-The single-node programs that constitute a quantum internet application are hybrid in nature (see \cref{fig:program_illustration}):
+The single-node programs that constitute a quantum internet application are hybrid in nature (see \cref{qoala:fig:program_illustration}):
 they can contain both classical and quantum operations, and these operations can be both local (executed fully on the node itself) or networked (interacting with another node in the network).
 Quantum operations include quantum gates and measurements, e.g. to perform a server computation in BQC, (\textit{local quantum}), and entanglement generation, e.g. to produce classical bits for a secret key in QKD (\textit{networked quantum}).
 Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
@@ -70,7 +70,7 @@ configuring different hardware parameters, latencies, and software component org
 
 Using the implementation we demonstrate the effectiveness and feasibility of our proposed architecture on different types of quantum hardware, including its ability to schedule and multitask applications using a number of existing scheduling methods (EDF, FCFS).
 We continue to examine tradeoffs in the classical and quantum performance metrics of using different types of scheduling approaches. 
-We examine Qoala's improvement over NetQASM~\cite{dahlberg2022netqasm} in enabling hybrid classical-quantum compilation possibilities. 
+We examine Qoala's improvement over NetQASM (\cite{dahlberg2022netqasm} and \cref{chp:netqasm}) in enabling hybrid classical-quantum compilation possibilities. 
 Finally, we study trends in application performance when varying the amount of concurrency, and examine the impact of a network schedule for entanglement generation on the performance of Qoala.
 
 We stress that Qoala is not just a simulator.

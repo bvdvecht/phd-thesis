@@ -12,7 +12,9 @@ Details in \cref{qoala:sec:app:program_structure,qoala:sec:app:runtime_environme
 
 Qoala is based on only a few core assumptions on the processing node (consideration EC3, \cref{qoala:fig:minimal_hardware_assumptions}):
 
-\textit{CPS-QPS distinction}. We assume the node distinguishes between a \textit{classical processing system (CPS)} managing classical computing resources (e.g. CPU, classical memory and networking), and a \textit{quantum processing system (QPS)}, responsible for executing quantum operations (gates, measurements, entanglement generation) on quantum hardware including a quantum memory as in~\cite{dahlberg2022netqasm, pompili2022experimental}.
+\textit{CPS-QPS distinction}. We assume the node distinguishes between a \textit{classical processing system (CPS)} managing classical computing resources (e.g. CPU, classical memory and networking), and a \textit{quantum processing system (QPS)}, responsible for executing quantum operations (gates, measurements, entanglement generation) on quantum hardware including a quantum memory as in \cref{chp:netqasm,chp:qnodeos}.
+We hence use a similar distinction as with the CNPU and QNPU from \cref{chp:netqasm,chp:qnodeos} but with a slightly different terminology and division of abstractions:
+the CPS is on the same level as the CNPU from \cref{chp:netqasm,chp:qnodeos}, but the QPS is either just the QNPU level or the combined `QNPU + QDevice' level.
 Unlike prior work, we assume a shared classical memory is accessible to both the CPS and QPS, enabling communication between the two processing systems, addressing the interactive property of quantum internet programs.
 The CPS can act as a fully-fledged classical computer, and performs application-level classical communication with other nodes as well as with a network controller who sets a network schedule.
 The QPS can execute routines consisting of low-level quantum gates, basic classical control logic (branching), and entanglement generation.
@@ -44,7 +46,7 @@ A Qoala program is an \textit{executable} and output of a compiler.
 The format is separate from any high-level language in which a programmer might write code; hence Qoala in theory allows for compatibility with any such language (consideration EC1).
 Entry and exit points of a program are in host code.
 \cref{qoala:fig:example_program} shows an example program in text format.
-We contrast Qoala's program format with that of~\cite{dahlberg2022netqasm}, in which there was no way to compile across classical and quantum code segments.
+We contrast Qoala's program format with that of NetQASM (see~\cite{dahlberg2022netqasm} and \cref{chp:netqasm,chp:qnodeos}), in which there was no way to compile across classical and quantum code segments.
 A Qoala program has \textit{program arguments} that are filled in during program instantiation (\cref{qoala:sec:program_instantiation}).
 
 
@@ -77,7 +79,7 @@ Asynchronous execution is possible by `submitting' multiple routines for executi
 \textit{Local routine}.
 A local routine (LR) represents a series of quantum operations (like gates and measurement), to be executed by the QPS locally (no interaction with external nodes or controllers).
 An LR may also contain limited classical computation and control-flow code allowing for fast feedback, which can increase quantum performance (\cref{qoala:sec:background_context}) due to less decoherence.
-An updated version of NetQASM~\cite{dahlberg2022netqasm} is used to represent the instructions, which allows both hardware-specific and hardware-agnostic instructions.
+An updated version of NetQASM (see~\cite{dahlberg2022netqasm} and \cref{chp:netqasm}) is used to represent the instructions, which allows both hardware-specific and hardware-agnostic instructions.
 Therefore, the program format is compatible with different quantum hardware.
 In contrast to \cite{dahlberg2022netqasm}, Qoala's version of NetQASM does not have instructions for entanglement generation (cleanly separating local and networked quantum operations)
 nor `wait' instructions. This allows routines to be treated as atomic non-preemptable blocks.

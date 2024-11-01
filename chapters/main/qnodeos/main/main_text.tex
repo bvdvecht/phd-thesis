@@ -98,7 +98,7 @@ the Quantum Network Processing Unit (QNPU, realized on classical hardware) is th
 The CNPU and QNPU together form QNodeOS and control the QDevice, which is responsible for executing any quantum operations (gates, measurements, entanglement generation at the physical layer~\cite{dahlberg_2019_egp}) on the quantum hardware.
 Upon starting the execution, the CNPU creates a process (a well-known concept in classical operating systems~\cite{dennis_programming_1966-1,tanenbaum_operating_2005}) on the CNPU (a CNPU process), registers the program on the QNPU (via the QNPU's end node application programming interface (API), \cref{qnodeos:sec:design:qnpu_stack}), which, in turn, creates its own associated QNPU process (including context such as process owner, ID, process state and priority).
 QNodeOS also defines kernel processes on the QNPU, which are similar to user processes, but are created when the system starts (on boot).
-The CNPU sends quantum blocks to the QNPU in the form of NetQASM subroutines~\cite{dahlberg_2022_netqasm}.
+The CNPU sends quantum blocks to the QNPU in the form of NetQASM subroutines~\cite{dahlberg_2022_netqasm} (see also \cref{chp:netqasm}).
 Classical control logic in quantum blocks is executed by the QNPU processor.
 Quantum gates and measurements (from any QNPU process) and entanglement instructions (from the network process) are delegated to the QDevice by submitting physical instructions (\cref{qnodeos:sec:methods}), after which the QDevice responds back to the QNPU with the result of the instruction (\cref{qnodeos:sec:appendix-qdevice}). 
 
@@ -133,6 +133,8 @@ Similar to classical memory management systems~\cite{peterson_operating_1985}, a
 This allows flexibility in translating a virtual qubit address to: (1) a different physical qubit address over time, allowing qubits to be rearranged transparently in the physical memory in the future, or (2) a logical qubit address, when QNodeOS is executed on top of a processor employing quantum error correction~\cite{lidar2013quantum} (\cref{qnodeos:sec:methods}).
 Entanglement generation between different pairs of processes at remote nodes are distinguished by Entanglement Request (ER) sockets, inspired by classical sockets~\cite{chesson_network_1975-1,leach_architecture_1983}, which are established once a user process requests entanglement from the network process.
 In our implementation, processes of the same priority are scheduled first-come-first-served~\cite{peterson_operating_1985}, where the total schedule of the program in our implementation is dependent both on the schedule on the CNPU as well as the QNPU (\cref{qnodeos:sec:methods}).
+
+In \cref{qnodeos:sec:design} we provide more details about the QNodeOS design and implementation.
 
 \begin{figure*}[t]
 \centering

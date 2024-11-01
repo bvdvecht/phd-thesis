@@ -149,7 +149,7 @@ We distinguish between (1) the \textit{physical quantum memory space (PQMS)} con
 and (2) a \textit{virtual quantum memory space (VQMS)} for each program instance (\cref{qoala:sec:runtime_environment}).
 
 The topology (qubit connectivity) and noise characteristics of the PQMS are exposed as part of the EHI.
-Each program instance has access to its own VQMS, which is represented as a Unit Module~\cite{dahlberg2022netqasm}.
+Each program instance has access to its own VQMS, which is represented as a Unit Module (\cite{dahlberg2022netqasm} and \cref{chp:netqasm}).
 The VQMS for each program instance is created when instantiating the program.
 This can be seen as virtual memory allocation for the program.
 At runtime, the VQMS of each running program instance is mapped to the PQMS.

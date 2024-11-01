@@ -16,7 +16,7 @@ and (A5) a multi-node GHZ-state~\cite{greenberger1989going} creation application
 Each program is instantiated 1000 times and all tasks are immediately added to the task graph (since the the programs are \textit{predictable} (\cref{qoala:sec:scheduling})).
 Precedence constraints are added such that instances are executed sequentially for simplicity.
 We use a fixed network schedule (no demand registration (\cref{qoala:sec:program_instantiation}) since network schedule generation is not handled by Qoala itself and hence not part of the evaluation).
-To demonstrate the hardware independent performance of Qoala, all simulations are performed on three different hardware models: a generic quantum platform (uniform qubit connectivity and \textit{vanilla} (hardware-agnostic) NetQASM instruction set~\cite{dahlberg2022netqasm}),
+To demonstrate the hardware independent performance of Qoala, all simulations are performed on three different hardware models: a generic quantum platform (uniform qubit connectivity and \textit{vanilla} (hardware-agnostic) NetQASM instruction set (\cite{dahlberg2022netqasm} and \cref{chp:netqasm}),
 and two models based on data validated on real hardware (NV centers~\cite{bradley2019ten, hermans2022qubit} and trapped ions~\cite{krutyanskiy2023entanglement}). 
 We observe successful execution (desired deterministic outcome when setting noise parameters (\cref{qoala:sec:background_context}) to 0, and expected non-deterministic outcome distributions with realistic noise parameters) for all types of applications (details in \cref{qoala:sec:app:evaluation}).
 

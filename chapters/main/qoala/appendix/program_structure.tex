@@ -32,27 +32,6 @@ Program metadata contains:
 \end{itemize}
 
 
-% \begin{figure*}[t]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{figures/qoala/appendix_example_full_program.pdf}
-%     \caption{Example Qoala program which creates an EPR pair with remote program Alice, measures the local qubit, and returns the classical outcome value.
-%     \textit{Meta section.} The meta section defines the name of this program, the global arguments (input values, in this case: the node ID of the Alice program),
-%     the classical sockets used (mapping local socket ID to the name of the remote node, and the EPR sockets used (also mapping local socket ID to remote node names)).
-%     \textit{Host section.} This example host section consists of three blocks (\texttt{b1, b2, b3}). \texttt{b1} calls request routine \texttt{req} (no result values).
-%     \texttt{b2} calls local routine \texttt{post\_epr}, resulting in a classical vector with one value (\texttt{m0}).
-%     \texttt{b3} returns \texttt{m0} as the result of this program.
-%     \textit{Local routines section.} Consists of a single local routine called \texttt{post\_epr}.
-%     It requires the virtual qubit (see \cref{qoala:sec:app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
-%     Upon finishing the local routine, this qubit is not in use anymore (the \texttt{keeps} entry is empty).
-%     The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see \cref{qoala:sec:app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
-%     \textit{Request routines section.} Consists of a single request routine called \texttt{req}.
-%     It represents a request to the network stack for generating a single entangled pair (\texttt{num\_pairs} is 1), which is kept in memory (\texttt{typ: create\_keep}; not measured immediately).
-%     This program acts as a `receiver' for entanglement generation (\texttt{role} attribute), which breaks symmetry in the entanglement generation process (the remote Alice program will have \texttt{role: sender}). Symmetry breaking is needed for the network stack to organize the entanglement generation.
-%     No callbacks are used, and all qubits (in this case: one) are stored in virtual qubit 0.
-%     }
-%     \label{qoala:fig:app:example_full_program}
-% \end{figure*}
-
 \begin{figure*}[t]
     \centering
     \begin{minipage}{\textwidth}
@@ -65,15 +44,15 @@ Program metadata contains:
     \texttt{b2} calls local routine \texttt{post\_epr}, resulting in a classical vector with one value (\texttt{m0}).
     \texttt{b3} returns \texttt{m0} as the result of this program.
     \textit{Local routines section.} Consists of a single local routine called \texttt{post\_epr}.
-    It requires the virtual qubit (see \cref{app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
+    It requires the virtual qubit (see \cref{qoala:sec:app:runtime_environment}) with ID 0 to be allocated, and acts on this qubit.
     Upon finishing the local routine, this qubit is not in use anymore (the \texttt{keeps} entry is empty).
-    The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see \cref{app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
+    The NetQASM code represents measuring the qubit, and then storing the result (in register \texttt{M0}) to the \texttt{@output} array (see \cref{qoala:sec:app:runtime_environment}), which is in shared memory and can be accessed by host code by the name \texttt{m0}.
     \textit{Request routines section.} Consists of a single request routine called \texttt{req}.
     It represents a request to the network stack for generating a single entangled pair (\texttt{num\_pairs} is 1), which is kept in memory (\texttt{typ: create\_keep}; not measured immediately).
     This program acts as a `receiver' for entanglement generation (\texttt{role} attribute), which breaks symmetry in the entanglement generation process (the remote Alice program must have \texttt{role: sender}). Symmetry breaking is needed for the network stack to organize the entanglement generation.
     No callbacks are used, and all qubits (in this case: one) are stored in virtual qubit 0.
     }
-    \label{fig:app:example_full_program}
+    \label{qoala:fig:app:example_full_program}
 \end{figure*}
 
 \subsection{Host section}
@@ -181,7 +160,7 @@ The NetQASM section consists of a list of local routines that are to be executed
 A local routine is only executed when it is called by host code using the \texttt{run\_routine} instruction. A local routine may be run multiple times, again depending on the host code.
 
 The instructions of a local routine are represented using the NetQASM 2.0 format.
-This is an updated format compared to NetQASM 1.0 as presented in~\cite{dahlberg2022netqasm}.
+This is an updated format compared to NetQASM 1.0 as presented in \cite{dahlberg2022netqasm} and \cref{chp:netqasm}.
 
 \begin{figure*}
     \centering

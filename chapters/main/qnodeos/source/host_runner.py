@@ -7,7 +7,6 @@ for i in range(N):
     programs.append(dqc_program)
     programs.append(lgt_program)
     er_socket_ids[dqc_program] = i  # assign unique ID for ER socket
-    
 
 # Create a thread pool that can be executed by the OS hosting the CNPU.
 tpe = ThreadPoolExecutor()
@@ -32,13 +31,13 @@ def program_runner(program, er_socket_id):
         er_socket = ERSocket(
             remote_node=remote_node.name,
             er_socket_id=er_socket_id,
-            remote_er_socket_id=er_socket_id)
+            remote_er_socket_id=er_socket_id,
+        )
         qnpu_connection.open_er_socket(er_socket)
-    
+
     # classical sockets with other programs do not go through the QNPU
     create_classical_sockets()
-    
 
-    # Execute the program code; it can use the connection to send subroutines
-    # to the QNPU and receive results.
+    # Execute the program code; it can use the connection to send
+    # subroutines to the QNPU and receive results.
     run(program, qnpu_connection)
