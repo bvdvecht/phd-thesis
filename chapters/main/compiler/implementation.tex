@@ -74,6 +74,7 @@ The program creates first creates an entangled qubit (\texttt{q}) with remote no
 Then, the program waits to a receive classical real number (a float) as a classical message from Bob, calling it \texttt{t1}.
 An x-rotation gate is applied on \texttt{q} with angle \texttt{t1}.
 Finally, \texttt{q} is measured, producing bit \texttt{m} which is returned as result of this program.
+\newpage
 
 \begin{pycode}
 class MyProgram(QoalaProgram):
@@ -119,6 +120,7 @@ When lowering the above QoalaHIR code to QoalaMIR, the change is that instead of
 Quantum operations are applied on quantum pointers, and have side effects.
 (In contrast to consuming a quantum \emph{value} and producing a new one.)
 As can be seen below, the \texttt{qnet.eprs} operation producing qubit variable \texttt{\%q} is replaced by a \texttt{qalloc} operation (in the \texttt{qmem} dialect), producing a qubit \emph{pointer} \texttt{\%qptr} (not a quantum value), followed by a \texttt{eprs} operation (in the \texttt{qmem} dialect instead of the \texttt{qnet} dialect) which acts on \texttt{\%qptr}.
+\newpage
 
 \begin{pycode}
 qmem.func @main() -> i1 {

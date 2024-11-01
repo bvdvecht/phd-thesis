@@ -1,4 +1,4 @@
-\section{Delegated Quantum Computation (DQC) experiment on NV}
+\section{Delegated quantum computation (DQC) experiment on NV}
 \label{qnodeos:sec:delcomp}
 
 \subsection{Procedure}
@@ -13,7 +13,7 @@ The result of a single \ac{DQC} circuit execution (\cref{qnodeos:fig:fig3}a) is 
 
 The value of $F_{\text{DQC}}$ is affected the most by (1) the fidelity $F_{\text{EPR}}$ of the entangled pair created between the client and server, and (2) the \textit{qubit memory time} $t_{\text{mem}}$, which is the time that the server qubit must remain in memory (from entanglement success until measurement). The latter depends on the time at which the client sends a message to the server (\cref{qnodeos:fig:fig3}). We refer to the two-qubit maximally entangled Bell states as $\ket{\Phi^+} = \left(\ket{00} + \ket{11}\right)$, and $\ket{\Psi^{\pm}} = \left(\ket{01} \pm \ket{10}\right)$, where $\Phi^+ = \proj{\Phi^+}$ and $\Psi^{\pm} = \proj{\Psi^{\pm}}$.
 
-\subsection{Post-Selection Based on Latency}
+\subsection{Post-selection based on latency}
 \label{qnodeos:sec:post-selection-latency}
 
 In our experiments, the server qubit memory time $t_{\text{mem}}$ has a significant variance across executions of the \ac{DQC} circuit. In some iterations, there were huge spikes in latencies, which skew the results significantly. An upper bound $t_{\max}$ (see \cref{qnodeos:sec:dqc-simulation}) was used to filter out results from iterations in which $t_{\text{mem}}$ was larger than $t_{\max}$. This resulted in filtering 146 out of 7200 data points. We note that for computing $F_{\text{DQC}}$, we applied the latency filter on top of the \ac{SSRO} and \ac{CR} filters (see Methods). For the processing time analysis (below), however, we applied only the latency filter directly to all 7200 original data points.
@@ -65,11 +65,11 @@ The simulation computes an estimate of $F_{\text{DQC}}$ for a given server qubit
     \label{qnodeos:fig:delcomp-simulation}
 \end{figure*}
 
-\subsection{Sweep of Qubit Memory Time and Bright State Population}
+\subsection{Sweep of qubit memory time and bright state population}
 
 As explained in \cref{qnodeos:sec:NVentanglement}, entanglement is created using the single-photon protocol using bright state population parameter $\eta$.\footnote{In most literature, the variable $\alpha$ is used for this parameter; here we use $\eta$ to avoid confusion with the $\alpha$ parameter of the \ac{DQC} application.} Using the simulation, we can estimate how $F_{\text{DQC}}$ would change for different values of $\eta$ and $t_{\text{mem}}$. \cref{qnodeos:fig:delcomp-fidelity-alpha-colormap} shows the estimated $F_{\text{DQC}}$ for different values of $\eta$ and $t_{\text{mem}}$. It indicates that for the particular setup used, increasing $\eta$ has little effect, while reducing qubit memory time does. For the \ac{DQC} experiment $\eta = 0.07$ was used.
 
-\subsection{Processing Time and Latencies}
+\subsection{Processing time and latencies}
 \label{qnodeos:sec:processing_time_latencies}
 
 Here we provide a detailed breakdown of the duration of execution phases of the \ac{DQC} application, in order to gain insights into the processing times and latencies of the system for the different components.
@@ -230,7 +230,7 @@ As part of the \ac{DQC} execution, the \ac{QNPU} sends physical instructions to 
     \label{tab:exp_durations}
 \end{table*}
 
-\subsection{QNPU Network process analysis}
+\subsection{QNPU network process analysis}
 
 In this section we focus on the execution of the network process in the \ac{QNPU} as observed in the execution of \ac{DQC}. The \ac{ER} sockets (\cref{qnodeos:sec:design_er_socket}) are designed to facilitate the generation of entanglement belonging to a pair of user processes between two different \acp{QNPU}. In particular, the \ac{ER} socket allows the \ac{QNPU} to proceed with entanglement generation, while only one node may not have issued a request for entanglement yet. 
 

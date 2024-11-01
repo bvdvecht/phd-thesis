@@ -47,7 +47,7 @@ A program may be submitted for execution in a batch.
 A batch $B$ consists of a program $P$, the number of execution $N$ and inputs for each execution. Based on this, $N$ program instances are created.
 
 
-\subsection{Shared Memory}
+\subsection{Shared memory}
 \label{qoala:sec:app:shared_memory}
 The CPS and QPS need to exchange information in order to execute local routines and request routines. They do so using shared memory.
 The CPS writes routine arguments and reads results.
@@ -140,7 +140,7 @@ The results of the RR are written to the array in the \mbox{\texttt{RR\_out}} re
 
 
 
-\subsection{Quantum Memory}
+\subsection{Quantum memory}
 \label{qoala:sec:app:quantum_memory}
 The QPS is assumed to have access to a quantum random access memory (QRAM) consisting of \textit{qubits}.
 Each qubit is a single location in the QRAM and can hold a single 2-dimensional quantum value, like $\ket{0}$ or $\ket{+}$.
@@ -195,7 +195,7 @@ This involves finding currently unused physical qubits and mapping new virtual q
 
 
 
-\subsection{Exposed hardware Interface}
+\subsection{Exposed hardware interface}
 \label{qoala:sec:app:ehi}
 The Qoala execution environment exposes certain information related to the hardware and software capabilities.
 This information includes noise characteristics of quantum memory and of entanglement generation, as well as estimates of classical latencies.

@@ -1,8 +1,6 @@
 \section{Introduction}
 \label{netqasm:sec:introduction}
 
-\todo{Remove parts that are already in preliminaries}
-
 Quantum mechanics shows that if one is able to communicate quantum information between nodes in a network, one is able to achieve certain tasks which are impossible using only classical communication.
 There are many applications~\cite{Wehner2018stages} where a \emph{quantum network} has advantage over a \emph{classical (non-quantum) network}, either by
 (1) enabling something that is theoretically impossible in a classical network, such as the establishment of an unconditionally secure key~\cite{bb84} and secure blind quantum computing~\cite{childs2005assisted} or
@@ -32,47 +30,50 @@ Quantum \textit{network} processors have additional challenges:
 for example, in NV centers, an electron spin qubit is used for generating entanglement with a remote node but is also needed to do local two-qubit gates,
 (2) remote-entanglement operations may not have a fixed time in which they complete, which makes scheduling and optimization more difficult.
 
-\todo{Remove and make sure everything is in preliminaries?}
-Quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end-nodes, as well as local computation.
+As also explained in \cref{chp:background}, quantum network \textit{applications}, also called \textit{protocols}, are multi-partite programs that involve entanglement generation and classical communication between different end-nodes, as well as local computation.
 Examples include Quantum Key Distribution (QKD)~\cite{bb84, ekert1991quantum}, leader election protocols~\cite{kobayashi2014simpler, ganz2009quantum}, and Blind Quantum Computation (BQC)~\cite{Wehner2018stages}.
 Such applications are split into distinct \textit{programs} each of which runs on a separate end-node.
 The programs consist of both local operations (classical and quantum) and network operations (classical and quantum), see \cref{netqasm:fig:app_programs}.
-That is, the programs communicate either by passing classical messages, or by establishing quantum entanglement.
-For example, BQC involves a \textit{client} node and a \textit{server} node, both of which run their own program.
-Their joint execution looks roughly as follows:
-(1) The client and server engage in remote entanglement generation such that the server's quantum memory ends up being in a certain state,
-(2) the client sends instructions to the server in the form of a classical message,
-(3) the server performs a measurement-based computation on its own quantum memory based on the client's instructions,
-(4) the server sends measurement results back to the client,
-(5) the client sends new instructions based on the measurement results,
-(6) repeat steps 3 to 5 until the client obtains its desired result.
+These programs, running on different nodes, are in principle programmed and executed by independent actors (such as a client that programs and executes a BQC client program, which communicates with a completely independent entity that acts as a BQC server and programs and executes its own BQC server program).
+We also note that programs often need to \textit{wait} for some event to happen (such as arrival of a message from a remote node), which presents a motivation for \textit{multitasking} (where waiting times may be filled by execution of other programs).
+We refer back to \cref{chp:background} for more information about quantum network programs.
 
-The example above illustrates that quantum network programs consist of different types of operations.
-Indeed, program code consists of \textit{classical code}, containing local classical operations and classical communication with other nodes, and \textit{quantum code}, which are operations on quantum memory (such as \textit{gates}) and remote entanglement generation.
-Blocks of these types of code may depend on each other in multiple ways, as depicted in~\cref{netqasm:fig:program_decomp}.
-Programs with mixed classical and quantum operations have also been called \textit{dynamic quantum circuits}~\cite{cross2021openqasm, burgholzer2021towards}, but these do not cover the networking dimension found in programs we consider here, such as the dependency on remote information and entanglement generation operations.
+% Therefore, it makes sense to run multiple (independent) quantum network programs on a node at the same time (interleaved), so that processor idle times can be filled by execution of other programs.
 
-Due to the nature of quantum network programs, execution may have to \textit{wait} for some time.
-For example, the program needs to wait until another node sends a classical message, or until remote entanglement has been established.
-Therefore, it makes sense to run multiple (independent) quantum network programs on a node at the same time (interleaved), so that processor idle times can be filled by execution of other programs.
-This is something that typically does not happen on local quantum computers, and therefore introduces new challenges.
+% That is, the programs communicate either by passing classical messages, or by establishing quantum entanglement.
+% For example, BQC involves a \textit{client} node and a \textit{server} node, both of which run their own program.
+% Their joint execution looks roughly as follows:
+% (1) The client and server engage in remote entanglement generation such that the server's quantum memory ends up being in a certain state,
+% (2) the client sends instructions to the server in the form of a classical message,
+% (3) the server performs a measurement-based computation on its own quantum memory based on the client's instructions,
+% (4) the server sends measurement results back to the client,
+% (5) the client sends new instructions based on the measurement results,
+% (6) repeat steps 3 to 5 until the client obtains its desired result.
 
-Quantum network applications may be programmed by a single actor.
-For example, a developer may program a QKD application in the form of a two programs, and distribute these two programs to two end-nodes in the network.
-Alternatively, a single-node quantum network program may be developed separately from other programs, possibly not knowing how these other programs are implemented.
-For example, a BQC service provider could have already implemented the server-side program of a specific BQC protocol.
-A client may then write the client-side of this protocol, without having control over the server-side implementation.
-\todo{end TODO}
+% The example above illustrates that quantum network programs consist of different types of operations.
+% Indeed, program code consists of \textit{classical code}, containing local classical operations and classical communication with other nodes, and \textit{quantum code}, which are operations on quantum memory (such as \textit{gates}) and remote entanglement generation.
+% Blocks of these types of code may depend on each other in multiple ways, as depicted in~\cref{netqasm:fig:program_decomp}.
+% Programs with mixed classical and quantum operations have also been called \textit{dynamic quantum circuits}~\cite{cross2021openqasm, burgholzer2021towards}, but these do not cover the networking dimension found in programs we consider here, such as the dependency on remote information and entanglement generation operations.
 
-\todo{merge this with first sentence of contribution?}
-The aim in this chapter is to propose a way to program quantum network programs
-and execute them on the end-nodes of a quantum network.
+% Due to the nature of quantum network programs, execution may have to \textit{wait} for some time.
+% For example, the program needs to wait until another node sends a classical message, or until remote entanglement has been established.
+% Therefore, it makes sense to run multiple (independent) quantum network programs on a node at the same time (interleaved), so that processor idle times can be filled by execution of other programs.
+% This is something that typically does not happen on local quantum computers, and therefore introduces new challenges.
+
+% Quantum network applications may be programmed by a single actor.
+% For example, a developer may program a QKD application in the form of a two programs, and distribute these two programs to two end-nodes in the network.
+% Alternatively, a single-node quantum network program may be developed separately from other programs, possibly not knowing how these other programs are implemented.
+% For example, a BQC service provider could have already implemented the server-side program of a specific BQC protocol.
+% A client may then write the client-side of this protocol, without having control over the server-side implementation.
+
+% The aim in this chapter is to propose a way to program quantum network programs
+% and execute them on the end-nodes of a quantum network.
 
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/netqasm/multi_program_app_2.pdf}
-    \caption{\todo{check if indeed CNPU and QNPU are meant here} A quantum network application consists of a program for each of the nodes involved in the application.
+    \caption{A quantum network application consists of a program for each of the nodes involved in the application.
         Each program is locally executed by the node.
         Program execution on each node is split into execution in a \acf{CNPU}, which can send and receive classical messages, and a \acf{QNPU}, which can create entanglement with another node.
         The communication between nodes can hence be both classical and quantum.
@@ -141,7 +142,7 @@ We remark that \ac{NetQASM} has already been used on a real hardware setup in th
 Furthermore, in \cref{chp:qnodeos}, we present a full stack implementation that uses \ac{NetQASM}.
 
 
-\subsection{Related Work}
+\subsection{Related work}
 \label{netqasm:sec:related}
 
 In the field of quantum computing, a substantial amount of progress has been made related to developing

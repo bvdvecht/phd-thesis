@@ -1,9 +1,9 @@
-\section{QNodeOS Design and Implementation}
+\section{QNodeOS design and implementation}
 \label{qnodeos:sec:design}
 
 We proceed with a more detailed description of the \ac{QNodeOS} architecture and implementation, where (for the reader's convenience) we include some information already found in \cref{qnodeos:sec:architecture,qnodeos:sec:methods}. Recall, that a quantum network application is realized by running separate programs, one on each end node of the quantum network that takes part in the quantum application. The individual programs interact with each other only via classical message passing and entanglement generation. Each program itself consists of classical and quantum blocks of code (see~\cref{qnodeos:sec:design-consid:challenges:application}) which require execution in the quantum memory for the application to succeed.
 
-\subsection{QNodeOS Architecture}
+\subsection{QNodeOS architecture}
 \label{qnodeos:sec:appendix-arch}
 
 \subsubsection{Quantum Network Node System}
@@ -77,7 +77,7 @@ Physical instructions are executed on the \ac{QDevice}, the quantum processing a
 
 As we remarked in~\cref{qnodeos:sec:appendix-arch-node_system}, a \ac{QDevice} has two communication channels with its direct neighbors: a \emph{classical channel}, used for low-level synchronization of the entanglement generation procedure and other configuration routines, and a \emph{quantum channel}, typically an optical fiber, through which qubits can travel.
 
-\subsection{QNPU Stack}
+\subsection{QNPU stack}
 \label{qnodeos:sec:design:qnpu_stack}
 
 \begin{figure}
@@ -236,7 +236,7 @@ Like in most operating systems, these tasks, which on the \ac{QNPU} are encapsul
 Lastly, multitasking is an important feature for systems that are to be shared by multiple users, and that offer each user the possibility to run multiple programs concurrently. The multitasking capabilities of \ac{QNodeOS} are also aimed at improving the average throughput and latency of user programs.
 
 
-\subsection{QNodeOS Components and Interfaces}
+\subsection{QNodeOS components and interfaces}
 \label{qnodeos:sec:appendix-qnodeos-core}
 
 \begin{figure*}
@@ -339,7 +339,7 @@ We stress the difference between the FreeRTOS scheduler and our QNPU process sch
 The QNPU scheduler schedules QNPU processes based on their status and priorities, which are independent of the priorities assigned by the FreeRTOS scheduler.
 The FreeRTOS hence runs on a different layer: it makes sure the QNPU components (including QNPU scheduler, processor, \ac{QDriver}) run concurrently. The QNPU scheduler runs on the level of QNPU processes. Whenever the FreeRTOS scheduler activates the FreeRTOS task realizing the QNPU scheduler, the QNPU scheduler then schedules the process with the highest priority on a first come first serve basis, by adding it to the processing queue of the relevant resource (e.g. QNPU processor) and generating an interrupt leading to the execution of the QNPU processor task on FreeRTOS (and consequently the execution of the process).
 
-\subsection{QDevice Interface}
+\subsection{QDevice interface}
 \label{qnodeos:sec:appendix-qdevice}
 
 The implementation of a \ac{QDevice} depends on a number of factors. Most importantly, the physical signals that are fed to the quantum processing and networking device (and those that are output from the device) are specific to the nature of the device itself. Different qubit realizations require different digital and analog control. For instance, manipulating the state of a spin-based qubit (e.g., in a \ac{NV} center processor) and that of an atom qubit (e.g., in a trapped ion processor) are two physical processes that vastly differ in a number of complex ways.

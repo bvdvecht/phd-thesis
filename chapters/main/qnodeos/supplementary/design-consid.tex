@@ -1,9 +1,9 @@
-\section{Detailed Design Considerations and Challenges}
+\section{Detailed design considerations and challenges}
 \label{qnodeos:sec:design-consid:challenges}
 
 We provide additional information for some of the design considerations and challenges for an operating system for executing applications on a quantum network node.
 
-\subsection{Quantum Networks}
+\subsection{Quantum networks}
 \label{qnodeos:sec:quantum-networks}
 
 \paragraph{Node Types}
@@ -38,7 +38,7 @@ Entanglement is a phenomenon in quantum physics where two or more particles are 
     \label{qnodeos:fig:network_nodes}
 \end{figure}
 
-\subsection{Application Paradigm}
+\subsection{Application paradigm}
 \label{qnodeos:sec:design-consid:challenges:application}
 
 Our architecture is primarily meant to \emph{enable the execution of quantum network applications in the quantum memory stage~\cite{wehner_2018_stages} and above}. That is, applications that require the use of a quantum processor that can manipulate and store quantum bits (qubits). For simpler applications in the prepare-and-measure and entanglement generation stages~\cite{wehner_2018_stages}, e.g. quantum key distribution~\cite{bb84Original,ekert_1991_e91}, where the quantum states are immediately measured by the nodes, our system can also be used, but it would be sufficient to realize a system implementing a quantum network stack and classical processing only.
@@ -68,11 +68,11 @@ Next to classical metrics, such as utility (see `Methods, Metrics`), throughput 
 There exist quantum applications and functionalities, where one pair of programs is executed only once, e.g. a simple example of quantum teleportation~\cite{bennett_1993_teleportation}. As in quantum computing, however, some quantum network applications~\cite{wehner_2018_stages} are expected to succeed only with a specific \emph{probability of success} $p_{\rm succ}$ when executed once. The application is then typically executed many times in succession in order to gather statistics (for example to amplify $p_{\rm succ}$). A common use case for executing the same application repeatedly also occurs when evaluating the performance of a system (as we do here), where the goal is to estimate quantum performance metrics, such as the probability of success or the fidelity (see `Methods, Metrics`).
 When executing the same application multiple times, the programmer can choose to launch many instances of the same program at once if multitasking is possible (see below), or to write one program which repeatedly executes the node's part of the program, asking for a successive execution of the application.
 
-\subsection{Interactive Classical-Quantum Execution}
+\subsection{Interactive classical-quantum execution}
 
 Let us elaborate further on the relation, and differences, between the execution of quantum network applications, and the execution of quantum computing applications: One could envision building a system for executing quantum network applications on top of a simpler system for the execution of quantum computing programs, as long as the latter can be \emph{augmented with networking instructions to generate entanglement}: in essence one quantum block can be seen as one quantum computing program. Such a block may realize mid-circuit measurements by the classical control logic allowed within one quantum block, or error correction. Error correction could in this paradigm be realized both by classical control logic allowed within one quantum block, or by considering the error correction itself as part of the \ac{QDevice} (see \cref{qnodeos:sec:appendix-arch-node_system}) which then only exposes logical qubits and operations to \ac{QNodeOS}, instead of physical qubits and operations. In that sense, one may think of the interactivity required between classical and quantum operations as taking place not only at a higher level, but also stemming from the fact that classical messages are used to create a new interaction between \emph{separate} quantum programs, while in quantum computing we have only one single program.
 
-\subsection{Different Hardware Platforms} 
+\subsection{Different hardware platforms} 
 
 \subsubsection{Platform Independence}
 
@@ -106,13 +106,13 @@ Quantum network programs are meant to be executed between distant nodes, meaning
 the case of distributed quantum computing also has different timescales than quantum networking. Of course, it is conceivable that in the future, one may also link distant quantum computers into more powerful quantum computing clusters via quantum internet infrastructure.
 
 
-\subsection{Scheduling Network Operations}
+\subsection{Scheduling network operations}
 
 In order for two neighboring quantum network nodes to produce heralded entanglement between them, they need to simultaneously perform an action to trigger entanglement generation (at the physical layer, \emph{synchronized to nanosecond precision}). This means neighboring quantum network nodes need to perform a network operation (entanglement generation) in a \emph{very specific} time slot in which they make an attempt to generate entanglement. Such time slots are generally aggregated into larger time bins, corresponding to making batches of attempts in time slots synchronized at the physical layer. We refer to e.g. Ref.~\cite{pompili_2022_experimental} for background information on the physical layer of entanglement generation in quantum networks, and the readers with a background in computer science to e.g. Ref.~\cite{dahlberg_2019_egp} for a detailed explanation of scheduling of entanglement generation in quantum networks.
 
 In short, network operations in quantum networks need to be executed by the node at very specific time bins. These time bins cannot be determined by the quantum node itself. Instead selection of time bins for a specific quantum operation require agreement with the neighboring node~\cite{dahlberg_2019_egp} (and more generally with the quantum network when the end-to-end entanglement is made via intermediary network nodes) by means of a network schedule, e.g. determined by a (logically) centralized controller, see Ref.~\cite{skrzypczyk_2021_arch}.
 
-\subsection{Scheduling Local Operations versus Scheduling Network Operations}
+\subsection{Scheduling local operations versus scheduling network operations}
 
 For computer scientists, we provide further information on the inability to execute at the same time both local as well as networked quantum operations on present-day quantum processors. At a high-level, present-day quantum processor can be seen as both a quantum \ac{CPU}/memory, as well as network device at the same time. Physical properties of the device and its control at the level of experimental physics, prohibits the usage of the quantum processors for both network and \ac{CPU}/memory functions at the same time. A good example is given by the system of \ac{NV} centers in diamond~\cite{kalb_2017_entanglement,humphreys_2018_delivery}: the communication qubit, i.e. the network device, of the \ac{NV} quantum processor system is given by its electron spin. Further storage qubits may be available by the surrounding nuclear spins in the diamond material. However, such nuclear spins cannot easily be addressed without involving the electron spin, prohibiting their use as a separate processor that is independent from the use as a network device. 
 
