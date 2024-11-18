@@ -191,7 +191,7 @@ Typically, for a given application, the involved nodes create many \textit{progr
 \subsection{Scheduling and execution}
 \label{qoala:sec:scheduling}
 Tasks produced for program instances are executed by the \textit{node scheduler}.
-This scheduler manages a global task graph containing all tasks that have been created for instantiated programs and that are awaiting execution
+This scheduler manages a global task graph containing all tasks that have been created for instantiated programs and that are awaiting execution.
 Among the tasks that do not have any precedence constraints going into them (anymore), the scheduler continuously chooses the next task(s) to execute.
 It may choose to run a task on the CPS and a task on the QPS in parallel.
 If a task completed successfully, it is removed from the task graph, and precedence constraints and relative deadlines are updated accordingly.
