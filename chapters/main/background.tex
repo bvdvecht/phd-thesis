@@ -210,10 +210,10 @@ This highlights the difference with distributed quantum computing (see e.g.~\cit
     \centering
     \includegraphics[width=0.8\textwidth]{figures/qoala/program_illustration.pdf}
     \caption{Another visualization of a quantum network application, focusing on the different types of operations and the role of time and latencies.
-    This application consisting of two hybrid classical-quantum programs (on Nodes 1 and 2) including
-        (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by  network controller).
-        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit)
-        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time)
+    This application consists of two hybrid classical-quantum programs (on Nodes 1 and 2) including
+        (1) Entanglement generation between two qubits (circles) in a synchronized time slot (defined by a network controller).
+        (2) A local measurement of qubit A at Node 1 resulting in a classical outcome bit (destroying the qubit).
+        (4) Communication of the classical bit from Node 1 to Node 2 (taking non-deterministic time).
         (5) Execution of a quantum circuit on qubit B at Node 2 depending on the classical bit. The quality of qubit B has degraded during the time elapsed since (1). 
         (6) Node 2 measures qubit B and outputs the classical result.
     }
