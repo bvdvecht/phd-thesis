@@ -2,8 +2,8 @@
 
 Recall that our overarching objectives for programming and executing quantum network applications are, as also discussed in \cref{chp:intro}:
 \begin{itemize}
-\item Improve accessibility by enabling programming using high-level concepts and tools
-\item Execute quantum internet programs efficiently in terms of application success probability and success rate
+\item Improve accessibility by enabling programming using high-level concepts and tools.
+\item Execute quantum internet programs efficiently in terms of application success probability and success rate.
 \end{itemize}
 
 In the previous chapters we presented building blocks towards these objectives.
@@ -21,13 +21,13 @@ This is a similar issue as with classical machine code (or lower-level languages
 Second, the low-level format can be quite far from the high-level program logic.
 Someone who wants to implement a certain quantum network program typically only cares about the overall (high-level) behavior of the program.
 For example, they might simply want to express that the program should create entangled states repeatedly, and then measure all created qubits.
-Having to deal with low-level details about how express looping behavior, which (quantum) memory and how much to allocate, and how to integrate the classical and quantum code
+Having to deal with low-level details about how to express looping behavior, which and how much (quantum) memory to allocate, and how to integrate the classical and quantum code
 is in most cases not something a programmer wants to deal with. 
 Third, the Qoala program format allows hardware-specific details, such as hardware-specific quantum instructions (using NetQASM flavors, see \cref{chp:netqasm}).
 Although not required to add these details by the programmer, if one wants to make use of these details to improve execution (e.g. increasing success probability), the programmer should have knowledge about the hardware.
 Ideally, the programmer should not have to write different versions of a program, one for each hardware platform that the program is intended to run upon.
 
-In \cref{chp:netqasm,chp:qnodeos} we described how NetQASM and QNodeOS already provides a way for programmers to express program logic in a high-level language, Python.
+In \cref{chp:netqasm,chp:qnodeos} we described how NetQASM and QNodeOS already provide a way for programmers to express program logic in a high-level language, Python.
 However, in \ac{QNodeOS}, compilation would happen on-the-fly (also called \emph{interpretation}):
 while executing a program (i.e. at \emph{runtime}), program code is evaluated and quantum instructions are translated into NetQASM subroutines.
 This lead to certain problems, also discussed in the evaluation of Qoala (\cref{qoala:sec:evaluation}):
@@ -133,7 +133,7 @@ This is since network operations are often handled by system calls, which compil
 Moreover, compilers also don't have control over the execution and timing of other applications in the network, nor over the network itself.
 Network-specific optimization is therefore indirect, namely by optimizing the number of network system calls, reducing memory that would need to be context-switched upon network events, and optimizing local code that affects networking code~\cite{danalis_mpi-aware_2009}.
 We note that there exist compilers for network programming languages~\cite{monsanto_compiler_2012, li_modular_2020}.
-However, these relate to programming the control plane of networks (a paradigm called software-defined networking (SDN)), including how data is routed through the network, and are hence different from user applications that `merely use` the network.
+However, these relate to programming the control plane of networks (a paradigm called software-defined networking (SDN)), including how data is routed through the network, and are hence different from user applications that `merely use' the network.
 
 
 \subsection{Compilers for quantum computing.}
@@ -180,11 +180,11 @@ A quantum-specific IR has been created: QIR~\cite{haner_software_2018, geller_in
 \subsection{Compilers for quantum networking.}
 For quantum networking, compilation has not much been studied.
 For distributed quantum computing, compilers do exist~\cite{ferrari_compiler_2021, chatterjee_qurzon_2022, cuomo_optimized_2023, ferrari_modular_2023}.
-One approach is to take the input circuit and first split it into separate circuits: circuit cutting~\cite{chatterjee_qurzon_2022}
+One approach is to take the input circuit and first split it into separate circuits: circuit cutting~\cite{chatterjee_qurzon_2022}.
 However, as also explained in \cref{chp:intro}, distributed quantum computing --- although also dealing with multiple nodes or cores --- is different from quantum networking: in distributed quantum computing, a single compiler produces circuits for each node, whereas in quantum networking each node is independent and has its own compiler.
 
 Intermediate representations have also been proposed for network-related quantum programs:
-an extension to QIR for network-related programs, NetQIR~\cite{vazquez-perez_netqir_2024} and InQuIR~\cite{nishio_inquir_2023}. However, these are also for distributed quantum computing, and hence not for quantum networking which we are dealing with in this work.
+NetQIR~\cite{vazquez-perez_netqir_2024} (an extension to QIR for network-related programs), and InQuIR~\cite{nishio_inquir_2023}. However, these are also for distributed quantum computing, and hence not for quantum networking which we are dealing with in this work.
 
 
 \subsection{Session types}

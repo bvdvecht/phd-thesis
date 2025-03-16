@@ -13,7 +13,7 @@ Although most of these concepts are explained again in the following chapters, t
 
 A quantum network consists of devices that are connected together and that can establish entanglement between separate devices in that network.
 A global network of quantum networks, envisioned to be realized in the future, may be called a \emph{quantum internet}.
-More specifically, we assume quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels}.
+More specifically, we assume a quantum network to consist of \textit{nodes} that are connected by \textit{classical channels} and \textit{quantum channels}.
 Classical channels enable classical communication between nodes, while quantum channels are used for \textit{entanglement} generation (\cref{background:sec:entanglement}) between nodes.
 Within a quantum network, one can distinguish between two main types of nodes: First, there are \emph{end nodes}~\cite{wehner_2018_stages}, with which users execute quantum network applications (\cref{background:sec:applications}).
 In classical networks, end nodes are laptops, phones or other devices.
@@ -99,7 +99,7 @@ Throughout this thesis, when we say `qubit', these may be physical qubits, but m
 
 \subsection{Entanglement generation}
 \label{background:sec:entanglement}
-Entanglement is a phenomenon in quantum physics where two or more particles (qubits) are correlated in a way that is not possible classically. In a quantum network, such entangled qubits may be established across separate nodes, realizing a quantum connection between those nodes. Entanglement can be used by quantum network applications as a resource in order to realize applications~\cite{wehner_2018_stages} that are impossible with classical networks, including applications such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
+Entanglement is a phenomenon in quantum physics where two or more particles (qubits) are correlated in a way that is not possible classically. In a quantum network, such entangled qubits may be established across separate nodes, realizing a quantum connection between those nodes. Entanglement can be used as a resource in order to realize applications~\cite{wehner_2018_stages} that are impossible with classical networks, including applications such as data consistency in the cloud~\cite{benor_2005_byzantine}, privacy-enhancing proofs of deletion~\cite{poremba_quantum_2022}, exponential savings in communication~\cite{guerin_exponential_2016}, or secure quantum computing in the cloud~\cite{broadbent_2009_ubqc,childs_2005_secure_qc}.
 
 In order for two neighboring quantum network nodes to produce entanglement between them, they need to simultaneously perform an action to trigger entanglement generation (at the physical layer, synchronized to nanosecond precision).
 This means neighboring quantum network nodes need to perform a network operation (entanglement generation) in a \emph{very specific} time slot in which they make an attempt to generate entanglement.
@@ -185,7 +185,7 @@ In this thesis, we consider quantum network applications in the quantum memory s
         In this case, after measuring her qubit, Alice sends the classical outcome bit $m$ to Bob.
         Bob then uses this in his local X-rotation gate.
         Right: the same application but represented as two separate programs written in a programming language.
-        Since Alice and Bob are separated nodes, they each program their own local code.
+        Since Alice and Bob are separate nodes, they each program their own local code.
         This code may however include external operations, such as entanglement creation with the other node, and sending or receiving messages.
         Note that these operations must match --- something they are responsible for themselves, by e.g. following some pre-established protocol.
     }
@@ -254,7 +254,7 @@ Applications are hence typically executed many times in succession, where outcom
 
 \paragraph{Performance metrics}
 Performance of application execution on quantum network nodes can be measured by several metrics.
-In this thesis we consider metrics that either apply to a single application that one executes on the quantum network, or on a node in the network that executes one or more applications.
+In this thesis we consider both (1) metrics that apply to a single application that one executes on the quantum network, and (2) metrics that apply to a node in the network that executes one or more programs.
 
 For an application, we consider \textit{makespan} as a classical metric and \textit{success probability} as a quantum metric.
 Makespan is the time it takes to execute (all repetitions of) the application.
