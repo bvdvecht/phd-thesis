@@ -220,8 +220,8 @@ This enables the compiler to perform optimizations on the mixed classical-quantu
 \paragraph{Networking operations}
 Network operations (i.e. classical communication and entanglement generation) are slow compared to local operations.
 For example, waiting to receive a classical message can take in the order of milliseconds (see \cref{qnodeos:fig:fig2}).
-Also, entanglement generation may take milliseconds (\cref{qnodeos:fig:delcomp-epr-rate}).
-By contrast, individual local quantum operations like gates take only microseconds (\cref{tab:gate_durations}) and local classical operations can be as fast as nanoseconds.
+Also, entanglement generation may take milliseconds (\cref{qnodeos:fig:delcomp-epr-rate} in \cref{qnodeos:sec:processing_time_latencies}).
+By contrast, individual local quantum operations like gates take only microseconds (\cref{tab:gate_durations} in \cref{qnodeos:sec:processing_time_latencies}) and local classical operations can be as fast as nanoseconds.
 As can be seen in \cref{tab:exp_durations}, most of the time is spent on network processing.
 
 Since quantum memory decoheres over time, a general optimization for the compiler is to minimize the time that quantum memory must remain idle during some other operation.
