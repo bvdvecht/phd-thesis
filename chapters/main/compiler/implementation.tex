@@ -12,7 +12,7 @@ The Qoala compiler uses four custom MLIR dialects, called \texttt{qnet}, \texttt
 
 \begin{itemize}
     \item QoalaHIR (High-level): A higher-level IR, where operations are closely related
-    to the python source.
+    to the Python source code.
     Quantum operations are represented using the \texttt{qnet} dialect, which consume and produce quantum \emph{values}.
     Programs in the QoalaHIR format use the following dialects: \texttt{qnet} (Qoala-specific dialect), and \texttt{arith}, \texttt{scf}, \texttt{affine}, \texttt{async}, \texttt{tensor} (default dialects in MLIR, which support complex control-flow and data structures).
     \item QoalaMIR (Mid-level): A mid level IR, similar to QoalaHIR but with explicit memory locations, using the Qoala-specific \texttt{qmem} dialect instead of \texttt{qnet} (\texttt{qmem} uses quantum pointers instead of quantum values).
@@ -26,7 +26,7 @@ The Qoala compiler uses four custom MLIR dialects, called \texttt{qnet}, \texttt
 We have implemented the following compiler passes for lowering QoalaHIR code into QoalaLIR code (\cref{compiler:fig:overall-design}).
 
 \paragraph{QoalaHIR to QoalaMIR}
-Go from a value-semantics representation (qubits are values that are consumed and produces by operations) in the \texttt{qnet} dialect to memory-semantics representation (qubits are pointers and quantum operations acting on qubit pointers have side effects) in the \texttt{qmem} dialect.
+Go from a value-semantics representation (qubits are values that are consumed and produced by operations) in the \texttt{qnet} dialect to a memory-semantics representation (qubits are pointers and quantum operations acting on qubit pointers have side effects) in the \texttt{qmem} dialect.
 
 \paragraph{QoalaMIR functionizing}
 Split QoalaMIR code into functions.
@@ -58,9 +58,9 @@ The SDK enables the following program development flow:
 \item Programmer writes source code in Python using the Qoala Python SDK.
 \item The Python SDK itself provides a \texttt{compile} function that executes the source code
   which produces a \texttt{.mlir} file containing the program code in QoalaHIR format.
-\item This Python SDK implements \textit{some} functionality present in the "frontend" of a classical
+\item This Python SDK implements \textit{some} functionality present in the ``frontend'' of a classical
   compiler, for example, a semantical analysis to check the validity of the classical and
-  quantum operations specified in the program 
+  quantum operations specified in the program.
 \item A separate \texttt{opt}-like tool (built using LLVM/MLIR) takes the \texttt{.mlir} as input and produces
   (after several applying passes) a \texttt{.iqoala} file.
 \item The \texttt{.iqoala} file can then be executed by a Qoala runtime.
@@ -70,8 +70,8 @@ The SDK enables the following program development flow:
 \subsection{Example lowering}
 
 Take the below example program written in the high-level Qoala Python SDK.
-The program creates first creates an entangled qubit (\texttt{q}) with remote node Bob, after which a Hadamard gate is applied on \texttt{q}.
-Then, the program waits to a receive classical real number (a float) as a classical message from Bob, calling it \texttt{t1}.
+The program first creates an entangled qubit (\texttt{q}) with remote node Bob, after which a Hadamard gate is applied on \texttt{q}.
+Then, the program waits to receive a classical real number (a float) as a classical message from Bob, calling it \texttt{t1}.
 An x-rotation gate is applied on \texttt{q} with angle \texttt{t1}.
 Finally, \texttt{q} is measured, producing bit \texttt{m} which is returned as result of this program.
 \newpage

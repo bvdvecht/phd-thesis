@@ -191,7 +191,7 @@ NetQIR~\cite{vazquez-perez_netqir_2024} (an extension to QIR for network-related
 \label{compiler:sec:session-types}
 
 As mentioned above, compilers may also perform correctness checking.
-In the context of networked programs, one may define correctness as including adherence to a (communication) protocol.
+In the context of networked programs, one could also say that correctness should include adherence to a (communication) protocol.
 \emph{Session types} is a formalism used for defining communication protocols between different parties~\cite{honda_language_1998}.
 They can be used to for example specify the order in which messages need to be sent and received.
 By having the protocol in a well-defined format, the parties can check whether they adhere to the agreed upon protocol.
@@ -225,14 +225,14 @@ By contrast, individual local quantum operations like gates take only microsecon
 As can be seen in \cref{tab:exp_durations}, most of the time is spent on network processing.
 
 Since quantum memory decoheres over time, a general optimization for the compiler is to minimize the time that quantum memory must remain idle during some other operation.
-Because of the comparably long duration of network operations, special attention must be made by the compiler to minimize the time that there is quantum memory alive while doing a network operations.
+Because of the comparably long duration of network operations, special attention must be made by the compiler to minimize the time that there is quantum memory alive while doing network operations.
 This may mean that the compiler should re-order operations (without changing the behavior of the program) around network operations, such as exemplified in \cref{compiler:lst:reorder-network-ops}.
 
 \paragraph{Non-deterministic durations}
 Not only are network-related operations slow, their duration is also non-deterministic (\cref{qnodeos:fig:delcomp-latencies-variance} and \cref{qnodeos:fig:delcomp-epr-rate}).
-Even with optimizations (like re-ordering local operations) to minimize the time that quantum memory must remain alive, an network operation (such as entanglement generation) may take too long --- resulting in a too low quantum memory to produce meaningful results.
+Even with optimizations (like re-ordering local operations) to minimize the time that quantum memory must remain alive, a network operation (such as entanglement generation) may take too long --- resulting in a too low-quality quantum memory to produce meaningful results.
 This raises two points:
-(1) the compiler can use Qoala's feature of \emph{deadlines}: by adding (relative) deadlines to (parts of) the code, the compiler can hint to the scheduler to, at runtime, either abort the program or to retry a certain piece of code
+(1) the compiler can use Qoala's feature of \emph{deadlines}: by adding (relative) deadlines to (parts of) the code, the compiler can hint to the scheduler to, at runtime, either abort the program or to retry a certain piece of code, and
 (2) the question is what deadline the compiler should insert. For this, it may be possible for the developer to insert fidelity constraints in the high-level language (or as a compiler flag), such that the compiler can insert the corresponding deadlines (possibly parametrized by hardware characteristics from the \acf{EHI}, see \cref{qoala:sec:runtime_environment}).
 
 \paragraph{Correctness guarantee of compiler}
@@ -244,7 +244,7 @@ This is because programs on other nodes in the network may expect these operatio
 The compiler only affects the contents of the Qoala executable.
 How well the program does at runtime also depends on (as shown in \cref{qoala:sec:evaluation})
 (1) the network schedule, and (2) the node scheduler, especially in the case of multitasking (i.e. when other programs are executed concurrently with this program).
-Specifically, this runtime scheduler affect both the makespan (time it takes to execute the whole program) and the average application success probability (see \cref{chp:background} for metrics).
+Specifically, the network schedule and the node scheduler affect both the makespan (time it takes to execute the whole program) and the average application success probability (see \cref{chp:background} for metrics).
 
 \paragraph{Private program in networked context}
 Recall that Qoala programs are part of multi-node applications, but that the compiler individually compiles the programs for a single node.
@@ -278,7 +278,7 @@ We list recommendations for an architecture of a Qoala program compiler, based o
     \centering
     \includegraphics[width=1.0\textwidth]{figures/compiler/overall-design.pdf}
     \caption{Schematic of a high-level architecture for a Qoala program compiler.
-    Overall, the same structure is used as in \cref{compiler:fig:frontend-backend}, but now with two \ac{IR}s.
+    Overall, the same structure is used as in \cref{compiler:fig:frontend-backend}, but now with three \ac{IR}s.
     Source code (in any high-level language) is first translated into a high-level \ac{IR} called QoalaHIR. In this \ac{IR}, classical and quantum code can be mixed arbitrarily, allowing optimizations to be applied on the whole hybrid code.
     QoalaHIR has quantum values as native types, which enables the compiler to do (quantum) data-flow analysis in order to apply existing optimizations that make use of these def-use chains of quantum values~\cite{peduri_qssa_2022}. Control-flow may be complex.
     After applying optimizations on QoalaHIR, the program is translated to a mid-level \ac{IR} (QoalaMIR) in which an explicit distinction is made between code that will run on the CPS and code that will be run on the QPS.
@@ -351,29 +351,29 @@ If such a protocol would have a formal description in the form of session types,
 The compiler should optimize programs with respect to various metrics.
 Some of these metrics are those from standard compilers: memory usage and execution time (or makespan).
 This holds for both classical and quantum code.
-For classical code, existing optimization can be used from MLIR (part of LLVM), applied on the program when it is in QoalaHIR or QoalaLIR (\cref{compiler:fig:overall-design}).
+For classical code, existing optimization can be used from MLIR (part of LLVM), applied on the program when it is in one of the IRs (\cref{compiler:fig:overall-design}).
 For quantum code, also existing techniques can be used, see \cref{compiler:sec:compilers-qc}.
 These include circuit mapping and gate optimization techniques.
 
-Moreover, by using the hybrid classical-quantum format of QoalaHIR we can re-use existing optimizations such as loop unrolling and other, see~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
+Moreover, by using the hybrid classical-quantum format of QoalaHIR we can re-use existing optimizations such as loop unrolling and others, see~\cite{mccaskey_mlir_2021, ittah_enabling_2022, nguyen_retargetable_2022, peduri_qssa_2022}.
 This also enables cross-subroutine optimizations, something not possible in NetQASM.
 
 Other metrics the compiler should optimize for are
 \begin{inlinelist}
-\item Amount of CPS-QPS communication, since this negatively impacts execution time and possibly the time that quantum states must remain in memory,
-\item Success probability of the application. In general this is application specific, but a good heuristic is to reduce the time that quantum states remain in memory, which may be done by adding deadlines that help the scheduler.
+\item amount of CPS-QPS communication, since this negatively impacts execution time and possibly the time that quantum states must remain in memory, and
+\item success probability of the application. In general this is application specific, but a good heuristic is to reduce the time that quantum states remain in memory, which may be done by adding deadlines that help the scheduler.
 \end{inlinelist}
 
 As with classical network or internet applications, the performance of quantum network applications also depends on the network itself, on which the compiler does not have influence.
 A large factor in performance is the fidelity (quality) of entangled states produced by the network.
-Although the compiler does not control this fidelity directly, it can indirectly help by doing clever capability negotiation (see also below) and adding deadlines.
+Although the compiler does not control this fidelity directly, it can indirectly help by doing clever capability negotiation (see \cref{chp:qoala}) and adding deadlines.
 
 Furthermore, the compiler should do noise-aware optimization including existing techniques for local quantum operations~\cite{smith_error_2021, murali_noise-adaptive_2019}.
 
 
 \textbf{Re-use existing (classical and quantum) compilation techniques for local code}
-These include classical techniques like loop unrolling, and quantum techniques (qubit mapping, gate optimization, see \cref{compiler:sec:related-work})
-Existing quantum circuit optimizations can be applied to local quantum code in the quantum network program to compile.
+These include classical techniques like loop unrolling, and quantum techniques (qubit mapping, gate optimization, see \cref{compiler:sec:related-work}).
+Existing quantum circuit optimizations can be applied to local quantum code.
 For network-related operations, see below.
 
 \textbf{Perform optimizations on joint classical-quantum representation}
@@ -385,9 +385,9 @@ Use existing \ac{MLIR} infrastructure.
 As mentioned above, the compiler's target comes from the \ac{EHI}, which contains information about noise and durations (of gates and network operations).
 The compiler can use this information to do specific optimizations, including
 \begin{itemize}
-  \item Compiling to specific NetQASM flavor
-  \item Mapping to specific qubits with better topology
-  \item Noise-aware optimizations such as~\cite{smith_error_2021, murali_noise-adaptive_2019}
+  \item compiling to specific NetQASM flavor,
+  \item mapping to specific qubits with better topology, and
+  \item noise-aware optimizations such as~\cite{smith_error_2021, murali_noise-adaptive_2019}.
 \end{itemize}
 
 
@@ -404,7 +404,7 @@ On top of the existing optimizations for classical and quantum local code (menti
   \item Re-order operations to minimize qubit memory time (see \cref{compiler:lst:reorder-network-ops} for a simple example).
   % AFAIK not done in any other compiler (hybrid classical-quantum reordering yes, but not specifically to reduce qubit `live' time)
   \item Even without protocol description: do not re-order external operations.
-  \item Add deadlines to code blocks to guide scheduling
+  \item Add deadlines to code blocks to guide scheduling.
 \end{itemize}
 
 \begin{figure}[t]
@@ -417,8 +417,8 @@ q.H()  # hadamard
 q.measure()
   \end{lstlisting}
   \caption{Simple program that (1) initializes a local qubit $q$, (2) applies a Hadamard gate on it, (3) creates an entangled qubit $e$, (4) applies another Hadamard gate on $q$ and (5) measures $q$.
-  $q$ are completely independent in terms of application logic.
-  Since the creation of the entangled qubit $e$ may take a long time, executing the operations in the order they are given means that $q$ ---after the first Hadamard --- must remain in memory while waiting for the entanglement generation too finish.
+  $q$ and $e$ are completely independent in terms of application logic.
+  Since the creation of the entangled qubit $e$ may take a long time, executing the operations in the order they are given means that $q$ ---after the first Hadamard --- must remain in memory while waiting for the entanglement generation to finish.
   During this time $q$ might decohere considerably.
   An optimization would be to move the entanglement creation to the very end (after measuring of $q$) such that the initialization, gates, and measurement of $q$ happen in one go, providing best performance.
   }
