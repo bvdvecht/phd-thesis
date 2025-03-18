@@ -5,7 +5,7 @@
 
 Advances in quantum computing and quantum communication technologies are paving the way for a \textit{quantum internet}~\cite{wehner2018quantum, kimble2008quantum}, where quantum applications are executed across multiple network nodes.
 Examples of such applications include quantum key distribution (QKD)~\cite{bennett2014quantum, ekert1991quantum} and blind quantum computation (BQC) \cite{broadbent2009universal, arrighi2006blind} from a client to a quantum cloud server.
-A multi-node quantum internet application is partitioned into separate single-node \textit{programs} (e.g. a client program and a server program in BQC) that run concurrently on different network nodes. To support security sensitive applications, each program performs local classical and quantum computations on its own private node, and programs interact with each other only via classical message passing and entanglement generation. This is in sharp contrast to distributed quantum computing (see e.g.~\cite{cacciapuoti2019quantum}), where all nodes can be accessed and controlled by a single program. 
+A multi-node quantum internet application is partitioned into separate single-node \textit{programs} (e.g. a client program and a server program in BQC) that run concurrently on different network nodes. To support security sensitive applications, each program performs local classical and quantum computations on its own private node, and programs interact with each other only via classical message passing and entanglement generation. This is in sharp contrast to distributed quantum computing (see e.g.~\cite{caleffi_distributed_2022}), where all nodes can be accessed and controlled by a single program. 
 
 % The single-node programs that constitute a quantum internet application are hybrid in nature (see \cref{qoala:fig:program_illustration}):
 % First, they contain quantum operations, such as local quantum gates and measurements (e.g. to perform a server computation in BQC), and entanglement generation (e.g. to produce key in QKD). Entanglement is a special property of two quantum bits (qubits) that forms a key resource for quantum internet applications. 
@@ -21,7 +21,7 @@ Programs also need to perform classical operations, such as message passing (\te
 
 Realizing the execution of quantum internet applications presents unique challenges (see \cref{qoala:sec:design_considerations}): 
 First, a program for a quantum internet application is not merely a hybrid of classical and quantum code segments; these segments are also highly \textit{interactive}: classical and quantum code may run concurrently, communicating and influencing each other.
-E.g., a quantum circuit (a series of quantum gates) may "pause" halfway, keeping quantum states in memory, and wait for a value from a classical segment (e.g. a classical message from a remote node) before continuing.
+E.g., a quantum circuit (a series of local quantum gates) may ``pause'' halfway, keeping quantum states in memory, and wait for a value from a classical segment (e.g. a classical message from a remote node) before continuing.
 This interactivity makes arbitrary quantum network applications more complex than simple prepare-and-measure quantum network protocols that do not require this interactivity, such as QKD.
 Quantum memories have limited lifetimes, meaning qubits are subject to decoherence, degrading their quality over time. This introduces the need 
 control the joint schedule of the classical and quantum segments of the program to reach desired levels of application performance.
@@ -30,9 +30,14 @@ Second, a compiler should be able to optimize the whole program including both c
 
 Finally, we are faced with a mix of time scales:
 on the one hand, entanglement generation requires a very precise network schedule that is agreed ahead of time between the network nodes~\cite{dahlberg2019link}. On the other hand, classical messages are exchanged asynchronously between the nodes without guaranteed message delivery times. This motivates an architecture in which different segments of the system may operate at different levels of timing precision. 
+In \cref{chp:qnodeos}, we presented QNodeOS, the first architecture for executing arbitrary programs on quantum network nodes.
+QNodeOS tackles the above challenges, but we suggested that there is room for improvements in the architecture, including enabling better support for compilation and gaining better scheduling control by putting components on the same board.
+In this chapter, we explore these improvements.
+
 
 \subsection{Main contributions}
-We propose the first architecture, Qoala, that addresses these challenges. Qoala is an execution environment tailored to programmable quantum internet nodes, accommodating the \textbf{hybrid, interactive, networked, and asynchronous nature} of quantum internet applications. 
+We propose an extension of the QNodeOS architecture for program execution on quantum network nodes, called Qoala, that addresses the above challenges.
+Qoala is an execution environment tailored to programmable quantum internet nodes, accommodating the \textbf{hybrid, interactive, networked, and asynchronous nature} of quantum internet applications. 
 
 \begin{figure}[t]
     \centering
@@ -62,11 +67,12 @@ The separation of a static program from its runtime tasks also allows for the pr
 This is the first architecture that allows for effective scheduling control of hybrid interactive classical-quantum programs, thus addressing a critical issues in the successful execution of quantum internet applications.
 
 \textbf{Integration with quantum network stack:}
-Qoala integrates with an existing quantum network stack~\cite{dahlberg2019link} implemented on NV centers in diamond~\cite{pompili2022experimental} for realizing entanglement generation between nodes. This opens the door for Qoala to be implemented on such networks.
+Qoala integrates with the existing quantum network stack~\cite{dahlberg2019link}, also present in QNodeOS~\cite{pompili2022experimental}, for realizing entanglement generation between nodes. This opens the door for Qoala to be implemented on such networks.
 
-\textbf{Implementation in hardware validated simulation:} We implement the proposed architecture as a \textbf{modular and composable simulator}, which enables the evaluation of different execution strategies and techniques.
-The simulation is validated against real-world quantum hardware implementations, opening the door to understand performance tradeoffs and requirements for Qoala's implementation. Specifically, the simulator allows 
-configuring different hardware parameters, latencies, and software component organizations, to evaluate implementation choices of Qoala in simulation. 
+\textbf{Implementation in hardware validated simulation:}
+We implement the proposed architecture as a \textbf{modular and composable simulator}, which enables the evaluation of different execution strategies and techniques.
+The simulation is validated against real-world quantum hardware implementations, opening the door to understand performance tradeoffs and requirements for Qoala's implementation.
+Specifically, the simulator allows configuring different hardware parameters, latencies, and software component organizations, to evaluate implementation choices of Qoala in simulation. 
 
 Using the implementation we demonstrate the effectiveness and feasibility of our proposed architecture on different types of quantum hardware, including its ability to schedule and multitask applications using a number of existing scheduling methods (EDF, FCFS).
 We continue to examine tradeoffs in the classical and quantum performance metrics of using different types of scheduling approaches. 

@@ -4,11 +4,10 @@
 \label{chp:qoala}
 
 \begin{abstract}
-Executing quantum internet applications presents unique challenges not encountered in quantum computing.
-These challenges include the need for a highly interactive execution of hybrid classical-quantum programs running at different network nodes, where the limited lifetime of quantum memories imposes deadlines to achieve a desired level of performance. What's more, part of the execution is subject to strict timing constraints (e.g. entanglement generation), while others allow more flexible timing precision (e.g. classical messages exchanged between the nodes). 
-Here, we present Qoala, the first execution environment for programmable nodes in a quantum internet to address these challenges including:
-(1) A unified program format for hybrid interactive classical-quantum programs, providing a well-defined target for compilers, and 
-(2) A runtime representation of a program that allows joint scheduling of the hybrid classical-quantum program, multitasking, and asynchronous program execution.
+In \cref{chp:qnodeos}, we presented a first-of-its-kind operating system for programmable quantum network nodes, called QNodeOS.
+In this chapter, we present an extension of QNodeOS called Qoala, which introduces
+(1) a unified program format for hybrid interactive classical-quantum programs, providing a well-defined target for compilers, and 
+(2) a runtime representation of a program that allows joint scheduling of the hybrid classical-quantum program, multitasking, and asynchronous program execution.
 Based on concrete design considerations, we put forward the architecture of Qoala, including the program structure and execution mechanism.
 We implement Qoala in the form of a modular and extendible simulator that is validated against real-world quantum network hardware (available online).
 However, Qoala is not meant to be purely a simulator, and implementation is planned on real hardware.
