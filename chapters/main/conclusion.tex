@@ -20,7 +20,7 @@ We validated and evaluated NetQASM in simulation.
 \paragraph{QNodeOS}
 
 In \cref{chp:qnodeos} we extended our execution model from \cref{chp:netqasm}, and presented the first ever full-stack system architecture for quantum network nodes --- QNodeOS --- for executing arbitrary applications on quantum network nodes.
-QNodeOS is an architecture that spans both CNPU and QNPU, and describes how user applications written with the NetQASM SDK can be executed, by also incorporating the network stack~\cite{dahlberg2019linklayer,kozlowski2020networklayer}.
+QNodeOS is an architecture that spans both CNPU and QNPU, and describes how user applications written with the NetQASM SDK can be executed, by also incorporating the network stack~\cite{dahlberg2019linklayer,kozlowski_2020_qnp}.
 We have validated our architecture by implementing it on real hardware: we showed the successful execution of simple quantum network applications on a setup of two nodes based on NV centers.
 Moreover we have shown that QNodeOS is platform-agnostic by also connecting it to a quantum device with trapped ions.
 Finally we validated that QNodeOS can do multitasking of multiple applications and can increase quantum device utility this way.
@@ -53,11 +53,11 @@ A real implementation of Qoala, by upgrading the existing QNodeOS implementation
 
 \paragraph{Scaling up}
 All the work presented here has been evaluated on small networks, whether it be on real hardware (\cref{chp:qnodeos}) or in simulation (\cref{chp:netqasm,chp:qoala}).
-Evaluating QNodeOS and Qoala on larger systems (meaning: larger networks, more applications, more qubits per node, more instructions per program) can give insights to the extent our architecture scales, and whether changes in the design have to be made before larger scale adoption can be realized.
+Evaluating QNodeOS and Qoala on larger systems (meaning: larger networks, more applications, more qubits per node, more instructions per program) can give insights into how much our architecture scales, and whether changes in the design have to be made before larger scale adoption can be realized.
 
 \paragraph{Qoala compiler}
 In \cref{chp:compiler} we discussed possibilities for the design of a compiler for Qoala programs.
-Finalizing the design and then implementing it would enable evaluation (in simulation or on hardware), which would in turn point to future improvements over the design.
+Finalizing the design and then implementing it would enable evaluation (in simulation or on hardware), which would in turn point to future improvements of the design.
 It would be especially interesting to see how compilation strategies may be combined with scheduling strategies, because of their interplay as shown in \cref{chp:qoala}.
 % Furthermore, one could investigate compilation to 
 % Qoala uses the HostLang language to represent classical operations, in classical blocks.
@@ -65,19 +65,19 @@ It would be especially interesting to see how compilation strategies may be comb
 
 \paragraph{Advanced scheduling algorithms}
 In \cref{chp:qoala} we evaluated only simple node scheduling algorithms (first-come-first-serve and earliest-deadline-first) since our main objective was to showcase the ability to do node scheduling in the first place, rather than coming up with an optimized scheduler.
-More sophisticated scheduling strategies may lead to higher success probabilities and lower makespan when concurrently executing multiple program instances, where inspiration may come from existing strategies such as time-utility functions (TUF, see e.g.~\cite{jensen1993timeliness, li2004utility}) to inform scheduling decisions, and where it is an open question how such TUF could even be defined in the quantum domain.
+More sophisticated scheduling strategies may lead to higher success probabilities and lower makespan when concurrently executing multiple program instances, where inspiration may come from existing strategies such as time-utility functions (TUF, see e.g.~\cite{jensen1993timeliness, li2004utility}) to inform scheduling decisions, and where it is an open question how such TUFs could even be defined in the quantum domain.
 Further research on the fundamental tradeoffs between the classical (makespan) and quantum (success probability) performance metrics may also guide further design choices on scheduling algorithms.
 
 \paragraph{Investigate using Qoala for distributed quantum computing}
 Although Qoala has been designed with quantum network (or internet) applications in mind, it may also be used for distributed quantum computing (DQC, although not to be confused with Delegated Quantum Computation from \cref{chp:qnodeos}).
 Since DQC only needs to do limited classical communication (sending teleportation corrections), Qoala's architecture of having a separate CPS doing arbitrary classical computation and communication may not be the most efficient solution.
-However, it may that overhead is minimal and is made up for by being able to use the same architecture (namely Qoala) as for more general quantum network applications.
+However, it may be that overhead is minimal and is made up for by being able to use the same architecture (namely Qoala) as for more general quantum network applications.
 Indeed, using Qoala may enable DQC in larger-scale networks comprised of autonomous nodes (like a quantum internet), something not immediately possible with existing frameworks such as~\cite{diadamo_distributed_2021} which assume central control over all nodes.
 Because of the more predictable nature of DQC applications (there is typically no complex control-flow depending on runtime information) simple node scheduling algorithms may suffice, although this needs to be investigated.
 
 
 \paragraph{Capability negotiation}
-In \cref{qoala:sec:program_instantiation} we mentioned that the compiler provides advice that the nodes use in a capability negotiation and demand registration (\cref{qoala:sec:program_instantiation}).
+In \cref{qoala:sec:program_instantiation} we mentioned that the compiler provides advice that the nodes use in capability negotiation and demand registration (\cref{qoala:sec:program_instantiation}).
 It is an open question how to best compute such advice, and find efficient protocols for negotiating capabilities and register demand.
 This must be fleshed out in coordination with network scheduling research.
 
