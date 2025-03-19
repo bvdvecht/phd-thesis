@@ -43,7 +43,7 @@ In order to achieve, for quantum networks, the same level of programmability as 
 \begin{inlinelist}
 \item programming quantum network application logic in a high-level, hardware-agnostic way
 \item compilation of application code into low-level executable (quantum network node) machine code, and
-\item execution of arbitrary applications on quantum network nodes on different kinds of hardware
+\item execution of arbitrary applications on quantum network nodes on different kinds of hardware.
 \end{inlinelist}
 
 It is true that one can re-use existing abstractions from quantum computing, as well as from classical computing and networking, in order to realize the above framework.
@@ -80,7 +80,8 @@ Given the limited lifetime of quantum memories (quantum states decoherence --- d
 \textbf{Challenge 4.} Another crucial part of quantum network applications is entanglement generation between nodes.
 Research is being done on how to realize a \emph{quantum network stack}~\cite{dahlberg2019linklayer,kozlowski2020networklayer, caleffi_2017_optimal}, which organizes entanglement generation in networks, including timing synchronization, routing, and serving application requests~\cite{gauthier_control_2023};
 however, integration of applications with such a stack has not yet been implemented and studied.
-Moreover, this integration requires handling both local application instructions and network-wide communication, which introduces a large span of time scales, a challenge for designing a software architecture for quantum network nodes: entanglement generation requires very precise (nanosecond) timing synchronization between the network nodes~\cite{dahlberg2019link}, while application logic, including classical messaging between nodes may be on the order of milliseconds.
+Moreover, this integration requires handling both local application instructions and network-wide communication, which introduces a large span of time scales, a challenge for designing a software architecture for quantum network nodes.
+Indeed, entanglement generation requires very precise (at least nanosecond) timing synchronization between the network nodes~\cite{dahlberg2019link}, while application logic, including classical messaging between nodes, may be on the order of milliseconds.
 
 \textbf{Challenge 5.} Finally, quantum network applications often have moments in which they are idle since they have to wait for a message to arrive from another node.
 Such idle times present an opportunity to do \emph{multitasking} --- running multiple applications concurrently --- on a node, in order to make more efficient use of quantum hardware.
@@ -152,7 +153,7 @@ We report on the performance of our architecture by looking at application throu
 
 
 Based on what we learned from our QNodeOS implementation and evaluation, we propose an improved architecture --- Qoala --- for executing applications on quantum network nodes in \cref{chp:qoala}.
-Qoala that addresses the compilation and scheduling challenges found in QNodeOS, by allowing hybrid classical-quantum compilation and scheduling.
+Qoala addresses the compilation and scheduling challenges found in QNodeOS, by allowing hybrid classical-quantum compilation and scheduling.
 We show how this architecture enables strategies to achieve better application performance, addressing Q3.
 
 In \cref{chp:compiler} we discuss in more detail how Qoala can be used for improved compilation strategies.
